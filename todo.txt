@@ -1,0 +1,30 @@
+[2:00 PM 5/23/2020]
+* menu: PROSES, modul: HANDOVER,
+  - s.d. php to excel, isi excel yang sudah jadi ? atau create excel baru ya ?
+
+[12:30 PM 5/23/2020]
+* menu: PROSES, modul: HANDOVER,
+  - perlu ditambahkan icon tambah USER SIGNATURE apabila belum ada
+
+[7:43 PM 5/21/2020]
+* menu: PROSES, modul: HANDOVER,
+  - s.d. grouping background color text antara TO dan BY
+    [DONE @12:31 PM 5/23/2020]
+
+[10:52 AM 5/21/2020]
+* menu: PROSES, modul: HANDOVER,
+  - perlu ditambahkan disposition type pada table t101_ho_head,
+    contoh: owner to fc
+            fc to dept
+            dept to fc
+            fc to owner
+    [DONE @12:32 PM 5/23/2020]
+
+[10:37 AM 5/21/2020]
+* menu: PROSES, modul: HANDOVER,
+  - info to fc: belum ada kolom (field) jumlah item (qty.) yang dihanded-overkan
+
+[10:09 AM 5/21/2020]
+* menu: PROSES, modul: HANDOVER,
+  - start at: 10:09 AM 5/21/2020
+

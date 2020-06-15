@@ -1,0 +1,32 @@
+[1.0.2] - 10:15 AM 5/21/2020
+* added
+  - view: dashboard, modul: to do
+
+
+
+[1.0.1] - 1:08 PM 5/20/2020
+* added
+  - dashboard, tampilan baru :: accordion, baru terisi :: 1). draft asset report, dan 2). change log;
+
+
+
+[1.0.0] - 1:08 PM 5/20/2020
+* notes
+  - template
+    . unreleased
+    . added
+    . changed
+    . deprecated
+    . removed
+    . fixed
+    . security
+    . yanked
+
+  - readme
+    . aplikasi asset management
+    . mencatat depresiasi asset
+    . mencatat history procurement asset
+    . mencatat mutasi asset
+    . mencatat disposal asset
+    . mencatat asset sold
+
