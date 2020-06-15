@@ -65,13 +65,13 @@ abstract class PHPThumb
 
         $this->plugins = array();
 
-        if (is_array(plugins)) {
-            $cnt = count(plugins);
+        if (is_array($plugins)) {
+            $cnt = count($plugins);
             for ($i = 0; $i < $cnt; $i++) {
                 if ($plugins[$i] instanceof \PHPThumb\PluginInterface)
-                    $this->$plugins[] = $plugins[$i];
+                    $this->plugins[] = $plugins[$i];
                 elseif (is_callable($plugins[$i]))
-                    $this->$plugins[] = new \PHPThumb\Plugins\Anonymous($plugins[$i]);
+                    $this->plugins[] = new \PHPThumb\Plugins\Anonymous($plugins[$i]);
             }
         }
     }

@@ -113,6 +113,15 @@ $t101_ho_head_list->renderListOptions();
 // Render list options (header, left)
 $t101_ho_head_list->ListOptions->render("header", "left");
 ?>
+<?php if ($t101_ho_head_list->property_id->Visible) { // property_id ?>
+	<?php if ($t101_ho_head_list->SortUrl($t101_ho_head_list->property_id) == "") { ?>
+		<th data-name="property_id" class="<?php echo $t101_ho_head_list->property_id->headerCellClass() ?>"><div id="elh_t101_ho_head_property_id" class="t101_ho_head_property_id"><div class="ew-table-header-caption"><?php echo $t101_ho_head_list->property_id->caption() ?></div></div></th>
+	<?php } else { ?>
+		<th data-name="property_id" class="<?php echo $t101_ho_head_list->property_id->headerCellClass() ?>"><div class="ew-pointer" onclick="ew.sort(event, '<?php echo $t101_ho_head_list->SortUrl($t101_ho_head_list->property_id) ?>', 2);"><div id="elh_t101_ho_head_property_id" class="t101_ho_head_property_id">
+			<div class="ew-table-header-btn"><span class="ew-table-header-caption"><?php echo $t101_ho_head_list->property_id->caption() ?></span><span class="ew-table-header-sort"><?php if ($t101_ho_head_list->property_id->getSort() == "ASC") { ?><i class="fas fa-sort-up"></i><?php } elseif ($t101_ho_head_list->property_id->getSort() == "DESC") { ?><i class="fas fa-sort-down"></i><?php } ?></span></div>
+		</div></div></th>
+	<?php } ?>
+<?php } ?>
 <?php if ($t101_ho_head_list->TransactionNo->Visible) { // TransactionNo ?>
 	<?php if ($t101_ho_head_list->SortUrl($t101_ho_head_list->TransactionNo) == "") { ?>
 		<th data-name="TransactionNo" class="<?php echo $t101_ho_head_list->TransactionNo->headerCellClass() ?>"><div id="elh_t101_ho_head_TransactionNo" class="t101_ho_head_TransactionNo"><div class="ew-table-header-caption"><?php echo $t101_ho_head_list->TransactionNo->caption() ?></div></div></th>
@@ -295,6 +304,13 @@ while ($t101_ho_head_list->RecordCount < $t101_ho_head_list->StopRecord) {
 // Render list options (body, left)
 $t101_ho_head_list->ListOptions->render("body", "left", $t101_ho_head_list->RowCount);
 ?>
+	<?php if ($t101_ho_head_list->property_id->Visible) { // property_id ?>
+		<td data-name="property_id" <?php echo $t101_ho_head_list->property_id->cellAttributes() ?>>
+<span id="el<?php echo $t101_ho_head_list->RowCount ?>_t101_ho_head_property_id">
+<span<?php echo $t101_ho_head_list->property_id->viewAttributes() ?>><?php echo $t101_ho_head_list->property_id->getViewValue() ?></span>
+</span>
+</td>
+	<?php } ?>
 	<?php if ($t101_ho_head_list->TransactionNo->Visible) { // TransactionNo ?>
 		<td data-name="TransactionNo" <?php echo $t101_ho_head_list->TransactionNo->cellAttributes() ?>>
 <span id="el<?php echo $t101_ho_head_list->RowCount ?>_t101_ho_head_TransactionNo">

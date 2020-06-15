@@ -8,7 +8,7 @@ use \Psr\Http\Message\ResponseInterface as Response;
  */
 class Api
 {
-	protected $SecretKey = 'jcJOON8lxXefbde9';
+	protected $SecretKey = 'gTwlAFRC35eouKFV';
 	protected $Algorithm = 'HS512';
 
 	// For some reason, the "Authorization" header is removed by IIS, changed to "X-Authorization"
@@ -103,14 +103,17 @@ class Api
 		if (IsGet()) {
 
 			// Check user level
-			if ($userLevel == NULL) { // Get current user permissions
-				$userLevel = $Security->CurrentUserLevelID;
-				$userLevels = $Security->UserLevelID;
-			} elseif (is_numeric($userLevel) && !SameString($userLevel, "-1")) { // Get permissions for user level
-				$userLevels = [$userLevel];
-			} else {
-				return FALSE;
+			$userLevels = [-2]; // Default anonymous
+			if ($Security->isLoggedIn()) {
+				if ($Security->isSysAdmin() && is_numeric($userLevel) && !SameString($userLevel, "-1")) { // Get permissions for user level
+					if ($Security->userLevelIDExists($userLevel))
+						$userLevels = [$userLevel];
+				} else {
+					$userLevel = $Security->CurrentUserLevelID;
+					$userLevels = $Security->UserLevelID;
+				}
 			}
+			$userLevel = $userLevels[0];
 			$privs = [];
 			$cnt = count($ar);
 			for ($i = 0; $i < $cnt; $i++) {
@@ -129,7 +132,7 @@ class Api
 			WriteJson($res);
 
 		// Update permissions
-		} elseif (IsPost() && $valid && IsSysAdmin()) { // System admin only
+		} elseif (IsPost() && $valid && $Security->isSysAdmin()) { // System admin only
 
 			// Check user level
 			if (!is_numeric($userLevel) || SameString($userLevel, "-1"))
@@ -207,21 +210,7 @@ class Api
 				$this->SecretKey, // The signing key
 				$this->Algorithm // Algorithm used to sign the token, see https://tools.ietf.org/html/draft-ietf-jose-json-web-algorithms-40#section-3
 			) : NULL;
-		$privs = []; // User Level permissions
-		if ($userLevelID != -1) { // Not administrator
-			foreach ($Security->UserLevelPriv as $priv) {
-				$arr = array_filter($priv, function($k) {
-					return is_int($k); // Remove elements with string key
-				}, ARRAY_FILTER_USE_KEY);
-
-				// Keys: t = Table name, l = User Level ID, p = Permission
-				$l = intval($arr[1]);
-				$p = intval($arr[2]);
-				if ($p > 0 && in_array($l, $Security->UserLevelID))
-					$privs[] = ["t" => ConvertToUtf8(str_replace(Config("PROJECT_ID"), "", $arr[0])), "l" => $l, "p" => $p];
-			}
-		}
-		return array_merge(["success" => $isLoggedIn, "version" => PRODUCT_VERSION, "JWT" => $jwt, "permissions" => $privs], ConvertToUtf8($security));
+		return array_merge(["success" => $isLoggedIn, "version" => PRODUCT_VERSION, "JWT" => $jwt], ConvertToUtf8($security));
 	}
 
 	// Decode JWT
@@ -237,17 +226,23 @@ class Api
 			catch (\Firebase\JWT\BeforeValidException $e) {
 				if (Config("DEBUG"))
 					die($e->getMessage());
-				return ["BeforeValidException" => $e->getMessage()];
+
+				//return ["BeforeValidException" => $e->getMessage()];
+				return [];
 			}
 			catch (\Firebase\JWT\ExpiredException $e) {
 				if (Config("DEBUG"))
 					die($e->getMessage());
-				return ["ExpiredException" => $e->getMessage()];
+
+				//return ["ExpiredException" => $e->getMessage()];
+				return [];
 			}
 			catch (Exception $e) {
 				if (Config("DEBUG"))
 					die($e->getMessage());
-				return ["Exception" => $e->getMessage()];
+
+				//return ["Exception" => $e->getMessage()];
+				return [];
 			}
 		}
 		return [];

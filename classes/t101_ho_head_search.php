@@ -681,6 +681,7 @@ class t101_ho_head_search extends t101_ho_head
 		$CurrentForm = new HttpForm();
 		$this->CurrentAction = Param("action"); // Set up current action
 		$this->id->Visible = FALSE;
+		$this->property_id->setVisibility();
 		$this->TransactionNo->setVisibility();
 		$this->TransactionDate->setVisibility();
 		$this->TransactionType->setVisibility();
@@ -715,6 +716,7 @@ class t101_ho_head_search extends t101_ho_head
 		$this->createToken();
 
 		// Set up lookup cache
+		$this->setupLookupOptions($this->property_id);
 		$this->setupLookupOptions($this->HandedOverTo);
 		$this->setupLookupOptions($this->DepartmentTo);
 		$this->setupLookupOptions($this->HandedOverBy);
@@ -767,6 +769,7 @@ class t101_ho_head_search extends t101_ho_head
 	protected function buildAdvancedSearch()
 	{
 		$srchUrl = "";
+		$this->buildSearchUrl($srchUrl, $this->property_id); // property_id
 		$this->buildSearchUrl($srchUrl, $this->TransactionNo); // TransactionNo
 		$this->buildSearchUrl($srchUrl, $this->TransactionDate); // TransactionDate
 		$this->buildSearchUrl($srchUrl, $this->TransactionType); // TransactionType
@@ -852,6 +855,8 @@ class t101_ho_head_search extends t101_ho_head
 
 		// Load search values
 		$got = FALSE;
+		if ($this->property_id->AdvancedSearch->post())
+			$got = TRUE;
 		if ($this->TransactionNo->AdvancedSearch->post())
 			$got = TRUE;
 		if ($this->TransactionDate->AdvancedSearch->post())
@@ -893,6 +898,7 @@ class t101_ho_head_search extends t101_ho_head
 
 		// Common render codes for all row types
 		// id
+		// property_id
 		// TransactionNo
 		// TransactionDate
 		// TransactionType
@@ -912,6 +918,28 @@ class t101_ho_head_search extends t101_ho_head
 			// id
 			$this->id->ViewValue = $this->id->CurrentValue;
 			$this->id->ViewCustomAttributes = "";
+
+			// property_id
+			$curVal = strval($this->property_id->CurrentValue);
+			if ($curVal != "") {
+				$this->property_id->ViewValue = $this->property_id->lookupCacheOption($curVal);
+				if ($this->property_id->ViewValue === NULL) { // Lookup from database
+					$filterWrk = "`id`" . SearchString("=", $curVal, DATATYPE_NUMBER, "");
+					$sqlWrk = $this->property_id->Lookup->getSql(FALSE, $filterWrk, '', $this);
+					$rswrk = Conn()->execute($sqlWrk);
+					if ($rswrk && !$rswrk->EOF) { // Lookup values found
+						$arwrk = [];
+						$arwrk[1] = $rswrk->fields('df');
+						$this->property_id->ViewValue = $this->property_id->displayValue($arwrk);
+						$rswrk->Close();
+					} else {
+						$this->property_id->ViewValue = $this->property_id->CurrentValue;
+					}
+				}
+			} else {
+				$this->property_id->ViewValue = NULL;
+			}
+			$this->property_id->ViewCustomAttributes = "";
 
 			// TransactionNo
 			$this->TransactionNo->ViewValue = $this->TransactionNo->CurrentValue;
@@ -1118,6 +1146,11 @@ class t101_ho_head_search extends t101_ho_head
 			}
 			$this->Sign4->ViewCustomAttributes = "";
 
+			// property_id
+			$this->property_id->LinkCustomAttributes = "";
+			$this->property_id->HrefValue = "";
+			$this->property_id->TooltipValue = "";
+
 			// TransactionNo
 			$this->TransactionNo->LinkCustomAttributes = "";
 			$this->TransactionNo->HrefValue = "";
@@ -1183,6 +1216,38 @@ class t101_ho_head_search extends t101_ho_head
 			$this->Sign4->HrefValue = "";
 			$this->Sign4->TooltipValue = "";
 		} elseif ($this->RowType == ROWTYPE_SEARCH) { // Search row
+
+			// property_id
+			$this->property_id->EditCustomAttributes = "";
+			$curVal = trim(strval($this->property_id->AdvancedSearch->SearchValue));
+			if ($curVal != "")
+				$this->property_id->AdvancedSearch->ViewValue = $this->property_id->lookupCacheOption($curVal);
+			else
+				$this->property_id->AdvancedSearch->ViewValue = $this->property_id->Lookup !== NULL && is_array($this->property_id->Lookup->Options) ? $curVal : NULL;
+			if ($this->property_id->AdvancedSearch->ViewValue !== NULL) { // Load from cache
+				$this->property_id->EditValue = array_values($this->property_id->Lookup->Options);
+				if ($this->property_id->AdvancedSearch->ViewValue == "")
+					$this->property_id->AdvancedSearch->ViewValue = $Language->phrase("PleaseSelect");
+			} else { // Lookup from database
+				if ($curVal == "") {
+					$filterWrk = "0=1";
+				} else {
+					$filterWrk = "`id`" . SearchString("=", $this->property_id->AdvancedSearch->SearchValue, DATATYPE_NUMBER, "");
+				}
+				$sqlWrk = $this->property_id->Lookup->getSql(TRUE, $filterWrk, '', $this);
+				$rswrk = Conn()->execute($sqlWrk);
+				if ($rswrk && !$rswrk->EOF) { // Lookup values found
+					$arwrk = [];
+					$arwrk[1] = HtmlEncode($rswrk->fields('df'));
+					$this->property_id->AdvancedSearch->ViewValue = $this->property_id->displayValue($arwrk);
+				} else {
+					$this->property_id->AdvancedSearch->ViewValue = $Language->phrase("PleaseSelect");
+				}
+				$arwrk = $rswrk ? $rswrk->getRows() : [];
+				if ($rswrk)
+					$rswrk->close();
+				$this->property_id->EditValue = $arwrk;
+			}
 
 			// TransactionNo
 			$this->TransactionNo->EditAttrs["class"] = "form-control";
@@ -1513,6 +1578,7 @@ class t101_ho_head_search extends t101_ho_head
 	// Load advanced search
 	public function loadAdvancedSearch()
 	{
+		$this->property_id->AdvancedSearch->load();
 		$this->TransactionNo->AdvancedSearch->load();
 		$this->TransactionDate->AdvancedSearch->load();
 		$this->TransactionType->AdvancedSearch->load();
@@ -1553,6 +1619,8 @@ class t101_ho_head_search extends t101_ho_head
 
 			// Set up lookup SQL and connection
 			switch ($fld->FieldVar) {
+				case "x_property_id":
+					break;
 				case "x_TransactionType":
 					break;
 				case "x_HandedOverTo":
@@ -1591,6 +1659,8 @@ class t101_ho_head_search extends t101_ho_head
 
 					// Format the field values
 					switch ($fld->FieldVar) {
+						case "x_property_id":
+							break;
 						case "x_HandedOverTo":
 							break;
 						case "x_DepartmentTo":

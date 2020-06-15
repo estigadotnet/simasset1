@@ -72,6 +72,8 @@ loadjs.ready("head", function() {
 	ft101_ho_headsearch.validateRequired = <?php echo Config("CLIENT_VALIDATE") ? "true" : "false" ?>;
 
 	// Dynamic selection lists
+	ft101_ho_headsearch.lists["x_property_id"] = <?php echo $t101_ho_head_search->property_id->Lookup->toClientList($t101_ho_head_search) ?>;
+	ft101_ho_headsearch.lists["x_property_id"].options = <?php echo JsonEncode($t101_ho_head_search->property_id->lookupOptions()) ?>;
 	ft101_ho_headsearch.lists["x_TransactionType"] = <?php echo $t101_ho_head_search->TransactionType->Lookup->toClientList($t101_ho_head_search) ?>;
 	ft101_ho_headsearch.lists["x_TransactionType"].options = <?php echo JsonEncode($t101_ho_head_search->TransactionType->options(FALSE, TRUE)) ?>;
 	ft101_ho_headsearch.lists["x_HandedOverTo"] = <?php echo $t101_ho_head_search->HandedOverTo->Lookup->toClientList($t101_ho_head_search) ?>;
@@ -113,6 +115,28 @@ $t101_ho_head_search->showMessage();
 <input type="hidden" name="action" id="action" value="search">
 <input type="hidden" name="modal" value="<?php echo (int)$t101_ho_head_search->IsModal ?>">
 <div class="ew-search-div"><!-- page* -->
+<?php if ($t101_ho_head_search->property_id->Visible) { // property_id ?>
+	<div id="r_property_id" class="form-group row">
+		<label for="x_property_id" class="<?php echo $t101_ho_head_search->LeftColumnClass ?>"><span id="elh_t101_ho_head_property_id"><?php echo $t101_ho_head_search->property_id->caption() ?></span>
+		<span class="ew-search-operator">
+<?php echo $Language->phrase("=") ?>
+<input type="hidden" name="z_property_id" id="z_property_id" value="=">
+</span>
+		</label>
+		<div class="<?php echo $t101_ho_head_search->RightColumnClass ?>"><div <?php echo $t101_ho_head_search->property_id->cellAttributes() ?>>
+			<span id="el_t101_ho_head_property_id" class="ew-search-field">
+<div class="input-group ew-lookup-list">
+	<div class="form-control ew-lookup-text" tabindex="-1" id="lu_x_property_id"><?php echo EmptyValue(strval($t101_ho_head_search->property_id->AdvancedSearch->ViewValue)) ? $Language->phrase("PleaseSelect") : $t101_ho_head_search->property_id->AdvancedSearch->ViewValue ?></div>
+	<div class="input-group-append">
+		<button type="button" title="<?php echo HtmlEncode(str_replace("%s", RemoveHtml($t101_ho_head_search->property_id->caption()), $Language->phrase("LookupLink", TRUE))) ?>" class="ew-lookup-btn btn btn-default"<?php echo ($t101_ho_head_search->property_id->ReadOnly || $t101_ho_head_search->property_id->Disabled) ? " disabled" : "" ?> onclick="ew.modalLookupShow({lnk:this,el:'x_property_id',m:0,n:10});"><i class="fas fa-search ew-icon"></i></button>
+	</div>
+</div>
+<?php echo $t101_ho_head_search->property_id->Lookup->getParamTag($t101_ho_head_search, "p_x_property_id") ?>
+<input type="hidden" data-table="t101_ho_head" data-field="x_property_id" data-multiple="0" data-lookup="1" data-value-separator="<?php echo $t101_ho_head_search->property_id->displayValueSeparatorAttribute() ?>" name="x_property_id" id="x_property_id" value="<?php echo $t101_ho_head_search->property_id->AdvancedSearch->SearchValue ?>"<?php echo $t101_ho_head_search->property_id->editAttributes() ?>>
+</span>
+		</div></div>
+	</div>
+<?php } ?>
 <?php if ($t101_ho_head_search->TransactionNo->Visible) { // TransactionNo ?>
 	<div id="r_TransactionNo" class="form-group row">
 		<label for="x_TransactionNo" class="<?php echo $t101_ho_head_search->LeftColumnClass ?>"><span id="elh_t101_ho_head_TransactionNo"><?php echo $t101_ho_head_search->TransactionNo->caption() ?></span>

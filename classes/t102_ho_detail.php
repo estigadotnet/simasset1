@@ -67,8 +67,7 @@ class t102_ho_detail extends DbTable
 		$this->ShowMultipleDetails = FALSE; // Show multiple details
 		$this->GridAddRowCount = 5;
 		$this->AllowAddDeleteRow = TRUE; // Allow add/delete row
-		$this->UserIDAllowSecurity = Config("USER_ID_ALLOW_SECURITY"); // Default User ID Allow Security
-		$this->UserIDAllowSecurity |= 0; // User ID Allow
+		$this->UserIDAllowSecurity = Config("DEFAULT_USER_ID_ALLOW_SECURITY"); // Default User ID allowed permissions
 		$this->BasicSearch = new BasicSearch($this->TableVar);
 
 		// id
@@ -287,7 +286,7 @@ class t102_ho_detail extends DbTable
 	// Check if User ID security allows view all
 	public function userIDAllow($id = "")
 	{
-		$allow = Config("USER_ID_ALLOW");
+		$allow = $this->UserIDAllowSecurity;
 		switch ($id) {
 			case "add":
 			case "copy":

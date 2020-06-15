@@ -435,23 +435,23 @@
     },
     {
         "name": "hkvstore/phpthumb",
-        "version": "v2.1.2",
-        "version_normalized": "2.1.2.0",
+        "version": "v2.1.4",
+        "version_normalized": "2.1.4.0",
         "source": {
             "type": "git",
             "url": "https://github.com/hkvstore/PHPThumb.git",
-            "reference": "e01832b372c2dc82de255240cc9616fe175e6d37"
+            "reference": "edb60b1c3c4d4e8799951c2955964db0e4b05b41"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/hkvstore/PHPThumb/zipball/e01832b372c2dc82de255240cc9616fe175e6d37",
-            "reference": "e01832b372c2dc82de255240cc9616fe175e6d37",
+            "url": "https://api.github.com/repos/hkvstore/PHPThumb/zipball/edb60b1c3c4d4e8799951c2955964db0e4b05b41",
+            "reference": "edb60b1c3c4d4e8799951c2955964db0e4b05b41",
             "shasum": ""
         },
         "require": {
             "php": ">=5.3.0"
         },
-        "time": "2020-05-15T07:18:04+00:00",
+        "time": "2020-05-28T07:33:18+00:00",
         "type": "library",
         "installation-source": "dist",
         "autoload": {
@@ -989,17 +989,17 @@
     },
     {
         "name": "sabberworm/php-css-parser",
-        "version": "8.3.0",
-        "version_normalized": "8.3.0.0",
+        "version": "8.3.1",
+        "version_normalized": "8.3.1.0",
         "source": {
             "type": "git",
             "url": "https://github.com/sabberworm/PHP-CSS-Parser.git",
-            "reference": "91bcc3e3fdb7386c9a2e0e0aa09ca75cc43f121f"
+            "reference": "d217848e1396ef962fb1997cf3e2421acba7f796"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/sabberworm/PHP-CSS-Parser/zipball/91bcc3e3fdb7386c9a2e0e0aa09ca75cc43f121f",
-            "reference": "91bcc3e3fdb7386c9a2e0e0aa09ca75cc43f121f",
+            "url": "https://api.github.com/repos/sabberworm/PHP-CSS-Parser/zipball/d217848e1396ef962fb1997cf3e2421acba7f796",
+            "reference": "d217848e1396ef962fb1997cf3e2421acba7f796",
             "shasum": ""
         },
         "require": {
@@ -1009,7 +1009,7 @@
             "codacy/coverage": "^1.4",
             "phpunit/phpunit": "~4.8"
         },
-        "time": "2019-02-22T07:42:52+00:00",
+        "time": "2020-06-01T09:10:00+00:00",
         "type": "library",
         "installation-source": "dist",
         "autoload": {

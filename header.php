@@ -88,7 +88,7 @@ Object.assign(ew, {
 	SEARCH_FILTER_OPTION: "<?php echo Config("SEARCH_FILTER_OPTION") ?>",
 	OPTION_HTML_TEMPLATE: <?php echo JsonEncode(Config("OPTION_HTML_TEMPLATE")) ?>
 });
-loadjs("<?php echo $RELATIVE_PATH ?>jquery/jquery-3.4.1.min.js", "jquery");
+loadjs("<?php echo $RELATIVE_PATH ?>jquery/jquery.min.js", "jquery");
 loadjs([
 	"<?php echo $RELATIVE_PATH ?>js/mobile-detect.min.js",
 	"<?php echo $RELATIVE_PATH ?>js/purify.min.js",

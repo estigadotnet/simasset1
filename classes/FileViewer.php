@@ -33,6 +33,7 @@ class FileViewer
 			$width = Post("width", 0);
 			$height = Post("height", 0);
 			$download = Post("download", "1") == "1"; // Download by default
+			$crop = Post("crop", "");
 		} else { // api/file/object/field/key
 			$token = Get(Config("TOKEN_NAME"), "");
 			$sessionId = Get("session", "");
@@ -44,6 +45,7 @@ class FileViewer
 			$width = Get("width", 0);
 			$height = Get("height", 0);
 			$download = Get("download", "1") == "1"; // Download by default
+			$crop = Get("crop", "");
 		}
 		$sessionId = Decrypt($sessionId);
 		$key = Config("RANDOM_KEY") . $sessionId;
@@ -93,6 +95,10 @@ class FileViewer
 
 		// Resize image from physical file
 		$res = FALSE;
+		$func = function($phpthumb) use ($width, $height) {
+			$phpthumb->adaptiveResize($width, $height);
+		};
+		$plugins = $crop ? [$func] : [];
 		if ($fn != "") {
 			$fn = str_replace("\0", "", $fn);
 			$info = pathinfo($fn);
@@ -107,7 +113,7 @@ class FileViewer
 					if ($size && @$size['mime'] != "")
 						AddHeader("Content-type", $size['mime']);
 					if ($width > 0 || $height > 0)
-						$data = ResizeFileToBinary($fn, $width, $height);
+						$data = ResizeFileToBinary($fn, $width, $height, $plugins);
 					else
 						$data = file_get_contents($fn);
 				} elseif (in_array($ext, explode(",", Config("DOWNLOAD_ALLOWED_FILE_EXT")))) {
@@ -121,7 +127,9 @@ class FileViewer
 
 		// Get image from table
 		} elseif (is_object($tbl) && $field != "" && $recordkey != "") {
-			$res = $tbl->getFileData($field, $recordkey, $resize, $width, $height);
+			$res = $tbl->getFileData($field, $recordkey, FALSE);
+			if ($width > 0 || $height > 0)
+				$res = ResizeBinary($res, $width, $height, 100, $plugins);
 		}
 
 		// Close connection

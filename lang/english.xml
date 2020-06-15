@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8" standalone="yes"?>
-<ew-language date="2020/5/23" version="16.0.1" id="en" name="English" desc="English" author="e.World Technology Ltd.">
+<ew-language date="2020/6/15" version="16.0.1" id="en" name="English" desc="English" author="e.World Technology Ltd.">
   <!--
 	*** Important Notes:
 	1. Language ID should follow: https://developers.google.com/recaptcha/docs/language,
@@ -1028,6 +1028,9 @@
       <phrase id="tblcaption" value="Handover" />
       <field id="id">
         <phrase id="fldcaption" value="id" />
+      </field>
+      <field id="property_id">
+        <phrase id="fldcaption" value="Property" />
       </field>
       <field id="transactionno">
         <phrase id="fldcaption" value="Transaction No." />

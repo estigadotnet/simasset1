@@ -91,8 +91,6 @@ class t201_users extends DbTable
 		$this->ShowMultipleDetails = FALSE; // Show multiple details
 		$this->GridAddRowCount = 5;
 		$this->AllowAddDeleteRow = TRUE; // Allow add/delete row
-		$this->UserIDAllowSecurity = Config("USER_ID_ALLOW_SECURITY"); // Default User ID Allow Security
-		$this->UserIDAllowSecurity |= 0; // User ID Allow
 		$this->BasicSearch = new BasicSearch($this->TableVar);
 
 		// EmployeeID
@@ -1646,7 +1644,7 @@ class t201_users extends DbTable
 		$filterWrk = "";
 		if ($id == "")
 			$id = (CurrentPageID() == "list") ? $this->CurrentAction : CurrentPageID();
-		if (!$this->userIdAllow($id) && !$Security->isAdmin()) {
+		if (!$this->userIDAllow($id) && !$Security->isAdmin()) {
 			$filterWrk = $Security->userIdList();
 			if ($filterWrk != "")
 				$filterWrk = '`EmployeeID` IN (' . $filterWrk . ')';

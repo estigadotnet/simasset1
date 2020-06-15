@@ -66,8 +66,7 @@ class r001_asset extends ReportTable
 		$this->ExportExcelPageSize = ""; // Page size (PhpSpreadsheet only)
 		$this->ExportWordPageOrientation = "portrait"; // Page orientation (PHPWord only)
 		$this->ExportWordColumnWidth = NULL; // Cell width (PHPWord only)
-		$this->UserIDAllowSecurity = Config("USER_ID_ALLOW_SECURITY"); // Default User ID Allow Security
-		$this->UserIDAllowSecurity |= 0; // User ID Allow
+		$this->UserIDAllowSecurity = Config("DEFAULT_USER_ID_ALLOW_SECURITY"); // Default User ID allowed permissions
 
 		// id
 		$this->id = new ReportField('r001_asset', 'r001_asset', 'x_id', 'id', '`id`', '`id`', 3, 11, -1, FALSE, '`id`', FALSE, FALSE, FALSE, 'FORMATTED TEXT', 'NO');
@@ -392,7 +391,7 @@ class r001_asset extends ReportTable
 	// Check if User ID security allows view all
 	public function userIDAllow($id = "")
 	{
-		$allow = Config("USER_ID_ALLOW");
+		$allow = $this->UserIDAllowSecurity;
 		switch ($id) {
 			case "add":
 			case "copy":

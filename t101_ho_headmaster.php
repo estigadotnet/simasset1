@@ -5,6 +5,16 @@ namespace PHPMaker2020\p_simasset1;
 <div class="ew-master-div">
 <table id="tbl_t101_ho_headmaster" class="table ew-view-table ew-master-table ew-vertical">
 	<tbody>
+<?php if ($t101_ho_head->property_id->Visible) { // property_id ?>
+		<tr id="r_property_id">
+			<td class="<?php echo $t101_ho_head->TableLeftColumnClass ?>"><?php echo $t101_ho_head->property_id->caption() ?></td>
+			<td <?php echo $t101_ho_head->property_id->cellAttributes() ?>>
+<span id="el_t101_ho_head_property_id">
+<span<?php echo $t101_ho_head->property_id->viewAttributes() ?>><?php echo $t101_ho_head->property_id->getViewValue() ?></span>
+</span>
+</td>
+		</tr>
+<?php } ?>
 <?php if ($t101_ho_head->TransactionNo->Visible) { // TransactionNo ?>
 		<tr id="r_TransactionNo">
 			<td class="<?php echo $t101_ho_head->TableLeftColumnClass ?>"><?php echo $t101_ho_head->TransactionNo->caption() ?></td>

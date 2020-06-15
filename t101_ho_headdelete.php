@@ -70,6 +70,9 @@ $t101_ho_head_delete->showMessage();
 <table class="table ew-table">
 	<thead>
 	<tr class="ew-table-header">
+<?php if ($t101_ho_head_delete->property_id->Visible) { // property_id ?>
+		<th class="<?php echo $t101_ho_head_delete->property_id->headerCellClass() ?>"><span id="elh_t101_ho_head_property_id" class="t101_ho_head_property_id"><?php echo $t101_ho_head_delete->property_id->caption() ?></span></th>
+<?php } ?>
 <?php if ($t101_ho_head_delete->TransactionNo->Visible) { // TransactionNo ?>
 		<th class="<?php echo $t101_ho_head_delete->TransactionNo->headerCellClass() ?>"><span id="elh_t101_ho_head_TransactionNo" class="t101_ho_head_TransactionNo"><?php echo $t101_ho_head_delete->TransactionNo->caption() ?></span></th>
 <?php } ?>
@@ -130,6 +133,13 @@ while (!$t101_ho_head_delete->Recordset->EOF) {
 	$t101_ho_head_delete->renderRow();
 ?>
 	<tr <?php echo $t101_ho_head->rowAttributes() ?>>
+<?php if ($t101_ho_head_delete->property_id->Visible) { // property_id ?>
+		<td <?php echo $t101_ho_head_delete->property_id->cellAttributes() ?>>
+<span id="el<?php echo $t101_ho_head_delete->RowCount ?>_t101_ho_head_property_id" class="t101_ho_head_property_id">
+<span<?php echo $t101_ho_head_delete->property_id->viewAttributes() ?>><?php echo $t101_ho_head_delete->property_id->getViewValue() ?></span>
+</span>
+</td>
+<?php } ?>
 <?php if ($t101_ho_head_delete->TransactionNo->Visible) { // TransactionNo ?>
 		<td <?php echo $t101_ho_head_delete->TransactionNo->cellAttributes() ?>>
 <span id="el<?php echo $t101_ho_head_delete->RowCount ?>_t101_ho_head_TransactionNo" class="t101_ho_head_TransactionNo">

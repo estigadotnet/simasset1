@@ -2372,7 +2372,7 @@ class DbTableBase
 	public $RowAttrs; // Row custom attributes
 	public $CurrentAction; // Current action
 	public $LastAction; // Last action
-	public $UserIDAllowSecurity = 0; // User ID Allow
+	public $UserIDAllowSecurity = 0; // User ID allowed permissions
 	public $UpdateTable = ""; // Update Table
 	public $TableFilter = "";
 	public $Pager;
@@ -6671,6 +6671,7 @@ class AdvancedSecurity
 	public $CurrentParentUserID;
 	protected $AnoymousUserLevelChecked = FALSE; // Dynamic User Level security
 	private $_isLoggedIn = FALSE;
+	private $_isSysAdmin = FALSE;
 	private $_userName;
 
 	// Constructor
@@ -6989,6 +6990,8 @@ class AdvancedSecurity
 			$this->setSessionParentUserID($parentUserID);
 		if ($userLevel != NULL) {
 			$this->setSessionUserLevelID((int)$userLevel);
+			if ((int)$userLevel == -1)
+				$this->_isSysAdmin = TRUE;
 			$this->setupUserLevel();
 		}
 	}
@@ -7074,6 +7077,7 @@ class AdvancedSecurity
 					if ($valid) {
 						$this->_isLoggedIn = TRUE;
 						$_SESSION[SESSION_STATUS] = "login";
+						$this->_isSysAdmin = FALSE;
 						$_SESSION[SESSION_SYS_ADMIN] = 0; // Non System Administrator
 						$this->setCurrentUserName(GetUserInfo(Config("LOGIN_USERNAME_FIELD_NAME"), $row)); // Load user name
 						$this->setSessionUserID(GetUserInfo(Config("USER_ID_FIELD_NAME"), $row)); // Load User ID
@@ -7183,7 +7187,7 @@ class AdvancedSecurity
 
 		// Get the User Level privileges
 		$userPrivSql = "SELECT " . Config("USER_LEVEL_PRIV_TABLE_NAME_FIELD") . ", " . Config("USER_LEVEL_PRIV_USER_LEVEL_ID_FIELD") . ", " . Config("USER_LEVEL_PRIV_PRIV_FIELD") . " FROM " . Config("USER_LEVEL_PRIV_TABLE");
-		if (!$this->isAdmin() && count($this->UserLevelID) > 0) {
+		if (!IsApi() && !$this->isAdmin() && count($this->UserLevelID) > 0) {
 			$userPrivSql .= " WHERE " . Config("USER_LEVEL_PRIV_USER_LEVEL_ID_FIELD") . " IN (" . $this->userLevelList() . ")";
 			$_SESSION[SESSION_USER_LEVEL_LIST_LOADED] = $this->userLevelList(); // Save last loaded list
 		} else {
@@ -7473,6 +7477,19 @@ class AdvancedSecurity
 		return implode(", ", $this->UserLevelID);
 	}
 
+	// User level ID exists
+	public function userLevelIDExists($id)
+	{
+		if (is_array($this->UserLevel)) {
+			foreach ($this->UserLevel as $row) {
+				list($levelid, $name) = $row;
+				if (SameString($levelid, $id))
+					return TRUE;
+			}
+		}
+		return FALSE;
+	}
+
 	// User Level name list
 	public function userLevelNameList()
 	{
@@ -7617,7 +7634,7 @@ class AdvancedSecurity
 	// Check if user is system administrator
 	public function isSysAdmin()
 	{
-		return (@$_SESSION[SESSION_SYS_ADMIN] == 1);
+		return ($this->_isSysAdmin || @$_SESSION[SESSION_SYS_ADMIN] == 1);
 	}
 
 	// Check if user is administrator
@@ -7841,16 +7858,15 @@ function ValidApiRequest() {
 					$Security = new AdvancedSecurity();
 			}
 			return $validRequest;
-		}
-
-		// Login user for API request
-		if (is_array($RequestSecurity)) { // Decoded by $api->decodeJWT()
+		} else { // Check JWT
 			if (session_status() !== PHP_SESSION_ACTIVE)
 				\Delight\Cookie\Session::start(Config("COOKIE_SAMESITE")); // Init session data
 			if (!isset($Security))
 				$Security = new AdvancedSecurity();
-			if (@$RequestSecurity["username"] != "")
-				$Security->loginUser($RequestSecurity["username"], @$RequestSecurity["userid"], @$RequestSecurity["parentuserid"], @$RequestSecurity["userlevelid"]);
+			if (is_array($RequestSecurity) && count($RequestSecurity) > 0) { // Decoded by $api->decodeJWT()
+				if (@$RequestSecurity["username"] != "")
+					$Security->loginUser($RequestSecurity["username"], @$RequestSecurity["userid"], @$RequestSecurity["parentuserid"], @$RequestSecurity["userlevelid"]);
+			}
 			return TRUE;
 		}
 	}

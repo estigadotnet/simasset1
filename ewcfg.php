@@ -85,7 +85,7 @@ define(PROJECT_NAMESPACE . "ALLOW_LOOKUP", 256); // Lookup
 define(PROJECT_NAMESPACE . "ALLOW_ALL", 511); // All (1 + 2 + 4 + 8 + 16 + 32 + 64 + 128 + 256)
 
 // Product version
-define(PROJECT_NAMESPACE . "PRODUCT_VERSION", "16.0.15");
+define(PROJECT_NAMESPACE . "PRODUCT_VERSION", "16.0.16");
 
 // Project
 define(PROJECT_NAMESPACE . "PROJECT_NAME", "p_simasset1"); // Project name
@@ -161,7 +161,7 @@ $CONFIG = [
 
 	// General
 	"UNFORMAT_YEAR" => 50, // Unformat year
-	"RANDOM_KEY" => 'z41ylpv7OAP7xqdk', // Random key for encryption
+	"RANDOM_KEY" => '7vSy5w3mS5kaljgp', // Random key for encryption
 	"ENCRYPTION_KEY" => '', // Encryption key for data protection
 	"PROJECT_STYLESHEET_FILENAME" => "css/p_simasset1.css", // Project stylesheet file name
 	"PROJECT_CHARSET" => "utf-8", // Project charset
@@ -351,9 +351,8 @@ $CONFIG = [
 	// Use subquery for master/detail
 	"USE_SUBQUERY_FOR_MASTER_USER_ID" => FALSE,
 
-	// User ID
-	"USER_ID_ALLOW" => 360,
-	"USER_ID_ALLOW_SECURITY" => 256,
+	// Default User ID allowed permissions
+	"DEFAULT_USER_ID_ALLOW_SECURITY" => 360,
 
 	// User table/field names
 	"USER_TABLE_NAME" => "t201_users",

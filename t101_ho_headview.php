@@ -71,6 +71,16 @@ $t101_ho_head_view->showMessage();
 <input type="hidden" name="t" value="t101_ho_head">
 <input type="hidden" name="modal" value="<?php echo (int)$t101_ho_head_view->IsModal ?>">
 <table class="table table-striped table-sm ew-view-table">
+<?php if ($t101_ho_head_view->property_id->Visible) { // property_id ?>
+	<tr id="r_property_id">
+		<td class="<?php echo $t101_ho_head_view->TableLeftColumnClass ?>"><span id="elh_t101_ho_head_property_id"><?php echo $t101_ho_head_view->property_id->caption() ?></span></td>
+		<td data-name="property_id" <?php echo $t101_ho_head_view->property_id->cellAttributes() ?>>
+<span id="el_t101_ho_head_property_id">
+<span<?php echo $t101_ho_head_view->property_id->viewAttributes() ?>><?php echo $t101_ho_head_view->property_id->getViewValue() ?></span>
+</span>
+</td>
+	</tr>
+<?php } ?>
 <?php if ($t101_ho_head_view->TransactionNo->Visible) { // TransactionNo ?>
 	<tr id="r_TransactionNo">
 		<td class="<?php echo $t101_ho_head_view->TableLeftColumnClass ?>"><span id="elh_t101_ho_head_TransactionNo"><?php echo $t101_ho_head_view->TransactionNo->caption() ?></span></td>

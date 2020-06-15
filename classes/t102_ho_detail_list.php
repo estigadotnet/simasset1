@@ -3289,7 +3289,7 @@ class t102_ho_detail_list extends t102_ho_detail
 		$validMaster = FALSE;
 
 		// Get the keys for master table
-		if (($master = Get(Config("TABLE_SHOW_MASTER")) ?: Get(Config("TABLE_MASTER"))) !== NULL) {
+		if (($master = Get(Config("TABLE_SHOW_MASTER"), Get(Config("TABLE_MASTER")))) !== NULL) {
 			$masterTblVar = $master;
 			if ($masterTblVar == "") {
 				$validMaster = TRUE;
@@ -3298,7 +3298,7 @@ class t102_ho_detail_list extends t102_ho_detail
 			}
 			if ($masterTblVar == "t101_ho_head") {
 				$validMaster = TRUE;
-				if (($parm = Get("fk_id") ?: Get("hohead_id")) !== NULL) {
+				if (($parm = Get("fk_id", Get("hohead_id"))) !== NULL) {
 					$GLOBALS["t101_ho_head"]->id->setQueryStringValue($parm);
 					$this->hohead_id->setQueryStringValue($GLOBALS["t101_ho_head"]->id->QueryStringValue);
 					$this->hohead_id->setSessionValue($this->hohead_id->QueryStringValue);
@@ -3308,7 +3308,7 @@ class t102_ho_detail_list extends t102_ho_detail
 					$validMaster = FALSE;
 				}
 			}
-		} elseif (($master = Post(Config("TABLE_SHOW_MASTER")) ?: Post(Config("TABLE_MASTER"))) !== NULL) {
+		} elseif (($master = Post(Config("TABLE_SHOW_MASTER"), Post(Config("TABLE_MASTER")))) !== NULL) {
 			$masterTblVar = $master;
 			if ($masterTblVar == "") {
 				$validMaster = TRUE;
@@ -3317,7 +3317,7 @@ class t102_ho_detail_list extends t102_ho_detail
 			}
 			if ($masterTblVar == "t101_ho_head") {
 				$validMaster = TRUE;
-				if (($parm = Post("fk_id") ?: Post("hohead_id")) !== NULL) {
+				if (($parm = Post("fk_id", Post("hohead_id"))) !== NULL) {
 					$GLOBALS["t101_ho_head"]->id->setFormValue($parm);
 					$this->hohead_id->setFormValue($GLOBALS["t101_ho_head"]->id->FormValue);
 					$this->hohead_id->setSessionValue($this->hohead_id->FormValue);

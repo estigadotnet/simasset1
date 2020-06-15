@@ -34,6 +34,7 @@ class t101_ho_head extends DbTable
 
 	// Fields
 	public $id;
+	public $property_id;
 	public $TransactionNo;
 	public $TransactionDate;
 	public $TransactionType;
@@ -78,8 +79,7 @@ class t101_ho_head extends DbTable
 		$this->ShowMultipleDetails = FALSE; // Show multiple details
 		$this->GridAddRowCount = 5;
 		$this->AllowAddDeleteRow = TRUE; // Allow add/delete row
-		$this->UserIDAllowSecurity = Config("USER_ID_ALLOW_SECURITY"); // Default User ID Allow Security
-		$this->UserIDAllowSecurity |= 0; // User ID Allow
+		$this->UserIDAllowSecurity = Config("DEFAULT_USER_ID_ALLOW_SECURITY"); // Default User ID allowed permissions
 		$this->BasicSearch = new BasicSearch($this->TableVar);
 
 		// id
@@ -90,6 +90,17 @@ class t101_ho_head extends DbTable
 		$this->id->Sortable = TRUE; // Allow sort
 		$this->id->DefaultErrorMessage = $Language->phrase("IncorrectInteger");
 		$this->fields['id'] = &$this->id;
+
+		// property_id
+		$this->property_id = new DbField('t101_ho_head', 't101_ho_head', 'x_property_id', 'property_id', '`property_id`', '`property_id`', 3, 11, -1, FALSE, '`property_id`', FALSE, FALSE, FALSE, 'FORMATTED TEXT', 'SELECT');
+		$this->property_id->Nullable = FALSE; // NOT NULL field
+		$this->property_id->Required = TRUE; // Required field
+		$this->property_id->Sortable = TRUE; // Allow sort
+		$this->property_id->UsePleaseSelect = TRUE; // Use PleaseSelect by default
+		$this->property_id->PleaseSelectText = $Language->phrase("PleaseSelect"); // "PleaseSelect" text
+		$this->property_id->Lookup = new Lookup('property_id', 't001_property', FALSE, 'id', ["Property","","",""], [], [], [], [], [], [], '', '');
+		$this->property_id->DefaultErrorMessage = $Language->phrase("IncorrectInteger");
+		$this->fields['property_id'] = &$this->property_id;
 
 		// TransactionNo
 		$this->TransactionNo = new DbField('t101_ho_head', 't101_ho_head', 'x_TransactionNo', 'TransactionNo', '`TransactionNo`', '`TransactionNo`', 200, 25, -1, FALSE, '`TransactionNo`', FALSE, FALSE, FALSE, 'FORMATTED TEXT', 'TEXT');
@@ -420,7 +431,7 @@ class t101_ho_head extends DbTable
 	// Check if User ID security allows view all
 	public function userIDAllow($id = "")
 	{
-		$allow = Config("USER_ID_ALLOW");
+		$allow = $this->UserIDAllowSecurity;
 		switch ($id) {
 			case "add":
 			case "copy":
@@ -742,6 +753,7 @@ class t101_ho_head extends DbTable
 			return;
 		$row = is_array($rs) ? $rs : $rs->fields;
 		$this->id->DbValue = $row['id'];
+		$this->property_id->DbValue = $row['property_id'];
 		$this->TransactionNo->DbValue = $row['TransactionNo'];
 		$this->TransactionDate->DbValue = $row['TransactionDate'];
 		$this->TransactionType->DbValue = $row['TransactionType'];
@@ -992,6 +1004,7 @@ class t101_ho_head extends DbTable
 	public function loadListRowValues(&$rs)
 	{
 		$this->id->setDbValue($rs->fields('id'));
+		$this->property_id->setDbValue($rs->fields('property_id'));
 		$this->TransactionNo->setDbValue($rs->fields('TransactionNo'));
 		$this->TransactionDate->setDbValue($rs->fields('TransactionDate'));
 		$this->TransactionType->setDbValue($rs->fields('TransactionType'));
@@ -1017,6 +1030,7 @@ class t101_ho_head extends DbTable
 
 		// Common render codes
 		// id
+		// property_id
 		// TransactionNo
 		// TransactionDate
 		// TransactionType
@@ -1034,6 +1048,28 @@ class t101_ho_head extends DbTable
 
 		$this->id->ViewValue = $this->id->CurrentValue;
 		$this->id->ViewCustomAttributes = "";
+
+		// property_id
+		$curVal = strval($this->property_id->CurrentValue);
+		if ($curVal != "") {
+			$this->property_id->ViewValue = $this->property_id->lookupCacheOption($curVal);
+			if ($this->property_id->ViewValue === NULL) { // Lookup from database
+				$filterWrk = "`id`" . SearchString("=", $curVal, DATATYPE_NUMBER, "");
+				$sqlWrk = $this->property_id->Lookup->getSql(FALSE, $filterWrk, '', $this);
+				$rswrk = Conn()->execute($sqlWrk);
+				if ($rswrk && !$rswrk->EOF) { // Lookup values found
+					$arwrk = [];
+					$arwrk[1] = $rswrk->fields('df');
+					$this->property_id->ViewValue = $this->property_id->displayValue($arwrk);
+					$rswrk->Close();
+				} else {
+					$this->property_id->ViewValue = $this->property_id->CurrentValue;
+				}
+			}
+		} else {
+			$this->property_id->ViewValue = NULL;
+		}
+		$this->property_id->ViewCustomAttributes = "";
 
 		// TransactionNo
 		$this->TransactionNo->ViewValue = $this->TransactionNo->CurrentValue;
@@ -1245,6 +1281,11 @@ class t101_ho_head extends DbTable
 		$this->id->HrefValue = "";
 		$this->id->TooltipValue = "";
 
+		// property_id
+		$this->property_id->LinkCustomAttributes = "";
+		$this->property_id->HrefValue = "";
+		$this->property_id->TooltipValue = "";
+
 		// TransactionNo
 		$this->TransactionNo->LinkCustomAttributes = "";
 		$this->TransactionNo->HrefValue = "";
@@ -1330,6 +1371,10 @@ class t101_ho_head extends DbTable
 		$this->id->EditCustomAttributes = "";
 		$this->id->EditValue = $this->id->CurrentValue;
 		$this->id->ViewCustomAttributes = "";
+
+		// property_id
+		$this->property_id->EditAttrs["class"] = "form-control";
+		$this->property_id->EditCustomAttributes = "";
 
 		// TransactionNo
 		$this->TransactionNo->EditAttrs["class"] = "form-control";
@@ -1427,6 +1472,7 @@ class t101_ho_head extends DbTable
 			if ($doc->Horizontal) { // Horizontal format, write header
 				$doc->beginExportRow();
 				if ($exportPageType == "view") {
+					$doc->exportCaption($this->property_id);
 					$doc->exportCaption($this->TransactionNo);
 					$doc->exportCaption($this->TransactionDate);
 					$doc->exportCaption($this->TransactionType);
@@ -1442,6 +1488,7 @@ class t101_ho_head extends DbTable
 					$doc->exportCaption($this->Sign4);
 				} else {
 					$doc->exportCaption($this->id);
+					$doc->exportCaption($this->property_id);
 					$doc->exportCaption($this->TransactionNo);
 					$doc->exportCaption($this->TransactionDate);
 					$doc->exportCaption($this->TransactionType);
@@ -1486,6 +1533,7 @@ class t101_ho_head extends DbTable
 				if (!$doc->ExportCustom) {
 					$doc->beginExportRow($rowCnt); // Allow CSS styles if enabled
 					if ($exportPageType == "view") {
+						$doc->exportField($this->property_id);
 						$doc->exportField($this->TransactionNo);
 						$doc->exportField($this->TransactionDate);
 						$doc->exportField($this->TransactionType);
@@ -1501,6 +1549,7 @@ class t101_ho_head extends DbTable
 						$doc->exportField($this->Sign4);
 					} else {
 						$doc->exportField($this->id);
+						$doc->exportField($this->property_id);
 						$doc->exportField($this->TransactionNo);
 						$doc->exportField($this->TransactionDate);
 						$doc->exportField($this->TransactionType);

@@ -833,6 +833,7 @@ class t101_ho_head_list extends t101_ho_head
 		// Setup export options
 		$this->setupExportOptions();
 		$this->id->Visible = FALSE;
+		$this->property_id->setVisibility();
 		$this->TransactionNo->setVisibility();
 		$this->TransactionDate->setVisibility();
 		$this->TransactionType->setVisibility();
@@ -879,6 +880,7 @@ class t101_ho_head_list extends t101_ho_head
 		}
 
 		// Set up lookup cache
+		$this->setupLookupOptions($this->property_id);
 		$this->setupLookupOptions($this->HandedOverTo);
 		$this->setupLookupOptions($this->DepartmentTo);
 		$this->setupLookupOptions($this->HandedOverBy);
@@ -1152,6 +1154,7 @@ class t101_ho_head_list extends t101_ho_head
 		// Initialize
 		$filterList = "";
 		$savedFilterList = "";
+		$filterList = Concat($filterList, $this->property_id->AdvancedSearch->toJson(), ","); // Field property_id
 		$filterList = Concat($filterList, $this->TransactionNo->AdvancedSearch->toJson(), ","); // Field TransactionNo
 		$filterList = Concat($filterList, $this->TransactionDate->AdvancedSearch->toJson(), ","); // Field TransactionDate
 		$filterList = Concat($filterList, $this->TransactionType->AdvancedSearch->toJson(), ","); // Field TransactionType
@@ -1198,6 +1201,14 @@ class t101_ho_head_list extends t101_ho_head
 			return FALSE;
 		$filter = json_decode(Post("filter"), TRUE);
 		$this->Command = "search";
+
+		// Field property_id
+		$this->property_id->AdvancedSearch->SearchValue = @$filter["x_property_id"];
+		$this->property_id->AdvancedSearch->SearchOperator = @$filter["z_property_id"];
+		$this->property_id->AdvancedSearch->SearchCondition = @$filter["v_property_id"];
+		$this->property_id->AdvancedSearch->SearchValue2 = @$filter["y_property_id"];
+		$this->property_id->AdvancedSearch->SearchOperator2 = @$filter["w_property_id"];
+		$this->property_id->AdvancedSearch->save();
 
 		// Field TransactionNo
 		$this->TransactionNo->AdvancedSearch->SearchValue = @$filter["x_TransactionNo"];
@@ -1311,6 +1322,7 @@ class t101_ho_head_list extends t101_ho_head
 		$where = "";
 		if (!$Security->canSearch())
 			return "";
+		$this->buildSearchSql($where, $this->property_id, $default, FALSE); // property_id
 		$this->buildSearchSql($where, $this->TransactionNo, $default, FALSE); // TransactionNo
 		$this->buildSearchSql($where, $this->TransactionDate, $default, FALSE); // TransactionDate
 		$this->buildSearchSql($where, $this->TransactionType, $default, FALSE); // TransactionType
@@ -1330,6 +1342,7 @@ class t101_ho_head_list extends t101_ho_head
 			$this->Command = "search";
 		}
 		if (!$default && $this->Command == "search") {
+			$this->property_id->AdvancedSearch->save(); // property_id
 			$this->TransactionNo->AdvancedSearch->save(); // TransactionNo
 			$this->TransactionDate->AdvancedSearch->save(); // TransactionDate
 			$this->TransactionType->AdvancedSearch->save(); // TransactionType
@@ -1402,6 +1415,8 @@ class t101_ho_head_list extends t101_ho_head
 	// Check if search parm exists
 	protected function checkSearchParms()
 	{
+		if ($this->property_id->AdvancedSearch->issetSession())
+			return TRUE;
 		if ($this->TransactionNo->AdvancedSearch->issetSession())
 			return TRUE;
 		if ($this->TransactionDate->AdvancedSearch->issetSession())
@@ -1452,6 +1467,7 @@ class t101_ho_head_list extends t101_ho_head
 	// Clear all advanced search parameters
 	protected function resetAdvancedSearchParms()
 	{
+		$this->property_id->AdvancedSearch->unsetSession();
 		$this->TransactionNo->AdvancedSearch->unsetSession();
 		$this->TransactionDate->AdvancedSearch->unsetSession();
 		$this->TransactionType->AdvancedSearch->unsetSession();
@@ -1473,6 +1489,7 @@ class t101_ho_head_list extends t101_ho_head
 		$this->RestoreSearch = TRUE;
 
 		// Restore advanced search values
+		$this->property_id->AdvancedSearch->load();
 		$this->TransactionNo->AdvancedSearch->load();
 		$this->TransactionDate->AdvancedSearch->load();
 		$this->TransactionType->AdvancedSearch->load();
@@ -1499,6 +1516,7 @@ class t101_ho_head_list extends t101_ho_head
 		if (Get("order") !== NULL) {
 			$this->CurrentOrder = Get("order");
 			$this->CurrentOrderType = Get("ordertype", "");
+			$this->updateSort($this->property_id, $ctrl); // property_id
 			$this->updateSort($this->TransactionNo, $ctrl); // TransactionNo
 			$this->updateSort($this->TransactionDate, $ctrl); // TransactionDate
 			$this->updateSort($this->TransactionType, $ctrl); // TransactionType
@@ -1548,6 +1566,7 @@ class t101_ho_head_list extends t101_ho_head
 				$orderBy = "";
 				$this->setSessionOrderBy($orderBy);
 				$this->setSessionOrderByList($orderBy);
+				$this->property_id->setSort("");
 				$this->TransactionNo->setSort("");
 				$this->TransactionDate->setSort("");
 				$this->TransactionType->setSort("");
@@ -2034,6 +2053,13 @@ class t101_ho_head_list extends t101_ho_head
 		// Load search values
 		$got = FALSE;
 
+		// property_id
+		if (!$this->isAddOrEdit() && $this->property_id->AdvancedSearch->get()) {
+			$got = TRUE;
+			if (($this->property_id->AdvancedSearch->SearchValue != "" || $this->property_id->AdvancedSearch->SearchValue2 != "") && $this->Command == "")
+				$this->Command = "search";
+		}
+
 		// TransactionNo
 		if (!$this->isAddOrEdit() && $this->TransactionNo->AdvancedSearch->get()) {
 			$got = TRUE;
@@ -2190,6 +2216,7 @@ class t101_ho_head_list extends t101_ho_head
 		if (!$rs || $rs->EOF)
 			return;
 		$this->id->setDbValue($row['id']);
+		$this->property_id->setDbValue($row['property_id']);
 		$this->TransactionNo->setDbValue($row['TransactionNo']);
 		$this->TransactionDate->setDbValue($row['TransactionDate']);
 		$this->TransactionType->setDbValue($row['TransactionType']);
@@ -2222,6 +2249,7 @@ class t101_ho_head_list extends t101_ho_head
 	{
 		$row = [];
 		$row['id'] = NULL;
+		$row['property_id'] = NULL;
 		$row['TransactionNo'] = NULL;
 		$row['TransactionDate'] = NULL;
 		$row['TransactionType'] = NULL;
@@ -2279,6 +2307,7 @@ class t101_ho_head_list extends t101_ho_head
 
 		// Common render codes for all row types
 		// id
+		// property_id
 		// TransactionNo
 		// TransactionDate
 		// TransactionType
@@ -2298,6 +2327,28 @@ class t101_ho_head_list extends t101_ho_head
 			// id
 			$this->id->ViewValue = $this->id->CurrentValue;
 			$this->id->ViewCustomAttributes = "";
+
+			// property_id
+			$curVal = strval($this->property_id->CurrentValue);
+			if ($curVal != "") {
+				$this->property_id->ViewValue = $this->property_id->lookupCacheOption($curVal);
+				if ($this->property_id->ViewValue === NULL) { // Lookup from database
+					$filterWrk = "`id`" . SearchString("=", $curVal, DATATYPE_NUMBER, "");
+					$sqlWrk = $this->property_id->Lookup->getSql(FALSE, $filterWrk, '', $this);
+					$rswrk = Conn()->execute($sqlWrk);
+					if ($rswrk && !$rswrk->EOF) { // Lookup values found
+						$arwrk = [];
+						$arwrk[1] = $rswrk->fields('df');
+						$this->property_id->ViewValue = $this->property_id->displayValue($arwrk);
+						$rswrk->Close();
+					} else {
+						$this->property_id->ViewValue = $this->property_id->CurrentValue;
+					}
+				}
+			} else {
+				$this->property_id->ViewValue = NULL;
+			}
+			$this->property_id->ViewCustomAttributes = "";
 
 			// TransactionNo
 			$this->TransactionNo->ViewValue = $this->TransactionNo->CurrentValue;
@@ -2504,6 +2555,11 @@ class t101_ho_head_list extends t101_ho_head
 			}
 			$this->Sign4->ViewCustomAttributes = "";
 
+			// property_id
+			$this->property_id->LinkCustomAttributes = "";
+			$this->property_id->HrefValue = "";
+			$this->property_id->TooltipValue = "";
+
 			// TransactionNo
 			$this->TransactionNo->LinkCustomAttributes = "";
 			$this->TransactionNo->HrefValue = "";
@@ -2602,6 +2658,7 @@ class t101_ho_head_list extends t101_ho_head
 	// Load advanced search
 	public function loadAdvancedSearch()
 	{
+		$this->property_id->AdvancedSearch->load();
 		$this->TransactionNo->AdvancedSearch->load();
 		$this->TransactionDate->AdvancedSearch->load();
 		$this->TransactionType->AdvancedSearch->load();
@@ -2875,6 +2932,8 @@ class t101_ho_head_list extends t101_ho_head
 
 			// Set up lookup SQL and connection
 			switch ($fld->FieldVar) {
+				case "x_property_id":
+					break;
 				case "x_TransactionType":
 					break;
 				case "x_HandedOverTo":
@@ -2913,6 +2972,8 @@ class t101_ho_head_list extends t101_ho_head
 
 					// Format the field values
 					switch ($fld->FieldVar) {
+						case "x_property_id":
+							break;
 						case "x_HandedOverTo":
 							break;
 						case "x_DepartmentTo":

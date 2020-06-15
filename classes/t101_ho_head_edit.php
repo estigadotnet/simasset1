@@ -687,6 +687,7 @@ class t101_ho_head_edit extends t101_ho_head
 		$CurrentForm = new HttpForm();
 		$this->CurrentAction = Param("action"); // Set up current action
 		$this->id->Visible = FALSE;
+		$this->property_id->setVisibility();
 		$this->TransactionNo->setVisibility();
 		$this->TransactionDate->setVisibility();
 		$this->TransactionType->setVisibility();
@@ -721,6 +722,7 @@ class t101_ho_head_edit extends t101_ho_head
 		$this->createToken();
 
 		// Set up lookup cache
+		$this->setupLookupOptions($this->property_id);
 		$this->setupLookupOptions($this->HandedOverTo);
 		$this->setupLookupOptions($this->DepartmentTo);
 		$this->setupLookupOptions($this->HandedOverBy);
@@ -894,6 +896,15 @@ class t101_ho_head_edit extends t101_ho_head
 		// Load from form
 		global $CurrentForm;
 
+		// Check field name 'property_id' first before field var 'x_property_id'
+		$val = $CurrentForm->hasValue("property_id") ? $CurrentForm->getValue("property_id") : $CurrentForm->getValue("x_property_id");
+		if (!$this->property_id->IsDetailKey) {
+			if (IsApi() && $val == NULL)
+				$this->property_id->Visible = FALSE; // Disable update for API request
+			else
+				$this->property_id->setFormValue($val);
+		}
+
 		// Check field name 'TransactionNo' first before field var 'x_TransactionNo'
 		$val = $CurrentForm->hasValue("TransactionNo") ? $CurrentForm->getValue("TransactionNo") : $CurrentForm->getValue("x_TransactionNo");
 		if (!$this->TransactionNo->IsDetailKey) {
@@ -1023,6 +1034,7 @@ class t101_ho_head_edit extends t101_ho_head
 	{
 		global $CurrentForm;
 		$this->id->CurrentValue = $this->id->FormValue;
+		$this->property_id->CurrentValue = $this->property_id->FormValue;
 		$this->TransactionNo->CurrentValue = $this->TransactionNo->FormValue;
 		$this->TransactionDate->CurrentValue = $this->TransactionDate->FormValue;
 		$this->TransactionDate->CurrentValue = UnFormatDateTime($this->TransactionDate->CurrentValue, 7);
@@ -1075,6 +1087,7 @@ class t101_ho_head_edit extends t101_ho_head
 		if (!$rs || $rs->EOF)
 			return;
 		$this->id->setDbValue($row['id']);
+		$this->property_id->setDbValue($row['property_id']);
 		$this->TransactionNo->setDbValue($row['TransactionNo']);
 		$this->TransactionDate->setDbValue($row['TransactionDate']);
 		$this->TransactionType->setDbValue($row['TransactionType']);
@@ -1100,6 +1113,7 @@ class t101_ho_head_edit extends t101_ho_head
 	{
 		$row = [];
 		$row['id'] = NULL;
+		$row['property_id'] = NULL;
 		$row['TransactionNo'] = NULL;
 		$row['TransactionDate'] = NULL;
 		$row['TransactionType'] = NULL;
@@ -1151,6 +1165,7 @@ class t101_ho_head_edit extends t101_ho_head
 
 		// Common render codes for all row types
 		// id
+		// property_id
 		// TransactionNo
 		// TransactionDate
 		// TransactionType
@@ -1170,6 +1185,28 @@ class t101_ho_head_edit extends t101_ho_head
 			// id
 			$this->id->ViewValue = $this->id->CurrentValue;
 			$this->id->ViewCustomAttributes = "";
+
+			// property_id
+			$curVal = strval($this->property_id->CurrentValue);
+			if ($curVal != "") {
+				$this->property_id->ViewValue = $this->property_id->lookupCacheOption($curVal);
+				if ($this->property_id->ViewValue === NULL) { // Lookup from database
+					$filterWrk = "`id`" . SearchString("=", $curVal, DATATYPE_NUMBER, "");
+					$sqlWrk = $this->property_id->Lookup->getSql(FALSE, $filterWrk, '', $this);
+					$rswrk = Conn()->execute($sqlWrk);
+					if ($rswrk && !$rswrk->EOF) { // Lookup values found
+						$arwrk = [];
+						$arwrk[1] = $rswrk->fields('df');
+						$this->property_id->ViewValue = $this->property_id->displayValue($arwrk);
+						$rswrk->Close();
+					} else {
+						$this->property_id->ViewValue = $this->property_id->CurrentValue;
+					}
+				}
+			} else {
+				$this->property_id->ViewValue = NULL;
+			}
+			$this->property_id->ViewCustomAttributes = "";
 
 			// TransactionNo
 			$this->TransactionNo->ViewValue = $this->TransactionNo->CurrentValue;
@@ -1376,6 +1413,11 @@ class t101_ho_head_edit extends t101_ho_head
 			}
 			$this->Sign4->ViewCustomAttributes = "";
 
+			// property_id
+			$this->property_id->LinkCustomAttributes = "";
+			$this->property_id->HrefValue = "";
+			$this->property_id->TooltipValue = "";
+
 			// TransactionNo
 			$this->TransactionNo->LinkCustomAttributes = "";
 			$this->TransactionNo->HrefValue = "";
@@ -1441,6 +1483,38 @@ class t101_ho_head_edit extends t101_ho_head
 			$this->Sign4->HrefValue = "";
 			$this->Sign4->TooltipValue = "";
 		} elseif ($this->RowType == ROWTYPE_EDIT) { // Edit row
+
+			// property_id
+			$this->property_id->EditCustomAttributes = "";
+			$curVal = trim(strval($this->property_id->CurrentValue));
+			if ($curVal != "")
+				$this->property_id->ViewValue = $this->property_id->lookupCacheOption($curVal);
+			else
+				$this->property_id->ViewValue = $this->property_id->Lookup !== NULL && is_array($this->property_id->Lookup->Options) ? $curVal : NULL;
+			if ($this->property_id->ViewValue !== NULL) { // Load from cache
+				$this->property_id->EditValue = array_values($this->property_id->Lookup->Options);
+				if ($this->property_id->ViewValue == "")
+					$this->property_id->ViewValue = $Language->phrase("PleaseSelect");
+			} else { // Lookup from database
+				if ($curVal == "") {
+					$filterWrk = "0=1";
+				} else {
+					$filterWrk = "`id`" . SearchString("=", $this->property_id->CurrentValue, DATATYPE_NUMBER, "");
+				}
+				$sqlWrk = $this->property_id->Lookup->getSql(TRUE, $filterWrk, '', $this);
+				$rswrk = Conn()->execute($sqlWrk);
+				if ($rswrk && !$rswrk->EOF) { // Lookup values found
+					$arwrk = [];
+					$arwrk[1] = HtmlEncode($rswrk->fields('df'));
+					$this->property_id->ViewValue = $this->property_id->displayValue($arwrk);
+				} else {
+					$this->property_id->ViewValue = $Language->phrase("PleaseSelect");
+				}
+				$arwrk = $rswrk ? $rswrk->getRows() : [];
+				if ($rswrk)
+					$rswrk->close();
+				$this->property_id->EditValue = $arwrk;
+			}
 
 			// TransactionNo
 			$this->TransactionNo->EditAttrs["class"] = "form-control";
@@ -1734,8 +1808,12 @@ class t101_ho_head_edit extends t101_ho_head
 			}
 
 			// Edit refer script
-			// TransactionNo
+			// property_id
 
+			$this->property_id->LinkCustomAttributes = "";
+			$this->property_id->HrefValue = "";
+
+			// TransactionNo
 			$this->TransactionNo->LinkCustomAttributes = "";
 			$this->TransactionNo->HrefValue = "";
 
@@ -1806,6 +1884,11 @@ class t101_ho_head_edit extends t101_ho_head
 		// Check if validation required
 		if (!Config("SERVER_VALIDATE"))
 			return ($FormError == "");
+		if ($this->property_id->Required) {
+			if (!$this->property_id->IsDetailKey && $this->property_id->FormValue != NULL && $this->property_id->FormValue == "") {
+				AddMessage($FormError, str_replace("%s", $this->property_id->caption(), $this->property_id->RequiredErrorMessage));
+			}
+		}
 		if ($this->TransactionNo->Required) {
 			if (!$this->TransactionNo->IsDetailKey && $this->TransactionNo->FormValue != NULL && $this->TransactionNo->FormValue == "") {
 				AddMessage($FormError, str_replace("%s", $this->TransactionNo->caption(), $this->TransactionNo->RequiredErrorMessage));
@@ -1922,6 +2005,9 @@ class t101_ho_head_edit extends t101_ho_head
 			$rsold = &$rs->fields;
 			$this->loadDbValues($rsold);
 			$rsnew = [];
+
+			// property_id
+			$this->property_id->setDbValueDef($rsnew, $this->property_id->CurrentValue, 0, $this->property_id->ReadOnly);
 
 			// TransactionNo
 			$this->TransactionNo->setDbValueDef($rsnew, $this->TransactionNo->CurrentValue, "", $this->TransactionNo->ReadOnly);
@@ -2095,6 +2181,8 @@ class t101_ho_head_edit extends t101_ho_head
 
 			// Set up lookup SQL and connection
 			switch ($fld->FieldVar) {
+				case "x_property_id":
+					break;
 				case "x_TransactionType":
 					break;
 				case "x_HandedOverTo":
@@ -2133,6 +2221,8 @@ class t101_ho_head_edit extends t101_ho_head
 
 					// Format the field values
 					switch ($fld->FieldVar) {
+						case "x_property_id":
+							break;
 						case "x_HandedOverTo":
 							break;
 						case "x_DepartmentTo":

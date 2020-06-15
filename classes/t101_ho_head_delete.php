@@ -593,6 +593,7 @@ class t101_ho_head_delete extends t101_ho_head
 		}
 		$this->CurrentAction = Param("action"); // Set up current action
 		$this->id->Visible = FALSE;
+		$this->property_id->setVisibility();
 		$this->TransactionNo->setVisibility();
 		$this->TransactionDate->setVisibility();
 		$this->TransactionType->setVisibility();
@@ -627,6 +628,7 @@ class t101_ho_head_delete extends t101_ho_head
 		$this->createToken();
 
 		// Set up lookup cache
+		$this->setupLookupOptions($this->property_id);
 		$this->setupLookupOptions($this->HandedOverTo);
 		$this->setupLookupOptions($this->DepartmentTo);
 		$this->setupLookupOptions($this->HandedOverBy);
@@ -760,6 +762,7 @@ class t101_ho_head_delete extends t101_ho_head
 		if (!$rs || $rs->EOF)
 			return;
 		$this->id->setDbValue($row['id']);
+		$this->property_id->setDbValue($row['property_id']);
 		$this->TransactionNo->setDbValue($row['TransactionNo']);
 		$this->TransactionDate->setDbValue($row['TransactionDate']);
 		$this->TransactionType->setDbValue($row['TransactionType']);
@@ -785,6 +788,7 @@ class t101_ho_head_delete extends t101_ho_head
 	{
 		$row = [];
 		$row['id'] = NULL;
+		$row['property_id'] = NULL;
 		$row['TransactionNo'] = NULL;
 		$row['TransactionDate'] = NULL;
 		$row['TransactionType'] = NULL;
@@ -813,6 +817,7 @@ class t101_ho_head_delete extends t101_ho_head
 
 		// Common render codes for all row types
 		// id
+		// property_id
 		// TransactionNo
 		// TransactionDate
 		// TransactionType
@@ -832,6 +837,28 @@ class t101_ho_head_delete extends t101_ho_head
 			// id
 			$this->id->ViewValue = $this->id->CurrentValue;
 			$this->id->ViewCustomAttributes = "";
+
+			// property_id
+			$curVal = strval($this->property_id->CurrentValue);
+			if ($curVal != "") {
+				$this->property_id->ViewValue = $this->property_id->lookupCacheOption($curVal);
+				if ($this->property_id->ViewValue === NULL) { // Lookup from database
+					$filterWrk = "`id`" . SearchString("=", $curVal, DATATYPE_NUMBER, "");
+					$sqlWrk = $this->property_id->Lookup->getSql(FALSE, $filterWrk, '', $this);
+					$rswrk = Conn()->execute($sqlWrk);
+					if ($rswrk && !$rswrk->EOF) { // Lookup values found
+						$arwrk = [];
+						$arwrk[1] = $rswrk->fields('df');
+						$this->property_id->ViewValue = $this->property_id->displayValue($arwrk);
+						$rswrk->Close();
+					} else {
+						$this->property_id->ViewValue = $this->property_id->CurrentValue;
+					}
+				}
+			} else {
+				$this->property_id->ViewValue = NULL;
+			}
+			$this->property_id->ViewCustomAttributes = "";
 
 			// TransactionNo
 			$this->TransactionNo->ViewValue = $this->TransactionNo->CurrentValue;
@@ -1038,6 +1065,11 @@ class t101_ho_head_delete extends t101_ho_head
 			}
 			$this->Sign4->ViewCustomAttributes = "";
 
+			// property_id
+			$this->property_id->LinkCustomAttributes = "";
+			$this->property_id->HrefValue = "";
+			$this->property_id->TooltipValue = "";
+
 			// TransactionNo
 			$this->TransactionNo->LinkCustomAttributes = "";
 			$this->TransactionNo->HrefValue = "";
@@ -1230,6 +1262,8 @@ class t101_ho_head_delete extends t101_ho_head
 
 			// Set up lookup SQL and connection
 			switch ($fld->FieldVar) {
+				case "x_property_id":
+					break;
 				case "x_TransactionType":
 					break;
 				case "x_HandedOverTo":
@@ -1268,6 +1302,8 @@ class t101_ho_head_delete extends t101_ho_head
 
 					// Format the field values
 					switch ($fld->FieldVar) {
+						case "x_property_id":
+							break;
 						case "x_HandedOverTo":
 							break;
 						case "x_DepartmentTo":

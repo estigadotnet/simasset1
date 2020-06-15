@@ -56,6 +56,11 @@ loadjs.ready("head", function() {
 		for (var i = startcnt; i <= rowcnt; i++) {
 			var infix = ($k[0]) ? String(i) : "";
 			$fobj.data("rowindex", infix);
+			<?php if ($t101_ho_head_add->property_id->Required) { ?>
+				elm = this.getElements("x" + infix + "_property_id");
+				if (elm && !ew.isHidden(elm) && !ew.hasValue(elm))
+					return this.onError(elm, "<?php echo JsEncode(str_replace("%s", $t101_ho_head_add->property_id->caption(), $t101_ho_head_add->property_id->RequiredErrorMessage)) ?>");
+			<?php } ?>
 			<?php if ($t101_ho_head_add->TransactionNo->Required) { ?>
 				elm = this.getElements("x" + infix + "_TransactionNo");
 				if (elm && !ew.isHidden(elm) && !ew.hasValue(elm))
@@ -152,6 +157,8 @@ loadjs.ready("head", function() {
 	ft101_ho_headadd.validateRequired = <?php echo Config("CLIENT_VALIDATE") ? "true" : "false" ?>;
 
 	// Dynamic selection lists
+	ft101_ho_headadd.lists["x_property_id"] = <?php echo $t101_ho_head_add->property_id->Lookup->toClientList($t101_ho_head_add) ?>;
+	ft101_ho_headadd.lists["x_property_id"].options = <?php echo JsonEncode($t101_ho_head_add->property_id->lookupOptions()) ?>;
 	ft101_ho_headadd.lists["x_TransactionType"] = <?php echo $t101_ho_head_add->TransactionType->Lookup->toClientList($t101_ho_head_add) ?>;
 	ft101_ho_headadd.lists["x_TransactionType"].options = <?php echo JsonEncode($t101_ho_head_add->TransactionType->options(FALSE, TRUE)) ?>;
 	ft101_ho_headadd.lists["x_HandedOverTo"] = <?php echo $t101_ho_head_add->HandedOverTo->Lookup->toClientList($t101_ho_head_add) ?>;
@@ -193,6 +200,23 @@ $t101_ho_head_add->showMessage();
 <input type="hidden" name="action" id="action" value="insert">
 <input type="hidden" name="modal" value="<?php echo (int)$t101_ho_head_add->IsModal ?>">
 <div class="ew-add-div"><!-- page* -->
+<?php if ($t101_ho_head_add->property_id->Visible) { // property_id ?>
+	<div id="r_property_id" class="form-group row">
+		<label id="elh_t101_ho_head_property_id" for="x_property_id" class="<?php echo $t101_ho_head_add->LeftColumnClass ?>"><?php echo $t101_ho_head_add->property_id->caption() ?><?php echo $t101_ho_head_add->property_id->Required ? $Language->phrase("FieldRequiredIndicator") : "" ?></label>
+		<div class="<?php echo $t101_ho_head_add->RightColumnClass ?>"><div <?php echo $t101_ho_head_add->property_id->cellAttributes() ?>>
+<span id="el_t101_ho_head_property_id">
+<div class="input-group ew-lookup-list">
+	<div class="form-control ew-lookup-text" tabindex="-1" id="lu_x_property_id"><?php echo EmptyValue(strval($t101_ho_head_add->property_id->ViewValue)) ? $Language->phrase("PleaseSelect") : $t101_ho_head_add->property_id->ViewValue ?></div>
+	<div class="input-group-append">
+		<button type="button" title="<?php echo HtmlEncode(str_replace("%s", RemoveHtml($t101_ho_head_add->property_id->caption()), $Language->phrase("LookupLink", TRUE))) ?>" class="ew-lookup-btn btn btn-default"<?php echo ($t101_ho_head_add->property_id->ReadOnly || $t101_ho_head_add->property_id->Disabled) ? " disabled" : "" ?> onclick="ew.modalLookupShow({lnk:this,el:'x_property_id',m:0,n:10});"><i class="fas fa-search ew-icon"></i></button>
+	</div>
+</div>
+<?php echo $t101_ho_head_add->property_id->Lookup->getParamTag($t101_ho_head_add, "p_x_property_id") ?>
+<input type="hidden" data-table="t101_ho_head" data-field="x_property_id" data-multiple="0" data-lookup="1" data-value-separator="<?php echo $t101_ho_head_add->property_id->displayValueSeparatorAttribute() ?>" name="x_property_id" id="x_property_id" value="<?php echo $t101_ho_head_add->property_id->CurrentValue ?>"<?php echo $t101_ho_head_add->property_id->editAttributes() ?>>
+</span>
+<?php echo $t101_ho_head_add->property_id->CustomMsg ?></div></div>
+	</div>
+<?php } ?>
 <?php if ($t101_ho_head_add->TransactionNo->Visible) { // TransactionNo ?>
 	<div id="r_TransactionNo" class="form-group row">
 		<label id="elh_t101_ho_head_TransactionNo" for="x_TransactionNo" class="<?php echo $t101_ho_head_add->LeftColumnClass ?>"><?php echo $t101_ho_head_add->TransactionNo->caption() ?><?php echo $t101_ho_head_add->TransactionNo->Required ? $Language->phrase("FieldRequiredIndicator") : "" ?></label>
