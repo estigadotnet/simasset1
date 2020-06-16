@@ -107,6 +107,21 @@ $t003_signature_search->showMessage();
 		</div></div>
 	</div>
 <?php } ?>
+<?php if ($t003_signature_search->JobTitle->Visible) { // JobTitle ?>
+	<div id="r_JobTitle" class="form-group row">
+		<label for="x_JobTitle" class="<?php echo $t003_signature_search->LeftColumnClass ?>"><span id="elh_t003_signature_JobTitle"><?php echo $t003_signature_search->JobTitle->caption() ?></span>
+		<span class="ew-search-operator">
+<?php echo $Language->phrase("LIKE") ?>
+<input type="hidden" name="z_JobTitle" id="z_JobTitle" value="LIKE">
+</span>
+		</label>
+		<div class="<?php echo $t003_signature_search->RightColumnClass ?>"><div <?php echo $t003_signature_search->JobTitle->cellAttributes() ?>>
+			<span id="el_t003_signature_JobTitle" class="ew-search-field">
+<input type="text" data-table="t003_signature" data-field="x_JobTitle" name="x_JobTitle" id="x_JobTitle" size="30" maxlength="100" placeholder="<?php echo HtmlEncode($t003_signature_search->JobTitle->getPlaceHolder()) ?>" value="<?php echo $t003_signature_search->JobTitle->EditValue ?>"<?php echo $t003_signature_search->JobTitle->editAttributes() ?>>
+</span>
+		</div></div>
+	</div>
+<?php } ?>
 </div><!-- /page* -->
 <?php if (!$t003_signature_search->IsModal) { ?>
 <div class="form-group row"><!-- buttons .form-group -->

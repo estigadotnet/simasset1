@@ -836,6 +836,7 @@ class t003_signature_list extends t003_signature
 		$this->setupExportOptions();
 		$this->id->Visible = FALSE;
 		$this->Signature->setVisibility();
+		$this->JobTitle->setVisibility();
 		$this->hideFieldsForAddEdit();
 
 		// Global Page Loading event (in userfn*.php)
@@ -1429,6 +1430,8 @@ class t003_signature_list extends t003_signature
 		global $CurrentForm;
 		if ($CurrentForm->hasValue("x_Signature") && $CurrentForm->hasValue("o_Signature") && $this->Signature->CurrentValue != $this->Signature->OldValue)
 			return FALSE;
+		if ($CurrentForm->hasValue("x_JobTitle") && $CurrentForm->hasValue("o_JobTitle") && $this->JobTitle->CurrentValue != $this->JobTitle->OldValue)
+			return FALSE;
 		return TRUE;
 	}
 
@@ -1512,6 +1515,7 @@ class t003_signature_list extends t003_signature
 		$filterList = "";
 		$savedFilterList = "";
 		$filterList = Concat($filterList, $this->Signature->AdvancedSearch->toJson(), ","); // Field Signature
+		$filterList = Concat($filterList, $this->JobTitle->AdvancedSearch->toJson(), ","); // Field JobTitle
 
 		// Return filter list in JSON
 		if ($filterList != "")
@@ -1553,6 +1557,14 @@ class t003_signature_list extends t003_signature
 		$this->Signature->AdvancedSearch->SearchValue2 = @$filter["y_Signature"];
 		$this->Signature->AdvancedSearch->SearchOperator2 = @$filter["w_Signature"];
 		$this->Signature->AdvancedSearch->save();
+
+		// Field JobTitle
+		$this->JobTitle->AdvancedSearch->SearchValue = @$filter["x_JobTitle"];
+		$this->JobTitle->AdvancedSearch->SearchOperator = @$filter["z_JobTitle"];
+		$this->JobTitle->AdvancedSearch->SearchCondition = @$filter["v_JobTitle"];
+		$this->JobTitle->AdvancedSearch->SearchValue2 = @$filter["y_JobTitle"];
+		$this->JobTitle->AdvancedSearch->SearchOperator2 = @$filter["w_JobTitle"];
+		$this->JobTitle->AdvancedSearch->save();
 	}
 
 	// Advanced search WHERE clause based on QueryString
@@ -1563,6 +1575,7 @@ class t003_signature_list extends t003_signature
 		if (!$Security->canSearch())
 			return "";
 		$this->buildSearchSql($where, $this->Signature, $default, FALSE); // Signature
+		$this->buildSearchSql($where, $this->JobTitle, $default, FALSE); // JobTitle
 
 		// Set up search parm
 		if (!$default && $where != "" && in_array($this->Command, ["", "reset", "resetall"])) {
@@ -1570,6 +1583,7 @@ class t003_signature_list extends t003_signature
 		}
 		if (!$default && $this->Command == "search") {
 			$this->Signature->AdvancedSearch->save(); // Signature
+			$this->JobTitle->AdvancedSearch->save(); // JobTitle
 		}
 		return $where;
 	}
@@ -1631,6 +1645,8 @@ class t003_signature_list extends t003_signature
 	{
 		if ($this->Signature->AdvancedSearch->issetSession())
 			return TRUE;
+		if ($this->JobTitle->AdvancedSearch->issetSession())
+			return TRUE;
 		return FALSE;
 	}
 
@@ -1656,6 +1672,7 @@ class t003_signature_list extends t003_signature
 	protected function resetAdvancedSearchParms()
 	{
 		$this->Signature->AdvancedSearch->unsetSession();
+		$this->JobTitle->AdvancedSearch->unsetSession();
 	}
 
 	// Restore all search parameters
@@ -1665,6 +1682,7 @@ class t003_signature_list extends t003_signature
 
 		// Restore advanced search values
 		$this->Signature->AdvancedSearch->load();
+		$this->JobTitle->AdvancedSearch->load();
 	}
 
 	// Set up sort parameters
@@ -1679,6 +1697,7 @@ class t003_signature_list extends t003_signature
 			$this->CurrentOrder = Get("order");
 			$this->CurrentOrderType = Get("ordertype", "");
 			$this->updateSort($this->Signature, $ctrl); // Signature
+			$this->updateSort($this->JobTitle, $ctrl); // JobTitle
 			$this->setStartRecordNumber(1); // Reset start position
 		}
 	}
@@ -1715,6 +1734,7 @@ class t003_signature_list extends t003_signature
 				$orderBy = "";
 				$this->setSessionOrderBy($orderBy);
 				$this->Signature->setSort("");
+				$this->JobTitle->setSort("");
 			}
 
 			// Reset start position
@@ -2155,6 +2175,8 @@ class t003_signature_list extends t003_signature
 		$this->id->OldValue = $this->id->CurrentValue;
 		$this->Signature->CurrentValue = NULL;
 		$this->Signature->OldValue = $this->Signature->CurrentValue;
+		$this->JobTitle->CurrentValue = NULL;
+		$this->JobTitle->OldValue = $this->JobTitle->CurrentValue;
 	}
 
 	// Load search values for validation
@@ -2168,6 +2190,13 @@ class t003_signature_list extends t003_signature
 		if (!$this->isAddOrEdit() && $this->Signature->AdvancedSearch->get()) {
 			$got = TRUE;
 			if (($this->Signature->AdvancedSearch->SearchValue != "" || $this->Signature->AdvancedSearch->SearchValue2 != "") && $this->Command == "")
+				$this->Command = "search";
+		}
+
+		// JobTitle
+		if (!$this->isAddOrEdit() && $this->JobTitle->AdvancedSearch->get()) {
+			$got = TRUE;
+			if (($this->JobTitle->AdvancedSearch->SearchValue != "" || $this->JobTitle->AdvancedSearch->SearchValue2 != "") && $this->Command == "")
 				$this->Command = "search";
 		}
 		return $got;
@@ -2191,6 +2220,17 @@ class t003_signature_list extends t003_signature
 		if ($CurrentForm->hasValue("o_Signature"))
 			$this->Signature->setOldValue($CurrentForm->getValue("o_Signature"));
 
+		// Check field name 'JobTitle' first before field var 'x_JobTitle'
+		$val = $CurrentForm->hasValue("JobTitle") ? $CurrentForm->getValue("JobTitle") : $CurrentForm->getValue("x_JobTitle");
+		if (!$this->JobTitle->IsDetailKey) {
+			if (IsApi() && $val == NULL)
+				$this->JobTitle->Visible = FALSE; // Disable update for API request
+			else
+				$this->JobTitle->setFormValue($val);
+		}
+		if ($CurrentForm->hasValue("o_JobTitle"))
+			$this->JobTitle->setOldValue($CurrentForm->getValue("o_JobTitle"));
+
 		// Check field name 'id' first before field var 'x_id'
 		$val = $CurrentForm->hasValue("id") ? $CurrentForm->getValue("id") : $CurrentForm->getValue("x_id");
 		if (!$this->id->IsDetailKey && !$this->isGridAdd() && !$this->isAdd())
@@ -2204,6 +2244,7 @@ class t003_signature_list extends t003_signature
 		if (!$this->isGridAdd() && !$this->isAdd())
 			$this->id->CurrentValue = $this->id->FormValue;
 		$this->Signature->CurrentValue = $this->Signature->FormValue;
+		$this->JobTitle->CurrentValue = $this->JobTitle->FormValue;
 	}
 
 	// Load recordset
@@ -2272,6 +2313,7 @@ class t003_signature_list extends t003_signature
 			return;
 		$this->id->setDbValue($row['id']);
 		$this->Signature->setDbValue($row['Signature']);
+		$this->JobTitle->setDbValue($row['JobTitle']);
 	}
 
 	// Return a row with default values
@@ -2281,6 +2323,7 @@ class t003_signature_list extends t003_signature
 		$row = [];
 		$row['id'] = $this->id->CurrentValue;
 		$row['Signature'] = $this->Signature->CurrentValue;
+		$row['JobTitle'] = $this->JobTitle->CurrentValue;
 		return $row;
 	}
 
@@ -2326,6 +2369,7 @@ class t003_signature_list extends t003_signature
 		// Common render codes for all row types
 		// id
 		// Signature
+		// JobTitle
 
 		if ($this->RowType == ROWTYPE_VIEW) { // View row
 
@@ -2337,10 +2381,19 @@ class t003_signature_list extends t003_signature
 			$this->Signature->ViewValue = $this->Signature->CurrentValue;
 			$this->Signature->ViewCustomAttributes = "";
 
+			// JobTitle
+			$this->JobTitle->ViewValue = $this->JobTitle->CurrentValue;
+			$this->JobTitle->ViewCustomAttributes = "";
+
 			// Signature
 			$this->Signature->LinkCustomAttributes = "";
 			$this->Signature->HrefValue = "";
 			$this->Signature->TooltipValue = "";
+
+			// JobTitle
+			$this->JobTitle->LinkCustomAttributes = "";
+			$this->JobTitle->HrefValue = "";
+			$this->JobTitle->TooltipValue = "";
 		} elseif ($this->RowType == ROWTYPE_ADD) { // Add row
 
 			// Signature
@@ -2351,11 +2404,23 @@ class t003_signature_list extends t003_signature
 			$this->Signature->EditValue = HtmlEncode($this->Signature->CurrentValue);
 			$this->Signature->PlaceHolder = RemoveHtml($this->Signature->caption());
 
+			// JobTitle
+			$this->JobTitle->EditAttrs["class"] = "form-control";
+			$this->JobTitle->EditCustomAttributes = "";
+			if (!$this->JobTitle->Raw)
+				$this->JobTitle->CurrentValue = HtmlDecode($this->JobTitle->CurrentValue);
+			$this->JobTitle->EditValue = HtmlEncode($this->JobTitle->CurrentValue);
+			$this->JobTitle->PlaceHolder = RemoveHtml($this->JobTitle->caption());
+
 			// Add refer script
 			// Signature
 
 			$this->Signature->LinkCustomAttributes = "";
 			$this->Signature->HrefValue = "";
+
+			// JobTitle
+			$this->JobTitle->LinkCustomAttributes = "";
+			$this->JobTitle->HrefValue = "";
 		} elseif ($this->RowType == ROWTYPE_EDIT) { // Edit row
 
 			// Signature
@@ -2366,11 +2431,23 @@ class t003_signature_list extends t003_signature
 			$this->Signature->EditValue = HtmlEncode($this->Signature->CurrentValue);
 			$this->Signature->PlaceHolder = RemoveHtml($this->Signature->caption());
 
+			// JobTitle
+			$this->JobTitle->EditAttrs["class"] = "form-control";
+			$this->JobTitle->EditCustomAttributes = "";
+			if (!$this->JobTitle->Raw)
+				$this->JobTitle->CurrentValue = HtmlDecode($this->JobTitle->CurrentValue);
+			$this->JobTitle->EditValue = HtmlEncode($this->JobTitle->CurrentValue);
+			$this->JobTitle->PlaceHolder = RemoveHtml($this->JobTitle->caption());
+
 			// Edit refer script
 			// Signature
 
 			$this->Signature->LinkCustomAttributes = "";
 			$this->Signature->HrefValue = "";
+
+			// JobTitle
+			$this->JobTitle->LinkCustomAttributes = "";
+			$this->JobTitle->HrefValue = "";
 		}
 		if ($this->RowType == ROWTYPE_ADD || $this->RowType == ROWTYPE_EDIT || $this->RowType == ROWTYPE_SEARCH) // Add/Edit/Search row
 			$this->setupFieldTitles();
@@ -2418,6 +2495,11 @@ class t003_signature_list extends t003_signature
 		if ($this->Signature->Required) {
 			if (!$this->Signature->IsDetailKey && $this->Signature->FormValue != NULL && $this->Signature->FormValue == "") {
 				AddMessage($FormError, str_replace("%s", $this->Signature->caption(), $this->Signature->RequiredErrorMessage));
+			}
+		}
+		if ($this->JobTitle->Required) {
+			if (!$this->JobTitle->IsDetailKey && $this->JobTitle->FormValue != NULL && $this->JobTitle->FormValue == "") {
+				AddMessage($FormError, str_replace("%s", $this->JobTitle->caption(), $this->JobTitle->RequiredErrorMessage));
 			}
 		}
 
@@ -2546,6 +2628,9 @@ class t003_signature_list extends t003_signature
 			// Signature
 			$this->Signature->setDbValueDef($rsnew, $this->Signature->CurrentValue, "", $this->Signature->ReadOnly);
 
+			// JobTitle
+			$this->JobTitle->setDbValueDef($rsnew, $this->JobTitle->CurrentValue, "", $this->JobTitle->ReadOnly);
+
 			// Call Row Updating event
 			$updateRow = $this->Row_Updating($rsold, $rsnew);
 
@@ -2623,6 +2708,7 @@ class t003_signature_list extends t003_signature
 			return "";
 		$hash = "";
 		$hash .= GetFieldHash($rs->fields('Signature')); // Signature
+		$hash .= GetFieldHash($rs->fields('JobTitle')); // JobTitle
 		return md5($hash);
 	}
 
@@ -2640,6 +2726,9 @@ class t003_signature_list extends t003_signature
 
 		// Signature
 		$this->Signature->setDbValueDef($rsnew, $this->Signature->CurrentValue, "", FALSE);
+
+		// JobTitle
+		$this->JobTitle->setDbValueDef($rsnew, $this->JobTitle->CurrentValue, "", FALSE);
 
 		// Call Row Inserting event
 		$rs = ($rsold) ? $rsold->fields : NULL;
@@ -2685,6 +2774,7 @@ class t003_signature_list extends t003_signature
 	public function loadAdvancedSearch()
 	{
 		$this->Signature->AdvancedSearch->load();
+		$this->JobTitle->AdvancedSearch->load();
 	}
 
 	// Get export HTML tag

@@ -73,6 +73,9 @@ $t003_signature_delete->showMessage();
 <?php if ($t003_signature_delete->Signature->Visible) { // Signature ?>
 		<th class="<?php echo $t003_signature_delete->Signature->headerCellClass() ?>"><span id="elh_t003_signature_Signature" class="t003_signature_Signature"><?php echo $t003_signature_delete->Signature->caption() ?></span></th>
 <?php } ?>
+<?php if ($t003_signature_delete->JobTitle->Visible) { // JobTitle ?>
+		<th class="<?php echo $t003_signature_delete->JobTitle->headerCellClass() ?>"><span id="elh_t003_signature_JobTitle" class="t003_signature_JobTitle"><?php echo $t003_signature_delete->JobTitle->caption() ?></span></th>
+<?php } ?>
 	</tr>
 	</thead>
 	<tbody>
@@ -98,6 +101,13 @@ while (!$t003_signature_delete->Recordset->EOF) {
 		<td <?php echo $t003_signature_delete->Signature->cellAttributes() ?>>
 <span id="el<?php echo $t003_signature_delete->RowCount ?>_t003_signature_Signature" class="t003_signature_Signature">
 <span<?php echo $t003_signature_delete->Signature->viewAttributes() ?>><?php echo $t003_signature_delete->Signature->getViewValue() ?></span>
+</span>
+</td>
+<?php } ?>
+<?php if ($t003_signature_delete->JobTitle->Visible) { // JobTitle ?>
+		<td <?php echo $t003_signature_delete->JobTitle->cellAttributes() ?>>
+<span id="el<?php echo $t003_signature_delete->RowCount ?>_t003_signature_JobTitle" class="t003_signature_JobTitle">
+<span<?php echo $t003_signature_delete->JobTitle->viewAttributes() ?>><?php echo $t003_signature_delete->JobTitle->getViewValue() ?></span>
 </span>
 </td>
 <?php } ?>

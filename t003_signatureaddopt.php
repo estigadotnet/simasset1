@@ -60,6 +60,11 @@ loadjs.ready("head", function() {
 				if (elm && !ew.isHidden(elm) && !ew.hasValue(elm))
 					return this.onError(elm, "<?php echo JsEncode(str_replace("%s", $t003_signature_addopt->Signature->caption(), $t003_signature_addopt->Signature->RequiredErrorMessage)) ?>");
 			<?php } ?>
+			<?php if ($t003_signature_addopt->JobTitle->Required) { ?>
+				elm = this.getElements("x" + infix + "_JobTitle");
+				if (elm && !ew.isHidden(elm) && !ew.hasValue(elm))
+					return this.onError(elm, "<?php echo JsEncode(str_replace("%s", $t003_signature_addopt->JobTitle->caption(), $t003_signature_addopt->JobTitle->RequiredErrorMessage)) ?>");
+			<?php } ?>
 
 				// Call Form_CustomValidate event
 				if (!this.Form_CustomValidate(fobj))
@@ -106,6 +111,14 @@ $t003_signature_addopt->showMessage();
 		<label class="col-sm-2 col-form-label ew-label" for="x_Signature"><?php echo $t003_signature_addopt->Signature->caption() ?><?php echo $t003_signature_addopt->Signature->Required ? $Language->phrase("FieldRequiredIndicator") : "" ?></label>
 		<div class="col-sm-10">
 <input type="text" data-table="t003_signature" data-field="x_Signature" name="x_Signature" id="x_Signature" size="30" maxlength="100" placeholder="<?php echo HtmlEncode($t003_signature_addopt->Signature->getPlaceHolder()) ?>" value="<?php echo $t003_signature_addopt->Signature->EditValue ?>"<?php echo $t003_signature_addopt->Signature->editAttributes() ?>>
+</div>
+	</div>
+<?php } ?>
+<?php if ($t003_signature_addopt->JobTitle->Visible) { // JobTitle ?>
+	<div class="form-group row">
+		<label class="col-sm-2 col-form-label ew-label" for="x_JobTitle"><?php echo $t003_signature_addopt->JobTitle->caption() ?><?php echo $t003_signature_addopt->JobTitle->Required ? $Language->phrase("FieldRequiredIndicator") : "" ?></label>
+		<div class="col-sm-10">
+<input type="text" data-table="t003_signature" data-field="x_JobTitle" name="x_JobTitle" id="x_JobTitle" size="30" maxlength="100" placeholder="<?php echo HtmlEncode($t003_signature_addopt->JobTitle->getPlaceHolder()) ?>" value="<?php echo $t003_signature_addopt->JobTitle->EditValue ?>"<?php echo $t003_signature_addopt->JobTitle->editAttributes() ?>>
 </div>
 	</div>
 <?php } ?>

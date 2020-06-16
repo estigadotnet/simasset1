@@ -1,3 +1,12 @@
+[5:59 AM 6/17/2020]
+  menu     : SETUP
+  sub-menu : SIGNATURE
+  proses   : penambahan Job Title
+  start @  : 6:01 AM 6/17/2020
+  done @   : 6:10 AM 6/17/2020
+  note     : -
+
+
 [5:08 AM 6/17/2020]
 * menu    : PROSES
   sub-menu: HANDOVER
@@ -37,3 +46,10 @@
 * menu: PROSES, modul: HANDOVER,
   - start at: 10:09 AM 5/21/2020
 
+
+  menu     : 
+  sub-menu : 
+  proses   : 
+  start @  : 
+  done @   : 
+  note     : 

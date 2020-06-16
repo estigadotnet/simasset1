@@ -61,6 +61,11 @@ loadjs.ready("head", function() {
 				if (elm && !ew.isHidden(elm) && !ew.hasValue(elm))
 					return this.onError(elm, "<?php echo JsEncode(str_replace("%s", $t003_signature_edit->Signature->caption(), $t003_signature_edit->Signature->RequiredErrorMessage)) ?>");
 			<?php } ?>
+			<?php if ($t003_signature_edit->JobTitle->Required) { ?>
+				elm = this.getElements("x" + infix + "_JobTitle");
+				if (elm && !ew.isHidden(elm) && !ew.hasValue(elm))
+					return this.onError(elm, "<?php echo JsEncode(str_replace("%s", $t003_signature_edit->JobTitle->caption(), $t003_signature_edit->JobTitle->RequiredErrorMessage)) ?>");
+			<?php } ?>
 
 				// Call Form_CustomValidate event
 				if (!this.Form_CustomValidate(fobj))
@@ -120,6 +125,16 @@ $t003_signature_edit->showMessage();
 <input type="text" data-table="t003_signature" data-field="x_Signature" name="x_Signature" id="x_Signature" size="30" maxlength="100" placeholder="<?php echo HtmlEncode($t003_signature_edit->Signature->getPlaceHolder()) ?>" value="<?php echo $t003_signature_edit->Signature->EditValue ?>"<?php echo $t003_signature_edit->Signature->editAttributes() ?>>
 </span>
 <?php echo $t003_signature_edit->Signature->CustomMsg ?></div></div>
+	</div>
+<?php } ?>
+<?php if ($t003_signature_edit->JobTitle->Visible) { // JobTitle ?>
+	<div id="r_JobTitle" class="form-group row">
+		<label id="elh_t003_signature_JobTitle" for="x_JobTitle" class="<?php echo $t003_signature_edit->LeftColumnClass ?>"><?php echo $t003_signature_edit->JobTitle->caption() ?><?php echo $t003_signature_edit->JobTitle->Required ? $Language->phrase("FieldRequiredIndicator") : "" ?></label>
+		<div class="<?php echo $t003_signature_edit->RightColumnClass ?>"><div <?php echo $t003_signature_edit->JobTitle->cellAttributes() ?>>
+<span id="el_t003_signature_JobTitle">
+<input type="text" data-table="t003_signature" data-field="x_JobTitle" name="x_JobTitle" id="x_JobTitle" size="30" maxlength="100" placeholder="<?php echo HtmlEncode($t003_signature_edit->JobTitle->getPlaceHolder()) ?>" value="<?php echo $t003_signature_edit->JobTitle->EditValue ?>"<?php echo $t003_signature_edit->JobTitle->editAttributes() ?>>
+</span>
+<?php echo $t003_signature_edit->JobTitle->CustomMsg ?></div></div>
 	</div>
 <?php } ?>
 </div><!-- /page* -->

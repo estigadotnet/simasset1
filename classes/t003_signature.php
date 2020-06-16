@@ -35,6 +35,7 @@ class t003_signature extends DbTable
 	// Fields
 	public $id;
 	public $Signature;
+	public $JobTitle;
 
 	// Constructor
 	public function __construct()
@@ -83,6 +84,13 @@ class t003_signature extends DbTable
 		$this->Signature->Required = TRUE; // Required field
 		$this->Signature->Sortable = TRUE; // Allow sort
 		$this->fields['Signature'] = &$this->Signature;
+
+		// JobTitle
+		$this->JobTitle = new DbField('t003_signature', 't003_signature', 'x_JobTitle', 'JobTitle', '`JobTitle`', '`JobTitle`', 200, 100, -1, FALSE, '`JobTitle`', FALSE, FALSE, FALSE, 'FORMATTED TEXT', 'TEXT');
+		$this->JobTitle->Nullable = FALSE; // NOT NULL field
+		$this->JobTitle->Required = TRUE; // Required field
+		$this->JobTitle->Sortable = TRUE; // Allow sort
+		$this->fields['JobTitle'] = &$this->JobTitle;
 	}
 
 	// Field Visibility
@@ -464,6 +472,7 @@ class t003_signature extends DbTable
 		$row = is_array($rs) ? $rs : $rs->fields;
 		$this->id->DbValue = $row['id'];
 		$this->Signature->DbValue = $row['Signature'];
+		$this->JobTitle->DbValue = $row['JobTitle'];
 	}
 
 	// Delete uploaded files
@@ -696,6 +705,7 @@ class t003_signature extends DbTable
 	{
 		$this->id->setDbValue($rs->fields('id'));
 		$this->Signature->setDbValue($rs->fields('Signature'));
+		$this->JobTitle->setDbValue($rs->fields('JobTitle'));
 	}
 
 	// Render list row values
@@ -709,6 +719,7 @@ class t003_signature extends DbTable
 		// Common render codes
 		// id
 		// Signature
+		// JobTitle
 		// id
 
 		$this->id->ViewValue = $this->id->CurrentValue;
@@ -717,6 +728,10 @@ class t003_signature extends DbTable
 		// Signature
 		$this->Signature->ViewValue = $this->Signature->CurrentValue;
 		$this->Signature->ViewCustomAttributes = "";
+
+		// JobTitle
+		$this->JobTitle->ViewValue = $this->JobTitle->CurrentValue;
+		$this->JobTitle->ViewCustomAttributes = "";
 
 		// id
 		$this->id->LinkCustomAttributes = "";
@@ -727,6 +742,11 @@ class t003_signature extends DbTable
 		$this->Signature->LinkCustomAttributes = "";
 		$this->Signature->HrefValue = "";
 		$this->Signature->TooltipValue = "";
+
+		// JobTitle
+		$this->JobTitle->LinkCustomAttributes = "";
+		$this->JobTitle->HrefValue = "";
+		$this->JobTitle->TooltipValue = "";
 
 		// Call Row Rendered event
 		$this->Row_Rendered();
@@ -756,6 +776,14 @@ class t003_signature extends DbTable
 			$this->Signature->CurrentValue = HtmlDecode($this->Signature->CurrentValue);
 		$this->Signature->EditValue = $this->Signature->CurrentValue;
 		$this->Signature->PlaceHolder = RemoveHtml($this->Signature->caption());
+
+		// JobTitle
+		$this->JobTitle->EditAttrs["class"] = "form-control";
+		$this->JobTitle->EditCustomAttributes = "";
+		if (!$this->JobTitle->Raw)
+			$this->JobTitle->CurrentValue = HtmlDecode($this->JobTitle->CurrentValue);
+		$this->JobTitle->EditValue = $this->JobTitle->CurrentValue;
+		$this->JobTitle->PlaceHolder = RemoveHtml($this->JobTitle->caption());
 
 		// Call Row Rendered event
 		$this->Row_Rendered();
@@ -787,9 +815,11 @@ class t003_signature extends DbTable
 				$doc->beginExportRow();
 				if ($exportPageType == "view") {
 					$doc->exportCaption($this->Signature);
+					$doc->exportCaption($this->JobTitle);
 				} else {
 					$doc->exportCaption($this->id);
 					$doc->exportCaption($this->Signature);
+					$doc->exportCaption($this->JobTitle);
 				}
 				$doc->endExportRow();
 			}
@@ -822,9 +852,11 @@ class t003_signature extends DbTable
 					$doc->beginExportRow($rowCnt); // Allow CSS styles if enabled
 					if ($exportPageType == "view") {
 						$doc->exportField($this->Signature);
+						$doc->exportField($this->JobTitle);
 					} else {
 						$doc->exportField($this->id);
 						$doc->exportField($this->Signature);
+						$doc->exportField($this->JobTitle);
 					}
 					$doc->endExportRow($rowCnt);
 				}

@@ -682,6 +682,7 @@ class t003_signature_search extends t003_signature
 		$this->CurrentAction = Param("action"); // Set up current action
 		$this->id->Visible = FALSE;
 		$this->Signature->setVisibility();
+		$this->JobTitle->setVisibility();
 		$this->hideFieldsForAddEdit();
 
 		// Do not use lookup cache
@@ -748,6 +749,7 @@ class t003_signature_search extends t003_signature
 	{
 		$srchUrl = "";
 		$this->buildSearchUrl($srchUrl, $this->Signature); // Signature
+		$this->buildSearchUrl($srchUrl, $this->JobTitle); // JobTitle
 		if ($srchUrl != "")
 			$srchUrl .= "&";
 		$srchUrl .= "cmd=search";
@@ -822,6 +824,8 @@ class t003_signature_search extends t003_signature
 		$got = FALSE;
 		if ($this->Signature->AdvancedSearch->post())
 			$got = TRUE;
+		if ($this->JobTitle->AdvancedSearch->post())
+			$got = TRUE;
 		return $got;
 	}
 
@@ -838,6 +842,7 @@ class t003_signature_search extends t003_signature
 		// Common render codes for all row types
 		// id
 		// Signature
+		// JobTitle
 
 		if ($this->RowType == ROWTYPE_VIEW) { // View row
 
@@ -849,10 +854,19 @@ class t003_signature_search extends t003_signature
 			$this->Signature->ViewValue = $this->Signature->CurrentValue;
 			$this->Signature->ViewCustomAttributes = "";
 
+			// JobTitle
+			$this->JobTitle->ViewValue = $this->JobTitle->CurrentValue;
+			$this->JobTitle->ViewCustomAttributes = "";
+
 			// Signature
 			$this->Signature->LinkCustomAttributes = "";
 			$this->Signature->HrefValue = "";
 			$this->Signature->TooltipValue = "";
+
+			// JobTitle
+			$this->JobTitle->LinkCustomAttributes = "";
+			$this->JobTitle->HrefValue = "";
+			$this->JobTitle->TooltipValue = "";
 		} elseif ($this->RowType == ROWTYPE_SEARCH) { // Search row
 
 			// Signature
@@ -862,6 +876,14 @@ class t003_signature_search extends t003_signature
 				$this->Signature->AdvancedSearch->SearchValue = HtmlDecode($this->Signature->AdvancedSearch->SearchValue);
 			$this->Signature->EditValue = HtmlEncode($this->Signature->AdvancedSearch->SearchValue);
 			$this->Signature->PlaceHolder = RemoveHtml($this->Signature->caption());
+
+			// JobTitle
+			$this->JobTitle->EditAttrs["class"] = "form-control";
+			$this->JobTitle->EditCustomAttributes = "";
+			if (!$this->JobTitle->Raw)
+				$this->JobTitle->AdvancedSearch->SearchValue = HtmlDecode($this->JobTitle->AdvancedSearch->SearchValue);
+			$this->JobTitle->EditValue = HtmlEncode($this->JobTitle->AdvancedSearch->SearchValue);
+			$this->JobTitle->PlaceHolder = RemoveHtml($this->JobTitle->caption());
 		}
 		if ($this->RowType == ROWTYPE_ADD || $this->RowType == ROWTYPE_EDIT || $this->RowType == ROWTYPE_SEARCH) // Add/Edit/Search row
 			$this->setupFieldTitles();
@@ -899,6 +921,7 @@ class t003_signature_search extends t003_signature
 	public function loadAdvancedSearch()
 	{
 		$this->Signature->AdvancedSearch->load();
+		$this->JobTitle->AdvancedSearch->load();
 	}
 
 	// Set up Breadcrumb

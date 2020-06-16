@@ -594,6 +594,7 @@ class t003_signature_delete extends t003_signature
 		$this->CurrentAction = Param("action"); // Set up current action
 		$this->id->Visible = FALSE;
 		$this->Signature->setVisibility();
+		$this->JobTitle->setVisibility();
 		$this->hideFieldsForAddEdit();
 
 		// Do not use lookup cache
@@ -741,6 +742,7 @@ class t003_signature_delete extends t003_signature
 			return;
 		$this->id->setDbValue($row['id']);
 		$this->Signature->setDbValue($row['Signature']);
+		$this->JobTitle->setDbValue($row['JobTitle']);
 	}
 
 	// Return a row with default values
@@ -749,6 +751,7 @@ class t003_signature_delete extends t003_signature
 		$row = [];
 		$row['id'] = NULL;
 		$row['Signature'] = NULL;
+		$row['JobTitle'] = NULL;
 		return $row;
 	}
 
@@ -765,6 +768,7 @@ class t003_signature_delete extends t003_signature
 		// Common render codes for all row types
 		// id
 		// Signature
+		// JobTitle
 
 		if ($this->RowType == ROWTYPE_VIEW) { // View row
 
@@ -776,10 +780,19 @@ class t003_signature_delete extends t003_signature
 			$this->Signature->ViewValue = $this->Signature->CurrentValue;
 			$this->Signature->ViewCustomAttributes = "";
 
+			// JobTitle
+			$this->JobTitle->ViewValue = $this->JobTitle->CurrentValue;
+			$this->JobTitle->ViewCustomAttributes = "";
+
 			// Signature
 			$this->Signature->LinkCustomAttributes = "";
 			$this->Signature->HrefValue = "";
 			$this->Signature->TooltipValue = "";
+
+			// JobTitle
+			$this->JobTitle->LinkCustomAttributes = "";
+			$this->JobTitle->HrefValue = "";
+			$this->JobTitle->TooltipValue = "";
 		}
 
 		// Call Row Rendered event

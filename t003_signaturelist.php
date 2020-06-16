@@ -66,6 +66,11 @@ loadjs.ready("head", function() {
 				if (elm && !ew.isHidden(elm) && !ew.hasValue(elm))
 					return this.onError(elm, "<?php echo JsEncode(str_replace("%s", $t003_signature_list->Signature->caption(), $t003_signature_list->Signature->RequiredErrorMessage)) ?>");
 			<?php } ?>
+			<?php if ($t003_signature_list->JobTitle->Required) { ?>
+				elm = this.getElements("x" + infix + "_JobTitle");
+				if (elm && !ew.isHidden(elm) && !ew.hasValue(elm))
+					return this.onError(elm, "<?php echo JsEncode(str_replace("%s", $t003_signature_list->JobTitle->caption(), $t003_signature_list->JobTitle->RequiredErrorMessage)) ?>");
+			<?php } ?>
 
 				// Call Form_CustomValidate event
 				if (!this.Form_CustomValidate(fobj))
@@ -83,6 +88,7 @@ loadjs.ready("head", function() {
 	ft003_signaturelist.emptyRow = function(infix) {
 		var fobj = this._form;
 		if (ew.valueChanged(fobj, infix, "Signature", false)) return false;
+		if (ew.valueChanged(fobj, infix, "JobTitle", false)) return false;
 		return true;
 	}
 
@@ -174,6 +180,15 @@ $t003_signature_list->ListOptions->render("header", "left");
 	<?php } else { ?>
 		<th data-name="Signature" class="<?php echo $t003_signature_list->Signature->headerCellClass() ?>"><div class="ew-pointer" onclick="ew.sort(event, '<?php echo $t003_signature_list->SortUrl($t003_signature_list->Signature) ?>', 2);"><div id="elh_t003_signature_Signature" class="t003_signature_Signature">
 			<div class="ew-table-header-btn"><span class="ew-table-header-caption"><?php echo $t003_signature_list->Signature->caption() ?></span><span class="ew-table-header-sort"><?php if ($t003_signature_list->Signature->getSort() == "ASC") { ?><i class="fas fa-sort-up"></i><?php } elseif ($t003_signature_list->Signature->getSort() == "DESC") { ?><i class="fas fa-sort-down"></i><?php } ?></span></div>
+		</div></div></th>
+	<?php } ?>
+<?php } ?>
+<?php if ($t003_signature_list->JobTitle->Visible) { // JobTitle ?>
+	<?php if ($t003_signature_list->SortUrl($t003_signature_list->JobTitle) == "") { ?>
+		<th data-name="JobTitle" class="<?php echo $t003_signature_list->JobTitle->headerCellClass() ?>"><div id="elh_t003_signature_JobTitle" class="t003_signature_JobTitle"><div class="ew-table-header-caption"><?php echo $t003_signature_list->JobTitle->caption() ?></div></div></th>
+	<?php } else { ?>
+		<th data-name="JobTitle" class="<?php echo $t003_signature_list->JobTitle->headerCellClass() ?>"><div class="ew-pointer" onclick="ew.sort(event, '<?php echo $t003_signature_list->SortUrl($t003_signature_list->JobTitle) ?>', 2);"><div id="elh_t003_signature_JobTitle" class="t003_signature_JobTitle">
+			<div class="ew-table-header-btn"><span class="ew-table-header-caption"><?php echo $t003_signature_list->JobTitle->caption() ?></span><span class="ew-table-header-sort"><?php if ($t003_signature_list->JobTitle->getSort() == "ASC") { ?><i class="fas fa-sort-up"></i><?php } elseif ($t003_signature_list->JobTitle->getSort() == "DESC") { ?><i class="fas fa-sort-down"></i><?php } ?></span></div>
 		</div></div></th>
 	<?php } ?>
 <?php } ?>
@@ -312,6 +327,26 @@ $t003_signature_list->ListOptions->render("body", "left", $t003_signature_list->
 <?php if ($t003_signature->RowType == ROWTYPE_EDIT || $t003_signature->CurrentMode == "edit") { ?>
 <input type="hidden" data-table="t003_signature" data-field="x_id" name="x<?php echo $t003_signature_list->RowIndex ?>_id" id="x<?php echo $t003_signature_list->RowIndex ?>_id" value="<?php echo HtmlEncode($t003_signature_list->id->CurrentValue) ?>">
 <?php } ?>
+	<?php if ($t003_signature_list->JobTitle->Visible) { // JobTitle ?>
+		<td data-name="JobTitle" <?php echo $t003_signature_list->JobTitle->cellAttributes() ?>>
+<?php if ($t003_signature->RowType == ROWTYPE_ADD) { // Add record ?>
+<span id="el<?php echo $t003_signature_list->RowCount ?>_t003_signature_JobTitle" class="form-group">
+<input type="text" data-table="t003_signature" data-field="x_JobTitle" name="x<?php echo $t003_signature_list->RowIndex ?>_JobTitle" id="x<?php echo $t003_signature_list->RowIndex ?>_JobTitle" size="30" maxlength="100" placeholder="<?php echo HtmlEncode($t003_signature_list->JobTitle->getPlaceHolder()) ?>" value="<?php echo $t003_signature_list->JobTitle->EditValue ?>"<?php echo $t003_signature_list->JobTitle->editAttributes() ?>>
+</span>
+<input type="hidden" data-table="t003_signature" data-field="x_JobTitle" name="o<?php echo $t003_signature_list->RowIndex ?>_JobTitle" id="o<?php echo $t003_signature_list->RowIndex ?>_JobTitle" value="<?php echo HtmlEncode($t003_signature_list->JobTitle->OldValue) ?>">
+<?php } ?>
+<?php if ($t003_signature->RowType == ROWTYPE_EDIT) { // Edit record ?>
+<span id="el<?php echo $t003_signature_list->RowCount ?>_t003_signature_JobTitle" class="form-group">
+<input type="text" data-table="t003_signature" data-field="x_JobTitle" name="x<?php echo $t003_signature_list->RowIndex ?>_JobTitle" id="x<?php echo $t003_signature_list->RowIndex ?>_JobTitle" size="30" maxlength="100" placeholder="<?php echo HtmlEncode($t003_signature_list->JobTitle->getPlaceHolder()) ?>" value="<?php echo $t003_signature_list->JobTitle->EditValue ?>"<?php echo $t003_signature_list->JobTitle->editAttributes() ?>>
+</span>
+<?php } ?>
+<?php if ($t003_signature->RowType == ROWTYPE_VIEW) { // View record ?>
+<span id="el<?php echo $t003_signature_list->RowCount ?>_t003_signature_JobTitle">
+<span<?php echo $t003_signature_list->JobTitle->viewAttributes() ?>><?php echo $t003_signature_list->JobTitle->getViewValue() ?></span>
+</span>
+<?php } ?>
+</td>
+	<?php } ?>
 <?php
 
 // Render list options (body, right)
@@ -363,6 +398,14 @@ $t003_signature_list->ListOptions->render("body", "left", $t003_signature_list->
 <input type="text" data-table="t003_signature" data-field="x_Signature" name="x<?php echo $t003_signature_list->RowIndex ?>_Signature" id="x<?php echo $t003_signature_list->RowIndex ?>_Signature" size="30" maxlength="100" placeholder="<?php echo HtmlEncode($t003_signature_list->Signature->getPlaceHolder()) ?>" value="<?php echo $t003_signature_list->Signature->EditValue ?>"<?php echo $t003_signature_list->Signature->editAttributes() ?>>
 </span>
 <input type="hidden" data-table="t003_signature" data-field="x_Signature" name="o<?php echo $t003_signature_list->RowIndex ?>_Signature" id="o<?php echo $t003_signature_list->RowIndex ?>_Signature" value="<?php echo HtmlEncode($t003_signature_list->Signature->OldValue) ?>">
+</td>
+	<?php } ?>
+	<?php if ($t003_signature_list->JobTitle->Visible) { // JobTitle ?>
+		<td data-name="JobTitle">
+<span id="el$rowindex$_t003_signature_JobTitle" class="form-group t003_signature_JobTitle">
+<input type="text" data-table="t003_signature" data-field="x_JobTitle" name="x<?php echo $t003_signature_list->RowIndex ?>_JobTitle" id="x<?php echo $t003_signature_list->RowIndex ?>_JobTitle" size="30" maxlength="100" placeholder="<?php echo HtmlEncode($t003_signature_list->JobTitle->getPlaceHolder()) ?>" value="<?php echo $t003_signature_list->JobTitle->EditValue ?>"<?php echo $t003_signature_list->JobTitle->editAttributes() ?>>
+</span>
+<input type="hidden" data-table="t003_signature" data-field="x_JobTitle" name="o<?php echo $t003_signature_list->RowIndex ?>_JobTitle" id="o<?php echo $t003_signature_list->RowIndex ?>_JobTitle" value="<?php echo HtmlEncode($t003_signature_list->JobTitle->OldValue) ?>">
 </td>
 	<?php } ?>
 <?php
