@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8" standalone="yes"?>
-<ew-language date="2020/6/15" version="16.0.1" id="en" name="English" desc="English" author="e.World Technology Ltd.">
+<ew-language date="2020/6/16" version="16.0.1" id="en" name="English" desc="English" author="e.World Technology Ltd.">
   <!--
 	*** Important Notes:
 	1. Language ID should follow: https://developers.google.com/recaptcha/docs/language,
@@ -892,6 +892,9 @@
     <menu id="13">
       <phrase id="menutext" value="Asset" />
     </menu>
+    <menu id="19">
+      <phrase id="menutext" value="Handover Form" />
+    </menu>
     <menu id="17">
       <phrase id="menutext" value="Utility" />
     </menu>
@@ -1281,6 +1284,9 @@
       <field id="nilai">
         <phrase id="fldcaption" value="Nilai" />
       </field>
+    </table>
+    <table id="c101_ho">
+      <phrase id="tblcaption" value="Cetak Handover Form" />
     </table>
   </project>
 </ew-language>
