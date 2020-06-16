@@ -1,6 +1,15 @@
+[5:08 AM 6/17/2020]
+* menu    : PROSES
+  sub-menu: HANDOVER
+  proses  : membuat tombol print to excel pada saat selesai menginput data handover
+  note    : 
+  - diputuskan: php to excel: melengkapi file template excel yang sudah jadi
+  - 
+
 [2:00 PM 5/23/2020]
 * menu: PROSES, modul: HANDOVER,
   - s.d. php to excel, isi excel yang sudah jadi ? atau create excel baru ya ?
+  - [DONE @5:12 AM 6/17/2020]
 
 [12:30 PM 5/23/2020]
 * menu: PROSES, modul: HANDOVER,
