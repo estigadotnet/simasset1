@@ -6,15 +6,21 @@ $vendorDir = dirname(dirname(__FILE__));
 $baseDir = dirname($vendorDir);
 
 return array(
+    'ZipStream\\' => array($vendorDir . '/maennchen/zipstream-php/src'),
     'YaLinqo\\' => array($vendorDir . '/athari/yalinqo/YaLinqo'),
+    'Symfony\\Polyfill\\Mbstring\\' => array($vendorDir . '/symfony/polyfill-mbstring'),
     'Svg\\' => array($vendorDir . '/phenx/php-svg-lib/src/Svg'),
     'Slim\\Middleware\\' => array($vendorDir . '/tuupola/slim-jwt-auth/src'),
     'Slim\\HttpCache\\' => array($vendorDir . '/slim/http-cache/src'),
     'Slim\\' => array($vendorDir . '/slim/slim/Slim'),
+    'Psr\\SimpleCache\\' => array($vendorDir . '/psr/simple-cache/src'),
     'Psr\\Log\\' => array($vendorDir . '/psr/log/Psr/Log'),
     'Psr\\Http\\Message\\' => array($vendorDir . '/psr/http-message/src'),
     'Psr\\Container\\' => array($vendorDir . '/psr/container/src'),
+    'PhpOffice\\PhpSpreadsheet\\' => array($vendorDir . '/phpoffice/phpspreadsheet/src/PhpSpreadsheet'),
     'PHPMailer\\PHPMailer\\' => array($vendorDir . '/phpmailer/phpmailer/src'),
+    'MyCLabs\\Enum\\' => array($vendorDir . '/myclabs/php-enum/src'),
+    'Matrix\\' => array($vendorDir . '/markbaker/matrix/classes/src'),
     'Html2Text\\' => array($vendorDir . '/soundasleep/html2text/src'),
     'FontLib\\' => array($vendorDir . '/phenx/php-font-lib/src/FontLib'),
     'Firebase\\JWT\\' => array($vendorDir . '/firebase/php-jwt/src'),
@@ -23,4 +29,5 @@ return array(
     'Delight\\Http\\' => array($vendorDir . '/delight-im/http/src'),
     'Delight\\Cookie\\' => array($vendorDir . '/delight-im/cookie/src'),
     'Defuse\\Crypto\\' => array($vendorDir . '/defuse/php-encryption/src'),
+    'Complex\\' => array($vendorDir . '/markbaker/complex/classes/src'),
 );
