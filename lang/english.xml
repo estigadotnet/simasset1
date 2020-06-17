@@ -856,6 +856,9 @@
   <project>
     <phrase id="bodytitle" value="Sistem Informasi Manajemen Asset v1.0" />
     <phrase id="footertext" value="&amp;copy;2020 AMR-MJS. All rights reserved." />
+    <menu id="20">
+      <phrase id="menutext" value="View Handover" />
+    </menu>
     <menu id="14">
       <phrase id="menutext" value="Home" />
     </menu>
@@ -965,6 +968,9 @@
       </field>
       <field id="property">
         <phrase id="fldcaption" value="Property" />
+      </field>
+      <field id="templatefile">
+        <phrase id="fldcaption" value="Template File" />
       </field>
     </table>
     <table id="t002_department">
@@ -1290,6 +1296,135 @@
     </table>
     <table id="c101_ho">
       <phrase id="tblcaption" value="Cetak Handover Form" />
+    </table>
+    <table id="v101_ho">
+      <phrase id="tblcaption" value="View Handover" />
+      <field id="id">
+        <phrase id="fldcaption" value="id" />
+      </field>
+      <field id="property_id">
+        <phrase id="fldcaption" value="property id" />
+      </field>
+      <field id="transactionno">
+        <phrase id="fldcaption" value="Transaction No" />
+      </field>
+      <field id="transactiondate">
+        <phrase id="fldcaption" value="Transaction Date" />
+      </field>
+      <field id="transactiontype">
+        <phrase id="fldcaption" value="Transaction Type" />
+      </field>
+      <field id="handedoverto">
+        <phrase id="fldcaption" value="Handed Over To" />
+      </field>
+      <field id="codenoto">
+        <phrase id="fldcaption" value="Code No To" />
+      </field>
+      <field id="departmentto">
+        <phrase id="fldcaption" value="Department To" />
+      </field>
+      <field id="handedoverby">
+        <phrase id="fldcaption" value="Handed Over By" />
+      </field>
+      <field id="codenoby">
+        <phrase id="fldcaption" value="Code No By" />
+      </field>
+      <field id="departmentby">
+        <phrase id="fldcaption" value="Department By" />
+      </field>
+      <field id="sign1">
+        <phrase id="fldcaption" value="Sign 1" />
+      </field>
+      <field id="sign2">
+        <phrase id="fldcaption" value="Sign 2" />
+      </field>
+      <field id="sign3">
+        <phrase id="fldcaption" value="Sign 3" />
+      </field>
+      <field id="sign4">
+        <phrase id="fldcaption" value="Sign 4" />
+      </field>
+      <field id="hodetail_id">
+        <phrase id="fldcaption" value="hodetail id" />
+      </field>
+      <field id="asset_id">
+        <phrase id="fldcaption" value="asset id" />
+      </field>
+      <field id="property">
+        <phrase id="fldcaption" value="Property" />
+      </field>
+      <field id="templatefile">
+        <phrase id="fldcaption" value="Template File" />
+      </field>
+      <field id="hodepartmentto">
+        <phrase id="fldcaption" value="ho Department To" />
+      </field>
+      <field id="hosignatureto">
+        <phrase id="fldcaption" value="ho Signature To" />
+      </field>
+      <field id="hojobtitleto">
+        <phrase id="fldcaption" value="ho Job Title To" />
+      </field>
+      <field id="hodepartmentby">
+        <phrase id="fldcaption" value="ho Department By" />
+      </field>
+      <field id="hosignatureby">
+        <phrase id="fldcaption" value="ho Signature By" />
+      </field>
+      <field id="hojobtitleby">
+        <phrase id="fldcaption" value="ho Job Title By" />
+      </field>
+      <field id="description">
+        <phrase id="fldcaption" value="Description" />
+      </field>
+      <field id="procurementdate">
+        <phrase id="fldcaption" value="Procurement Date" />
+      </field>
+      <field id="procurementcurrentcost">
+        <phrase id="fldcaption" value="Procurement Current Cost" />
+      </field>
+      <field id="depreciationamount">
+        <phrase id="fldcaption" value="Depreciation Amount" />
+      </field>
+      <field id="depreciationytd">
+        <phrase id="fldcaption" value="Depreciation Ytd" />
+      </field>
+      <field id="netbookvalue">
+        <phrase id="fldcaption" value="Net Book Value" />
+      </field>
+      <field id="periode">
+        <phrase id="fldcaption" value="Periode" />
+      </field>
+      <field id="qty">
+        <phrase id="fldcaption" value="Qty" />
+      </field>
+      <field id="remarks">
+        <phrase id="fldcaption" value="Remarks" />
+      </field>
+      <field id="sign1signature">
+        <phrase id="fldcaption" value="Sign 1Signature" />
+      </field>
+      <field id="sign1jobtitle">
+        <phrase id="fldcaption" value="Sign 1Job Title" />
+      </field>
+      <field id="sign2signature">
+        <phrase id="fldcaption" value="Sign 2Signature" />
+      </field>
+      <field id="sign2jobtitle">
+        <phrase id="fldcaption" value="Sign 2Job Title" />
+      </field>
+      <field id="sign3signature">
+        <phrase id="fldcaption" value="Sign 3Signature" />
+      </field>
+      <field id="sign3jobtitle">
+        <phrase id="fldcaption" value="Sign 3Job Title" />
+      </field>
+      <field id="sign4signature">
+        <phrase id="fldcaption" value="Sign 4Signature" />
+      </field>
+      <field id="sign4jobtitle">
+        <phrase id="fldcaption" value="Sign 4Job Title" />
+      </field>
     </table>
   </project>
 </ew-language>

@@ -61,6 +61,11 @@ loadjs.ready("head", function() {
 				if (elm && !ew.isHidden(elm) && !ew.hasValue(elm))
 					return this.onError(elm, "<?php echo JsEncode(str_replace("%s", $t001_property_add->Property->caption(), $t001_property_add->Property->RequiredErrorMessage)) ?>");
 			<?php } ?>
+			<?php if ($t001_property_add->TemplateFile->Required) { ?>
+				elm = this.getElements("x" + infix + "_TemplateFile");
+				if (elm && !ew.isHidden(elm) && !ew.hasValue(elm))
+					return this.onError(elm, "<?php echo JsEncode(str_replace("%s", $t001_property_add->TemplateFile->caption(), $t001_property_add->TemplateFile->RequiredErrorMessage)) ?>");
+			<?php } ?>
 
 				// Call Form_CustomValidate event
 				if (!this.Form_CustomValidate(fobj))
@@ -120,6 +125,16 @@ $t001_property_add->showMessage();
 <input type="text" data-table="t001_property" data-field="x_Property" name="x_Property" id="x_Property" size="30" maxlength="100" placeholder="<?php echo HtmlEncode($t001_property_add->Property->getPlaceHolder()) ?>" value="<?php echo $t001_property_add->Property->EditValue ?>"<?php echo $t001_property_add->Property->editAttributes() ?>>
 </span>
 <?php echo $t001_property_add->Property->CustomMsg ?></div></div>
+	</div>
+<?php } ?>
+<?php if ($t001_property_add->TemplateFile->Visible) { // TemplateFile ?>
+	<div id="r_TemplateFile" class="form-group row">
+		<label id="elh_t001_property_TemplateFile" for="x_TemplateFile" class="<?php echo $t001_property_add->LeftColumnClass ?>"><?php echo $t001_property_add->TemplateFile->caption() ?><?php echo $t001_property_add->TemplateFile->Required ? $Language->phrase("FieldRequiredIndicator") : "" ?></label>
+		<div class="<?php echo $t001_property_add->RightColumnClass ?>"><div <?php echo $t001_property_add->TemplateFile->cellAttributes() ?>>
+<span id="el_t001_property_TemplateFile">
+<input type="text" data-table="t001_property" data-field="x_TemplateFile" name="x_TemplateFile" id="x_TemplateFile" size="30" maxlength="100" placeholder="<?php echo HtmlEncode($t001_property_add->TemplateFile->getPlaceHolder()) ?>" value="<?php echo $t001_property_add->TemplateFile->EditValue ?>"<?php echo $t001_property_add->TemplateFile->editAttributes() ?>>
+</span>
+<?php echo $t001_property_add->TemplateFile->CustomMsg ?></div></div>
 	</div>
 <?php } ?>
 </div><!-- /page* -->

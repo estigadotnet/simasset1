@@ -66,6 +66,11 @@ loadjs.ready("head", function() {
 				if (elm && !ew.isHidden(elm) && !ew.hasValue(elm))
 					return this.onError(elm, "<?php echo JsEncode(str_replace("%s", $t001_property_list->Property->caption(), $t001_property_list->Property->RequiredErrorMessage)) ?>");
 			<?php } ?>
+			<?php if ($t001_property_list->TemplateFile->Required) { ?>
+				elm = this.getElements("x" + infix + "_TemplateFile");
+				if (elm && !ew.isHidden(elm) && !ew.hasValue(elm))
+					return this.onError(elm, "<?php echo JsEncode(str_replace("%s", $t001_property_list->TemplateFile->caption(), $t001_property_list->TemplateFile->RequiredErrorMessage)) ?>");
+			<?php } ?>
 
 				// Call Form_CustomValidate event
 				if (!this.Form_CustomValidate(fobj))
@@ -83,6 +88,7 @@ loadjs.ready("head", function() {
 	ft001_propertylist.emptyRow = function(infix) {
 		var fobj = this._form;
 		if (ew.valueChanged(fobj, infix, "Property", false)) return false;
+		if (ew.valueChanged(fobj, infix, "TemplateFile", false)) return false;
 		return true;
 	}
 
@@ -174,6 +180,15 @@ $t001_property_list->ListOptions->render("header", "left");
 	<?php } else { ?>
 		<th data-name="Property" class="<?php echo $t001_property_list->Property->headerCellClass() ?>"><div class="ew-pointer" onclick="ew.sort(event, '<?php echo $t001_property_list->SortUrl($t001_property_list->Property) ?>', 2);"><div id="elh_t001_property_Property" class="t001_property_Property">
 			<div class="ew-table-header-btn"><span class="ew-table-header-caption"><?php echo $t001_property_list->Property->caption() ?></span><span class="ew-table-header-sort"><?php if ($t001_property_list->Property->getSort() == "ASC") { ?><i class="fas fa-sort-up"></i><?php } elseif ($t001_property_list->Property->getSort() == "DESC") { ?><i class="fas fa-sort-down"></i><?php } ?></span></div>
+		</div></div></th>
+	<?php } ?>
+<?php } ?>
+<?php if ($t001_property_list->TemplateFile->Visible) { // TemplateFile ?>
+	<?php if ($t001_property_list->SortUrl($t001_property_list->TemplateFile) == "") { ?>
+		<th data-name="TemplateFile" class="<?php echo $t001_property_list->TemplateFile->headerCellClass() ?>"><div id="elh_t001_property_TemplateFile" class="t001_property_TemplateFile"><div class="ew-table-header-caption"><?php echo $t001_property_list->TemplateFile->caption() ?></div></div></th>
+	<?php } else { ?>
+		<th data-name="TemplateFile" class="<?php echo $t001_property_list->TemplateFile->headerCellClass() ?>"><div class="ew-pointer" onclick="ew.sort(event, '<?php echo $t001_property_list->SortUrl($t001_property_list->TemplateFile) ?>', 2);"><div id="elh_t001_property_TemplateFile" class="t001_property_TemplateFile">
+			<div class="ew-table-header-btn"><span class="ew-table-header-caption"><?php echo $t001_property_list->TemplateFile->caption() ?></span><span class="ew-table-header-sort"><?php if ($t001_property_list->TemplateFile->getSort() == "ASC") { ?><i class="fas fa-sort-up"></i><?php } elseif ($t001_property_list->TemplateFile->getSort() == "DESC") { ?><i class="fas fa-sort-down"></i><?php } ?></span></div>
 		</div></div></th>
 	<?php } ?>
 <?php } ?>
@@ -312,6 +327,26 @@ $t001_property_list->ListOptions->render("body", "left", $t001_property_list->Ro
 <?php if ($t001_property->RowType == ROWTYPE_EDIT || $t001_property->CurrentMode == "edit") { ?>
 <input type="hidden" data-table="t001_property" data-field="x_id" name="x<?php echo $t001_property_list->RowIndex ?>_id" id="x<?php echo $t001_property_list->RowIndex ?>_id" value="<?php echo HtmlEncode($t001_property_list->id->CurrentValue) ?>">
 <?php } ?>
+	<?php if ($t001_property_list->TemplateFile->Visible) { // TemplateFile ?>
+		<td data-name="TemplateFile" <?php echo $t001_property_list->TemplateFile->cellAttributes() ?>>
+<?php if ($t001_property->RowType == ROWTYPE_ADD) { // Add record ?>
+<span id="el<?php echo $t001_property_list->RowCount ?>_t001_property_TemplateFile" class="form-group">
+<input type="text" data-table="t001_property" data-field="x_TemplateFile" name="x<?php echo $t001_property_list->RowIndex ?>_TemplateFile" id="x<?php echo $t001_property_list->RowIndex ?>_TemplateFile" size="30" maxlength="100" placeholder="<?php echo HtmlEncode($t001_property_list->TemplateFile->getPlaceHolder()) ?>" value="<?php echo $t001_property_list->TemplateFile->EditValue ?>"<?php echo $t001_property_list->TemplateFile->editAttributes() ?>>
+</span>
+<input type="hidden" data-table="t001_property" data-field="x_TemplateFile" name="o<?php echo $t001_property_list->RowIndex ?>_TemplateFile" id="o<?php echo $t001_property_list->RowIndex ?>_TemplateFile" value="<?php echo HtmlEncode($t001_property_list->TemplateFile->OldValue) ?>">
+<?php } ?>
+<?php if ($t001_property->RowType == ROWTYPE_EDIT) { // Edit record ?>
+<span id="el<?php echo $t001_property_list->RowCount ?>_t001_property_TemplateFile" class="form-group">
+<input type="text" data-table="t001_property" data-field="x_TemplateFile" name="x<?php echo $t001_property_list->RowIndex ?>_TemplateFile" id="x<?php echo $t001_property_list->RowIndex ?>_TemplateFile" size="30" maxlength="100" placeholder="<?php echo HtmlEncode($t001_property_list->TemplateFile->getPlaceHolder()) ?>" value="<?php echo $t001_property_list->TemplateFile->EditValue ?>"<?php echo $t001_property_list->TemplateFile->editAttributes() ?>>
+</span>
+<?php } ?>
+<?php if ($t001_property->RowType == ROWTYPE_VIEW) { // View record ?>
+<span id="el<?php echo $t001_property_list->RowCount ?>_t001_property_TemplateFile">
+<span<?php echo $t001_property_list->TemplateFile->viewAttributes() ?>><?php echo $t001_property_list->TemplateFile->getViewValue() ?></span>
+</span>
+<?php } ?>
+</td>
+	<?php } ?>
 <?php
 
 // Render list options (body, right)
@@ -363,6 +398,14 @@ $t001_property_list->ListOptions->render("body", "left", $t001_property_list->Ro
 <input type="text" data-table="t001_property" data-field="x_Property" name="x<?php echo $t001_property_list->RowIndex ?>_Property" id="x<?php echo $t001_property_list->RowIndex ?>_Property" size="30" maxlength="100" placeholder="<?php echo HtmlEncode($t001_property_list->Property->getPlaceHolder()) ?>" value="<?php echo $t001_property_list->Property->EditValue ?>"<?php echo $t001_property_list->Property->editAttributes() ?>>
 </span>
 <input type="hidden" data-table="t001_property" data-field="x_Property" name="o<?php echo $t001_property_list->RowIndex ?>_Property" id="o<?php echo $t001_property_list->RowIndex ?>_Property" value="<?php echo HtmlEncode($t001_property_list->Property->OldValue) ?>">
+</td>
+	<?php } ?>
+	<?php if ($t001_property_list->TemplateFile->Visible) { // TemplateFile ?>
+		<td data-name="TemplateFile">
+<span id="el$rowindex$_t001_property_TemplateFile" class="form-group t001_property_TemplateFile">
+<input type="text" data-table="t001_property" data-field="x_TemplateFile" name="x<?php echo $t001_property_list->RowIndex ?>_TemplateFile" id="x<?php echo $t001_property_list->RowIndex ?>_TemplateFile" size="30" maxlength="100" placeholder="<?php echo HtmlEncode($t001_property_list->TemplateFile->getPlaceHolder()) ?>" value="<?php echo $t001_property_list->TemplateFile->EditValue ?>"<?php echo $t001_property_list->TemplateFile->editAttributes() ?>>
+</span>
+<input type="hidden" data-table="t001_property" data-field="x_TemplateFile" name="o<?php echo $t001_property_list->RowIndex ?>_TemplateFile" id="o<?php echo $t001_property_list->RowIndex ?>_TemplateFile" value="<?php echo HtmlEncode($t001_property_list->TemplateFile->OldValue) ?>">
 </td>
 	<?php } ?>
 <?php

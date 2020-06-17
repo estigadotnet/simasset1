@@ -107,6 +107,21 @@ $t001_property_search->showMessage();
 		</div></div>
 	</div>
 <?php } ?>
+<?php if ($t001_property_search->TemplateFile->Visible) { // TemplateFile ?>
+	<div id="r_TemplateFile" class="form-group row">
+		<label for="x_TemplateFile" class="<?php echo $t001_property_search->LeftColumnClass ?>"><span id="elh_t001_property_TemplateFile"><?php echo $t001_property_search->TemplateFile->caption() ?></span>
+		<span class="ew-search-operator">
+<?php echo $Language->phrase("LIKE") ?>
+<input type="hidden" name="z_TemplateFile" id="z_TemplateFile" value="LIKE">
+</span>
+		</label>
+		<div class="<?php echo $t001_property_search->RightColumnClass ?>"><div <?php echo $t001_property_search->TemplateFile->cellAttributes() ?>>
+			<span id="el_t001_property_TemplateFile" class="ew-search-field">
+<input type="text" data-table="t001_property" data-field="x_TemplateFile" name="x_TemplateFile" id="x_TemplateFile" size="30" maxlength="100" placeholder="<?php echo HtmlEncode($t001_property_search->TemplateFile->getPlaceHolder()) ?>" value="<?php echo $t001_property_search->TemplateFile->EditValue ?>"<?php echo $t001_property_search->TemplateFile->editAttributes() ?>>
+</span>
+		</div></div>
+	</div>
+<?php } ?>
 </div><!-- /page* -->
 <?php if (!$t001_property_search->IsModal) { ?>
 <div class="form-group row"><!-- buttons .form-group -->

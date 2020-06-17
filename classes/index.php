@@ -313,6 +313,8 @@ class index
 			$this->terminate("t205_parameterlist.php");
 		if ($Security->allowList(CurrentProjectID() . 'c101_ho.php'))
 			$this->terminate("c101_ho.php");
+		if ($Security->allowList(CurrentProjectID() . 'v101_ho'))
+			$this->terminate("v101_holist.php");
 		if ($Security->isLoggedIn()) {
 			$this->setFailureMessage(DeniedMessage() . "<br><br><a href=\"logout.php\">" . $Language->phrase("BackToLogin") . "</a>");
 		} else {

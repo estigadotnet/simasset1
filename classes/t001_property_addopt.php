@@ -660,6 +660,7 @@ class t001_property_addopt extends t001_property
 		$this->CurrentAction = Param("action"); // Set up current action
 		$this->id->Visible = FALSE;
 		$this->Property->setVisibility();
+		$this->TemplateFile->setVisibility();
 		$this->hideFieldsForAddEdit();
 
 		// Do not use lookup cache
@@ -707,6 +708,8 @@ class t001_property_addopt extends t001_property
 		$this->id->OldValue = $this->id->CurrentValue;
 		$this->Property->CurrentValue = NULL;
 		$this->Property->OldValue = $this->Property->CurrentValue;
+		$this->TemplateFile->CurrentValue = NULL;
+		$this->TemplateFile->OldValue = $this->TemplateFile->CurrentValue;
 	}
 
 	// Load form values
@@ -722,6 +725,12 @@ class t001_property_addopt extends t001_property
 			$this->Property->setFormValue(ConvertFromUtf8($val));
 		}
 
+		// Check field name 'TemplateFile' first before field var 'x_TemplateFile'
+		$val = $CurrentForm->hasValue("TemplateFile") ? $CurrentForm->getValue("TemplateFile") : $CurrentForm->getValue("x_TemplateFile");
+		if (!$this->TemplateFile->IsDetailKey) {
+			$this->TemplateFile->setFormValue(ConvertFromUtf8($val));
+		}
+
 		// Check field name 'id' first before field var 'x_id'
 		$val = $CurrentForm->hasValue("id") ? $CurrentForm->getValue("id") : $CurrentForm->getValue("x_id");
 	}
@@ -731,6 +740,7 @@ class t001_property_addopt extends t001_property
 	{
 		global $CurrentForm;
 		$this->Property->CurrentValue = ConvertToUtf8($this->Property->FormValue);
+		$this->TemplateFile->CurrentValue = ConvertToUtf8($this->TemplateFile->FormValue);
 	}
 
 	// Load row based on key values
@@ -770,6 +780,7 @@ class t001_property_addopt extends t001_property
 			return;
 		$this->id->setDbValue($row['id']);
 		$this->Property->setDbValue($row['Property']);
+		$this->TemplateFile->setDbValue($row['TemplateFile']);
 	}
 
 	// Return a row with default values
@@ -779,6 +790,7 @@ class t001_property_addopt extends t001_property
 		$row = [];
 		$row['id'] = $this->id->CurrentValue;
 		$row['Property'] = $this->Property->CurrentValue;
+		$row['TemplateFile'] = $this->TemplateFile->CurrentValue;
 		return $row;
 	}
 
@@ -795,6 +807,7 @@ class t001_property_addopt extends t001_property
 		// Common render codes for all row types
 		// id
 		// Property
+		// TemplateFile
 
 		if ($this->RowType == ROWTYPE_VIEW) { // View row
 
@@ -806,10 +819,19 @@ class t001_property_addopt extends t001_property
 			$this->Property->ViewValue = $this->Property->CurrentValue;
 			$this->Property->ViewCustomAttributes = "";
 
+			// TemplateFile
+			$this->TemplateFile->ViewValue = $this->TemplateFile->CurrentValue;
+			$this->TemplateFile->ViewCustomAttributes = "";
+
 			// Property
 			$this->Property->LinkCustomAttributes = "";
 			$this->Property->HrefValue = "";
 			$this->Property->TooltipValue = "";
+
+			// TemplateFile
+			$this->TemplateFile->LinkCustomAttributes = "";
+			$this->TemplateFile->HrefValue = "";
+			$this->TemplateFile->TooltipValue = "";
 		} elseif ($this->RowType == ROWTYPE_ADD) { // Add row
 
 			// Property
@@ -820,11 +842,23 @@ class t001_property_addopt extends t001_property
 			$this->Property->EditValue = HtmlEncode($this->Property->CurrentValue);
 			$this->Property->PlaceHolder = RemoveHtml($this->Property->caption());
 
+			// TemplateFile
+			$this->TemplateFile->EditAttrs["class"] = "form-control";
+			$this->TemplateFile->EditCustomAttributes = "";
+			if (!$this->TemplateFile->Raw)
+				$this->TemplateFile->CurrentValue = HtmlDecode($this->TemplateFile->CurrentValue);
+			$this->TemplateFile->EditValue = HtmlEncode($this->TemplateFile->CurrentValue);
+			$this->TemplateFile->PlaceHolder = RemoveHtml($this->TemplateFile->caption());
+
 			// Add refer script
 			// Property
 
 			$this->Property->LinkCustomAttributes = "";
 			$this->Property->HrefValue = "";
+
+			// TemplateFile
+			$this->TemplateFile->LinkCustomAttributes = "";
+			$this->TemplateFile->HrefValue = "";
 		}
 		if ($this->RowType == ROWTYPE_ADD || $this->RowType == ROWTYPE_EDIT || $this->RowType == ROWTYPE_SEARCH) // Add/Edit/Search row
 			$this->setupFieldTitles();
@@ -848,6 +882,11 @@ class t001_property_addopt extends t001_property
 		if ($this->Property->Required) {
 			if (!$this->Property->IsDetailKey && $this->Property->FormValue != NULL && $this->Property->FormValue == "") {
 				AddMessage($FormError, str_replace("%s", $this->Property->caption(), $this->Property->RequiredErrorMessage));
+			}
+		}
+		if ($this->TemplateFile->Required) {
+			if (!$this->TemplateFile->IsDetailKey && $this->TemplateFile->FormValue != NULL && $this->TemplateFile->FormValue == "") {
+				AddMessage($FormError, str_replace("%s", $this->TemplateFile->caption(), $this->TemplateFile->RequiredErrorMessage));
 			}
 		}
 
@@ -877,6 +916,9 @@ class t001_property_addopt extends t001_property
 
 		// Property
 		$this->Property->setDbValueDef($rsnew, $this->Property->CurrentValue, "", FALSE);
+
+		// TemplateFile
+		$this->TemplateFile->setDbValueDef($rsnew, $this->TemplateFile->CurrentValue, "", FALSE);
 
 		// Call Row Inserting event
 		$rs = ($rsold) ? $rsold->fields : NULL;

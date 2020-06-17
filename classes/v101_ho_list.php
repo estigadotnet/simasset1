@@ -4,7 +4,7 @@ namespace PHPMaker2020\p_simasset1;
 /**
  * Page class
  */
-class t001_property_list extends t001_property
+class v101_ho_list extends v101_ho
 {
 
 	// Page ID
@@ -14,13 +14,13 @@ class t001_property_list extends t001_property
 	public $ProjectID = "{E1C6E322-15B9-474C-85CF-A99378A9BC2B}";
 
 	// Table name
-	public $TableName = 't001_property';
+	public $TableName = 'v101_ho';
 
 	// Page object name
-	public $PageObjName = "t001_property_list";
+	public $PageObjName = "v101_ho_list";
 
 	// Grid form hidden field names
-	public $FormName = "ft001_propertylist";
+	public $FormName = "fv101_holist";
 	public $FormActionName = "k_action";
 	public $FormKeyName = "k_key";
 	public $FormOldKeyName = "k_oldkey";
@@ -58,14 +58,6 @@ class t001_property_list extends t001_property
 	public $GridEditUrl;
 	public $MultiDeleteUrl;
 	public $MultiUpdateUrl;
-
-	// Audit Trail
-	public $AuditTrailOnAdd = TRUE;
-	public $AuditTrailOnEdit = TRUE;
-	public $AuditTrailOnDelete = TRUE;
-	public $AuditTrailOnView = FALSE;
-	public $AuditTrailOnViewData = FALSE;
-	public $AuditTrailOnSearch = FALSE;
 
 	// Page headings
 	public $Heading = "";
@@ -389,10 +381,10 @@ class t001_property_list extends t001_property
 		// Parent constuctor
 		parent::__construct();
 
-		// Table object (t001_property)
-		if (!isset($GLOBALS["t001_property"]) || get_class($GLOBALS["t001_property"]) == PROJECT_NAMESPACE . "t001_property") {
-			$GLOBALS["t001_property"] = &$this;
-			$GLOBALS["Table"] = &$GLOBALS["t001_property"];
+		// Table object (v101_ho)
+		if (!isset($GLOBALS["v101_ho"]) || get_class($GLOBALS["v101_ho"]) == PROJECT_NAMESPACE . "v101_ho") {
+			$GLOBALS["v101_ho"] = &$this;
+			$GLOBALS["Table"] = &$GLOBALS["v101_ho"];
 		}
 
 		// Initialize URLs
@@ -403,12 +395,12 @@ class t001_property_list extends t001_property
 		$this->ExportHtmlUrl = $this->pageUrl() . "export=html";
 		$this->ExportXmlUrl = $this->pageUrl() . "export=xml";
 		$this->ExportCsvUrl = $this->pageUrl() . "export=csv";
-		$this->AddUrl = "t001_propertyadd.php";
+		$this->AddUrl = "v101_hoadd.php";
 		$this->InlineAddUrl = $this->pageUrl() . "action=add";
 		$this->GridAddUrl = $this->pageUrl() . "action=gridadd";
 		$this->GridEditUrl = $this->pageUrl() . "action=gridedit";
-		$this->MultiDeleteUrl = "t001_propertydelete.php";
-		$this->MultiUpdateUrl = "t001_propertyupdate.php";
+		$this->MultiDeleteUrl = "v101_hodelete.php";
+		$this->MultiUpdateUrl = "v101_houpdate.php";
 
 		// Table object (t201_users)
 		if (!isset($GLOBALS['t201_users']))
@@ -420,7 +412,7 @@ class t001_property_list extends t001_property
 
 		// Table name (for backward compatibility only)
 		if (!defined(PROJECT_NAMESPACE . "TABLE_NAME"))
-			define(PROJECT_NAMESPACE . "TABLE_NAME", 't001_property');
+			define(PROJECT_NAMESPACE . "TABLE_NAME", 'v101_ho');
 
 		// Start timer
 		if (!isset($GLOBALS["DebugTimer"]))
@@ -460,7 +452,7 @@ class t001_property_list extends t001_property
 
 		// Filter options
 		$this->FilterOptions = new ListOptions("div");
-		$this->FilterOptions->TagClassName = "ew-filter-option ft001_propertylistsrch";
+		$this->FilterOptions->TagClassName = "ew-filter-option fv101_holistsrch";
 
 		// List actions
 		$this->ListActions = new ListActions();
@@ -478,14 +470,14 @@ class t001_property_list extends t001_property
 		Page_Unloaded();
 
 		// Export
-		global $t001_property;
+		global $v101_ho;
 		if ($this->CustomExport && $this->CustomExport == $this->Export && array_key_exists($this->CustomExport, Config("EXPORT_CLASSES"))) {
 				$content = ob_get_contents();
 			if ($ExportFileName == "")
 				$ExportFileName = $this->TableVar;
 			$class = PROJECT_NAMESPACE . Config("EXPORT_CLASSES." . $this->CustomExport);
 			if (class_exists($class)) {
-				$doc = new $class($t001_property);
+				$doc = new $class($v101_ho);
 				$doc->Text = @$content;
 				if ($this->isExport("email"))
 					echo $this->exportEmail($doc->Text);
@@ -597,7 +589,8 @@ class t001_property_list extends t001_property
 	{
 		$key = "";
 		if (is_array($ar)) {
-			$key .= @$ar['id'];
+			$key .= @$ar['id'] . Config("COMPOSITE_KEY_SEPARATOR");
+			$key .= @$ar['hodetail_id'];
 		}
 		return $key;
 	}
@@ -611,6 +604,8 @@ class t001_property_list extends t001_property
 	{
 		if ($this->isAdd() || $this->isCopy() || $this->isGridAdd())
 			$this->id->Visible = FALSE;
+		if ($this->isAdd() || $this->isCopy() || $this->isGridAdd())
+			$this->hodetail_id->Visible = FALSE;
 	}
 
 	// Lookup data
@@ -784,9 +779,6 @@ class t001_property_list extends t001_property
 			}
 		}
 
-		// Create form object
-		$CurrentForm = new HttpForm();
-
 		// Get export parameters
 		$custom = "";
 		if (Param("export") !== NULL) {
@@ -834,9 +826,48 @@ class t001_property_list extends t001_property
 
 		// Setup export options
 		$this->setupExportOptions();
-		$this->id->Visible = FALSE;
+		$this->id->setVisibility();
+		$this->property_id->setVisibility();
+		$this->TransactionNo->setVisibility();
+		$this->TransactionDate->setVisibility();
+		$this->TransactionType->setVisibility();
+		$this->HandedOverTo->setVisibility();
+		$this->CodeNoTo->setVisibility();
+		$this->DepartmentTo->setVisibility();
+		$this->HandedOverBy->setVisibility();
+		$this->CodeNoBy->setVisibility();
+		$this->DepartmentBy->setVisibility();
+		$this->Sign1->setVisibility();
+		$this->Sign2->setVisibility();
+		$this->Sign3->setVisibility();
+		$this->Sign4->setVisibility();
+		$this->hodetail_id->setVisibility();
+		$this->asset_id->setVisibility();
 		$this->Property->setVisibility();
 		$this->TemplateFile->setVisibility();
+		$this->hoDepartmentTo->setVisibility();
+		$this->hoSignatureTo->setVisibility();
+		$this->hoJobTitleTo->setVisibility();
+		$this->hoDepartmentBy->setVisibility();
+		$this->hoSignatureBy->setVisibility();
+		$this->hoJobTitleBy->setVisibility();
+		$this->Description->setVisibility();
+		$this->ProcurementDate->setVisibility();
+		$this->ProcurementCurrentCost->setVisibility();
+		$this->DepreciationAmount->setVisibility();
+		$this->DepreciationYtd->setVisibility();
+		$this->NetBookValue->setVisibility();
+		$this->Periode->setVisibility();
+		$this->Qty->setVisibility();
+		$this->Remarks->Visible = FALSE;
+		$this->Sign1Signature->setVisibility();
+		$this->Sign1JobTitle->setVisibility();
+		$this->Sign2Signature->setVisibility();
+		$this->Sign2JobTitle->setVisibility();
+		$this->Sign3Signature->setVisibility();
+		$this->Sign3JobTitle->setVisibility();
+		$this->Sign4Signature->setVisibility();
+		$this->Sign4JobTitle->setVisibility();
 		$this->hideFieldsForAddEdit();
 
 		// Global Page Loading event (in userfn*.php)
@@ -894,62 +925,6 @@ class t001_property_list extends t001_property
 			if (!$this->isExport())
 				$this->setupBreadcrumb();
 
-			// Check QueryString parameters
-			if (Get("action") !== NULL) {
-				$this->CurrentAction = Get("action");
-
-				// Clear inline mode
-				if ($this->isCancel())
-					$this->clearInlineMode();
-
-				// Switch to grid edit mode
-				if ($this->isGridEdit())
-					$this->gridEditMode();
-
-				// Switch to grid add mode
-				if ($this->isGridAdd())
-					$this->gridAddMode();
-			} else {
-				if (Post("action") !== NULL) {
-					$this->CurrentAction = Post("action"); // Get action
-
-					// Grid Update
-					if (($this->isGridUpdate() || $this->isGridOverwrite()) && @$_SESSION[SESSION_INLINE_MODE] == "gridedit") {
-						if ($this->validateGridForm()) {
-							$gridUpdate = $this->gridUpdate();
-						} else {
-							$gridUpdate = FALSE;
-							$this->setFailureMessage($FormError);
-						}
-						if ($gridUpdate) {
-						} else {
-							$this->EventCancelled = TRUE;
-							$this->gridEditMode(); // Stay in Grid edit mode
-						}
-					}
-
-					// Grid Insert
-					if ($this->isGridInsert() && @$_SESSION[SESSION_INLINE_MODE] == "gridadd") {
-						if ($this->validateGridForm()) {
-							$gridInsert = $this->gridInsert();
-						} else {
-							$gridInsert = FALSE;
-							$this->setFailureMessage($FormError);
-						}
-						if ($gridInsert) {
-						} else {
-							$this->EventCancelled = TRUE;
-							$this->gridAddMode(); // Stay in Grid add mode
-						}
-					}
-				} elseif (@$_SESSION[SESSION_INLINE_MODE] == "gridedit") { // Previously in grid edit mode
-					if (Get(Config("TABLE_START_REC")) !== NULL || Get(Config("TABLE_PAGE_NO")) !== NULL) // Stay in grid edit mode if paging
-						$this->gridEditMode();
-					else // Reset grid edit
-						$this->clearInlineMode();
-				}
-			}
-
 			// Hide list options
 			if ($this->isExport()) {
 				$this->ListOptions->hideAllOptions(["sequence"]);
@@ -972,26 +947,15 @@ class t001_property_list extends t001_property
 			if ($this->isExport())
 				$this->OtherOptions->hideAllOptions();
 
-			// Show grid delete link for grid add / grid edit
-			if ($this->AllowAddDeleteRow) {
-				if ($this->isGridAdd() || $this->isGridEdit()) {
-					$item = $this->ListOptions["griddelete"];
-					if ($item)
-						$item->Visible = TRUE;
-				}
-			}
-
 			// Get default search criteria
-			AddFilter($this->DefaultSearchWhere, $this->advancedSearchWhere(TRUE));
+			AddFilter($this->DefaultSearchWhere, $this->basicSearchWhere(TRUE));
 
-			// Get and validate search values for advanced search
-			$this->loadSearchValues(); // Get search values
+			// Get basic search values
+			$this->loadBasicSearchValues();
 
 			// Process filter list
 			if ($this->processFilterList())
 				$this->terminate();
-			if (!$this->validateSearch())
-				$this->setFailureMessage($SearchError);
 
 			// Restore search parms from Session if not searching / reset / export
 			if (($this->isExport() || $this->Command != "search" && $this->Command != "reset" && $this->Command != "resetall") && $this->Command != "json" && $this->checkSearchParms())
@@ -1003,9 +967,9 @@ class t001_property_list extends t001_property
 			// Set up sorting order
 			$this->setupSortOrder();
 
-			// Get search criteria for advanced search
+			// Get basic search criteria
 			if ($SearchError == "")
-				$srchAdvanced = $this->advancedSearchWhere();
+				$srchBasic = $this->basicSearchWhere();
 		}
 
 		// Restore display records
@@ -1023,15 +987,11 @@ class t001_property_list extends t001_property
 		// Load search default if no existing search criteria
 		if (!$this->checkSearchParms()) {
 
-			// Load advanced search from default
-			if ($this->loadAdvancedSearchDefault()) {
-				$srchAdvanced = $this->advancedSearchWhere();
-			}
+			// Load basic search from default
+			$this->BasicSearch->loadDefault();
+			if ($this->BasicSearch->Keyword != "")
+				$srchBasic = $this->basicSearchWhere();
 		}
-
-		// Restore search settings from Session
-		if ($SearchError == "")
-			$this->loadAdvancedSearch();
 
 		// Build search criteria
 		AddFilter($this->SearchWhere, $srchAdvanced);
@@ -1101,13 +1061,6 @@ class t001_property_list extends t001_property
 				else
 					$this->setWarningMessage($Language->phrase("NoRecord"));
 			}
-
-			// Audit trail on search
-			if ($this->AuditTrailOnSearch && $this->Command == "search" && !$this->RestoreSearch) {
-				$searchParm = ServerVar("QUERY_STRING");
-				$searchSql = $this->getSessionWhere();
-				$this->writeAuditTrailOnSearch($searchParm, $searchSql);
-			}
 		}
 
 		// Search options
@@ -1151,140 +1104,6 @@ class t001_property_list extends t001_property
 		}
 	}
 
-	// Exit inline mode
-	protected function clearInlineMode()
-	{
-		$this->LastAction = $this->CurrentAction; // Save last action
-		$this->CurrentAction = ""; // Clear action
-		$_SESSION[SESSION_INLINE_MODE] = ""; // Clear inline mode
-	}
-
-	// Switch to Grid Add mode
-	protected function gridAddMode()
-	{
-		$this->CurrentAction = "gridadd";
-		$_SESSION[SESSION_INLINE_MODE] = "gridadd";
-		$this->hideFieldsForAddEdit();
-	}
-
-	// Switch to Grid Edit mode
-	protected function gridEditMode()
-	{
-		$this->CurrentAction = "gridedit";
-		$_SESSION[SESSION_INLINE_MODE] = "gridedit";
-		$this->hideFieldsForAddEdit();
-	}
-
-	// Perform update to grid
-	public function gridUpdate()
-	{
-		global $Language, $CurrentForm, $FormError;
-		$gridUpdate = TRUE;
-
-		// Get old recordset
-		$this->CurrentFilter = $this->buildKeyFilter();
-		if ($this->CurrentFilter == "")
-			$this->CurrentFilter = "0=1";
-		$sql = $this->getCurrentSql();
-		$conn = $this->getConnection();
-		if ($rs = $conn->execute($sql)) {
-			$rsold = $rs->getRows();
-			$rs->close();
-		}
-
-		// Call Grid Updating event
-		if (!$this->Grid_Updating($rsold)) {
-			if ($this->getFailureMessage() == "")
-				$this->setFailureMessage($Language->phrase("GridEditCancelled")); // Set grid edit cancelled message
-			return FALSE;
-		}
-
-		// Begin transaction
-		$conn->beginTrans();
-		if ($this->AuditTrailOnEdit)
-			$this->writeAuditTrailDummy($Language->phrase("BatchUpdateBegin")); // Batch update begin
-		$key = "";
-
-		// Update row index and get row key
-		$CurrentForm->Index = -1;
-		$rowcnt = strval($CurrentForm->getValue($this->FormKeyCountName));
-		if ($rowcnt == "" || !is_numeric($rowcnt))
-			$rowcnt = 0;
-
-		// Update all rows based on key
-		for ($rowindex = 1; $rowindex <= $rowcnt; $rowindex++) {
-			$CurrentForm->Index = $rowindex;
-			$rowkey = strval($CurrentForm->getValue($this->FormKeyName));
-			$rowaction = strval($CurrentForm->getValue($this->FormActionName));
-
-			// Load all values and keys
-			if ($rowaction != "insertdelete") { // Skip insert then deleted rows
-				$this->loadFormValues(); // Get form values
-				if ($rowaction == "" || $rowaction == "edit" || $rowaction == "delete") {
-					$gridUpdate = $this->setupKeyValues($rowkey); // Set up key values
-				} else {
-					$gridUpdate = TRUE;
-				}
-
-				// Skip empty row
-				if ($rowaction == "insert" && $this->emptyRow()) {
-
-					// No action required
-				// Validate form and insert/update/delete record
-
-				} elseif ($gridUpdate) {
-					if ($rowaction == "delete") {
-						$this->CurrentFilter = $this->getRecordFilter();
-						$gridUpdate = $this->deleteRows(); // Delete this row
-					} else if (!$this->validateForm()) {
-						$gridUpdate = FALSE; // Form error, reset action
-						$this->setFailureMessage($FormError);
-					} else {
-						if ($rowaction == "insert") {
-							$gridUpdate = $this->addRow(); // Insert this row
-						} else {
-							if ($rowkey != "") {
-								$this->SendEmail = FALSE; // Do not send email on update success
-								$gridUpdate = $this->editRow(); // Update this row
-							}
-						} // End update
-					}
-				}
-				if ($gridUpdate) {
-					if ($key != "")
-						$key .= ", ";
-					$key .= $rowkey;
-				} else {
-					break;
-				}
-			}
-		}
-		if ($gridUpdate) {
-			$conn->commitTrans(); // Commit transaction
-
-			// Get new recordset
-			if ($rs = $conn->execute($sql)) {
-				$rsnew = $rs->getRows();
-				$rs->close();
-			}
-
-			// Call Grid_Updated event
-			$this->Grid_Updated($rsold, $rsnew);
-			if ($this->AuditTrailOnEdit)
-				$this->writeAuditTrailDummy($Language->phrase("BatchUpdateSuccess")); // Batch update success
-			if ($this->getSuccessMessage() == "")
-				$this->setSuccessMessage($Language->phrase("UpdateSuccess")); // Set up update success message
-			$this->clearInlineMode(); // Clear inline edit mode
-		} else {
-			$conn->rollbackTrans(); // Rollback transaction
-			if ($this->AuditTrailOnEdit)
-				$this->writeAuditTrailDummy($Language->phrase("BatchUpdateRollback")); // Batch update rollback
-			if ($this->getFailureMessage() == "")
-				$this->setFailureMessage($Language->phrase("UpdateFailed")); // Set update failed message
-		}
-		return $gridUpdate;
-	}
-
 	// Build filter for all keys
 	protected function buildKeyFilter()
 	{
@@ -1318,192 +1137,15 @@ class t001_property_list extends t001_property
 	protected function setupKeyValues($key)
 	{
 		$arKeyFlds = explode(Config("COMPOSITE_KEY_SEPARATOR"), $key);
-		if (count($arKeyFlds) >= 1) {
+		if (count($arKeyFlds) >= 2) {
 			$this->id->setOldValue($arKeyFlds[0]);
 			if (!is_numeric($this->id->OldValue))
 				return FALSE;
+			$this->hodetail_id->setOldValue($arKeyFlds[1]);
+			if (!is_numeric($this->hodetail_id->OldValue))
+				return FALSE;
 		}
 		return TRUE;
-	}
-
-	// Perform Grid Add
-	public function gridInsert()
-	{
-		global $Language, $CurrentForm, $FormError;
-		$rowindex = 1;
-		$gridInsert = FALSE;
-		$conn = $this->getConnection();
-
-		// Call Grid Inserting event
-		if (!$this->Grid_Inserting()) {
-			if ($this->getFailureMessage() == "")
-				$this->setFailureMessage($Language->phrase("GridAddCancelled")); // Set grid add cancelled message
-			return FALSE;
-		}
-
-		// Begin transaction
-		$conn->beginTrans();
-
-		// Init key filter
-		$wrkfilter = "";
-		$addcnt = 0;
-		if ($this->AuditTrailOnAdd)
-			$this->writeAuditTrailDummy($Language->phrase("BatchInsertBegin")); // Batch insert begin
-		$key = "";
-
-		// Get row count
-		$CurrentForm->Index = -1;
-		$rowcnt = strval($CurrentForm->getValue($this->FormKeyCountName));
-		if ($rowcnt == "" || !is_numeric($rowcnt))
-			$rowcnt = 0;
-
-		// Insert all rows
-		for ($rowindex = 1; $rowindex <= $rowcnt; $rowindex++) {
-
-			// Load current row values
-			$CurrentForm->Index = $rowindex;
-			$rowaction = strval($CurrentForm->getValue($this->FormActionName));
-			if ($rowaction != "" && $rowaction != "insert")
-				continue; // Skip
-			$this->loadFormValues(); // Get form values
-			if (!$this->emptyRow()) {
-				$addcnt++;
-				$this->SendEmail = FALSE; // Do not send email on insert success
-
-				// Validate form
-				if (!$this->validateForm()) {
-					$gridInsert = FALSE; // Form error, reset action
-					$this->setFailureMessage($FormError);
-				} else {
-					$gridInsert = $this->addRow($this->OldRecordset); // Insert this row
-				}
-				if ($gridInsert) {
-					if ($key != "")
-						$key .= Config("COMPOSITE_KEY_SEPARATOR");
-					$key .= $this->id->CurrentValue;
-
-					// Add filter for this record
-					$filter = $this->getRecordFilter();
-					if ($wrkfilter != "")
-						$wrkfilter .= " OR ";
-					$wrkfilter .= $filter;
-				} else {
-					break;
-				}
-			}
-		}
-		if ($addcnt == 0) { // No record inserted
-			$this->setFailureMessage($Language->phrase("NoAddRecord"));
-			$gridInsert = FALSE;
-		}
-		if ($gridInsert) {
-			$conn->commitTrans(); // Commit transaction
-
-			// Get new recordset
-			$this->CurrentFilter = $wrkfilter;
-			$sql = $this->getCurrentSql();
-			if ($rs = $conn->execute($sql)) {
-				$rsnew = $rs->getRows();
-				$rs->close();
-			}
-
-			// Call Grid_Inserted event
-			$this->Grid_Inserted($rsnew);
-			if ($this->AuditTrailOnAdd)
-				$this->writeAuditTrailDummy($Language->phrase("BatchInsertSuccess")); // Batch insert success
-			if ($this->getSuccessMessage() == "")
-				$this->setSuccessMessage($Language->phrase("InsertSuccess")); // Set up insert success message
-			$this->clearInlineMode(); // Clear grid add mode
-		} else {
-			$conn->rollbackTrans(); // Rollback transaction
-			if ($this->AuditTrailOnAdd)
-				$this->writeAuditTrailDummy($Language->phrase("BatchInsertRollback")); // Batch insert rollback
-			if ($this->getFailureMessage() == "")
-				$this->setFailureMessage($Language->phrase("InsertFailed")); // Set insert failed message
-		}
-		return $gridInsert;
-	}
-
-	// Check if empty row
-	public function emptyRow()
-	{
-		global $CurrentForm;
-		if ($CurrentForm->hasValue("x_Property") && $CurrentForm->hasValue("o_Property") && $this->Property->CurrentValue != $this->Property->OldValue)
-			return FALSE;
-		if ($CurrentForm->hasValue("x_TemplateFile") && $CurrentForm->hasValue("o_TemplateFile") && $this->TemplateFile->CurrentValue != $this->TemplateFile->OldValue)
-			return FALSE;
-		return TRUE;
-	}
-
-	// Validate grid form
-	public function validateGridForm()
-	{
-		global $CurrentForm;
-
-		// Get row count
-		$CurrentForm->Index = -1;
-		$rowcnt = strval($CurrentForm->getValue($this->FormKeyCountName));
-		if ($rowcnt == "" || !is_numeric($rowcnt))
-			$rowcnt = 0;
-
-		// Validate all records
-		for ($rowindex = 1; $rowindex <= $rowcnt; $rowindex++) {
-
-			// Load current row values
-			$CurrentForm->Index = $rowindex;
-			$rowaction = strval($CurrentForm->getValue($this->FormActionName));
-			if ($rowaction != "delete" && $rowaction != "insertdelete") {
-				$this->loadFormValues(); // Get form values
-				if ($rowaction == "insert" && $this->emptyRow()) {
-
-					// Ignore
-				} else if (!$this->validateForm()) {
-					return FALSE;
-				}
-			}
-		}
-		return TRUE;
-	}
-
-	// Get all form values of the grid
-	public function getGridFormValues()
-	{
-		global $CurrentForm;
-
-		// Get row count
-		$CurrentForm->Index = -1;
-		$rowcnt = strval($CurrentForm->getValue($this->FormKeyCountName));
-		if ($rowcnt == "" || !is_numeric($rowcnt))
-			$rowcnt = 0;
-		$rows = [];
-
-		// Loop through all records
-		for ($rowindex = 1; $rowindex <= $rowcnt; $rowindex++) {
-
-			// Load current row values
-			$CurrentForm->Index = $rowindex;
-			$rowaction = strval($CurrentForm->getValue($this->FormActionName));
-			if ($rowaction != "delete" && $rowaction != "insertdelete") {
-				$this->loadFormValues(); // Get form values
-				if ($rowaction == "insert" && $this->emptyRow()) {
-
-					// Ignore
-				} else {
-					$rows[] = $this->getFieldValues("FormValue"); // Return row as array
-				}
-			}
-		}
-		return $rows; // Return as array of array
-	}
-
-	// Restore form values for current row
-	public function restoreCurrentRowFormValues($idx)
-	{
-		global $CurrentForm;
-
-		// Get row based on current index
-		$CurrentForm->Index = $idx;
-		$this->loadFormValues(); // Load form values
 	}
 
 	// Get list of filters
@@ -1514,8 +1156,52 @@ class t001_property_list extends t001_property
 		// Initialize
 		$filterList = "";
 		$savedFilterList = "";
+		$filterList = Concat($filterList, $this->id->AdvancedSearch->toJson(), ","); // Field id
+		$filterList = Concat($filterList, $this->property_id->AdvancedSearch->toJson(), ","); // Field property_id
+		$filterList = Concat($filterList, $this->TransactionNo->AdvancedSearch->toJson(), ","); // Field TransactionNo
+		$filterList = Concat($filterList, $this->TransactionDate->AdvancedSearch->toJson(), ","); // Field TransactionDate
+		$filterList = Concat($filterList, $this->TransactionType->AdvancedSearch->toJson(), ","); // Field TransactionType
+		$filterList = Concat($filterList, $this->HandedOverTo->AdvancedSearch->toJson(), ","); // Field HandedOverTo
+		$filterList = Concat($filterList, $this->CodeNoTo->AdvancedSearch->toJson(), ","); // Field CodeNoTo
+		$filterList = Concat($filterList, $this->DepartmentTo->AdvancedSearch->toJson(), ","); // Field DepartmentTo
+		$filterList = Concat($filterList, $this->HandedOverBy->AdvancedSearch->toJson(), ","); // Field HandedOverBy
+		$filterList = Concat($filterList, $this->CodeNoBy->AdvancedSearch->toJson(), ","); // Field CodeNoBy
+		$filterList = Concat($filterList, $this->DepartmentBy->AdvancedSearch->toJson(), ","); // Field DepartmentBy
+		$filterList = Concat($filterList, $this->Sign1->AdvancedSearch->toJson(), ","); // Field Sign1
+		$filterList = Concat($filterList, $this->Sign2->AdvancedSearch->toJson(), ","); // Field Sign2
+		$filterList = Concat($filterList, $this->Sign3->AdvancedSearch->toJson(), ","); // Field Sign3
+		$filterList = Concat($filterList, $this->Sign4->AdvancedSearch->toJson(), ","); // Field Sign4
+		$filterList = Concat($filterList, $this->hodetail_id->AdvancedSearch->toJson(), ","); // Field hodetail_id
+		$filterList = Concat($filterList, $this->asset_id->AdvancedSearch->toJson(), ","); // Field asset_id
 		$filterList = Concat($filterList, $this->Property->AdvancedSearch->toJson(), ","); // Field Property
 		$filterList = Concat($filterList, $this->TemplateFile->AdvancedSearch->toJson(), ","); // Field TemplateFile
+		$filterList = Concat($filterList, $this->hoDepartmentTo->AdvancedSearch->toJson(), ","); // Field hoDepartmentTo
+		$filterList = Concat($filterList, $this->hoSignatureTo->AdvancedSearch->toJson(), ","); // Field hoSignatureTo
+		$filterList = Concat($filterList, $this->hoJobTitleTo->AdvancedSearch->toJson(), ","); // Field hoJobTitleTo
+		$filterList = Concat($filterList, $this->hoDepartmentBy->AdvancedSearch->toJson(), ","); // Field hoDepartmentBy
+		$filterList = Concat($filterList, $this->hoSignatureBy->AdvancedSearch->toJson(), ","); // Field hoSignatureBy
+		$filterList = Concat($filterList, $this->hoJobTitleBy->AdvancedSearch->toJson(), ","); // Field hoJobTitleBy
+		$filterList = Concat($filterList, $this->Description->AdvancedSearch->toJson(), ","); // Field Description
+		$filterList = Concat($filterList, $this->ProcurementDate->AdvancedSearch->toJson(), ","); // Field ProcurementDate
+		$filterList = Concat($filterList, $this->ProcurementCurrentCost->AdvancedSearch->toJson(), ","); // Field ProcurementCurrentCost
+		$filterList = Concat($filterList, $this->DepreciationAmount->AdvancedSearch->toJson(), ","); // Field DepreciationAmount
+		$filterList = Concat($filterList, $this->DepreciationYtd->AdvancedSearch->toJson(), ","); // Field DepreciationYtd
+		$filterList = Concat($filterList, $this->NetBookValue->AdvancedSearch->toJson(), ","); // Field NetBookValue
+		$filterList = Concat($filterList, $this->Periode->AdvancedSearch->toJson(), ","); // Field Periode
+		$filterList = Concat($filterList, $this->Qty->AdvancedSearch->toJson(), ","); // Field Qty
+		$filterList = Concat($filterList, $this->Remarks->AdvancedSearch->toJson(), ","); // Field Remarks
+		$filterList = Concat($filterList, $this->Sign1Signature->AdvancedSearch->toJson(), ","); // Field Sign1Signature
+		$filterList = Concat($filterList, $this->Sign1JobTitle->AdvancedSearch->toJson(), ","); // Field Sign1JobTitle
+		$filterList = Concat($filterList, $this->Sign2Signature->AdvancedSearch->toJson(), ","); // Field Sign2Signature
+		$filterList = Concat($filterList, $this->Sign2JobTitle->AdvancedSearch->toJson(), ","); // Field Sign2JobTitle
+		$filterList = Concat($filterList, $this->Sign3Signature->AdvancedSearch->toJson(), ","); // Field Sign3Signature
+		$filterList = Concat($filterList, $this->Sign3JobTitle->AdvancedSearch->toJson(), ","); // Field Sign3JobTitle
+		$filterList = Concat($filterList, $this->Sign4Signature->AdvancedSearch->toJson(), ","); // Field Sign4Signature
+		$filterList = Concat($filterList, $this->Sign4JobTitle->AdvancedSearch->toJson(), ","); // Field Sign4JobTitle
+		if ($this->BasicSearch->Keyword != "") {
+			$wrk = "\"" . Config("TABLE_BASIC_SEARCH") . "\":\"" . JsEncode($this->BasicSearch->Keyword) . "\",\"" . Config("TABLE_BASIC_SEARCH_TYPE") . "\":\"" . JsEncode($this->BasicSearch->Type) . "\"";
+			$filterList = Concat($filterList, $wrk, ",");
+		}
 
 		// Return filter list in JSON
 		if ($filterList != "")
@@ -1531,7 +1217,7 @@ class t001_property_list extends t001_property
 		global $UserProfile;
 		if (Post("ajax") == "savefilters") { // Save filter request (Ajax)
 			$filters = Post("filters");
-			$UserProfile->setSearchFilters(CurrentUserName(), "ft001_propertylistsrch", $filters);
+			$UserProfile->setSearchFilters(CurrentUserName(), "fv101_holistsrch", $filters);
 			WriteJson([["success" => TRUE]]); // Success
 			return TRUE;
 		} elseif (Post("cmd") == "resetfilter") {
@@ -1550,6 +1236,142 @@ class t001_property_list extends t001_property
 		$filter = json_decode(Post("filter"), TRUE);
 		$this->Command = "search";
 
+		// Field id
+		$this->id->AdvancedSearch->SearchValue = @$filter["x_id"];
+		$this->id->AdvancedSearch->SearchOperator = @$filter["z_id"];
+		$this->id->AdvancedSearch->SearchCondition = @$filter["v_id"];
+		$this->id->AdvancedSearch->SearchValue2 = @$filter["y_id"];
+		$this->id->AdvancedSearch->SearchOperator2 = @$filter["w_id"];
+		$this->id->AdvancedSearch->save();
+
+		// Field property_id
+		$this->property_id->AdvancedSearch->SearchValue = @$filter["x_property_id"];
+		$this->property_id->AdvancedSearch->SearchOperator = @$filter["z_property_id"];
+		$this->property_id->AdvancedSearch->SearchCondition = @$filter["v_property_id"];
+		$this->property_id->AdvancedSearch->SearchValue2 = @$filter["y_property_id"];
+		$this->property_id->AdvancedSearch->SearchOperator2 = @$filter["w_property_id"];
+		$this->property_id->AdvancedSearch->save();
+
+		// Field TransactionNo
+		$this->TransactionNo->AdvancedSearch->SearchValue = @$filter["x_TransactionNo"];
+		$this->TransactionNo->AdvancedSearch->SearchOperator = @$filter["z_TransactionNo"];
+		$this->TransactionNo->AdvancedSearch->SearchCondition = @$filter["v_TransactionNo"];
+		$this->TransactionNo->AdvancedSearch->SearchValue2 = @$filter["y_TransactionNo"];
+		$this->TransactionNo->AdvancedSearch->SearchOperator2 = @$filter["w_TransactionNo"];
+		$this->TransactionNo->AdvancedSearch->save();
+
+		// Field TransactionDate
+		$this->TransactionDate->AdvancedSearch->SearchValue = @$filter["x_TransactionDate"];
+		$this->TransactionDate->AdvancedSearch->SearchOperator = @$filter["z_TransactionDate"];
+		$this->TransactionDate->AdvancedSearch->SearchCondition = @$filter["v_TransactionDate"];
+		$this->TransactionDate->AdvancedSearch->SearchValue2 = @$filter["y_TransactionDate"];
+		$this->TransactionDate->AdvancedSearch->SearchOperator2 = @$filter["w_TransactionDate"];
+		$this->TransactionDate->AdvancedSearch->save();
+
+		// Field TransactionType
+		$this->TransactionType->AdvancedSearch->SearchValue = @$filter["x_TransactionType"];
+		$this->TransactionType->AdvancedSearch->SearchOperator = @$filter["z_TransactionType"];
+		$this->TransactionType->AdvancedSearch->SearchCondition = @$filter["v_TransactionType"];
+		$this->TransactionType->AdvancedSearch->SearchValue2 = @$filter["y_TransactionType"];
+		$this->TransactionType->AdvancedSearch->SearchOperator2 = @$filter["w_TransactionType"];
+		$this->TransactionType->AdvancedSearch->save();
+
+		// Field HandedOverTo
+		$this->HandedOverTo->AdvancedSearch->SearchValue = @$filter["x_HandedOverTo"];
+		$this->HandedOverTo->AdvancedSearch->SearchOperator = @$filter["z_HandedOverTo"];
+		$this->HandedOverTo->AdvancedSearch->SearchCondition = @$filter["v_HandedOverTo"];
+		$this->HandedOverTo->AdvancedSearch->SearchValue2 = @$filter["y_HandedOverTo"];
+		$this->HandedOverTo->AdvancedSearch->SearchOperator2 = @$filter["w_HandedOverTo"];
+		$this->HandedOverTo->AdvancedSearch->save();
+
+		// Field CodeNoTo
+		$this->CodeNoTo->AdvancedSearch->SearchValue = @$filter["x_CodeNoTo"];
+		$this->CodeNoTo->AdvancedSearch->SearchOperator = @$filter["z_CodeNoTo"];
+		$this->CodeNoTo->AdvancedSearch->SearchCondition = @$filter["v_CodeNoTo"];
+		$this->CodeNoTo->AdvancedSearch->SearchValue2 = @$filter["y_CodeNoTo"];
+		$this->CodeNoTo->AdvancedSearch->SearchOperator2 = @$filter["w_CodeNoTo"];
+		$this->CodeNoTo->AdvancedSearch->save();
+
+		// Field DepartmentTo
+		$this->DepartmentTo->AdvancedSearch->SearchValue = @$filter["x_DepartmentTo"];
+		$this->DepartmentTo->AdvancedSearch->SearchOperator = @$filter["z_DepartmentTo"];
+		$this->DepartmentTo->AdvancedSearch->SearchCondition = @$filter["v_DepartmentTo"];
+		$this->DepartmentTo->AdvancedSearch->SearchValue2 = @$filter["y_DepartmentTo"];
+		$this->DepartmentTo->AdvancedSearch->SearchOperator2 = @$filter["w_DepartmentTo"];
+		$this->DepartmentTo->AdvancedSearch->save();
+
+		// Field HandedOverBy
+		$this->HandedOverBy->AdvancedSearch->SearchValue = @$filter["x_HandedOverBy"];
+		$this->HandedOverBy->AdvancedSearch->SearchOperator = @$filter["z_HandedOverBy"];
+		$this->HandedOverBy->AdvancedSearch->SearchCondition = @$filter["v_HandedOverBy"];
+		$this->HandedOverBy->AdvancedSearch->SearchValue2 = @$filter["y_HandedOverBy"];
+		$this->HandedOverBy->AdvancedSearch->SearchOperator2 = @$filter["w_HandedOverBy"];
+		$this->HandedOverBy->AdvancedSearch->save();
+
+		// Field CodeNoBy
+		$this->CodeNoBy->AdvancedSearch->SearchValue = @$filter["x_CodeNoBy"];
+		$this->CodeNoBy->AdvancedSearch->SearchOperator = @$filter["z_CodeNoBy"];
+		$this->CodeNoBy->AdvancedSearch->SearchCondition = @$filter["v_CodeNoBy"];
+		$this->CodeNoBy->AdvancedSearch->SearchValue2 = @$filter["y_CodeNoBy"];
+		$this->CodeNoBy->AdvancedSearch->SearchOperator2 = @$filter["w_CodeNoBy"];
+		$this->CodeNoBy->AdvancedSearch->save();
+
+		// Field DepartmentBy
+		$this->DepartmentBy->AdvancedSearch->SearchValue = @$filter["x_DepartmentBy"];
+		$this->DepartmentBy->AdvancedSearch->SearchOperator = @$filter["z_DepartmentBy"];
+		$this->DepartmentBy->AdvancedSearch->SearchCondition = @$filter["v_DepartmentBy"];
+		$this->DepartmentBy->AdvancedSearch->SearchValue2 = @$filter["y_DepartmentBy"];
+		$this->DepartmentBy->AdvancedSearch->SearchOperator2 = @$filter["w_DepartmentBy"];
+		$this->DepartmentBy->AdvancedSearch->save();
+
+		// Field Sign1
+		$this->Sign1->AdvancedSearch->SearchValue = @$filter["x_Sign1"];
+		$this->Sign1->AdvancedSearch->SearchOperator = @$filter["z_Sign1"];
+		$this->Sign1->AdvancedSearch->SearchCondition = @$filter["v_Sign1"];
+		$this->Sign1->AdvancedSearch->SearchValue2 = @$filter["y_Sign1"];
+		$this->Sign1->AdvancedSearch->SearchOperator2 = @$filter["w_Sign1"];
+		$this->Sign1->AdvancedSearch->save();
+
+		// Field Sign2
+		$this->Sign2->AdvancedSearch->SearchValue = @$filter["x_Sign2"];
+		$this->Sign2->AdvancedSearch->SearchOperator = @$filter["z_Sign2"];
+		$this->Sign2->AdvancedSearch->SearchCondition = @$filter["v_Sign2"];
+		$this->Sign2->AdvancedSearch->SearchValue2 = @$filter["y_Sign2"];
+		$this->Sign2->AdvancedSearch->SearchOperator2 = @$filter["w_Sign2"];
+		$this->Sign2->AdvancedSearch->save();
+
+		// Field Sign3
+		$this->Sign3->AdvancedSearch->SearchValue = @$filter["x_Sign3"];
+		$this->Sign3->AdvancedSearch->SearchOperator = @$filter["z_Sign3"];
+		$this->Sign3->AdvancedSearch->SearchCondition = @$filter["v_Sign3"];
+		$this->Sign3->AdvancedSearch->SearchValue2 = @$filter["y_Sign3"];
+		$this->Sign3->AdvancedSearch->SearchOperator2 = @$filter["w_Sign3"];
+		$this->Sign3->AdvancedSearch->save();
+
+		// Field Sign4
+		$this->Sign4->AdvancedSearch->SearchValue = @$filter["x_Sign4"];
+		$this->Sign4->AdvancedSearch->SearchOperator = @$filter["z_Sign4"];
+		$this->Sign4->AdvancedSearch->SearchCondition = @$filter["v_Sign4"];
+		$this->Sign4->AdvancedSearch->SearchValue2 = @$filter["y_Sign4"];
+		$this->Sign4->AdvancedSearch->SearchOperator2 = @$filter["w_Sign4"];
+		$this->Sign4->AdvancedSearch->save();
+
+		// Field hodetail_id
+		$this->hodetail_id->AdvancedSearch->SearchValue = @$filter["x_hodetail_id"];
+		$this->hodetail_id->AdvancedSearch->SearchOperator = @$filter["z_hodetail_id"];
+		$this->hodetail_id->AdvancedSearch->SearchCondition = @$filter["v_hodetail_id"];
+		$this->hodetail_id->AdvancedSearch->SearchValue2 = @$filter["y_hodetail_id"];
+		$this->hodetail_id->AdvancedSearch->SearchOperator2 = @$filter["w_hodetail_id"];
+		$this->hodetail_id->AdvancedSearch->save();
+
+		// Field asset_id
+		$this->asset_id->AdvancedSearch->SearchValue = @$filter["x_asset_id"];
+		$this->asset_id->AdvancedSearch->SearchOperator = @$filter["z_asset_id"];
+		$this->asset_id->AdvancedSearch->SearchCondition = @$filter["v_asset_id"];
+		$this->asset_id->AdvancedSearch->SearchValue2 = @$filter["y_asset_id"];
+		$this->asset_id->AdvancedSearch->SearchOperator2 = @$filter["w_asset_id"];
+		$this->asset_id->AdvancedSearch->save();
+
 		// Field Property
 		$this->Property->AdvancedSearch->SearchValue = @$filter["x_Property"];
 		$this->Property->AdvancedSearch->SearchOperator = @$filter["z_Property"];
@@ -1565,87 +1387,332 @@ class t001_property_list extends t001_property
 		$this->TemplateFile->AdvancedSearch->SearchValue2 = @$filter["y_TemplateFile"];
 		$this->TemplateFile->AdvancedSearch->SearchOperator2 = @$filter["w_TemplateFile"];
 		$this->TemplateFile->AdvancedSearch->save();
+
+		// Field hoDepartmentTo
+		$this->hoDepartmentTo->AdvancedSearch->SearchValue = @$filter["x_hoDepartmentTo"];
+		$this->hoDepartmentTo->AdvancedSearch->SearchOperator = @$filter["z_hoDepartmentTo"];
+		$this->hoDepartmentTo->AdvancedSearch->SearchCondition = @$filter["v_hoDepartmentTo"];
+		$this->hoDepartmentTo->AdvancedSearch->SearchValue2 = @$filter["y_hoDepartmentTo"];
+		$this->hoDepartmentTo->AdvancedSearch->SearchOperator2 = @$filter["w_hoDepartmentTo"];
+		$this->hoDepartmentTo->AdvancedSearch->save();
+
+		// Field hoSignatureTo
+		$this->hoSignatureTo->AdvancedSearch->SearchValue = @$filter["x_hoSignatureTo"];
+		$this->hoSignatureTo->AdvancedSearch->SearchOperator = @$filter["z_hoSignatureTo"];
+		$this->hoSignatureTo->AdvancedSearch->SearchCondition = @$filter["v_hoSignatureTo"];
+		$this->hoSignatureTo->AdvancedSearch->SearchValue2 = @$filter["y_hoSignatureTo"];
+		$this->hoSignatureTo->AdvancedSearch->SearchOperator2 = @$filter["w_hoSignatureTo"];
+		$this->hoSignatureTo->AdvancedSearch->save();
+
+		// Field hoJobTitleTo
+		$this->hoJobTitleTo->AdvancedSearch->SearchValue = @$filter["x_hoJobTitleTo"];
+		$this->hoJobTitleTo->AdvancedSearch->SearchOperator = @$filter["z_hoJobTitleTo"];
+		$this->hoJobTitleTo->AdvancedSearch->SearchCondition = @$filter["v_hoJobTitleTo"];
+		$this->hoJobTitleTo->AdvancedSearch->SearchValue2 = @$filter["y_hoJobTitleTo"];
+		$this->hoJobTitleTo->AdvancedSearch->SearchOperator2 = @$filter["w_hoJobTitleTo"];
+		$this->hoJobTitleTo->AdvancedSearch->save();
+
+		// Field hoDepartmentBy
+		$this->hoDepartmentBy->AdvancedSearch->SearchValue = @$filter["x_hoDepartmentBy"];
+		$this->hoDepartmentBy->AdvancedSearch->SearchOperator = @$filter["z_hoDepartmentBy"];
+		$this->hoDepartmentBy->AdvancedSearch->SearchCondition = @$filter["v_hoDepartmentBy"];
+		$this->hoDepartmentBy->AdvancedSearch->SearchValue2 = @$filter["y_hoDepartmentBy"];
+		$this->hoDepartmentBy->AdvancedSearch->SearchOperator2 = @$filter["w_hoDepartmentBy"];
+		$this->hoDepartmentBy->AdvancedSearch->save();
+
+		// Field hoSignatureBy
+		$this->hoSignatureBy->AdvancedSearch->SearchValue = @$filter["x_hoSignatureBy"];
+		$this->hoSignatureBy->AdvancedSearch->SearchOperator = @$filter["z_hoSignatureBy"];
+		$this->hoSignatureBy->AdvancedSearch->SearchCondition = @$filter["v_hoSignatureBy"];
+		$this->hoSignatureBy->AdvancedSearch->SearchValue2 = @$filter["y_hoSignatureBy"];
+		$this->hoSignatureBy->AdvancedSearch->SearchOperator2 = @$filter["w_hoSignatureBy"];
+		$this->hoSignatureBy->AdvancedSearch->save();
+
+		// Field hoJobTitleBy
+		$this->hoJobTitleBy->AdvancedSearch->SearchValue = @$filter["x_hoJobTitleBy"];
+		$this->hoJobTitleBy->AdvancedSearch->SearchOperator = @$filter["z_hoJobTitleBy"];
+		$this->hoJobTitleBy->AdvancedSearch->SearchCondition = @$filter["v_hoJobTitleBy"];
+		$this->hoJobTitleBy->AdvancedSearch->SearchValue2 = @$filter["y_hoJobTitleBy"];
+		$this->hoJobTitleBy->AdvancedSearch->SearchOperator2 = @$filter["w_hoJobTitleBy"];
+		$this->hoJobTitleBy->AdvancedSearch->save();
+
+		// Field Description
+		$this->Description->AdvancedSearch->SearchValue = @$filter["x_Description"];
+		$this->Description->AdvancedSearch->SearchOperator = @$filter["z_Description"];
+		$this->Description->AdvancedSearch->SearchCondition = @$filter["v_Description"];
+		$this->Description->AdvancedSearch->SearchValue2 = @$filter["y_Description"];
+		$this->Description->AdvancedSearch->SearchOperator2 = @$filter["w_Description"];
+		$this->Description->AdvancedSearch->save();
+
+		// Field ProcurementDate
+		$this->ProcurementDate->AdvancedSearch->SearchValue = @$filter["x_ProcurementDate"];
+		$this->ProcurementDate->AdvancedSearch->SearchOperator = @$filter["z_ProcurementDate"];
+		$this->ProcurementDate->AdvancedSearch->SearchCondition = @$filter["v_ProcurementDate"];
+		$this->ProcurementDate->AdvancedSearch->SearchValue2 = @$filter["y_ProcurementDate"];
+		$this->ProcurementDate->AdvancedSearch->SearchOperator2 = @$filter["w_ProcurementDate"];
+		$this->ProcurementDate->AdvancedSearch->save();
+
+		// Field ProcurementCurrentCost
+		$this->ProcurementCurrentCost->AdvancedSearch->SearchValue = @$filter["x_ProcurementCurrentCost"];
+		$this->ProcurementCurrentCost->AdvancedSearch->SearchOperator = @$filter["z_ProcurementCurrentCost"];
+		$this->ProcurementCurrentCost->AdvancedSearch->SearchCondition = @$filter["v_ProcurementCurrentCost"];
+		$this->ProcurementCurrentCost->AdvancedSearch->SearchValue2 = @$filter["y_ProcurementCurrentCost"];
+		$this->ProcurementCurrentCost->AdvancedSearch->SearchOperator2 = @$filter["w_ProcurementCurrentCost"];
+		$this->ProcurementCurrentCost->AdvancedSearch->save();
+
+		// Field DepreciationAmount
+		$this->DepreciationAmount->AdvancedSearch->SearchValue = @$filter["x_DepreciationAmount"];
+		$this->DepreciationAmount->AdvancedSearch->SearchOperator = @$filter["z_DepreciationAmount"];
+		$this->DepreciationAmount->AdvancedSearch->SearchCondition = @$filter["v_DepreciationAmount"];
+		$this->DepreciationAmount->AdvancedSearch->SearchValue2 = @$filter["y_DepreciationAmount"];
+		$this->DepreciationAmount->AdvancedSearch->SearchOperator2 = @$filter["w_DepreciationAmount"];
+		$this->DepreciationAmount->AdvancedSearch->save();
+
+		// Field DepreciationYtd
+		$this->DepreciationYtd->AdvancedSearch->SearchValue = @$filter["x_DepreciationYtd"];
+		$this->DepreciationYtd->AdvancedSearch->SearchOperator = @$filter["z_DepreciationYtd"];
+		$this->DepreciationYtd->AdvancedSearch->SearchCondition = @$filter["v_DepreciationYtd"];
+		$this->DepreciationYtd->AdvancedSearch->SearchValue2 = @$filter["y_DepreciationYtd"];
+		$this->DepreciationYtd->AdvancedSearch->SearchOperator2 = @$filter["w_DepreciationYtd"];
+		$this->DepreciationYtd->AdvancedSearch->save();
+
+		// Field NetBookValue
+		$this->NetBookValue->AdvancedSearch->SearchValue = @$filter["x_NetBookValue"];
+		$this->NetBookValue->AdvancedSearch->SearchOperator = @$filter["z_NetBookValue"];
+		$this->NetBookValue->AdvancedSearch->SearchCondition = @$filter["v_NetBookValue"];
+		$this->NetBookValue->AdvancedSearch->SearchValue2 = @$filter["y_NetBookValue"];
+		$this->NetBookValue->AdvancedSearch->SearchOperator2 = @$filter["w_NetBookValue"];
+		$this->NetBookValue->AdvancedSearch->save();
+
+		// Field Periode
+		$this->Periode->AdvancedSearch->SearchValue = @$filter["x_Periode"];
+		$this->Periode->AdvancedSearch->SearchOperator = @$filter["z_Periode"];
+		$this->Periode->AdvancedSearch->SearchCondition = @$filter["v_Periode"];
+		$this->Periode->AdvancedSearch->SearchValue2 = @$filter["y_Periode"];
+		$this->Periode->AdvancedSearch->SearchOperator2 = @$filter["w_Periode"];
+		$this->Periode->AdvancedSearch->save();
+
+		// Field Qty
+		$this->Qty->AdvancedSearch->SearchValue = @$filter["x_Qty"];
+		$this->Qty->AdvancedSearch->SearchOperator = @$filter["z_Qty"];
+		$this->Qty->AdvancedSearch->SearchCondition = @$filter["v_Qty"];
+		$this->Qty->AdvancedSearch->SearchValue2 = @$filter["y_Qty"];
+		$this->Qty->AdvancedSearch->SearchOperator2 = @$filter["w_Qty"];
+		$this->Qty->AdvancedSearch->save();
+
+		// Field Remarks
+		$this->Remarks->AdvancedSearch->SearchValue = @$filter["x_Remarks"];
+		$this->Remarks->AdvancedSearch->SearchOperator = @$filter["z_Remarks"];
+		$this->Remarks->AdvancedSearch->SearchCondition = @$filter["v_Remarks"];
+		$this->Remarks->AdvancedSearch->SearchValue2 = @$filter["y_Remarks"];
+		$this->Remarks->AdvancedSearch->SearchOperator2 = @$filter["w_Remarks"];
+		$this->Remarks->AdvancedSearch->save();
+
+		// Field Sign1Signature
+		$this->Sign1Signature->AdvancedSearch->SearchValue = @$filter["x_Sign1Signature"];
+		$this->Sign1Signature->AdvancedSearch->SearchOperator = @$filter["z_Sign1Signature"];
+		$this->Sign1Signature->AdvancedSearch->SearchCondition = @$filter["v_Sign1Signature"];
+		$this->Sign1Signature->AdvancedSearch->SearchValue2 = @$filter["y_Sign1Signature"];
+		$this->Sign1Signature->AdvancedSearch->SearchOperator2 = @$filter["w_Sign1Signature"];
+		$this->Sign1Signature->AdvancedSearch->save();
+
+		// Field Sign1JobTitle
+		$this->Sign1JobTitle->AdvancedSearch->SearchValue = @$filter["x_Sign1JobTitle"];
+		$this->Sign1JobTitle->AdvancedSearch->SearchOperator = @$filter["z_Sign1JobTitle"];
+		$this->Sign1JobTitle->AdvancedSearch->SearchCondition = @$filter["v_Sign1JobTitle"];
+		$this->Sign1JobTitle->AdvancedSearch->SearchValue2 = @$filter["y_Sign1JobTitle"];
+		$this->Sign1JobTitle->AdvancedSearch->SearchOperator2 = @$filter["w_Sign1JobTitle"];
+		$this->Sign1JobTitle->AdvancedSearch->save();
+
+		// Field Sign2Signature
+		$this->Sign2Signature->AdvancedSearch->SearchValue = @$filter["x_Sign2Signature"];
+		$this->Sign2Signature->AdvancedSearch->SearchOperator = @$filter["z_Sign2Signature"];
+		$this->Sign2Signature->AdvancedSearch->SearchCondition = @$filter["v_Sign2Signature"];
+		$this->Sign2Signature->AdvancedSearch->SearchValue2 = @$filter["y_Sign2Signature"];
+		$this->Sign2Signature->AdvancedSearch->SearchOperator2 = @$filter["w_Sign2Signature"];
+		$this->Sign2Signature->AdvancedSearch->save();
+
+		// Field Sign2JobTitle
+		$this->Sign2JobTitle->AdvancedSearch->SearchValue = @$filter["x_Sign2JobTitle"];
+		$this->Sign2JobTitle->AdvancedSearch->SearchOperator = @$filter["z_Sign2JobTitle"];
+		$this->Sign2JobTitle->AdvancedSearch->SearchCondition = @$filter["v_Sign2JobTitle"];
+		$this->Sign2JobTitle->AdvancedSearch->SearchValue2 = @$filter["y_Sign2JobTitle"];
+		$this->Sign2JobTitle->AdvancedSearch->SearchOperator2 = @$filter["w_Sign2JobTitle"];
+		$this->Sign2JobTitle->AdvancedSearch->save();
+
+		// Field Sign3Signature
+		$this->Sign3Signature->AdvancedSearch->SearchValue = @$filter["x_Sign3Signature"];
+		$this->Sign3Signature->AdvancedSearch->SearchOperator = @$filter["z_Sign3Signature"];
+		$this->Sign3Signature->AdvancedSearch->SearchCondition = @$filter["v_Sign3Signature"];
+		$this->Sign3Signature->AdvancedSearch->SearchValue2 = @$filter["y_Sign3Signature"];
+		$this->Sign3Signature->AdvancedSearch->SearchOperator2 = @$filter["w_Sign3Signature"];
+		$this->Sign3Signature->AdvancedSearch->save();
+
+		// Field Sign3JobTitle
+		$this->Sign3JobTitle->AdvancedSearch->SearchValue = @$filter["x_Sign3JobTitle"];
+		$this->Sign3JobTitle->AdvancedSearch->SearchOperator = @$filter["z_Sign3JobTitle"];
+		$this->Sign3JobTitle->AdvancedSearch->SearchCondition = @$filter["v_Sign3JobTitle"];
+		$this->Sign3JobTitle->AdvancedSearch->SearchValue2 = @$filter["y_Sign3JobTitle"];
+		$this->Sign3JobTitle->AdvancedSearch->SearchOperator2 = @$filter["w_Sign3JobTitle"];
+		$this->Sign3JobTitle->AdvancedSearch->save();
+
+		// Field Sign4Signature
+		$this->Sign4Signature->AdvancedSearch->SearchValue = @$filter["x_Sign4Signature"];
+		$this->Sign4Signature->AdvancedSearch->SearchOperator = @$filter["z_Sign4Signature"];
+		$this->Sign4Signature->AdvancedSearch->SearchCondition = @$filter["v_Sign4Signature"];
+		$this->Sign4Signature->AdvancedSearch->SearchValue2 = @$filter["y_Sign4Signature"];
+		$this->Sign4Signature->AdvancedSearch->SearchOperator2 = @$filter["w_Sign4Signature"];
+		$this->Sign4Signature->AdvancedSearch->save();
+
+		// Field Sign4JobTitle
+		$this->Sign4JobTitle->AdvancedSearch->SearchValue = @$filter["x_Sign4JobTitle"];
+		$this->Sign4JobTitle->AdvancedSearch->SearchOperator = @$filter["z_Sign4JobTitle"];
+		$this->Sign4JobTitle->AdvancedSearch->SearchCondition = @$filter["v_Sign4JobTitle"];
+		$this->Sign4JobTitle->AdvancedSearch->SearchValue2 = @$filter["y_Sign4JobTitle"];
+		$this->Sign4JobTitle->AdvancedSearch->SearchOperator2 = @$filter["w_Sign4JobTitle"];
+		$this->Sign4JobTitle->AdvancedSearch->save();
+		$this->BasicSearch->setKeyword(@$filter[Config("TABLE_BASIC_SEARCH")]);
+		$this->BasicSearch->setType(@$filter[Config("TABLE_BASIC_SEARCH_TYPE")]);
 	}
 
-	// Advanced search WHERE clause based on QueryString
-	protected function advancedSearchWhere($default = FALSE)
+	// Return basic search SQL
+	protected function basicSearchSql($arKeywords, $type)
 	{
-		global $Security;
 		$where = "";
-		if (!$Security->canSearch())
-			return "";
-		$this->buildSearchSql($where, $this->Property, $default, FALSE); // Property
-		$this->buildSearchSql($where, $this->TemplateFile, $default, FALSE); // TemplateFile
-
-		// Set up search parm
-		if (!$default && $where != "" && in_array($this->Command, ["", "reset", "resetall"])) {
-			$this->Command = "search";
-		}
-		if (!$default && $this->Command == "search") {
-			$this->Property->AdvancedSearch->save(); // Property
-			$this->TemplateFile->AdvancedSearch->save(); // TemplateFile
-		}
+		$this->buildBasicSearchSql($where, $this->TransactionNo, $arKeywords, $type);
+		$this->buildBasicSearchSql($where, $this->CodeNoTo, $arKeywords, $type);
+		$this->buildBasicSearchSql($where, $this->CodeNoBy, $arKeywords, $type);
+		$this->buildBasicSearchSql($where, $this->Property, $arKeywords, $type);
+		$this->buildBasicSearchSql($where, $this->TemplateFile, $arKeywords, $type);
+		$this->buildBasicSearchSql($where, $this->hoDepartmentTo, $arKeywords, $type);
+		$this->buildBasicSearchSql($where, $this->hoSignatureTo, $arKeywords, $type);
+		$this->buildBasicSearchSql($where, $this->hoJobTitleTo, $arKeywords, $type);
+		$this->buildBasicSearchSql($where, $this->hoDepartmentBy, $arKeywords, $type);
+		$this->buildBasicSearchSql($where, $this->hoSignatureBy, $arKeywords, $type);
+		$this->buildBasicSearchSql($where, $this->hoJobTitleBy, $arKeywords, $type);
+		$this->buildBasicSearchSql($where, $this->Description, $arKeywords, $type);
+		$this->buildBasicSearchSql($where, $this->Remarks, $arKeywords, $type);
+		$this->buildBasicSearchSql($where, $this->Sign1Signature, $arKeywords, $type);
+		$this->buildBasicSearchSql($where, $this->Sign1JobTitle, $arKeywords, $type);
+		$this->buildBasicSearchSql($where, $this->Sign2Signature, $arKeywords, $type);
+		$this->buildBasicSearchSql($where, $this->Sign2JobTitle, $arKeywords, $type);
+		$this->buildBasicSearchSql($where, $this->Sign3Signature, $arKeywords, $type);
+		$this->buildBasicSearchSql($where, $this->Sign3JobTitle, $arKeywords, $type);
+		$this->buildBasicSearchSql($where, $this->Sign4Signature, $arKeywords, $type);
+		$this->buildBasicSearchSql($where, $this->Sign4JobTitle, $arKeywords, $type);
 		return $where;
 	}
 
-	// Build search SQL
-	protected function buildSearchSql(&$where, &$fld, $default, $multiValue)
+	// Build basic search SQL
+	protected function buildBasicSearchSql(&$where, &$fld, $arKeywords, $type)
 	{
-		$fldParm = $fld->Param;
-		$fldVal = ($default) ? $fld->AdvancedSearch->SearchValueDefault : $fld->AdvancedSearch->SearchValue;
-		$fldOpr = ($default) ? $fld->AdvancedSearch->SearchOperatorDefault : $fld->AdvancedSearch->SearchOperator;
-		$fldCond = ($default) ? $fld->AdvancedSearch->SearchConditionDefault : $fld->AdvancedSearch->SearchCondition;
-		$fldVal2 = ($default) ? $fld->AdvancedSearch->SearchValue2Default : $fld->AdvancedSearch->SearchValue2;
-		$fldOpr2 = ($default) ? $fld->AdvancedSearch->SearchOperator2Default : $fld->AdvancedSearch->SearchOperator2;
-		$wrk = "";
-		if (is_array($fldVal))
-			$fldVal = implode(Config("MULTIPLE_OPTION_SEPARATOR"), $fldVal);
-		if (is_array($fldVal2))
-			$fldVal2 = implode(Config("MULTIPLE_OPTION_SEPARATOR"), $fldVal2);
-		$fldOpr = strtoupper(trim($fldOpr));
-		if ($fldOpr == "")
-			$fldOpr = "=";
-		$fldOpr2 = strtoupper(trim($fldOpr2));
-		if ($fldOpr2 == "")
-			$fldOpr2 = "=";
-		if (Config("SEARCH_MULTI_VALUE_OPTION") == 1 || !IsMultiSearchOperator($fldOpr))
-			$multiValue = FALSE;
-		if ($multiValue) {
-			$wrk1 = ($fldVal != "") ? GetMultiSearchSql($fld, $fldOpr, $fldVal, $this->Dbid) : ""; // Field value 1
-			$wrk2 = ($fldVal2 != "") ? GetMultiSearchSql($fld, $fldOpr2, $fldVal2, $this->Dbid) : ""; // Field value 2
-			$wrk = $wrk1; // Build final SQL
-			if ($wrk2 != "")
-				$wrk = ($wrk != "") ? "($wrk) $fldCond ($wrk2)" : $wrk2;
-		} else {
-			$fldVal = $this->convertSearchValue($fld, $fldVal);
-			$fldVal2 = $this->convertSearchValue($fld, $fldVal2);
-			$wrk = GetSearchSql($fld, $fldVal, $fldOpr, $fldCond, $fldVal2, $fldOpr2, $this->Dbid);
+		$defCond = ($type == "OR") ? "OR" : "AND";
+		$arSql = []; // Array for SQL parts
+		$arCond = []; // Array for search conditions
+		$cnt = count($arKeywords);
+		$j = 0; // Number of SQL parts
+		for ($i = 0; $i < $cnt; $i++) {
+			$keyword = $arKeywords[$i];
+			$keyword = trim($keyword);
+			if (Config("BASIC_SEARCH_IGNORE_PATTERN") != "") {
+				$keyword = preg_replace(Config("BASIC_SEARCH_IGNORE_PATTERN"), "\\", $keyword);
+				$ar = explode("\\", $keyword);
+			} else {
+				$ar = [$keyword];
+			}
+			foreach ($ar as $keyword) {
+				if ($keyword != "") {
+					$wrk = "";
+					if ($keyword == "OR" && $type == "") {
+						if ($j > 0)
+							$arCond[$j - 1] = "OR";
+					} elseif ($keyword == Config("NULL_VALUE")) {
+						$wrk = $fld->Expression . " IS NULL";
+					} elseif ($keyword == Config("NOT_NULL_VALUE")) {
+						$wrk = $fld->Expression . " IS NOT NULL";
+					} elseif ($fld->IsVirtual) {
+						$wrk = $fld->VirtualExpression . Like(QuotedValue("%" . $keyword . "%", DATATYPE_STRING, $this->Dbid), $this->Dbid);
+					} elseif ($fld->DataType != DATATYPE_NUMBER || is_numeric($keyword)) {
+						$wrk = $fld->BasicSearchExpression . Like(QuotedValue("%" . $keyword . "%", DATATYPE_STRING, $this->Dbid), $this->Dbid);
+					}
+					if ($wrk != "") {
+						$arSql[$j] = $wrk;
+						$arCond[$j] = $defCond;
+						$j += 1;
+					}
+				}
+			}
 		}
-		AddFilter($where, $wrk);
+		$cnt = count($arSql);
+		$quoted = FALSE;
+		$sql = "";
+		if ($cnt > 0) {
+			for ($i = 0; $i < $cnt - 1; $i++) {
+				if ($arCond[$i] == "OR") {
+					if (!$quoted)
+						$sql .= "(";
+					$quoted = TRUE;
+				}
+				$sql .= $arSql[$i];
+				if ($quoted && $arCond[$i] != "OR") {
+					$sql .= ")";
+					$quoted = FALSE;
+				}
+				$sql .= " " . $arCond[$i] . " ";
+			}
+			$sql .= $arSql[$cnt - 1];
+			if ($quoted)
+				$sql .= ")";
+		}
+		if ($sql != "") {
+			if ($where != "")
+				$where .= " OR ";
+			$where .= "(" . $sql . ")";
+		}
 	}
 
-	// Convert search value
-	protected function convertSearchValue(&$fld, $fldVal)
+	// Return basic search WHERE clause based on search keyword and type
+	protected function basicSearchWhere($default = FALSE)
 	{
-		if ($fldVal == Config("NULL_VALUE") || $fldVal == Config("NOT_NULL_VALUE"))
-			return $fldVal;
-		$value = $fldVal;
-		if ($fld->isBoolean()) {
-			if ($fldVal != "")
-				$value = (SameText($fldVal, "1") || SameText($fldVal, "y") || SameText($fldVal, "t")) ? $fld->TrueValue : $fld->FalseValue;
-		} elseif ($fld->DataType == DATATYPE_DATE || $fld->DataType == DATATYPE_TIME) {
-			if ($fldVal != "")
-				$value = UnFormatDateTime($fldVal, $fld->DateTimeFormat);
+		global $Security;
+		$searchStr = "";
+		if (!$Security->canSearch())
+			return "";
+		$searchKeyword = ($default) ? $this->BasicSearch->KeywordDefault : $this->BasicSearch->Keyword;
+		$searchType = ($default) ? $this->BasicSearch->TypeDefault : $this->BasicSearch->Type;
+
+		// Get search SQL
+		if ($searchKeyword != "") {
+			$ar = $this->BasicSearch->keywordList($default);
+
+			// Search keyword in any fields
+			if (($searchType == "OR" || $searchType == "AND") && $this->BasicSearch->BasicSearchAnyFields) {
+				foreach ($ar as $keyword) {
+					if ($keyword != "") {
+						if ($searchStr != "")
+							$searchStr .= " " . $searchType . " ";
+						$searchStr .= "(" . $this->basicSearchSql([$keyword], $searchType) . ")";
+					}
+				}
+			} else {
+				$searchStr = $this->basicSearchSql($ar, $searchType);
+			}
+			if (!$default && in_array($this->Command, ["", "reset", "resetall"]))
+				$this->Command = "search";
 		}
-		return $value;
+		if (!$default && $this->Command == "search") {
+			$this->BasicSearch->setKeyword($searchKeyword);
+			$this->BasicSearch->setType($searchType);
+		}
+		return $searchStr;
 	}
 
 	// Check if search parm exists
 	protected function checkSearchParms()
 	{
-		if ($this->Property->AdvancedSearch->issetSession())
-			return TRUE;
-		if ($this->TemplateFile->AdvancedSearch->issetSession())
+
+		// Check basic search
+		if ($this->BasicSearch->issetSession())
 			return TRUE;
 		return FALSE;
 	}
@@ -1658,8 +1725,8 @@ class t001_property_list extends t001_property
 		$this->SearchWhere = "";
 		$this->setSearchWhere($this->SearchWhere);
 
-		// Clear advanced search parameters
-		$this->resetAdvancedSearchParms();
+		// Clear basic search parameters
+		$this->resetBasicSearchParms();
 	}
 
 	// Load advanced search default values
@@ -1668,11 +1735,10 @@ class t001_property_list extends t001_property
 		return FALSE;
 	}
 
-	// Clear all advanced search parameters
-	protected function resetAdvancedSearchParms()
+	// Clear all basic search parameters
+	protected function resetBasicSearchParms()
 	{
-		$this->Property->AdvancedSearch->unsetSession();
-		$this->TemplateFile->AdvancedSearch->unsetSession();
+		$this->BasicSearch->unsetSession();
 	}
 
 	// Restore all search parameters
@@ -1680,9 +1746,8 @@ class t001_property_list extends t001_property
 	{
 		$this->RestoreSearch = TRUE;
 
-		// Restore advanced search values
-		$this->Property->AdvancedSearch->load();
-		$this->TemplateFile->AdvancedSearch->load();
+		// Restore basic search values
+		$this->BasicSearch->load();
 	}
 
 	// Set up sort parameters
@@ -1696,8 +1761,47 @@ class t001_property_list extends t001_property
 		if (Get("order") !== NULL) {
 			$this->CurrentOrder = Get("order");
 			$this->CurrentOrderType = Get("ordertype", "");
+			$this->updateSort($this->id, $ctrl); // id
+			$this->updateSort($this->property_id, $ctrl); // property_id
+			$this->updateSort($this->TransactionNo, $ctrl); // TransactionNo
+			$this->updateSort($this->TransactionDate, $ctrl); // TransactionDate
+			$this->updateSort($this->TransactionType, $ctrl); // TransactionType
+			$this->updateSort($this->HandedOverTo, $ctrl); // HandedOverTo
+			$this->updateSort($this->CodeNoTo, $ctrl); // CodeNoTo
+			$this->updateSort($this->DepartmentTo, $ctrl); // DepartmentTo
+			$this->updateSort($this->HandedOverBy, $ctrl); // HandedOverBy
+			$this->updateSort($this->CodeNoBy, $ctrl); // CodeNoBy
+			$this->updateSort($this->DepartmentBy, $ctrl); // DepartmentBy
+			$this->updateSort($this->Sign1, $ctrl); // Sign1
+			$this->updateSort($this->Sign2, $ctrl); // Sign2
+			$this->updateSort($this->Sign3, $ctrl); // Sign3
+			$this->updateSort($this->Sign4, $ctrl); // Sign4
+			$this->updateSort($this->hodetail_id, $ctrl); // hodetail_id
+			$this->updateSort($this->asset_id, $ctrl); // asset_id
 			$this->updateSort($this->Property, $ctrl); // Property
 			$this->updateSort($this->TemplateFile, $ctrl); // TemplateFile
+			$this->updateSort($this->hoDepartmentTo, $ctrl); // hoDepartmentTo
+			$this->updateSort($this->hoSignatureTo, $ctrl); // hoSignatureTo
+			$this->updateSort($this->hoJobTitleTo, $ctrl); // hoJobTitleTo
+			$this->updateSort($this->hoDepartmentBy, $ctrl); // hoDepartmentBy
+			$this->updateSort($this->hoSignatureBy, $ctrl); // hoSignatureBy
+			$this->updateSort($this->hoJobTitleBy, $ctrl); // hoJobTitleBy
+			$this->updateSort($this->Description, $ctrl); // Description
+			$this->updateSort($this->ProcurementDate, $ctrl); // ProcurementDate
+			$this->updateSort($this->ProcurementCurrentCost, $ctrl); // ProcurementCurrentCost
+			$this->updateSort($this->DepreciationAmount, $ctrl); // DepreciationAmount
+			$this->updateSort($this->DepreciationYtd, $ctrl); // DepreciationYtd
+			$this->updateSort($this->NetBookValue, $ctrl); // NetBookValue
+			$this->updateSort($this->Periode, $ctrl); // Periode
+			$this->updateSort($this->Qty, $ctrl); // Qty
+			$this->updateSort($this->Sign1Signature, $ctrl); // Sign1Signature
+			$this->updateSort($this->Sign1JobTitle, $ctrl); // Sign1JobTitle
+			$this->updateSort($this->Sign2Signature, $ctrl); // Sign2Signature
+			$this->updateSort($this->Sign2JobTitle, $ctrl); // Sign2JobTitle
+			$this->updateSort($this->Sign3Signature, $ctrl); // Sign3Signature
+			$this->updateSort($this->Sign3JobTitle, $ctrl); // Sign3JobTitle
+			$this->updateSort($this->Sign4Signature, $ctrl); // Sign4Signature
+			$this->updateSort($this->Sign4JobTitle, $ctrl); // Sign4JobTitle
 			$this->setStartRecordNumber(1); // Reset start position
 		}
 	}
@@ -1733,8 +1837,47 @@ class t001_property_list extends t001_property
 			if ($this->Command == "resetsort") {
 				$orderBy = "";
 				$this->setSessionOrderBy($orderBy);
+				$this->id->setSort("");
+				$this->property_id->setSort("");
+				$this->TransactionNo->setSort("");
+				$this->TransactionDate->setSort("");
+				$this->TransactionType->setSort("");
+				$this->HandedOverTo->setSort("");
+				$this->CodeNoTo->setSort("");
+				$this->DepartmentTo->setSort("");
+				$this->HandedOverBy->setSort("");
+				$this->CodeNoBy->setSort("");
+				$this->DepartmentBy->setSort("");
+				$this->Sign1->setSort("");
+				$this->Sign2->setSort("");
+				$this->Sign3->setSort("");
+				$this->Sign4->setSort("");
+				$this->hodetail_id->setSort("");
+				$this->asset_id->setSort("");
 				$this->Property->setSort("");
 				$this->TemplateFile->setSort("");
+				$this->hoDepartmentTo->setSort("");
+				$this->hoSignatureTo->setSort("");
+				$this->hoJobTitleTo->setSort("");
+				$this->hoDepartmentBy->setSort("");
+				$this->hoSignatureBy->setSort("");
+				$this->hoJobTitleBy->setSort("");
+				$this->Description->setSort("");
+				$this->ProcurementDate->setSort("");
+				$this->ProcurementCurrentCost->setSort("");
+				$this->DepreciationAmount->setSort("");
+				$this->DepreciationYtd->setSort("");
+				$this->NetBookValue->setSort("");
+				$this->Periode->setSort("");
+				$this->Qty->setSort("");
+				$this->Sign1Signature->setSort("");
+				$this->Sign1JobTitle->setSort("");
+				$this->Sign2Signature->setSort("");
+				$this->Sign2JobTitle->setSort("");
+				$this->Sign3Signature->setSort("");
+				$this->Sign3JobTitle->setSort("");
+				$this->Sign4Signature->setSort("");
+				$this->Sign4JobTitle->setSort("");
 			}
 
 			// Reset start position
@@ -1748,37 +1891,11 @@ class t001_property_list extends t001_property
 	{
 		global $Security, $Language;
 
-		// "griddelete"
-		if ($this->AllowAddDeleteRow) {
-			$item = &$this->ListOptions->add("griddelete");
-			$item->CssClass = "text-nowrap";
-			$item->OnLeft = TRUE;
-			$item->Visible = FALSE; // Default hidden
-		}
-
 		// Add group option item
 		$item = &$this->ListOptions->add($this->ListOptions->GroupOptionName);
 		$item->Body = "";
 		$item->OnLeft = TRUE;
 		$item->Visible = FALSE;
-
-		// "edit"
-		$item = &$this->ListOptions->add("edit");
-		$item->CssClass = "text-nowrap";
-		$item->Visible = $Security->canEdit();
-		$item->OnLeft = TRUE;
-
-		// "copy"
-		$item = &$this->ListOptions->add("copy");
-		$item->CssClass = "text-nowrap";
-		$item->Visible = $Security->canAdd();
-		$item->OnLeft = TRUE;
-
-		// "delete"
-		$item = &$this->ListOptions->add("delete");
-		$item->CssClass = "text-nowrap";
-		$item->Visible = $Security->canDelete();
-		$item->OnLeft = TRUE;
 
 		// List actions
 		$item = &$this->ListOptions->add("listactions");
@@ -1794,14 +1911,6 @@ class t001_property_list extends t001_property
 		$item->OnLeft = TRUE;
 		$item->Header = "<div class=\"custom-control custom-checkbox d-inline-block\"><input type=\"checkbox\" name=\"key\" id=\"key\" class=\"custom-control-input\" onclick=\"ew.selectAllKey(this);\"><label class=\"custom-control-label\" for=\"key\"></label></div>";
 		$item->moveTo(0);
-		$item->ShowInDropDown = FALSE;
-		$item->ShowInButtonGroup = FALSE;
-
-		// "sequence"
-		$item = &$this->ListOptions->add("sequence");
-		$item->CssClass = "text-nowrap";
-		$item->Visible = TRUE;
-		$item->OnLeft = TRUE; // Always on left
 		$item->ShowInDropDown = FALSE;
 		$item->ShowInButtonGroup = FALSE;
 
@@ -1829,75 +1938,6 @@ class t001_property_list extends t001_property
 
 		// Call ListOptions_Rendering event
 		$this->ListOptions_Rendering();
-
-		// Set up row action and key
-		if (is_numeric($this->RowIndex) && $this->CurrentMode != "view") {
-			$CurrentForm->Index = $this->RowIndex;
-			$actionName = str_replace("k_", "k" . $this->RowIndex . "_", $this->FormActionName);
-			$oldKeyName = str_replace("k_", "k" . $this->RowIndex . "_", $this->FormOldKeyName);
-			$keyName = str_replace("k_", "k" . $this->RowIndex . "_", $this->FormKeyName);
-			$blankRowName = str_replace("k_", "k" . $this->RowIndex . "_", $this->FormBlankRowName);
-			if ($this->RowAction != "")
-				$this->MultiSelectKey .= "<input type=\"hidden\" name=\"" . $actionName . "\" id=\"" . $actionName . "\" value=\"" . $this->RowAction . "\">";
-			if ($this->RowAction == "delete") {
-				$rowkey = $CurrentForm->getValue($this->FormKeyName);
-				$this->setupKeyValues($rowkey);
-
-				// Reload hidden key for delete
-				$this->MultiSelectKey .= "<input type=\"hidden\" name=\"" . $keyName . "\" id=\"" . $keyName . "\" value=\"" . HtmlEncode($rowkey) . "\">";
-			}
-			if ($this->RowAction == "insert" && $this->isConfirm() && $this->emptyRow())
-				$this->MultiSelectKey .= "<input type=\"hidden\" name=\"" . $blankRowName . "\" id=\"" . $blankRowName . "\" value=\"1\">";
-		}
-
-		// "delete"
-		if ($this->AllowAddDeleteRow) {
-			if ($this->isGridAdd() || $this->isGridEdit()) {
-				$options = &$this->ListOptions;
-				$options->UseButtonGroup = TRUE; // Use button group for grid delete button
-				$opt = $options["griddelete"];
-				if (!$Security->canDelete() && is_numeric($this->RowIndex) && ($this->RowAction == "" || $this->RowAction == "edit")) { // Do not allow delete existing record
-					$opt->Body = "&nbsp;";
-				} else {
-					$opt->Body = "<a class=\"ew-grid-link ew-grid-delete\" title=\"" . HtmlTitle($Language->phrase("DeleteLink")) . "\" data-caption=\"" . HtmlTitle($Language->phrase("DeleteLink")) . "\" onclick=\"return ew.deleteGridRow(this, " . $this->RowIndex . ");\">" . $Language->phrase("DeleteLink") . "</a>";
-				}
-			}
-		}
-
-		// "sequence"
-		$opt = $this->ListOptions["sequence"];
-		$opt->Body = FormatSequenceNumber($this->RecordCount);
-
-		// "edit"
-		$opt = $this->ListOptions["edit"];
-		$editcaption = HtmlTitle($Language->phrase("EditLink"));
-		if ($Security->canEdit()) {
-			if (IsMobile())
-				$opt->Body = "<a class=\"ew-row-link ew-edit\" title=\"" . $editcaption . "\" data-caption=\"" . $editcaption . "\" href=\"" . HtmlEncode($this->EditUrl) . "\">" . $Language->phrase("EditLink") . "</a>";
-			else
-				$opt->Body = "<a class=\"ew-row-link ew-edit\" title=\"" . $editcaption . "\" data-table=\"t001_property\" data-caption=\"" . $editcaption . "\" href=\"#\" onclick=\"return ew.modalDialogShow({lnk:this,btn:'SaveBtn',url:'" . HtmlEncode($this->EditUrl) . "'});\">" . $Language->phrase("EditLink") . "</a>";
-		} else {
-			$opt->Body = "";
-		}
-
-		// "copy"
-		$opt = $this->ListOptions["copy"];
-		$copycaption = HtmlTitle($Language->phrase("CopyLink"));
-		if ($Security->canAdd()) {
-			if (IsMobile())
-				$opt->Body = "<a class=\"ew-row-link ew-copy\" title=\"" . $copycaption . "\" data-caption=\"" . $copycaption . "\" href=\"" . HtmlEncode($this->CopyUrl) . "\">" . $Language->phrase("CopyLink") . "</a>";
-			else
-				$opt->Body = "<a class=\"ew-row-link ew-copy\" title=\"" . $copycaption . "\" data-table=\"t001_property\" data-caption=\"" . $copycaption . "\" href=\"#\" onclick=\"return ew.modalDialogShow({lnk:this,btn:'AddBtn',url:'" . HtmlEncode($this->CopyUrl) . "'});\">" . $Language->phrase("CopyLink") . "</a>";
-		} else {
-			$opt->Body = "";
-		}
-
-		// "delete"
-		$opt = $this->ListOptions["delete"];
-		if ($Security->canDelete())
-			$opt->Body = "<a class=\"ew-row-link ew-delete\"" . " onclick=\"return ew.confirmDelete(this);\"" . " title=\"" . HtmlTitle($Language->phrase("DeleteLink")) . "\" data-caption=\"" . HtmlTitle($Language->phrase("DeleteLink")) . "\" href=\"" . HtmlEncode($this->DeleteUrl) . "\">" . $Language->phrase("DeleteLink") . "</a>";
-		else
-			$opt->Body = "";
 
 		// Set up list action buttons
 		$opt = $this->ListOptions["listactions"];
@@ -1930,10 +1970,7 @@ class t001_property_list extends t001_property
 
 		// "checkbox"
 		$opt = $this->ListOptions["checkbox"];
-		$opt->Body = "<div class=\"custom-control custom-checkbox d-inline-block\"><input type=\"checkbox\" id=\"key_m_" . $this->RowCount . "\" name=\"key_m[]\" class=\"custom-control-input ew-multi-select\" value=\"" . HtmlEncode($this->id->CurrentValue) . "\" onclick=\"ew.clickMultiCheckbox(event);\"><label class=\"custom-control-label\" for=\"key_m_" . $this->RowCount . "\"></label></div>";
-		if ($this->isGridEdit() && is_numeric($this->RowIndex)) {
-			$this->MultiSelectKey .= "<input type=\"hidden\" name=\"" . $keyName . "\" id=\"" . $keyName . "\" value=\"" . $this->id->CurrentValue . "\">";
-		}
+		$opt->Body = "<div class=\"custom-control custom-checkbox d-inline-block\"><input type=\"checkbox\" id=\"key_m_" . $this->RowCount . "\" name=\"key_m[]\" class=\"custom-control-input ew-multi-select\" value=\"" . HtmlEncode($this->id->CurrentValue . Config("COMPOSITE_KEY_SEPARATOR") . $this->hodetail_id->CurrentValue) . "\" onclick=\"ew.clickMultiCheckbox(event);\"><label class=\"custom-control-label\" for=\"key_m_" . $this->RowCount . "\"></label></div>";
 		$this->renderListOptionsExt();
 
 		// Call ListOptions_Rendered event
@@ -1945,25 +1982,6 @@ class t001_property_list extends t001_property
 	{
 		global $Language, $Security;
 		$options = &$this->OtherOptions;
-		$option = $options["addedit"];
-
-		// Add
-		$item = &$option->add("add");
-		$addcaption = HtmlTitle($Language->phrase("AddLink"));
-		if (IsMobile())
-			$item->Body = "<a class=\"ew-add-edit ew-add\" title=\"" . $addcaption . "\" data-caption=\"" . $addcaption . "\" href=\"" . HtmlEncode($this->AddUrl) . "\">" . $Language->phrase("AddLink") . "</a>";
-		else
-			$item->Body = "<a class=\"ew-add-edit ew-add\" title=\"" . $addcaption . "\" data-table=\"t001_property\" data-caption=\"" . $addcaption . "\" href=\"#\" onclick=\"return ew.modalDialogShow({lnk:this,btn:'AddBtn',url:'" . HtmlEncode($this->AddUrl) . "'});\">" . $Language->phrase("AddLink") . "</a>";
-		$item->Visible = $this->AddUrl != "" && $Security->canAdd();
-		$item = &$option->add("gridadd");
-		$item->Body = "<a class=\"ew-add-edit ew-grid-add\" title=\"" . HtmlTitle($Language->phrase("GridAddLink")) . "\" data-caption=\"" . HtmlTitle($Language->phrase("GridAddLink")) . "\" href=\"" . HtmlEncode($this->GridAddUrl) . "\">" . $Language->phrase("GridAddLink") . "</a>";
-		$item->Visible = $this->GridAddUrl != "" && $Security->canAdd();
-
-		// Add grid edit
-		$option = $options["addedit"];
-		$item = &$option->add("gridedit");
-		$item->Body = "<a class=\"ew-add-edit ew-grid-edit\" title=\"" . HtmlTitle($Language->phrase("GridEditLink")) . "\" data-caption=\"" . HtmlTitle($Language->phrase("GridEditLink")) . "\" href=\"" . HtmlEncode($this->GridEditUrl) . "\">" . $Language->phrase("GridEditLink") . "</a>";
-		$item->Visible = $this->GridEditUrl != "" && $Security->canEdit();
 		$option = $options["action"];
 
 		// Set up options default
@@ -1982,10 +2000,10 @@ class t001_property_list extends t001_property
 
 		// Filter button
 		$item = &$this->FilterOptions->add("savecurrentfilter");
-		$item->Body = "<a class=\"ew-save-filter\" data-form=\"ft001_propertylistsrch\" href=\"#\" onclick=\"return false;\">" . $Language->phrase("SaveCurrentFilter") . "</a>";
+		$item->Body = "<a class=\"ew-save-filter\" data-form=\"fv101_holistsrch\" href=\"#\" onclick=\"return false;\">" . $Language->phrase("SaveCurrentFilter") . "</a>";
 		$item->Visible = TRUE;
 		$item = &$this->FilterOptions->add("deletefilter");
-		$item->Body = "<a class=\"ew-delete-filter\" data-form=\"ft001_propertylistsrch\" href=\"#\" onclick=\"return false;\">" . $Language->phrase("DeleteFilter") . "</a>";
+		$item->Body = "<a class=\"ew-delete-filter\" data-form=\"fv101_holistsrch\" href=\"#\" onclick=\"return false;\">" . $Language->phrase("DeleteFilter") . "</a>";
 		$item->Visible = TRUE;
 		$this->FilterOptions->UseDropDownButton = TRUE;
 		$this->FilterOptions->UseButtonGroup = !$this->FilterOptions->UseDropDownButton;
@@ -2002,7 +2020,6 @@ class t001_property_list extends t001_property
 	{
 		global $Language, $Security;
 		$options = &$this->OtherOptions;
-		if (!$this->isGridAdd() && !$this->isGridEdit()) { // Not grid add/edit mode
 			$option = $options["action"];
 
 			// Set up list action buttons
@@ -2011,7 +2028,7 @@ class t001_property_list extends t001_property
 					$item = &$option->add("custom_" . $listaction->Action);
 					$caption = $listaction->Caption;
 					$icon = ($listaction->Icon != "") ? "<i class=\"" . HtmlEncode($listaction->Icon) . "\" data-caption=\"" . HtmlEncode($caption) . "\"></i> " . $caption : $caption;
-					$item->Body = "<a class=\"ew-action ew-list-action\" title=\"" . HtmlEncode($caption) . "\" data-caption=\"" . HtmlEncode($caption) . "\" href=\"#\" onclick=\"return ew.submitAction(event,jQuery.extend({f:document.ft001_propertylist}," . $listaction->toJson(TRUE) . "));\">" . $icon . "</a>";
+					$item->Body = "<a class=\"ew-action ew-list-action\" title=\"" . HtmlEncode($caption) . "\" data-caption=\"" . HtmlEncode($caption) . "\" href=\"#\" onclick=\"return ew.submitAction(event,jQuery.extend({f:document.fv101_holist}," . $listaction->toJson(TRUE) . "));\">" . $icon . "</a>";
 					$item->Visible = $listaction->Allow;
 				}
 			}
@@ -2025,56 +2042,6 @@ class t001_property_list extends t001_property
 				$option = $options["action"];
 				$option->hideAllOptions();
 			}
-		} else { // Grid add/edit mode
-
-			// Hide all options first
-			foreach ($options as $option)
-				$option->hideAllOptions();
-
-			// Grid-Add
-			if ($this->isGridAdd()) {
-				if ($this->AllowAddDeleteRow) {
-
-					// Add add blank row
-					$option = $options["addedit"];
-					$option->UseDropDownButton = FALSE;
-					$item = &$option->add("addblankrow");
-					$item->Body = "<a class=\"ew-add-edit ew-add-blank-row\" title=\"" . HtmlTitle($Language->phrase("AddBlankRow")) . "\" data-caption=\"" . HtmlTitle($Language->phrase("AddBlankRow")) . "\" href=\"#\" onclick=\"return ew.addGridRow(this);\">" . $Language->phrase("AddBlankRow") . "</a>";
-					$item->Visible = $Security->canAdd();
-				}
-				$option = $options["action"];
-				$option->UseDropDownButton = FALSE;
-
-				// Add grid insert
-				$item = &$option->add("gridinsert");
-				$item->Body = "<a class=\"ew-action ew-grid-insert\" title=\"" . HtmlTitle($Language->phrase("GridInsertLink")) . "\" data-caption=\"" . HtmlTitle($Language->phrase("GridInsertLink")) . "\" href=\"#\" onclick=\"return ew.forms(this).submit('" . $this->pageName() . "');\">" . $Language->phrase("GridInsertLink") . "</a>";
-
-				// Add grid cancel
-				$item = &$option->add("gridcancel");
-				$cancelurl = $this->addMasterUrl($this->pageUrl() . "action=cancel");
-				$item->Body = "<a class=\"ew-action ew-grid-cancel\" title=\"" . HtmlTitle($Language->phrase("GridCancelLink")) . "\" data-caption=\"" . HtmlTitle($Language->phrase("GridCancelLink")) . "\" href=\"" . $cancelurl . "\">" . $Language->phrase("GridCancelLink") . "</a>";
-			}
-
-			// Grid-Edit
-			if ($this->isGridEdit()) {
-				if ($this->AllowAddDeleteRow) {
-
-					// Add add blank row
-					$option = $options["addedit"];
-					$option->UseDropDownButton = FALSE;
-					$item = &$option->add("addblankrow");
-					$item->Body = "<a class=\"ew-add-edit ew-add-blank-row\" title=\"" . HtmlTitle($Language->phrase("AddBlankRow")) . "\" data-caption=\"" . HtmlTitle($Language->phrase("AddBlankRow")) . "\" href=\"#\" onclick=\"return ew.addGridRow(this);\">" . $Language->phrase("AddBlankRow") . "</a>";
-					$item->Visible = $Security->canAdd();
-				}
-				$option = $options["action"];
-				$option->UseDropDownButton = FALSE;
-					$item = &$option->add("gridsave");
-					$item->Body = "<a class=\"ew-action ew-grid-save\" title=\"" . HtmlTitle($Language->phrase("GridSaveLink")) . "\" data-caption=\"" . HtmlTitle($Language->phrase("GridSaveLink")) . "\" href=\"#\" onclick=\"return ew.forms(this).submit('" . $this->pageName() . "');\">" . $Language->phrase("GridSaveLink") . "</a>";
-					$item = &$option->add("gridcancel");
-					$cancelurl = $this->addMasterUrl($this->pageUrl() . "action=cancel");
-					$item->Body = "<a class=\"ew-action ew-grid-cancel\" title=\"" . HtmlTitle($Language->phrase("GridCancelLink")) . "\" data-caption=\"" . HtmlTitle($Language->phrase("GridCancelLink")) . "\" href=\"" . $cancelurl . "\">" . $Language->phrase("GridCancelLink") . "</a>";
-			}
-		}
 	}
 
 	// Process list action
@@ -2168,83 +2135,13 @@ class t001_property_list extends t001_property
 	{
 	}
 
-	// Load default values
-	protected function loadDefaultValues()
+	// Load basic search values
+	protected function loadBasicSearchValues()
 	{
-		$this->id->CurrentValue = NULL;
-		$this->id->OldValue = $this->id->CurrentValue;
-		$this->Property->CurrentValue = NULL;
-		$this->Property->OldValue = $this->Property->CurrentValue;
-		$this->TemplateFile->CurrentValue = NULL;
-		$this->TemplateFile->OldValue = $this->TemplateFile->CurrentValue;
-	}
-
-	// Load search values for validation
-	protected function loadSearchValues()
-	{
-
-		// Load search values
-		$got = FALSE;
-
-		// Property
-		if (!$this->isAddOrEdit() && $this->Property->AdvancedSearch->get()) {
-			$got = TRUE;
-			if (($this->Property->AdvancedSearch->SearchValue != "" || $this->Property->AdvancedSearch->SearchValue2 != "") && $this->Command == "")
-				$this->Command = "search";
-		}
-
-		// TemplateFile
-		if (!$this->isAddOrEdit() && $this->TemplateFile->AdvancedSearch->get()) {
-			$got = TRUE;
-			if (($this->TemplateFile->AdvancedSearch->SearchValue != "" || $this->TemplateFile->AdvancedSearch->SearchValue2 != "") && $this->Command == "")
-				$this->Command = "search";
-		}
-		return $got;
-	}
-
-	// Load form values
-	protected function loadFormValues()
-	{
-
-		// Load from form
-		global $CurrentForm;
-
-		// Check field name 'Property' first before field var 'x_Property'
-		$val = $CurrentForm->hasValue("Property") ? $CurrentForm->getValue("Property") : $CurrentForm->getValue("x_Property");
-		if (!$this->Property->IsDetailKey) {
-			if (IsApi() && $val == NULL)
-				$this->Property->Visible = FALSE; // Disable update for API request
-			else
-				$this->Property->setFormValue($val);
-		}
-		if ($CurrentForm->hasValue("o_Property"))
-			$this->Property->setOldValue($CurrentForm->getValue("o_Property"));
-
-		// Check field name 'TemplateFile' first before field var 'x_TemplateFile'
-		$val = $CurrentForm->hasValue("TemplateFile") ? $CurrentForm->getValue("TemplateFile") : $CurrentForm->getValue("x_TemplateFile");
-		if (!$this->TemplateFile->IsDetailKey) {
-			if (IsApi() && $val == NULL)
-				$this->TemplateFile->Visible = FALSE; // Disable update for API request
-			else
-				$this->TemplateFile->setFormValue($val);
-		}
-		if ($CurrentForm->hasValue("o_TemplateFile"))
-			$this->TemplateFile->setOldValue($CurrentForm->getValue("o_TemplateFile"));
-
-		// Check field name 'id' first before field var 'x_id'
-		$val = $CurrentForm->hasValue("id") ? $CurrentForm->getValue("id") : $CurrentForm->getValue("x_id");
-		if (!$this->id->IsDetailKey && !$this->isGridAdd() && !$this->isAdd())
-			$this->id->setFormValue($val);
-	}
-
-	// Restore form values
-	public function restoreFormValues()
-	{
-		global $CurrentForm;
-		if (!$this->isGridAdd() && !$this->isAdd())
-			$this->id->CurrentValue = $this->id->FormValue;
-		$this->Property->CurrentValue = $this->Property->FormValue;
-		$this->TemplateFile->CurrentValue = $this->TemplateFile->FormValue;
+		$this->BasicSearch->setKeyword(Get(Config("TABLE_BASIC_SEARCH"), ""), FALSE);
+		if ($this->BasicSearch->Keyword != "" && $this->Command == "")
+			$this->Command = "search";
+		$this->BasicSearch->setType(Get(Config("TABLE_BASIC_SEARCH_TYPE"), ""), FALSE);
 	}
 
 	// Load recordset
@@ -2292,8 +2189,6 @@ class t001_property_list extends t001_property
 		if ($rs && !$rs->EOF) {
 			$res = TRUE;
 			$this->loadRowValues($rs); // Load row values
-			if (!$this->EventCancelled)
-				$this->HashValue = $this->getRowHash($rs); // Get hash value for record
 			$rs->close();
 		}
 		return $res;
@@ -2312,18 +2207,95 @@ class t001_property_list extends t001_property
 		if (!$rs || $rs->EOF)
 			return;
 		$this->id->setDbValue($row['id']);
+		$this->property_id->setDbValue($row['property_id']);
+		$this->TransactionNo->setDbValue($row['TransactionNo']);
+		$this->TransactionDate->setDbValue($row['TransactionDate']);
+		$this->TransactionType->setDbValue($row['TransactionType']);
+		$this->HandedOverTo->setDbValue($row['HandedOverTo']);
+		$this->CodeNoTo->setDbValue($row['CodeNoTo']);
+		$this->DepartmentTo->setDbValue($row['DepartmentTo']);
+		$this->HandedOverBy->setDbValue($row['HandedOverBy']);
+		$this->CodeNoBy->setDbValue($row['CodeNoBy']);
+		$this->DepartmentBy->setDbValue($row['DepartmentBy']);
+		$this->Sign1->setDbValue($row['Sign1']);
+		$this->Sign2->setDbValue($row['Sign2']);
+		$this->Sign3->setDbValue($row['Sign3']);
+		$this->Sign4->setDbValue($row['Sign4']);
+		$this->hodetail_id->setDbValue($row['hodetail_id']);
+		$this->asset_id->setDbValue($row['asset_id']);
 		$this->Property->setDbValue($row['Property']);
 		$this->TemplateFile->setDbValue($row['TemplateFile']);
+		$this->hoDepartmentTo->setDbValue($row['hoDepartmentTo']);
+		$this->hoSignatureTo->setDbValue($row['hoSignatureTo']);
+		$this->hoJobTitleTo->setDbValue($row['hoJobTitleTo']);
+		$this->hoDepartmentBy->setDbValue($row['hoDepartmentBy']);
+		$this->hoSignatureBy->setDbValue($row['hoSignatureBy']);
+		$this->hoJobTitleBy->setDbValue($row['hoJobTitleBy']);
+		$this->Description->setDbValue($row['Description']);
+		$this->ProcurementDate->setDbValue($row['ProcurementDate']);
+		$this->ProcurementCurrentCost->setDbValue($row['ProcurementCurrentCost']);
+		$this->DepreciationAmount->setDbValue($row['DepreciationAmount']);
+		$this->DepreciationYtd->setDbValue($row['DepreciationYtd']);
+		$this->NetBookValue->setDbValue($row['NetBookValue']);
+		$this->Periode->setDbValue($row['Periode']);
+		$this->Qty->setDbValue($row['Qty']);
+		$this->Remarks->setDbValue($row['Remarks']);
+		$this->Sign1Signature->setDbValue($row['Sign1Signature']);
+		$this->Sign1JobTitle->setDbValue($row['Sign1JobTitle']);
+		$this->Sign2Signature->setDbValue($row['Sign2Signature']);
+		$this->Sign2JobTitle->setDbValue($row['Sign2JobTitle']);
+		$this->Sign3Signature->setDbValue($row['Sign3Signature']);
+		$this->Sign3JobTitle->setDbValue($row['Sign3JobTitle']);
+		$this->Sign4Signature->setDbValue($row['Sign4Signature']);
+		$this->Sign4JobTitle->setDbValue($row['Sign4JobTitle']);
 	}
 
 	// Return a row with default values
 	protected function newRow()
 	{
-		$this->loadDefaultValues();
 		$row = [];
-		$row['id'] = $this->id->CurrentValue;
-		$row['Property'] = $this->Property->CurrentValue;
-		$row['TemplateFile'] = $this->TemplateFile->CurrentValue;
+		$row['id'] = NULL;
+		$row['property_id'] = NULL;
+		$row['TransactionNo'] = NULL;
+		$row['TransactionDate'] = NULL;
+		$row['TransactionType'] = NULL;
+		$row['HandedOverTo'] = NULL;
+		$row['CodeNoTo'] = NULL;
+		$row['DepartmentTo'] = NULL;
+		$row['HandedOverBy'] = NULL;
+		$row['CodeNoBy'] = NULL;
+		$row['DepartmentBy'] = NULL;
+		$row['Sign1'] = NULL;
+		$row['Sign2'] = NULL;
+		$row['Sign3'] = NULL;
+		$row['Sign4'] = NULL;
+		$row['hodetail_id'] = NULL;
+		$row['asset_id'] = NULL;
+		$row['Property'] = NULL;
+		$row['TemplateFile'] = NULL;
+		$row['hoDepartmentTo'] = NULL;
+		$row['hoSignatureTo'] = NULL;
+		$row['hoJobTitleTo'] = NULL;
+		$row['hoDepartmentBy'] = NULL;
+		$row['hoSignatureBy'] = NULL;
+		$row['hoJobTitleBy'] = NULL;
+		$row['Description'] = NULL;
+		$row['ProcurementDate'] = NULL;
+		$row['ProcurementCurrentCost'] = NULL;
+		$row['DepreciationAmount'] = NULL;
+		$row['DepreciationYtd'] = NULL;
+		$row['NetBookValue'] = NULL;
+		$row['Periode'] = NULL;
+		$row['Qty'] = NULL;
+		$row['Remarks'] = NULL;
+		$row['Sign1Signature'] = NULL;
+		$row['Sign1JobTitle'] = NULL;
+		$row['Sign2Signature'] = NULL;
+		$row['Sign2JobTitle'] = NULL;
+		$row['Sign3Signature'] = NULL;
+		$row['Sign3JobTitle'] = NULL;
+		$row['Sign4Signature'] = NULL;
+		$row['Sign4JobTitle'] = NULL;
 		return $row;
 	}
 
@@ -2335,6 +2307,10 @@ class t001_property_list extends t001_property
 		$validKey = TRUE;
 		if (strval($this->getKey("id")) != "")
 			$this->id->OldValue = $this->getKey("id"); // id
+		else
+			$validKey = FALSE;
+		if (strval($this->getKey("hodetail_id")) != "")
+			$this->hodetail_id->OldValue = $this->getKey("hodetail_id"); // hodetail_id
 		else
 			$validKey = FALSE;
 
@@ -2363,19 +2339,154 @@ class t001_property_list extends t001_property
 		$this->InlineCopyUrl = $this->getInlineCopyUrl();
 		$this->DeleteUrl = $this->getDeleteUrl();
 
+		// Convert decimal values if posted back
+		if ($this->ProcurementCurrentCost->FormValue == $this->ProcurementCurrentCost->CurrentValue && is_numeric(ConvertToFloatString($this->ProcurementCurrentCost->CurrentValue)))
+			$this->ProcurementCurrentCost->CurrentValue = ConvertToFloatString($this->ProcurementCurrentCost->CurrentValue);
+
+		// Convert decimal values if posted back
+		if ($this->DepreciationAmount->FormValue == $this->DepreciationAmount->CurrentValue && is_numeric(ConvertToFloatString($this->DepreciationAmount->CurrentValue)))
+			$this->DepreciationAmount->CurrentValue = ConvertToFloatString($this->DepreciationAmount->CurrentValue);
+
+		// Convert decimal values if posted back
+		if ($this->DepreciationYtd->FormValue == $this->DepreciationYtd->CurrentValue && is_numeric(ConvertToFloatString($this->DepreciationYtd->CurrentValue)))
+			$this->DepreciationYtd->CurrentValue = ConvertToFloatString($this->DepreciationYtd->CurrentValue);
+
+		// Convert decimal values if posted back
+		if ($this->NetBookValue->FormValue == $this->NetBookValue->CurrentValue && is_numeric(ConvertToFloatString($this->NetBookValue->CurrentValue)))
+			$this->NetBookValue->CurrentValue = ConvertToFloatString($this->NetBookValue->CurrentValue);
+
+		// Convert decimal values if posted back
+		if ($this->Qty->FormValue == $this->Qty->CurrentValue && is_numeric(ConvertToFloatString($this->Qty->CurrentValue)))
+			$this->Qty->CurrentValue = ConvertToFloatString($this->Qty->CurrentValue);
+
 		// Call Row_Rendering event
 		$this->Row_Rendering();
 
 		// Common render codes for all row types
 		// id
+		// property_id
+		// TransactionNo
+		// TransactionDate
+		// TransactionType
+		// HandedOverTo
+		// CodeNoTo
+		// DepartmentTo
+		// HandedOverBy
+		// CodeNoBy
+		// DepartmentBy
+		// Sign1
+		// Sign2
+		// Sign3
+		// Sign4
+		// hodetail_id
+		// asset_id
 		// Property
 		// TemplateFile
+		// hoDepartmentTo
+		// hoSignatureTo
+		// hoJobTitleTo
+		// hoDepartmentBy
+		// hoSignatureBy
+		// hoJobTitleBy
+		// Description
+		// ProcurementDate
+		// ProcurementCurrentCost
+		// DepreciationAmount
+		// DepreciationYtd
+		// NetBookValue
+		// Periode
+		// Qty
+		// Remarks
+		// Sign1Signature
+		// Sign1JobTitle
+		// Sign2Signature
+		// Sign2JobTitle
+		// Sign3Signature
+		// Sign3JobTitle
+		// Sign4Signature
+		// Sign4JobTitle
 
 		if ($this->RowType == ROWTYPE_VIEW) { // View row
 
 			// id
 			$this->id->ViewValue = $this->id->CurrentValue;
 			$this->id->ViewCustomAttributes = "";
+
+			// property_id
+			$this->property_id->ViewValue = $this->property_id->CurrentValue;
+			$this->property_id->ViewValue = FormatNumber($this->property_id->ViewValue, 0, -2, -2, -2);
+			$this->property_id->ViewCustomAttributes = "";
+
+			// TransactionNo
+			$this->TransactionNo->ViewValue = $this->TransactionNo->CurrentValue;
+			$this->TransactionNo->ViewCustomAttributes = "";
+
+			// TransactionDate
+			$this->TransactionDate->ViewValue = $this->TransactionDate->CurrentValue;
+			$this->TransactionDate->ViewValue = FormatDateTime($this->TransactionDate->ViewValue, 0);
+			$this->TransactionDate->ViewCustomAttributes = "";
+
+			// TransactionType
+			$this->TransactionType->ViewValue = $this->TransactionType->CurrentValue;
+			$this->TransactionType->ViewValue = FormatNumber($this->TransactionType->ViewValue, 0, -2, -2, -2);
+			$this->TransactionType->ViewCustomAttributes = "";
+
+			// HandedOverTo
+			$this->HandedOverTo->ViewValue = $this->HandedOverTo->CurrentValue;
+			$this->HandedOverTo->ViewValue = FormatNumber($this->HandedOverTo->ViewValue, 0, -2, -2, -2);
+			$this->HandedOverTo->ViewCustomAttributes = "";
+
+			// CodeNoTo
+			$this->CodeNoTo->ViewValue = $this->CodeNoTo->CurrentValue;
+			$this->CodeNoTo->ViewCustomAttributes = "";
+
+			// DepartmentTo
+			$this->DepartmentTo->ViewValue = $this->DepartmentTo->CurrentValue;
+			$this->DepartmentTo->ViewValue = FormatNumber($this->DepartmentTo->ViewValue, 0, -2, -2, -2);
+			$this->DepartmentTo->ViewCustomAttributes = "";
+
+			// HandedOverBy
+			$this->HandedOverBy->ViewValue = $this->HandedOverBy->CurrentValue;
+			$this->HandedOverBy->ViewValue = FormatNumber($this->HandedOverBy->ViewValue, 0, -2, -2, -2);
+			$this->HandedOverBy->ViewCustomAttributes = "";
+
+			// CodeNoBy
+			$this->CodeNoBy->ViewValue = $this->CodeNoBy->CurrentValue;
+			$this->CodeNoBy->ViewCustomAttributes = "";
+
+			// DepartmentBy
+			$this->DepartmentBy->ViewValue = $this->DepartmentBy->CurrentValue;
+			$this->DepartmentBy->ViewValue = FormatNumber($this->DepartmentBy->ViewValue, 0, -2, -2, -2);
+			$this->DepartmentBy->ViewCustomAttributes = "";
+
+			// Sign1
+			$this->Sign1->ViewValue = $this->Sign1->CurrentValue;
+			$this->Sign1->ViewValue = FormatNumber($this->Sign1->ViewValue, 0, -2, -2, -2);
+			$this->Sign1->ViewCustomAttributes = "";
+
+			// Sign2
+			$this->Sign2->ViewValue = $this->Sign2->CurrentValue;
+			$this->Sign2->ViewValue = FormatNumber($this->Sign2->ViewValue, 0, -2, -2, -2);
+			$this->Sign2->ViewCustomAttributes = "";
+
+			// Sign3
+			$this->Sign3->ViewValue = $this->Sign3->CurrentValue;
+			$this->Sign3->ViewValue = FormatNumber($this->Sign3->ViewValue, 0, -2, -2, -2);
+			$this->Sign3->ViewCustomAttributes = "";
+
+			// Sign4
+			$this->Sign4->ViewValue = $this->Sign4->CurrentValue;
+			$this->Sign4->ViewValue = FormatNumber($this->Sign4->ViewValue, 0, -2, -2, -2);
+			$this->Sign4->ViewCustomAttributes = "";
+
+			// hodetail_id
+			$this->hodetail_id->ViewValue = $this->hodetail_id->CurrentValue;
+			$this->hodetail_id->ViewCustomAttributes = "";
+
+			// asset_id
+			$this->asset_id->ViewValue = $this->asset_id->CurrentValue;
+			$this->asset_id->ViewValue = FormatNumber($this->asset_id->ViewValue, 0, -2, -2, -2);
+			$this->asset_id->ViewCustomAttributes = "";
 
 			// Property
 			$this->Property->ViewValue = $this->Property->CurrentValue;
@@ -2384,6 +2495,186 @@ class t001_property_list extends t001_property
 			// TemplateFile
 			$this->TemplateFile->ViewValue = $this->TemplateFile->CurrentValue;
 			$this->TemplateFile->ViewCustomAttributes = "";
+
+			// hoDepartmentTo
+			$this->hoDepartmentTo->ViewValue = $this->hoDepartmentTo->CurrentValue;
+			$this->hoDepartmentTo->ViewCustomAttributes = "";
+
+			// hoSignatureTo
+			$this->hoSignatureTo->ViewValue = $this->hoSignatureTo->CurrentValue;
+			$this->hoSignatureTo->ViewCustomAttributes = "";
+
+			// hoJobTitleTo
+			$this->hoJobTitleTo->ViewValue = $this->hoJobTitleTo->CurrentValue;
+			$this->hoJobTitleTo->ViewCustomAttributes = "";
+
+			// hoDepartmentBy
+			$this->hoDepartmentBy->ViewValue = $this->hoDepartmentBy->CurrentValue;
+			$this->hoDepartmentBy->ViewCustomAttributes = "";
+
+			// hoSignatureBy
+			$this->hoSignatureBy->ViewValue = $this->hoSignatureBy->CurrentValue;
+			$this->hoSignatureBy->ViewCustomAttributes = "";
+
+			// hoJobTitleBy
+			$this->hoJobTitleBy->ViewValue = $this->hoJobTitleBy->CurrentValue;
+			$this->hoJobTitleBy->ViewCustomAttributes = "";
+
+			// Description
+			$this->Description->ViewValue = $this->Description->CurrentValue;
+			$this->Description->ViewCustomAttributes = "";
+
+			// ProcurementDate
+			$this->ProcurementDate->ViewValue = $this->ProcurementDate->CurrentValue;
+			$this->ProcurementDate->ViewValue = FormatDateTime($this->ProcurementDate->ViewValue, 0);
+			$this->ProcurementDate->ViewCustomAttributes = "";
+
+			// ProcurementCurrentCost
+			$this->ProcurementCurrentCost->ViewValue = $this->ProcurementCurrentCost->CurrentValue;
+			$this->ProcurementCurrentCost->ViewValue = FormatNumber($this->ProcurementCurrentCost->ViewValue, 2, -2, -2, -2);
+			$this->ProcurementCurrentCost->ViewCustomAttributes = "";
+
+			// DepreciationAmount
+			$this->DepreciationAmount->ViewValue = $this->DepreciationAmount->CurrentValue;
+			$this->DepreciationAmount->ViewValue = FormatNumber($this->DepreciationAmount->ViewValue, 2, -2, -2, -2);
+			$this->DepreciationAmount->ViewCustomAttributes = "";
+
+			// DepreciationYtd
+			$this->DepreciationYtd->ViewValue = $this->DepreciationYtd->CurrentValue;
+			$this->DepreciationYtd->ViewValue = FormatNumber($this->DepreciationYtd->ViewValue, 2, -2, -2, -2);
+			$this->DepreciationYtd->ViewCustomAttributes = "";
+
+			// NetBookValue
+			$this->NetBookValue->ViewValue = $this->NetBookValue->CurrentValue;
+			$this->NetBookValue->ViewValue = FormatNumber($this->NetBookValue->ViewValue, 2, -2, -2, -2);
+			$this->NetBookValue->ViewCustomAttributes = "";
+
+			// Periode
+			$this->Periode->ViewValue = $this->Periode->CurrentValue;
+			$this->Periode->ViewValue = FormatDateTime($this->Periode->ViewValue, 0);
+			$this->Periode->ViewCustomAttributes = "";
+
+			// Qty
+			$this->Qty->ViewValue = $this->Qty->CurrentValue;
+			$this->Qty->ViewValue = FormatNumber($this->Qty->ViewValue, 2, -2, -2, -2);
+			$this->Qty->ViewCustomAttributes = "";
+
+			// Sign1Signature
+			$this->Sign1Signature->ViewValue = $this->Sign1Signature->CurrentValue;
+			$this->Sign1Signature->ViewCustomAttributes = "";
+
+			// Sign1JobTitle
+			$this->Sign1JobTitle->ViewValue = $this->Sign1JobTitle->CurrentValue;
+			$this->Sign1JobTitle->ViewCustomAttributes = "";
+
+			// Sign2Signature
+			$this->Sign2Signature->ViewValue = $this->Sign2Signature->CurrentValue;
+			$this->Sign2Signature->ViewCustomAttributes = "";
+
+			// Sign2JobTitle
+			$this->Sign2JobTitle->ViewValue = $this->Sign2JobTitle->CurrentValue;
+			$this->Sign2JobTitle->ViewCustomAttributes = "";
+
+			// Sign3Signature
+			$this->Sign3Signature->ViewValue = $this->Sign3Signature->CurrentValue;
+			$this->Sign3Signature->ViewCustomAttributes = "";
+
+			// Sign3JobTitle
+			$this->Sign3JobTitle->ViewValue = $this->Sign3JobTitle->CurrentValue;
+			$this->Sign3JobTitle->ViewCustomAttributes = "";
+
+			// Sign4Signature
+			$this->Sign4Signature->ViewValue = $this->Sign4Signature->CurrentValue;
+			$this->Sign4Signature->ViewCustomAttributes = "";
+
+			// Sign4JobTitle
+			$this->Sign4JobTitle->ViewValue = $this->Sign4JobTitle->CurrentValue;
+			$this->Sign4JobTitle->ViewCustomAttributes = "";
+
+			// id
+			$this->id->LinkCustomAttributes = "";
+			$this->id->HrefValue = "";
+			$this->id->TooltipValue = "";
+
+			// property_id
+			$this->property_id->LinkCustomAttributes = "";
+			$this->property_id->HrefValue = "";
+			$this->property_id->TooltipValue = "";
+
+			// TransactionNo
+			$this->TransactionNo->LinkCustomAttributes = "";
+			$this->TransactionNo->HrefValue = "";
+			$this->TransactionNo->TooltipValue = "";
+
+			// TransactionDate
+			$this->TransactionDate->LinkCustomAttributes = "";
+			$this->TransactionDate->HrefValue = "";
+			$this->TransactionDate->TooltipValue = "";
+
+			// TransactionType
+			$this->TransactionType->LinkCustomAttributes = "";
+			$this->TransactionType->HrefValue = "";
+			$this->TransactionType->TooltipValue = "";
+
+			// HandedOverTo
+			$this->HandedOverTo->LinkCustomAttributes = "";
+			$this->HandedOverTo->HrefValue = "";
+			$this->HandedOverTo->TooltipValue = "";
+
+			// CodeNoTo
+			$this->CodeNoTo->LinkCustomAttributes = "";
+			$this->CodeNoTo->HrefValue = "";
+			$this->CodeNoTo->TooltipValue = "";
+
+			// DepartmentTo
+			$this->DepartmentTo->LinkCustomAttributes = "";
+			$this->DepartmentTo->HrefValue = "";
+			$this->DepartmentTo->TooltipValue = "";
+
+			// HandedOverBy
+			$this->HandedOverBy->LinkCustomAttributes = "";
+			$this->HandedOverBy->HrefValue = "";
+			$this->HandedOverBy->TooltipValue = "";
+
+			// CodeNoBy
+			$this->CodeNoBy->LinkCustomAttributes = "";
+			$this->CodeNoBy->HrefValue = "";
+			$this->CodeNoBy->TooltipValue = "";
+
+			// DepartmentBy
+			$this->DepartmentBy->LinkCustomAttributes = "";
+			$this->DepartmentBy->HrefValue = "";
+			$this->DepartmentBy->TooltipValue = "";
+
+			// Sign1
+			$this->Sign1->LinkCustomAttributes = "";
+			$this->Sign1->HrefValue = "";
+			$this->Sign1->TooltipValue = "";
+
+			// Sign2
+			$this->Sign2->LinkCustomAttributes = "";
+			$this->Sign2->HrefValue = "";
+			$this->Sign2->TooltipValue = "";
+
+			// Sign3
+			$this->Sign3->LinkCustomAttributes = "";
+			$this->Sign3->HrefValue = "";
+			$this->Sign3->TooltipValue = "";
+
+			// Sign4
+			$this->Sign4->LinkCustomAttributes = "";
+			$this->Sign4->HrefValue = "";
+			$this->Sign4->TooltipValue = "";
+
+			// hodetail_id
+			$this->hodetail_id->LinkCustomAttributes = "";
+			$this->hodetail_id->HrefValue = "";
+			$this->hodetail_id->TooltipValue = "";
+
+			// asset_id
+			$this->asset_id->LinkCustomAttributes = "";
+			$this->asset_id->HrefValue = "";
+			$this->asset_id->TooltipValue = "";
 
 			// Property
 			$this->Property->LinkCustomAttributes = "";
@@ -2394,387 +2685,121 @@ class t001_property_list extends t001_property
 			$this->TemplateFile->LinkCustomAttributes = "";
 			$this->TemplateFile->HrefValue = "";
 			$this->TemplateFile->TooltipValue = "";
-		} elseif ($this->RowType == ROWTYPE_ADD) { // Add row
 
-			// Property
-			$this->Property->EditAttrs["class"] = "form-control";
-			$this->Property->EditCustomAttributes = "";
-			if (!$this->Property->Raw)
-				$this->Property->CurrentValue = HtmlDecode($this->Property->CurrentValue);
-			$this->Property->EditValue = HtmlEncode($this->Property->CurrentValue);
-			$this->Property->PlaceHolder = RemoveHtml($this->Property->caption());
+			// hoDepartmentTo
+			$this->hoDepartmentTo->LinkCustomAttributes = "";
+			$this->hoDepartmentTo->HrefValue = "";
+			$this->hoDepartmentTo->TooltipValue = "";
 
-			// TemplateFile
-			$this->TemplateFile->EditAttrs["class"] = "form-control";
-			$this->TemplateFile->EditCustomAttributes = "";
-			if (!$this->TemplateFile->Raw)
-				$this->TemplateFile->CurrentValue = HtmlDecode($this->TemplateFile->CurrentValue);
-			$this->TemplateFile->EditValue = HtmlEncode($this->TemplateFile->CurrentValue);
-			$this->TemplateFile->PlaceHolder = RemoveHtml($this->TemplateFile->caption());
+			// hoSignatureTo
+			$this->hoSignatureTo->LinkCustomAttributes = "";
+			$this->hoSignatureTo->HrefValue = "";
+			$this->hoSignatureTo->TooltipValue = "";
 
-			// Add refer script
-			// Property
+			// hoJobTitleTo
+			$this->hoJobTitleTo->LinkCustomAttributes = "";
+			$this->hoJobTitleTo->HrefValue = "";
+			$this->hoJobTitleTo->TooltipValue = "";
 
-			$this->Property->LinkCustomAttributes = "";
-			$this->Property->HrefValue = "";
+			// hoDepartmentBy
+			$this->hoDepartmentBy->LinkCustomAttributes = "";
+			$this->hoDepartmentBy->HrefValue = "";
+			$this->hoDepartmentBy->TooltipValue = "";
 
-			// TemplateFile
-			$this->TemplateFile->LinkCustomAttributes = "";
-			$this->TemplateFile->HrefValue = "";
-		} elseif ($this->RowType == ROWTYPE_EDIT) { // Edit row
+			// hoSignatureBy
+			$this->hoSignatureBy->LinkCustomAttributes = "";
+			$this->hoSignatureBy->HrefValue = "";
+			$this->hoSignatureBy->TooltipValue = "";
 
-			// Property
-			$this->Property->EditAttrs["class"] = "form-control";
-			$this->Property->EditCustomAttributes = "";
-			if (!$this->Property->Raw)
-				$this->Property->CurrentValue = HtmlDecode($this->Property->CurrentValue);
-			$this->Property->EditValue = HtmlEncode($this->Property->CurrentValue);
-			$this->Property->PlaceHolder = RemoveHtml($this->Property->caption());
+			// hoJobTitleBy
+			$this->hoJobTitleBy->LinkCustomAttributes = "";
+			$this->hoJobTitleBy->HrefValue = "";
+			$this->hoJobTitleBy->TooltipValue = "";
 
-			// TemplateFile
-			$this->TemplateFile->EditAttrs["class"] = "form-control";
-			$this->TemplateFile->EditCustomAttributes = "";
-			if (!$this->TemplateFile->Raw)
-				$this->TemplateFile->CurrentValue = HtmlDecode($this->TemplateFile->CurrentValue);
-			$this->TemplateFile->EditValue = HtmlEncode($this->TemplateFile->CurrentValue);
-			$this->TemplateFile->PlaceHolder = RemoveHtml($this->TemplateFile->caption());
+			// Description
+			$this->Description->LinkCustomAttributes = "";
+			$this->Description->HrefValue = "";
+			$this->Description->TooltipValue = "";
 
-			// Edit refer script
-			// Property
+			// ProcurementDate
+			$this->ProcurementDate->LinkCustomAttributes = "";
+			$this->ProcurementDate->HrefValue = "";
+			$this->ProcurementDate->TooltipValue = "";
 
-			$this->Property->LinkCustomAttributes = "";
-			$this->Property->HrefValue = "";
+			// ProcurementCurrentCost
+			$this->ProcurementCurrentCost->LinkCustomAttributes = "";
+			$this->ProcurementCurrentCost->HrefValue = "";
+			$this->ProcurementCurrentCost->TooltipValue = "";
 
-			// TemplateFile
-			$this->TemplateFile->LinkCustomAttributes = "";
-			$this->TemplateFile->HrefValue = "";
+			// DepreciationAmount
+			$this->DepreciationAmount->LinkCustomAttributes = "";
+			$this->DepreciationAmount->HrefValue = "";
+			$this->DepreciationAmount->TooltipValue = "";
+
+			// DepreciationYtd
+			$this->DepreciationYtd->LinkCustomAttributes = "";
+			$this->DepreciationYtd->HrefValue = "";
+			$this->DepreciationYtd->TooltipValue = "";
+
+			// NetBookValue
+			$this->NetBookValue->LinkCustomAttributes = "";
+			$this->NetBookValue->HrefValue = "";
+			$this->NetBookValue->TooltipValue = "";
+
+			// Periode
+			$this->Periode->LinkCustomAttributes = "";
+			$this->Periode->HrefValue = "";
+			$this->Periode->TooltipValue = "";
+
+			// Qty
+			$this->Qty->LinkCustomAttributes = "";
+			$this->Qty->HrefValue = "";
+			$this->Qty->TooltipValue = "";
+
+			// Sign1Signature
+			$this->Sign1Signature->LinkCustomAttributes = "";
+			$this->Sign1Signature->HrefValue = "";
+			$this->Sign1Signature->TooltipValue = "";
+
+			// Sign1JobTitle
+			$this->Sign1JobTitle->LinkCustomAttributes = "";
+			$this->Sign1JobTitle->HrefValue = "";
+			$this->Sign1JobTitle->TooltipValue = "";
+
+			// Sign2Signature
+			$this->Sign2Signature->LinkCustomAttributes = "";
+			$this->Sign2Signature->HrefValue = "";
+			$this->Sign2Signature->TooltipValue = "";
+
+			// Sign2JobTitle
+			$this->Sign2JobTitle->LinkCustomAttributes = "";
+			$this->Sign2JobTitle->HrefValue = "";
+			$this->Sign2JobTitle->TooltipValue = "";
+
+			// Sign3Signature
+			$this->Sign3Signature->LinkCustomAttributes = "";
+			$this->Sign3Signature->HrefValue = "";
+			$this->Sign3Signature->TooltipValue = "";
+
+			// Sign3JobTitle
+			$this->Sign3JobTitle->LinkCustomAttributes = "";
+			$this->Sign3JobTitle->HrefValue = "";
+			$this->Sign3JobTitle->TooltipValue = "";
+
+			// Sign4Signature
+			$this->Sign4Signature->LinkCustomAttributes = "";
+			$this->Sign4Signature->HrefValue = "";
+			$this->Sign4Signature->TooltipValue = "";
+
+			// Sign4JobTitle
+			$this->Sign4JobTitle->LinkCustomAttributes = "";
+			$this->Sign4JobTitle->HrefValue = "";
+			$this->Sign4JobTitle->TooltipValue = "";
 		}
-		if ($this->RowType == ROWTYPE_ADD || $this->RowType == ROWTYPE_EDIT || $this->RowType == ROWTYPE_SEARCH) // Add/Edit/Search row
-			$this->setupFieldTitles();
 
 		// Call Row Rendered event
 		if ($this->RowType != ROWTYPE_AGGREGATEINIT)
 			$this->Row_Rendered();
-	}
-
-	// Validate search
-	protected function validateSearch()
-	{
-		global $SearchError;
-
-		// Initialize
-		$SearchError = "";
-
-		// Check if validation required
-		if (!Config("SERVER_VALIDATE"))
-			return TRUE;
-
-		// Return validate result
-		$validateSearch = ($SearchError == "");
-
-		// Call Form_CustomValidate event
-		$formCustomError = "";
-		$validateSearch = $validateSearch && $this->Form_CustomValidate($formCustomError);
-		if ($formCustomError != "") {
-			AddMessage($SearchError, $formCustomError);
-		}
-		return $validateSearch;
-	}
-
-	// Validate form
-	protected function validateForm()
-	{
-		global $Language, $FormError;
-
-		// Initialize form error message
-		$FormError = "";
-
-		// Check if validation required
-		if (!Config("SERVER_VALIDATE"))
-			return ($FormError == "");
-		if ($this->Property->Required) {
-			if (!$this->Property->IsDetailKey && $this->Property->FormValue != NULL && $this->Property->FormValue == "") {
-				AddMessage($FormError, str_replace("%s", $this->Property->caption(), $this->Property->RequiredErrorMessage));
-			}
-		}
-		if ($this->TemplateFile->Required) {
-			if (!$this->TemplateFile->IsDetailKey && $this->TemplateFile->FormValue != NULL && $this->TemplateFile->FormValue == "") {
-				AddMessage($FormError, str_replace("%s", $this->TemplateFile->caption(), $this->TemplateFile->RequiredErrorMessage));
-			}
-		}
-
-		// Return validate result
-		$validateForm = ($FormError == "");
-
-		// Call Form_CustomValidate event
-		$formCustomError = "";
-		$validateForm = $validateForm && $this->Form_CustomValidate($formCustomError);
-		if ($formCustomError != "") {
-			AddMessage($FormError, $formCustomError);
-		}
-		return $validateForm;
-	}
-
-	// Delete records based on current filter
-	protected function deleteRows()
-	{
-		global $Language, $Security;
-		if (!$Security->canDelete()) {
-			$this->setFailureMessage($Language->phrase("NoDeletePermission")); // No delete permission
-			return FALSE;
-		}
-		$deleteRows = TRUE;
-		$sql = $this->getCurrentSql();
-		$conn = $this->getConnection();
-		$conn->raiseErrorFn = Config("ERROR_FUNC");
-		$rs = $conn->execute($sql);
-		$conn->raiseErrorFn = "";
-		if ($rs === FALSE) {
-			return FALSE;
-		} elseif ($rs->EOF) {
-			$this->setFailureMessage($Language->phrase("NoRecord")); // No record found
-			$rs->close();
-			return FALSE;
-		}
-		$rows = ($rs) ? $rs->getRows() : [];
-		if ($this->AuditTrailOnDelete)
-			$this->writeAuditTrailDummy($Language->phrase("BatchDeleteBegin")); // Batch delete begin
-
-		// Clone old rows
-		$rsold = $rows;
-		if ($rs)
-			$rs->close();
-
-		// Call row deleting event
-		if ($deleteRows) {
-			foreach ($rsold as $row) {
-				$deleteRows = $this->Row_Deleting($row);
-				if (!$deleteRows)
-					break;
-			}
-		}
-		if ($deleteRows) {
-			$key = "";
-			foreach ($rsold as $row) {
-				$thisKey = "";
-				if ($thisKey != "")
-					$thisKey .= Config("COMPOSITE_KEY_SEPARATOR");
-				$thisKey .= $row['id'];
-				if (Config("DELETE_UPLOADED_FILES")) // Delete old files
-					$this->deleteUploadedFiles($row);
-				$conn->raiseErrorFn = Config("ERROR_FUNC");
-				$deleteRows = $this->delete($row); // Delete
-				$conn->raiseErrorFn = "";
-				if ($deleteRows === FALSE)
-					break;
-				if ($key != "")
-					$key .= ", ";
-				$key .= $thisKey;
-			}
-		}
-		if (!$deleteRows) {
-
-			// Set up error message
-			if ($this->getSuccessMessage() != "" || $this->getFailureMessage() != "") {
-
-				// Use the message, do nothing
-			} elseif ($this->CancelMessage != "") {
-				$this->setFailureMessage($this->CancelMessage);
-				$this->CancelMessage = "";
-			} else {
-				$this->setFailureMessage($Language->phrase("DeleteCancelled"));
-			}
-		}
-
-		// Call Row Deleted event
-		if ($deleteRows) {
-			foreach ($rsold as $row) {
-				$this->Row_Deleted($row);
-			}
-		}
-
-		// Write JSON for API request (Support single row only)
-		if (IsApi() && $deleteRows) {
-			$row = $this->getRecordsFromRecordset($rsold, TRUE);
-			WriteJson(["success" => TRUE, $this->TableVar => $row]);
-		}
-		return $deleteRows;
-	}
-
-	// Update record based on key values
-	protected function editRow()
-	{
-		global $Security, $Language;
-		$oldKeyFilter = $this->getRecordFilter();
-		$filter = $this->applyUserIDFilters($oldKeyFilter);
-		$conn = $this->getConnection();
-		$this->CurrentFilter = $filter;
-		$sql = $this->getCurrentSql();
-		$conn->raiseErrorFn = Config("ERROR_FUNC");
-		$rs = $conn->execute($sql);
-		$conn->raiseErrorFn = "";
-		if ($rs === FALSE)
-			return FALSE;
-		if ($rs->EOF) {
-			$this->setFailureMessage($Language->phrase("NoRecord")); // Set no record message
-			$editRow = FALSE; // Update Failed
-		} else {
-
-			// Save old values
-			$rsold = &$rs->fields;
-			$this->loadDbValues($rsold);
-			$rsnew = [];
-
-			// Property
-			$this->Property->setDbValueDef($rsnew, $this->Property->CurrentValue, "", $this->Property->ReadOnly);
-
-			// TemplateFile
-			$this->TemplateFile->setDbValueDef($rsnew, $this->TemplateFile->CurrentValue, "", $this->TemplateFile->ReadOnly);
-
-			// Call Row Updating event
-			$updateRow = $this->Row_Updating($rsold, $rsnew);
-
-			// Check for duplicate key when key changed
-			if ($updateRow) {
-				$newKeyFilter = $this->getRecordFilter($rsnew);
-				if ($newKeyFilter != $oldKeyFilter) {
-					$rsChk = $this->loadRs($newKeyFilter);
-					if ($rsChk && !$rsChk->EOF) {
-						$keyErrMsg = str_replace("%f", $newKeyFilter, $Language->phrase("DupKey"));
-						$this->setFailureMessage($keyErrMsg);
-						$rsChk->close();
-						$updateRow = FALSE;
-					}
-				}
-			}
-			if ($updateRow) {
-				$conn->raiseErrorFn = Config("ERROR_FUNC");
-				if (count($rsnew) > 0)
-					$editRow = $this->update($rsnew, "", $rsold);
-				else
-					$editRow = TRUE; // No field to update
-				$conn->raiseErrorFn = "";
-				if ($editRow) {
-				}
-			} else {
-				if ($this->getSuccessMessage() != "" || $this->getFailureMessage() != "") {
-
-					// Use the message, do nothing
-				} elseif ($this->CancelMessage != "") {
-					$this->setFailureMessage($this->CancelMessage);
-					$this->CancelMessage = "";
-				} else {
-					$this->setFailureMessage($Language->phrase("UpdateCancelled"));
-				}
-				$editRow = FALSE;
-			}
-		}
-
-		// Call Row_Updated event
-		if ($editRow)
-			$this->Row_Updated($rsold, $rsnew);
-		$rs->close();
-
-		// Clean upload path if any
-		if ($editRow) {
-		}
-
-		// Write JSON for API request
-		if (IsApi() && $editRow) {
-			$row = $this->getRecordsFromRecordset([$rsnew], TRUE);
-			WriteJson(["success" => TRUE, $this->TableVar => $row]);
-		}
-		return $editRow;
-	}
-
-	// Load row hash
-	protected function loadRowHash()
-	{
-		$filter = $this->getRecordFilter();
-
-		// Load SQL based on filter
-		$this->CurrentFilter = $filter;
-		$sql = $this->getCurrentSql();
-		$conn = $this->getConnection();
-		$rsRow = $conn->Execute($sql);
-		$this->HashValue = ($rsRow && !$rsRow->EOF) ? $this->getRowHash($rsRow) : ""; // Get hash value for record
-		$rsRow->close();
-	}
-
-	// Get Row Hash
-	public function getRowHash(&$rs)
-	{
-		if (!$rs)
-			return "";
-		$hash = "";
-		$hash .= GetFieldHash($rs->fields('Property')); // Property
-		$hash .= GetFieldHash($rs->fields('TemplateFile')); // TemplateFile
-		return md5($hash);
-	}
-
-	// Add record
-	protected function addRow($rsold = NULL)
-	{
-		global $Language, $Security;
-		$conn = $this->getConnection();
-
-		// Load db values from rsold
-		$this->loadDbValues($rsold);
-		if ($rsold) {
-		}
-		$rsnew = [];
-
-		// Property
-		$this->Property->setDbValueDef($rsnew, $this->Property->CurrentValue, "", FALSE);
-
-		// TemplateFile
-		$this->TemplateFile->setDbValueDef($rsnew, $this->TemplateFile->CurrentValue, "", FALSE);
-
-		// Call Row Inserting event
-		$rs = ($rsold) ? $rsold->fields : NULL;
-		$insertRow = $this->Row_Inserting($rs, $rsnew);
-		if ($insertRow) {
-			$conn->raiseErrorFn = Config("ERROR_FUNC");
-			$addRow = $this->insert($rsnew);
-			$conn->raiseErrorFn = "";
-			if ($addRow) {
-			}
-		} else {
-			if ($this->getSuccessMessage() != "" || $this->getFailureMessage() != "") {
-
-				// Use the message, do nothing
-			} elseif ($this->CancelMessage != "") {
-				$this->setFailureMessage($this->CancelMessage);
-				$this->CancelMessage = "";
-			} else {
-				$this->setFailureMessage($Language->phrase("InsertCancelled"));
-			}
-			$addRow = FALSE;
-		}
-		if ($addRow) {
-
-			// Call Row Inserted event
-			$rs = ($rsold) ? $rsold->fields : NULL;
-			$this->Row_Inserted($rs, $rsnew);
-		}
-
-		// Clean upload path if any
-		if ($addRow) {
-		}
-
-		// Write JSON for API request
-		if (IsApi() && $addRow) {
-			$row = $this->getRecordsFromRecordset([$rsnew], TRUE);
-			WriteJson(["success" => TRUE, $this->TableVar => $row]);
-		}
-		return $addRow;
-	}
-
-	// Load advanced search
-	public function loadAdvancedSearch()
-	{
-		$this->Property->AdvancedSearch->load();
-		$this->TemplateFile->AdvancedSearch->load();
 	}
 
 	// Get export HTML tag
@@ -2783,17 +2808,17 @@ class t001_property_list extends t001_property
 		global $Language;
 		if (SameText($type, "excel")) {
 			if ($custom)
-				return "<a href=\"#\" class=\"ew-export-link ew-excel\" title=\"" . HtmlEncode($Language->phrase("ExportToExcelText")) . "\" data-caption=\"" . HtmlEncode($Language->phrase("ExportToExcelText")) . "\" onclick=\"return ew.export(document.ft001_propertylist, '" . $this->ExportExcelUrl . "', 'excel', true);\">" . $Language->phrase("ExportToExcel") . "</a>";
+				return "<a href=\"#\" class=\"ew-export-link ew-excel\" title=\"" . HtmlEncode($Language->phrase("ExportToExcelText")) . "\" data-caption=\"" . HtmlEncode($Language->phrase("ExportToExcelText")) . "\" onclick=\"return ew.export(document.fv101_holist, '" . $this->ExportExcelUrl . "', 'excel', true);\">" . $Language->phrase("ExportToExcel") . "</a>";
 			else
 				return "<a href=\"" . $this->ExportExcelUrl . "\" class=\"ew-export-link ew-excel\" title=\"" . HtmlEncode($Language->phrase("ExportToExcelText")) . "\" data-caption=\"" . HtmlEncode($Language->phrase("ExportToExcelText")) . "\">" . $Language->phrase("ExportToExcel") . "</a>";
 		} elseif (SameText($type, "word")) {
 			if ($custom)
-				return "<a href=\"#\" class=\"ew-export-link ew-word\" title=\"" . HtmlEncode($Language->phrase("ExportToWordText")) . "\" data-caption=\"" . HtmlEncode($Language->phrase("ExportToWordText")) . "\" onclick=\"return ew.export(document.ft001_propertylist, '" . $this->ExportWordUrl . "', 'word', true);\">" . $Language->phrase("ExportToWord") . "</a>";
+				return "<a href=\"#\" class=\"ew-export-link ew-word\" title=\"" . HtmlEncode($Language->phrase("ExportToWordText")) . "\" data-caption=\"" . HtmlEncode($Language->phrase("ExportToWordText")) . "\" onclick=\"return ew.export(document.fv101_holist, '" . $this->ExportWordUrl . "', 'word', true);\">" . $Language->phrase("ExportToWord") . "</a>";
 			else
 				return "<a href=\"" . $this->ExportWordUrl . "\" class=\"ew-export-link ew-word\" title=\"" . HtmlEncode($Language->phrase("ExportToWordText")) . "\" data-caption=\"" . HtmlEncode($Language->phrase("ExportToWordText")) . "\">" . $Language->phrase("ExportToWord") . "</a>";
 		} elseif (SameText($type, "pdf")) {
 			if ($custom)
-				return "<a href=\"#\" class=\"ew-export-link ew-pdf\" title=\"" . HtmlEncode($Language->phrase("ExportToPDFText")) . "\" data-caption=\"" . HtmlEncode($Language->phrase("ExportToPDFText")) . "\" onclick=\"return ew.export(document.ft001_propertylist, '" . $this->ExportPdfUrl . "', 'pdf', true);\">" . $Language->phrase("ExportToPDF") . "</a>";
+				return "<a href=\"#\" class=\"ew-export-link ew-pdf\" title=\"" . HtmlEncode($Language->phrase("ExportToPDFText")) . "\" data-caption=\"" . HtmlEncode($Language->phrase("ExportToPDFText")) . "\" onclick=\"return ew.export(document.fv101_holist, '" . $this->ExportPdfUrl . "', 'pdf', true);\">" . $Language->phrase("ExportToPDF") . "</a>";
 			else
 				return "<a href=\"" . $this->ExportPdfUrl . "\" class=\"ew-export-link ew-pdf\" title=\"" . HtmlEncode($Language->phrase("ExportToPDFText")) . "\" data-caption=\"" . HtmlEncode($Language->phrase("ExportToPDFText")) . "\">" . $Language->phrase("ExportToPDF") . "</a>";
 		} elseif (SameText($type, "html")) {
@@ -2804,7 +2829,7 @@ class t001_property_list extends t001_property
 			return "<a href=\"" . $this->ExportCsvUrl . "\" class=\"ew-export-link ew-csv\" title=\"" . HtmlEncode($Language->phrase("ExportToCsvText")) . "\" data-caption=\"" . HtmlEncode($Language->phrase("ExportToCsvText")) . "\">" . $Language->phrase("ExportToCsv") . "</a>";
 		} elseif (SameText($type, "email")) {
 			$url = $custom ? ",url:'" . $this->pageUrl() . "export=email&amp;custom=1'" : "";
-			return '<button id="emf_t001_property" class="ew-export-link ew-email" title="' . $Language->phrase("ExportToEmailText") . '" data-caption="' . $Language->phrase("ExportToEmailText") . '" onclick="ew.emailDialogShow({lnk:\'emf_t001_property\', hdr:ew.language.phrase(\'ExportToEmailText\'), f:document.ft001_propertylist, sel:false' . $url . '});">' . $Language->phrase("ExportToEmail") . '</button>';
+			return '<button id="emf_v101_ho" class="ew-export-link ew-email" title="' . $Language->phrase("ExportToEmailText") . '" data-caption="' . $Language->phrase("ExportToEmailText") . '" onclick="ew.emailDialogShow({lnk:\'emf_v101_ho\', hdr:ew.language.phrase(\'ExportToEmailText\'), f:document.fv101_holist, sel:false' . $url . '});">' . $Language->phrase("ExportToEmail") . '</button>';
 		} elseif (SameText($type, "print")) {
 			return "<a href=\"" . $this->ExportPrintUrl . "\" class=\"ew-export-link ew-print\" title=\"" . HtmlEncode($Language->phrase("PrinterFriendlyText")) . "\" data-caption=\"" . HtmlEncode($Language->phrase("PrinterFriendlyText")) . "\">" . $Language->phrase("PrinterFriendly") . "</a>";
 		}
@@ -2875,18 +2900,16 @@ class t001_property_list extends t001_property
 		$this->SearchOptions = new ListOptions("div");
 		$this->SearchOptions->TagClassName = "ew-search-option";
 
+		// Search button
+		$item = &$this->SearchOptions->add("searchtoggle");
+		$searchToggleClass = ($this->SearchWhere != "") ? " active" : " active";
+		$item->Body = "<a class=\"btn btn-default ew-search-toggle" . $searchToggleClass . "\" href=\"#\" role=\"button\" title=\"" . $Language->phrase("SearchPanel") . "\" data-caption=\"" . $Language->phrase("SearchPanel") . "\" data-toggle=\"button\" data-form=\"fv101_holistsrch\" aria-pressed=\"" . ($searchToggleClass == " active" ? "true" : "false") . "\">" . $Language->phrase("SearchLink") . "</a>";
+		$item->Visible = TRUE;
+
 		// Show all button
 		$item = &$this->SearchOptions->add("showall");
 		$item->Body = "<a class=\"btn btn-default ew-show-all\" title=\"" . $Language->phrase("ShowAll") . "\" data-caption=\"" . $Language->phrase("ShowAll") . "\" href=\"" . $this->pageUrl() . "cmd=reset\">" . $Language->phrase("ShowAllBtn") . "</a>";
 		$item->Visible = ($this->SearchWhere != $this->DefaultSearchWhere && $this->SearchWhere != "0=101");
-
-		// Advanced search button
-		$item = &$this->SearchOptions->add("advancedsearch");
-		if (IsMobile())
-			$item->Body = "<a class=\"btn btn-default ew-advanced-search\" title=\"" . $Language->phrase("AdvancedSearch") . "\" data-caption=\"" . $Language->phrase("AdvancedSearch") . "\" href=\"t001_propertysrch.php\">" . $Language->phrase("AdvancedSearchBtn") . "</a>";
-		else
-			$item->Body = "<a class=\"btn btn-default ew-advanced-search\" title=\"" . $Language->phrase("AdvancedSearch") . "\" data-table=\"t001_property\" data-caption=\"" . $Language->phrase("AdvancedSearch") . "\" href=\"#\" onclick=\"return ew.modalDialogShow({lnk:this,btn:'SearchBtn',url:'t001_propertysrch.php'});\">" . $Language->phrase("AdvancedSearchBtn") . "</a>";
-		$item->Visible = TRUE;
 
 		// Button group for search
 		$this->SearchOptions->UseDropDownButton = FALSE;

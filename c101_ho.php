@@ -34,12 +34,29 @@ Page_Rendering();
 require 'vendor/autoload.php';
 use PhpOffice\PhpSpreadsheet\IOFactory;
 use PhpOffice\PhpSpreadsheet\Shared\Date;
-
 $reader = IOFactory::createReader('Xlsx');
-$spreadsheet = $reader->load(__DIR__ . '/ASSET HANDOVER FORM - ABCH.xlsx');
+
+// ambil data
+$q = "select * from v101_ho where id = ".Get("id")."";
+$r = ExecuteRows($q);
+
+// ambil template file excel
+$spreadsheet = $reader->load(__DIR__ . '/' . $r[0]["TemplateFile"]);
+
+// cetak handover data head
+$baserow = 8;
+$row = $baserow   ; $spreadsheet->getActiveSheet()->setCellValue('D'.$row, $r[0]["TransactionNo"]);
+$row = $baserow+ 3; $spreadsheet->getActiveSheet()->setCellValue('D'.$row, $r[0]["hoSignatureTo"]);
+$row = $baserow+ 4; $spreadsheet->getActiveSheet()->setCellValue('D'.$row, $r[0]["CodeNoTo"]);
+$row = $baserow+ 5; $spreadsheet->getActiveSheet()->setCellValue('D'.$row, $r[0]["hoDepartmentTo"]);
+$row = $baserow+ 9; $spreadsheet->getActiveSheet()->setCellValue('D'.$row, $r[0]["hoSignatureBy"]);
+$row = $baserow+10; $spreadsheet->getActiveSheet()->setCellValue('D'.$row, $r[0]["CodeNoBy"]);
+$row = $baserow+11; $spreadsheet->getActiveSheet()->setCellValue('D'.$row, $r[0]["hoDepartmentBy"]);
+$row = $baserow+12; $spreadsheet->getActiveSheet()->setCellValue('D'.$row, $r[0]["TransactionDate"]);
 
 
-$q = "select * from t101_ho_head";
+// cetak handover data detail
+$q = "select * from v101_ho where id = ".Get("id")."";
 $r = ExecuteRows($q);
 $i = 1;
 $no = 1;
@@ -57,6 +74,7 @@ foreach ($r as $rs) {
 $spreadsheet->getActiveSheet()->removeRow($baseRow - 1, 1);
 $writer = \PhpOffice\PhpSpreadsheet\IOFactory::createWriter($spreadsheet, 'Xlsx');
 $writer->save('write.xlsx');
+header("location: write.xlsx");
 ?>
 
 <?php if (Config("DEBUG")) echo GetDebugMessage(); ?>

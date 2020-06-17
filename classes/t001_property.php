@@ -35,6 +35,7 @@ class t001_property extends DbTable
 	// Fields
 	public $id;
 	public $Property;
+	public $TemplateFile;
 
 	// Constructor
 	public function __construct()
@@ -83,6 +84,13 @@ class t001_property extends DbTable
 		$this->Property->Required = TRUE; // Required field
 		$this->Property->Sortable = TRUE; // Allow sort
 		$this->fields['Property'] = &$this->Property;
+
+		// TemplateFile
+		$this->TemplateFile = new DbField('t001_property', 't001_property', 'x_TemplateFile', 'TemplateFile', '`TemplateFile`', '`TemplateFile`', 200, 100, -1, FALSE, '`TemplateFile`', FALSE, FALSE, FALSE, 'FORMATTED TEXT', 'TEXT');
+		$this->TemplateFile->Nullable = FALSE; // NOT NULL field
+		$this->TemplateFile->Required = TRUE; // Required field
+		$this->TemplateFile->Sortable = TRUE; // Allow sort
+		$this->fields['TemplateFile'] = &$this->TemplateFile;
 	}
 
 	// Field Visibility
@@ -464,6 +472,7 @@ class t001_property extends DbTable
 		$row = is_array($rs) ? $rs : $rs->fields;
 		$this->id->DbValue = $row['id'];
 		$this->Property->DbValue = $row['Property'];
+		$this->TemplateFile->DbValue = $row['TemplateFile'];
 	}
 
 	// Delete uploaded files
@@ -696,6 +705,7 @@ class t001_property extends DbTable
 	{
 		$this->id->setDbValue($rs->fields('id'));
 		$this->Property->setDbValue($rs->fields('Property'));
+		$this->TemplateFile->setDbValue($rs->fields('TemplateFile'));
 	}
 
 	// Render list row values
@@ -709,6 +719,7 @@ class t001_property extends DbTable
 		// Common render codes
 		// id
 		// Property
+		// TemplateFile
 		// id
 
 		$this->id->ViewValue = $this->id->CurrentValue;
@@ -717,6 +728,10 @@ class t001_property extends DbTable
 		// Property
 		$this->Property->ViewValue = $this->Property->CurrentValue;
 		$this->Property->ViewCustomAttributes = "";
+
+		// TemplateFile
+		$this->TemplateFile->ViewValue = $this->TemplateFile->CurrentValue;
+		$this->TemplateFile->ViewCustomAttributes = "";
 
 		// id
 		$this->id->LinkCustomAttributes = "";
@@ -727,6 +742,11 @@ class t001_property extends DbTable
 		$this->Property->LinkCustomAttributes = "";
 		$this->Property->HrefValue = "";
 		$this->Property->TooltipValue = "";
+
+		// TemplateFile
+		$this->TemplateFile->LinkCustomAttributes = "";
+		$this->TemplateFile->HrefValue = "";
+		$this->TemplateFile->TooltipValue = "";
 
 		// Call Row Rendered event
 		$this->Row_Rendered();
@@ -756,6 +776,14 @@ class t001_property extends DbTable
 			$this->Property->CurrentValue = HtmlDecode($this->Property->CurrentValue);
 		$this->Property->EditValue = $this->Property->CurrentValue;
 		$this->Property->PlaceHolder = RemoveHtml($this->Property->caption());
+
+		// TemplateFile
+		$this->TemplateFile->EditAttrs["class"] = "form-control";
+		$this->TemplateFile->EditCustomAttributes = "";
+		if (!$this->TemplateFile->Raw)
+			$this->TemplateFile->CurrentValue = HtmlDecode($this->TemplateFile->CurrentValue);
+		$this->TemplateFile->EditValue = $this->TemplateFile->CurrentValue;
+		$this->TemplateFile->PlaceHolder = RemoveHtml($this->TemplateFile->caption());
 
 		// Call Row Rendered event
 		$this->Row_Rendered();
@@ -787,9 +815,11 @@ class t001_property extends DbTable
 				$doc->beginExportRow();
 				if ($exportPageType == "view") {
 					$doc->exportCaption($this->Property);
+					$doc->exportCaption($this->TemplateFile);
 				} else {
 					$doc->exportCaption($this->id);
 					$doc->exportCaption($this->Property);
+					$doc->exportCaption($this->TemplateFile);
 				}
 				$doc->endExportRow();
 			}
@@ -822,9 +852,11 @@ class t001_property extends DbTable
 					$doc->beginExportRow($rowCnt); // Allow CSS styles if enabled
 					if ($exportPageType == "view") {
 						$doc->exportField($this->Property);
+						$doc->exportField($this->TemplateFile);
 					} else {
 						$doc->exportField($this->id);
 						$doc->exportField($this->Property);
+						$doc->exportField($this->TemplateFile);
 					}
 					$doc->endExportRow($rowCnt);
 				}

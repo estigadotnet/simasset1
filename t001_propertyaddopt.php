@@ -60,6 +60,11 @@ loadjs.ready("head", function() {
 				if (elm && !ew.isHidden(elm) && !ew.hasValue(elm))
 					return this.onError(elm, "<?php echo JsEncode(str_replace("%s", $t001_property_addopt->Property->caption(), $t001_property_addopt->Property->RequiredErrorMessage)) ?>");
 			<?php } ?>
+			<?php if ($t001_property_addopt->TemplateFile->Required) { ?>
+				elm = this.getElements("x" + infix + "_TemplateFile");
+				if (elm && !ew.isHidden(elm) && !ew.hasValue(elm))
+					return this.onError(elm, "<?php echo JsEncode(str_replace("%s", $t001_property_addopt->TemplateFile->caption(), $t001_property_addopt->TemplateFile->RequiredErrorMessage)) ?>");
+			<?php } ?>
 
 				// Call Form_CustomValidate event
 				if (!this.Form_CustomValidate(fobj))
@@ -106,6 +111,14 @@ $t001_property_addopt->showMessage();
 		<label class="col-sm-2 col-form-label ew-label" for="x_Property"><?php echo $t001_property_addopt->Property->caption() ?><?php echo $t001_property_addopt->Property->Required ? $Language->phrase("FieldRequiredIndicator") : "" ?></label>
 		<div class="col-sm-10">
 <input type="text" data-table="t001_property" data-field="x_Property" name="x_Property" id="x_Property" size="30" maxlength="100" placeholder="<?php echo HtmlEncode($t001_property_addopt->Property->getPlaceHolder()) ?>" value="<?php echo $t001_property_addopt->Property->EditValue ?>"<?php echo $t001_property_addopt->Property->editAttributes() ?>>
+</div>
+	</div>
+<?php } ?>
+<?php if ($t001_property_addopt->TemplateFile->Visible) { // TemplateFile ?>
+	<div class="form-group row">
+		<label class="col-sm-2 col-form-label ew-label" for="x_TemplateFile"><?php echo $t001_property_addopt->TemplateFile->caption() ?><?php echo $t001_property_addopt->TemplateFile->Required ? $Language->phrase("FieldRequiredIndicator") : "" ?></label>
+		<div class="col-sm-10">
+<input type="text" data-table="t001_property" data-field="x_TemplateFile" name="x_TemplateFile" id="x_TemplateFile" size="30" maxlength="100" placeholder="<?php echo HtmlEncode($t001_property_addopt->TemplateFile->getPlaceHolder()) ?>" value="<?php echo $t001_property_addopt->TemplateFile->EditValue ?>"<?php echo $t001_property_addopt->TemplateFile->editAttributes() ?>>
 </div>
 	</div>
 <?php } ?>
