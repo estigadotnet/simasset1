@@ -42,6 +42,7 @@ SELECT
     , k.JobTitle as Sign3JobTitle
     , l.Signature as Sign4Signature
     , l.JobTitle as Sign4JobTitle
+    , m.Department as AssetDepartment
 FROM
 	t101_ho_head a
 	LEFT JOIN t102_ho_detail b ON a.id = b.hohead_id
@@ -55,3 +56,4 @@ FROM
     left join t003_signature j on a.Sign2 = j.id
     left join t003_signature k on a.Sign3 = k.id
     left join t003_signature l on a.Sign4 = l.id
+    left join t002_department m on h.department_id = m.id
