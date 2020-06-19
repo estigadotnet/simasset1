@@ -83,6 +83,7 @@ class t004_asset extends DbTable
 		$this->id = new DbField('t004_asset', 't004_asset', 'x_id', 'id', '`id`', '`id`', 3, 11, -1, FALSE, '`id`', FALSE, FALSE, FALSE, 'FORMATTED TEXT', 'NO');
 		$this->id->IsAutoIncrement = TRUE; // Autoincrement field
 		$this->id->IsPrimaryKey = TRUE; // Primary key field
+		$this->id->IsForeignKey = TRUE; // Foreign key field
 		$this->id->Sortable = TRUE; // Allow sort
 		$this->id->DefaultErrorMessage = $Language->phrase("IncorrectInteger");
 		$this->fields['id'] = &$this->id;
@@ -229,6 +230,31 @@ class t004_asset extends DbTable
 			if (!$ctrl)
 				$fld->setSort("");
 		}
+	}
+
+	// Current detail table name
+	public function getCurrentDetailTable()
+	{
+		return @$_SESSION[PROJECT_NAME . "_" . $this->TableVar . "_" . Config("TABLE_DETAIL_TABLE")];
+	}
+	public function setCurrentDetailTable($v)
+	{
+		$_SESSION[PROJECT_NAME . "_" . $this->TableVar . "_" . Config("TABLE_DETAIL_TABLE")] = $v;
+	}
+
+	// Get detail url
+	public function getDetailUrl()
+	{
+
+		// Detail url
+		$detailUrl = "";
+		if ($this->getCurrentDetailTable() == "t006_assetdepreciation") {
+			$detailUrl = $GLOBALS["t006_assetdepreciation"]->getListUrl() . "?" . Config("TABLE_SHOW_MASTER") . "=" . $this->TableVar;
+			$detailUrl .= "&fk_id=" . urlencode($this->id->CurrentValue);
+		}
+		if ($detailUrl == "")
+			$detailUrl = "t004_assetlist.php";
+		return $detailUrl;
 	}
 
 	// Table level SQL
@@ -511,6 +537,37 @@ class t004_asset extends DbTable
 	public function update(&$rs, $where = "", $rsold = NULL, $curfilter = TRUE)
 	{
 		$conn = $this->getConnection();
+
+		// Cascade Update detail table 't006_assetdepreciation'
+		$cascadeUpdate = FALSE;
+		$rscascade = [];
+		if ($rsold && (isset($rs['id']) && $rsold['id'] != $rs['id'])) { // Update detail field 'asset_id'
+			$cascadeUpdate = TRUE;
+			$rscascade['asset_id'] = $rs['id'];
+		}
+		if ($cascadeUpdate) {
+			if (!isset($GLOBALS["t006_assetdepreciation"]))
+				$GLOBALS["t006_assetdepreciation"] = new t006_assetdepreciation();
+			$rswrk = $GLOBALS["t006_assetdepreciation"]->loadRs("`asset_id` = " . QuotedValue($rsold['id'], DATATYPE_NUMBER, 'DB'));
+			while ($rswrk && !$rswrk->EOF) {
+				$rskey = [];
+				$fldname = 'id';
+				$rskey[$fldname] = $rswrk->fields[$fldname];
+				$rsdtlold = &$rswrk->fields;
+				$rsdtlnew = array_merge($rsdtlold, $rscascade);
+
+				// Call Row_Updating event
+				$success = $GLOBALS["t006_assetdepreciation"]->Row_Updating($rsdtlold, $rsdtlnew);
+				if ($success)
+					$success = $GLOBALS["t006_assetdepreciation"]->update($rscascade, $rskey, $rswrk->fields);
+				if (!$success)
+					return FALSE;
+
+				// Call Row_Updated event
+				$GLOBALS["t006_assetdepreciation"]->Row_Updated($rsdtlold, $rsdtlnew);
+				$rswrk->moveNext();
+			}
+		}
 		$success = $conn->execute($this->updateSql($rs, $where, $curfilter));
 		if ($success && $this->AuditTrailOnEdit && $rsold) {
 			$rsaudit = $rs;
@@ -546,6 +603,32 @@ class t004_asset extends DbTable
 	{
 		$success = TRUE;
 		$conn = $this->getConnection();
+
+		// Cascade delete detail table 't006_assetdepreciation'
+		if (!isset($GLOBALS["t006_assetdepreciation"]))
+			$GLOBALS["t006_assetdepreciation"] = new t006_assetdepreciation();
+		$rscascade = $GLOBALS["t006_assetdepreciation"]->loadRs("`asset_id` = " . QuotedValue($rs['id'], DATATYPE_NUMBER, "DB"));
+		$dtlrows = ($rscascade) ? $rscascade->getRows() : [];
+
+		// Call Row Deleting event
+		foreach ($dtlrows as $dtlrow) {
+			$success = $GLOBALS["t006_assetdepreciation"]->Row_Deleting($dtlrow);
+			if (!$success)
+				break;
+		}
+		if ($success) {
+			foreach ($dtlrows as $dtlrow) {
+				$success = $GLOBALS["t006_assetdepreciation"]->delete($dtlrow); // Delete
+				if (!$success)
+					break;
+			}
+		}
+
+		// Call Row Deleted event
+		if ($success) {
+			foreach ($dtlrows as $dtlrow)
+				$GLOBALS["t006_assetdepreciation"]->Row_Deleted($dtlrow);
+		}
 		if ($success)
 			$success = $conn->execute($this->deleteSql($rs, $where, $curfilter));
 		if ($success && $this->AuditTrailOnDelete)
@@ -664,7 +747,10 @@ class t004_asset extends DbTable
 	// Edit URL
 	public function getEditUrl($parm = "")
 	{
-		$url = $this->keyUrl("t004_assetedit.php", $this->getUrlParm($parm));
+		if ($parm != "")
+			$url = $this->keyUrl("t004_assetedit.php", $this->getUrlParm($parm));
+		else
+			$url = $this->keyUrl("t004_assetedit.php", $this->getUrlParm(Config("TABLE_SHOW_DETAIL") . "="));
 		return $this->addMasterUrl($url);
 	}
 
@@ -678,7 +764,10 @@ class t004_asset extends DbTable
 	// Copy URL
 	public function getCopyUrl($parm = "")
 	{
-		$url = $this->keyUrl("t004_assetadd.php", $this->getUrlParm($parm));
+		if ($parm != "")
+			$url = $this->keyUrl("t004_assetadd.php", $this->getUrlParm($parm));
+		else
+			$url = $this->keyUrl("t004_assetadd.php", $this->getUrlParm(Config("TABLE_SHOW_DETAIL") . "="));
 		return $this->addMasterUrl($url);
 	}
 
@@ -1432,6 +1521,9 @@ class t004_asset extends DbTable
 	function Row_Inserted($rsold, &$rsnew) {
 
 		//echo "Row Inserted"
+		// buat perincian data penyusutan
+
+		fCreatePenyusutan($rsnew);
 	}
 
 	// Row Updating event

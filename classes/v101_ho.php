@@ -50,13 +50,13 @@ class v101_ho extends DbTable
 	public $hoDepartmentBy;
 	public $hoSignatureBy;
 	public $hoJobTitleBy;
+	public $Code;
 	public $Description;
+	public $Group;
 	public $ProcurementDate;
 	public $ProcurementCurrentCost;
-	public $DepreciationAmount;
-	public $DepreciationYtd;
-	public $NetBookValue;
-	public $Periode;
+	public $Economical_Life_Time_28in_Year29;
+	public $Salvage;
 	public $Qty;
 	public $Remarks;
 	public $Sign1Signature;
@@ -67,6 +67,7 @@ class v101_ho extends DbTable
 	public $Sign3JobTitle;
 	public $Sign4Signature;
 	public $Sign4JobTitle;
+	public $AssetDepartment;
 
 	// Constructor
 	public function __construct()
@@ -272,10 +273,20 @@ class v101_ho extends DbTable
 		$this->hoJobTitleBy->Sortable = TRUE; // Allow sort
 		$this->fields['hoJobTitleBy'] = &$this->hoJobTitleBy;
 
+		// Code
+		$this->Code = new DbField('v101_ho', 'v101_ho', 'x_Code', 'Code', '`Code`', '`Code`', 200, 25, -1, FALSE, '`Code`', FALSE, FALSE, FALSE, 'FORMATTED TEXT', 'TEXT');
+		$this->Code->Sortable = TRUE; // Allow sort
+		$this->fields['Code'] = &$this->Code;
+
 		// Description
 		$this->Description = new DbField('v101_ho', 'v101_ho', 'x_Description', 'Description', '`Description`', '`Description`', 200, 255, -1, FALSE, '`Description`', FALSE, FALSE, FALSE, 'FORMATTED TEXT', 'TEXT');
 		$this->Description->Sortable = TRUE; // Allow sort
 		$this->fields['Description'] = &$this->Description;
+
+		// Group
+		$this->Group = new DbField('v101_ho', 'v101_ho', 'x_Group', 'Group', '`Group`', '`Group`', 200, 255, -1, FALSE, '`Group`', FALSE, FALSE, FALSE, 'FORMATTED TEXT', 'TEXT');
+		$this->Group->Sortable = TRUE; // Allow sort
+		$this->fields['Group'] = &$this->Group;
 
 		// ProcurementDate
 		$this->ProcurementDate = new DbField('v101_ho', 'v101_ho', 'x_ProcurementDate', 'ProcurementDate', '`ProcurementDate`', CastDateFieldForLike("`ProcurementDate`", 0, "DB"), 133, 10, 0, FALSE, '`ProcurementDate`', FALSE, FALSE, FALSE, 'FORMATTED TEXT', 'TEXT');
@@ -289,29 +300,17 @@ class v101_ho extends DbTable
 		$this->ProcurementCurrentCost->DefaultErrorMessage = $Language->phrase("IncorrectFloat");
 		$this->fields['ProcurementCurrentCost'] = &$this->ProcurementCurrentCost;
 
-		// DepreciationAmount
-		$this->DepreciationAmount = new DbField('v101_ho', 'v101_ho', 'x_DepreciationAmount', 'DepreciationAmount', '`DepreciationAmount`', '`DepreciationAmount`', 4, 14, -1, FALSE, '`DepreciationAmount`', FALSE, FALSE, FALSE, 'FORMATTED TEXT', 'TEXT');
-		$this->DepreciationAmount->Sortable = TRUE; // Allow sort
-		$this->DepreciationAmount->DefaultErrorMessage = $Language->phrase("IncorrectFloat");
-		$this->fields['DepreciationAmount'] = &$this->DepreciationAmount;
+		// Economical Life Time (in Year)
+		$this->Economical_Life_Time_28in_Year29 = new DbField('v101_ho', 'v101_ho', 'x_Economical_Life_Time_28in_Year29', 'Economical Life Time (in Year)', '`Economical Life Time (in Year)`', '`Economical Life Time (in Year)`', 16, 4, -1, FALSE, '`Economical Life Time (in Year)`', FALSE, FALSE, FALSE, 'FORMATTED TEXT', 'TEXT');
+		$this->Economical_Life_Time_28in_Year29->Sortable = TRUE; // Allow sort
+		$this->Economical_Life_Time_28in_Year29->DefaultErrorMessage = $Language->phrase("IncorrectInteger");
+		$this->fields['Economical Life Time (in Year)'] = &$this->Economical_Life_Time_28in_Year29;
 
-		// DepreciationYtd
-		$this->DepreciationYtd = new DbField('v101_ho', 'v101_ho', 'x_DepreciationYtd', 'DepreciationYtd', '`DepreciationYtd`', '`DepreciationYtd`', 4, 14, -1, FALSE, '`DepreciationYtd`', FALSE, FALSE, FALSE, 'FORMATTED TEXT', 'TEXT');
-		$this->DepreciationYtd->Sortable = TRUE; // Allow sort
-		$this->DepreciationYtd->DefaultErrorMessage = $Language->phrase("IncorrectFloat");
-		$this->fields['DepreciationYtd'] = &$this->DepreciationYtd;
-
-		// NetBookValue
-		$this->NetBookValue = new DbField('v101_ho', 'v101_ho', 'x_NetBookValue', 'NetBookValue', '`NetBookValue`', '`NetBookValue`', 4, 14, -1, FALSE, '`NetBookValue`', FALSE, FALSE, FALSE, 'FORMATTED TEXT', 'TEXT');
-		$this->NetBookValue->Sortable = TRUE; // Allow sort
-		$this->NetBookValue->DefaultErrorMessage = $Language->phrase("IncorrectFloat");
-		$this->fields['NetBookValue'] = &$this->NetBookValue;
-
-		// Periode
-		$this->Periode = new DbField('v101_ho', 'v101_ho', 'x_Periode', 'Periode', '`Periode`', CastDateFieldForLike("`Periode`", 0, "DB"), 133, 10, 0, FALSE, '`Periode`', FALSE, FALSE, FALSE, 'FORMATTED TEXT', 'TEXT');
-		$this->Periode->Sortable = TRUE; // Allow sort
-		$this->Periode->DefaultErrorMessage = str_replace("%s", $GLOBALS["DATE_FORMAT"], $Language->phrase("IncorrectDate"));
-		$this->fields['Periode'] = &$this->Periode;
+		// Salvage
+		$this->Salvage = new DbField('v101_ho', 'v101_ho', 'x_Salvage', 'Salvage', '`Salvage`', '`Salvage`', 4, 14, -1, FALSE, '`Salvage`', FALSE, FALSE, FALSE, 'FORMATTED TEXT', 'TEXT');
+		$this->Salvage->Sortable = TRUE; // Allow sort
+		$this->Salvage->DefaultErrorMessage = $Language->phrase("IncorrectFloat");
+		$this->fields['Salvage'] = &$this->Salvage;
 
 		// Qty
 		$this->Qty = new DbField('v101_ho', 'v101_ho', 'x_Qty', 'Qty', '`Qty`', '`Qty`', 4, 14, -1, FALSE, '`Qty`', FALSE, FALSE, FALSE, 'FORMATTED TEXT', 'TEXT');
@@ -363,6 +362,11 @@ class v101_ho extends DbTable
 		$this->Sign4JobTitle = new DbField('v101_ho', 'v101_ho', 'x_Sign4JobTitle', 'Sign4JobTitle', '`Sign4JobTitle`', '`Sign4JobTitle`', 200, 100, -1, FALSE, '`Sign4JobTitle`', FALSE, FALSE, FALSE, 'FORMATTED TEXT', 'TEXT');
 		$this->Sign4JobTitle->Sortable = TRUE; // Allow sort
 		$this->fields['Sign4JobTitle'] = &$this->Sign4JobTitle;
+
+		// AssetDepartment
+		$this->AssetDepartment = new DbField('v101_ho', 'v101_ho', 'x_AssetDepartment', 'AssetDepartment', '`AssetDepartment`', '`AssetDepartment`', 200, 100, -1, FALSE, '`AssetDepartment`', FALSE, FALSE, FALSE, 'FORMATTED TEXT', 'TEXT');
+		$this->AssetDepartment->Sortable = TRUE; // Allow sort
+		$this->fields['AssetDepartment'] = &$this->AssetDepartment;
 	}
 
 	// Field Visibility
@@ -762,13 +766,13 @@ class v101_ho extends DbTable
 		$this->hoDepartmentBy->DbValue = $row['hoDepartmentBy'];
 		$this->hoSignatureBy->DbValue = $row['hoSignatureBy'];
 		$this->hoJobTitleBy->DbValue = $row['hoJobTitleBy'];
+		$this->Code->DbValue = $row['Code'];
 		$this->Description->DbValue = $row['Description'];
+		$this->Group->DbValue = $row['Group'];
 		$this->ProcurementDate->DbValue = $row['ProcurementDate'];
 		$this->ProcurementCurrentCost->DbValue = $row['ProcurementCurrentCost'];
-		$this->DepreciationAmount->DbValue = $row['DepreciationAmount'];
-		$this->DepreciationYtd->DbValue = $row['DepreciationYtd'];
-		$this->NetBookValue->DbValue = $row['NetBookValue'];
-		$this->Periode->DbValue = $row['Periode'];
+		$this->Economical_Life_Time_28in_Year29->DbValue = $row['Economical Life Time (in Year)'];
+		$this->Salvage->DbValue = $row['Salvage'];
 		$this->Qty->DbValue = $row['Qty'];
 		$this->Remarks->DbValue = $row['Remarks'];
 		$this->Sign1Signature->DbValue = $row['Sign1Signature'];
@@ -779,6 +783,7 @@ class v101_ho extends DbTable
 		$this->Sign3JobTitle->DbValue = $row['Sign3JobTitle'];
 		$this->Sign4Signature->DbValue = $row['Sign4Signature'];
 		$this->Sign4JobTitle->DbValue = $row['Sign4JobTitle'];
+		$this->AssetDepartment->DbValue = $row['AssetDepartment'];
 	}
 
 	// Delete uploaded files
@@ -1069,13 +1074,13 @@ class v101_ho extends DbTable
 		$this->hoDepartmentBy->setDbValue($rs->fields('hoDepartmentBy'));
 		$this->hoSignatureBy->setDbValue($rs->fields('hoSignatureBy'));
 		$this->hoJobTitleBy->setDbValue($rs->fields('hoJobTitleBy'));
+		$this->Code->setDbValue($rs->fields('Code'));
 		$this->Description->setDbValue($rs->fields('Description'));
+		$this->Group->setDbValue($rs->fields('Group'));
 		$this->ProcurementDate->setDbValue($rs->fields('ProcurementDate'));
 		$this->ProcurementCurrentCost->setDbValue($rs->fields('ProcurementCurrentCost'));
-		$this->DepreciationAmount->setDbValue($rs->fields('DepreciationAmount'));
-		$this->DepreciationYtd->setDbValue($rs->fields('DepreciationYtd'));
-		$this->NetBookValue->setDbValue($rs->fields('NetBookValue'));
-		$this->Periode->setDbValue($rs->fields('Periode'));
+		$this->Economical_Life_Time_28in_Year29->setDbValue($rs->fields('Economical Life Time (in Year)'));
+		$this->Salvage->setDbValue($rs->fields('Salvage'));
 		$this->Qty->setDbValue($rs->fields('Qty'));
 		$this->Remarks->setDbValue($rs->fields('Remarks'));
 		$this->Sign1Signature->setDbValue($rs->fields('Sign1Signature'));
@@ -1086,6 +1091,7 @@ class v101_ho extends DbTable
 		$this->Sign3JobTitle->setDbValue($rs->fields('Sign3JobTitle'));
 		$this->Sign4Signature->setDbValue($rs->fields('Sign4Signature'));
 		$this->Sign4JobTitle->setDbValue($rs->fields('Sign4JobTitle'));
+		$this->AssetDepartment->setDbValue($rs->fields('AssetDepartment'));
 	}
 
 	// Render list row values
@@ -1122,13 +1128,13 @@ class v101_ho extends DbTable
 		// hoDepartmentBy
 		// hoSignatureBy
 		// hoJobTitleBy
+		// Code
 		// Description
+		// Group
 		// ProcurementDate
 		// ProcurementCurrentCost
-		// DepreciationAmount
-		// DepreciationYtd
-		// NetBookValue
-		// Periode
+		// Economical Life Time (in Year)
+		// Salvage
 		// Qty
 		// Remarks
 		// Sign1Signature
@@ -1139,6 +1145,7 @@ class v101_ho extends DbTable
 		// Sign3JobTitle
 		// Sign4Signature
 		// Sign4JobTitle
+		// AssetDepartment
 		// id
 
 		$this->id->ViewValue = $this->id->CurrentValue;
@@ -1252,9 +1259,17 @@ class v101_ho extends DbTable
 		$this->hoJobTitleBy->ViewValue = $this->hoJobTitleBy->CurrentValue;
 		$this->hoJobTitleBy->ViewCustomAttributes = "";
 
+		// Code
+		$this->Code->ViewValue = $this->Code->CurrentValue;
+		$this->Code->ViewCustomAttributes = "";
+
 		// Description
 		$this->Description->ViewValue = $this->Description->CurrentValue;
 		$this->Description->ViewCustomAttributes = "";
+
+		// Group
+		$this->Group->ViewValue = $this->Group->CurrentValue;
+		$this->Group->ViewCustomAttributes = "";
 
 		// ProcurementDate
 		$this->ProcurementDate->ViewValue = $this->ProcurementDate->CurrentValue;
@@ -1266,25 +1281,15 @@ class v101_ho extends DbTable
 		$this->ProcurementCurrentCost->ViewValue = FormatNumber($this->ProcurementCurrentCost->ViewValue, 2, -2, -2, -2);
 		$this->ProcurementCurrentCost->ViewCustomAttributes = "";
 
-		// DepreciationAmount
-		$this->DepreciationAmount->ViewValue = $this->DepreciationAmount->CurrentValue;
-		$this->DepreciationAmount->ViewValue = FormatNumber($this->DepreciationAmount->ViewValue, 2, -2, -2, -2);
-		$this->DepreciationAmount->ViewCustomAttributes = "";
+		// Economical Life Time (in Year)
+		$this->Economical_Life_Time_28in_Year29->ViewValue = $this->Economical_Life_Time_28in_Year29->CurrentValue;
+		$this->Economical_Life_Time_28in_Year29->ViewValue = FormatNumber($this->Economical_Life_Time_28in_Year29->ViewValue, 0, -2, -2, -2);
+		$this->Economical_Life_Time_28in_Year29->ViewCustomAttributes = "";
 
-		// DepreciationYtd
-		$this->DepreciationYtd->ViewValue = $this->DepreciationYtd->CurrentValue;
-		$this->DepreciationYtd->ViewValue = FormatNumber($this->DepreciationYtd->ViewValue, 2, -2, -2, -2);
-		$this->DepreciationYtd->ViewCustomAttributes = "";
-
-		// NetBookValue
-		$this->NetBookValue->ViewValue = $this->NetBookValue->CurrentValue;
-		$this->NetBookValue->ViewValue = FormatNumber($this->NetBookValue->ViewValue, 2, -2, -2, -2);
-		$this->NetBookValue->ViewCustomAttributes = "";
-
-		// Periode
-		$this->Periode->ViewValue = $this->Periode->CurrentValue;
-		$this->Periode->ViewValue = FormatDateTime($this->Periode->ViewValue, 0);
-		$this->Periode->ViewCustomAttributes = "";
+		// Salvage
+		$this->Salvage->ViewValue = $this->Salvage->CurrentValue;
+		$this->Salvage->ViewValue = FormatNumber($this->Salvage->ViewValue, 2, -2, -2, -2);
+		$this->Salvage->ViewCustomAttributes = "";
 
 		// Qty
 		$this->Qty->ViewValue = $this->Qty->CurrentValue;
@@ -1326,6 +1331,10 @@ class v101_ho extends DbTable
 		// Sign4JobTitle
 		$this->Sign4JobTitle->ViewValue = $this->Sign4JobTitle->CurrentValue;
 		$this->Sign4JobTitle->ViewCustomAttributes = "";
+
+		// AssetDepartment
+		$this->AssetDepartment->ViewValue = $this->AssetDepartment->CurrentValue;
+		$this->AssetDepartment->ViewCustomAttributes = "";
 
 		// id
 		$this->id->LinkCustomAttributes = "";
@@ -1452,10 +1461,20 @@ class v101_ho extends DbTable
 		$this->hoJobTitleBy->HrefValue = "";
 		$this->hoJobTitleBy->TooltipValue = "";
 
+		// Code
+		$this->Code->LinkCustomAttributes = "";
+		$this->Code->HrefValue = "";
+		$this->Code->TooltipValue = "";
+
 		// Description
 		$this->Description->LinkCustomAttributes = "";
 		$this->Description->HrefValue = "";
 		$this->Description->TooltipValue = "";
+
+		// Group
+		$this->Group->LinkCustomAttributes = "";
+		$this->Group->HrefValue = "";
+		$this->Group->TooltipValue = "";
 
 		// ProcurementDate
 		$this->ProcurementDate->LinkCustomAttributes = "";
@@ -1467,25 +1486,15 @@ class v101_ho extends DbTable
 		$this->ProcurementCurrentCost->HrefValue = "";
 		$this->ProcurementCurrentCost->TooltipValue = "";
 
-		// DepreciationAmount
-		$this->DepreciationAmount->LinkCustomAttributes = "";
-		$this->DepreciationAmount->HrefValue = "";
-		$this->DepreciationAmount->TooltipValue = "";
+		// Economical Life Time (in Year)
+		$this->Economical_Life_Time_28in_Year29->LinkCustomAttributes = "";
+		$this->Economical_Life_Time_28in_Year29->HrefValue = "";
+		$this->Economical_Life_Time_28in_Year29->TooltipValue = "";
 
-		// DepreciationYtd
-		$this->DepreciationYtd->LinkCustomAttributes = "";
-		$this->DepreciationYtd->HrefValue = "";
-		$this->DepreciationYtd->TooltipValue = "";
-
-		// NetBookValue
-		$this->NetBookValue->LinkCustomAttributes = "";
-		$this->NetBookValue->HrefValue = "";
-		$this->NetBookValue->TooltipValue = "";
-
-		// Periode
-		$this->Periode->LinkCustomAttributes = "";
-		$this->Periode->HrefValue = "";
-		$this->Periode->TooltipValue = "";
+		// Salvage
+		$this->Salvage->LinkCustomAttributes = "";
+		$this->Salvage->HrefValue = "";
+		$this->Salvage->TooltipValue = "";
 
 		// Qty
 		$this->Qty->LinkCustomAttributes = "";
@@ -1536,6 +1545,11 @@ class v101_ho extends DbTable
 		$this->Sign4JobTitle->LinkCustomAttributes = "";
 		$this->Sign4JobTitle->HrefValue = "";
 		$this->Sign4JobTitle->TooltipValue = "";
+
+		// AssetDepartment
+		$this->AssetDepartment->LinkCustomAttributes = "";
+		$this->AssetDepartment->HrefValue = "";
+		$this->AssetDepartment->TooltipValue = "";
 
 		// Call Row Rendered event
 		$this->Row_Rendered();
@@ -1724,6 +1738,14 @@ class v101_ho extends DbTable
 		$this->hoJobTitleBy->EditValue = $this->hoJobTitleBy->CurrentValue;
 		$this->hoJobTitleBy->PlaceHolder = RemoveHtml($this->hoJobTitleBy->caption());
 
+		// Code
+		$this->Code->EditAttrs["class"] = "form-control";
+		$this->Code->EditCustomAttributes = "";
+		if (!$this->Code->Raw)
+			$this->Code->CurrentValue = HtmlDecode($this->Code->CurrentValue);
+		$this->Code->EditValue = $this->Code->CurrentValue;
+		$this->Code->PlaceHolder = RemoveHtml($this->Code->caption());
+
 		// Description
 		$this->Description->EditAttrs["class"] = "form-control";
 		$this->Description->EditCustomAttributes = "";
@@ -1731,6 +1753,14 @@ class v101_ho extends DbTable
 			$this->Description->CurrentValue = HtmlDecode($this->Description->CurrentValue);
 		$this->Description->EditValue = $this->Description->CurrentValue;
 		$this->Description->PlaceHolder = RemoveHtml($this->Description->caption());
+
+		// Group
+		$this->Group->EditAttrs["class"] = "form-control";
+		$this->Group->EditCustomAttributes = "";
+		if (!$this->Group->Raw)
+			$this->Group->CurrentValue = HtmlDecode($this->Group->CurrentValue);
+		$this->Group->EditValue = $this->Group->CurrentValue;
+		$this->Group->PlaceHolder = RemoveHtml($this->Group->caption());
 
 		// ProcurementDate
 		$this->ProcurementDate->EditAttrs["class"] = "form-control";
@@ -1747,38 +1777,20 @@ class v101_ho extends DbTable
 			$this->ProcurementCurrentCost->EditValue = FormatNumber($this->ProcurementCurrentCost->EditValue, -2, -2, -2, -2);
 		
 
-		// DepreciationAmount
-		$this->DepreciationAmount->EditAttrs["class"] = "form-control";
-		$this->DepreciationAmount->EditCustomAttributes = "";
-		$this->DepreciationAmount->EditValue = $this->DepreciationAmount->CurrentValue;
-		$this->DepreciationAmount->PlaceHolder = RemoveHtml($this->DepreciationAmount->caption());
-		if (strval($this->DepreciationAmount->EditValue) != "" && is_numeric($this->DepreciationAmount->EditValue))
-			$this->DepreciationAmount->EditValue = FormatNumber($this->DepreciationAmount->EditValue, -2, -2, -2, -2);
-		
+		// Economical Life Time (in Year)
+		$this->Economical_Life_Time_28in_Year29->EditAttrs["class"] = "form-control";
+		$this->Economical_Life_Time_28in_Year29->EditCustomAttributes = "";
+		$this->Economical_Life_Time_28in_Year29->EditValue = $this->Economical_Life_Time_28in_Year29->CurrentValue;
+		$this->Economical_Life_Time_28in_Year29->PlaceHolder = RemoveHtml($this->Economical_Life_Time_28in_Year29->caption());
 
-		// DepreciationYtd
-		$this->DepreciationYtd->EditAttrs["class"] = "form-control";
-		$this->DepreciationYtd->EditCustomAttributes = "";
-		$this->DepreciationYtd->EditValue = $this->DepreciationYtd->CurrentValue;
-		$this->DepreciationYtd->PlaceHolder = RemoveHtml($this->DepreciationYtd->caption());
-		if (strval($this->DepreciationYtd->EditValue) != "" && is_numeric($this->DepreciationYtd->EditValue))
-			$this->DepreciationYtd->EditValue = FormatNumber($this->DepreciationYtd->EditValue, -2, -2, -2, -2);
+		// Salvage
+		$this->Salvage->EditAttrs["class"] = "form-control";
+		$this->Salvage->EditCustomAttributes = "";
+		$this->Salvage->EditValue = $this->Salvage->CurrentValue;
+		$this->Salvage->PlaceHolder = RemoveHtml($this->Salvage->caption());
+		if (strval($this->Salvage->EditValue) != "" && is_numeric($this->Salvage->EditValue))
+			$this->Salvage->EditValue = FormatNumber($this->Salvage->EditValue, -2, -2, -2, -2);
 		
-
-		// NetBookValue
-		$this->NetBookValue->EditAttrs["class"] = "form-control";
-		$this->NetBookValue->EditCustomAttributes = "";
-		$this->NetBookValue->EditValue = $this->NetBookValue->CurrentValue;
-		$this->NetBookValue->PlaceHolder = RemoveHtml($this->NetBookValue->caption());
-		if (strval($this->NetBookValue->EditValue) != "" && is_numeric($this->NetBookValue->EditValue))
-			$this->NetBookValue->EditValue = FormatNumber($this->NetBookValue->EditValue, -2, -2, -2, -2);
-		
-
-		// Periode
-		$this->Periode->EditAttrs["class"] = "form-control";
-		$this->Periode->EditCustomAttributes = "";
-		$this->Periode->EditValue = FormatDateTime($this->Periode->CurrentValue, 8);
-		$this->Periode->PlaceHolder = RemoveHtml($this->Periode->caption());
 
 		// Qty
 		$this->Qty->EditAttrs["class"] = "form-control";
@@ -1859,6 +1871,14 @@ class v101_ho extends DbTable
 		$this->Sign4JobTitle->EditValue = $this->Sign4JobTitle->CurrentValue;
 		$this->Sign4JobTitle->PlaceHolder = RemoveHtml($this->Sign4JobTitle->caption());
 
+		// AssetDepartment
+		$this->AssetDepartment->EditAttrs["class"] = "form-control";
+		$this->AssetDepartment->EditCustomAttributes = "";
+		if (!$this->AssetDepartment->Raw)
+			$this->AssetDepartment->CurrentValue = HtmlDecode($this->AssetDepartment->CurrentValue);
+		$this->AssetDepartment->EditValue = $this->AssetDepartment->CurrentValue;
+		$this->AssetDepartment->PlaceHolder = RemoveHtml($this->AssetDepartment->caption());
+
 		// Call Row Rendered event
 		$this->Row_Rendered();
 	}
@@ -1913,13 +1933,13 @@ class v101_ho extends DbTable
 					$doc->exportCaption($this->hoDepartmentBy);
 					$doc->exportCaption($this->hoSignatureBy);
 					$doc->exportCaption($this->hoJobTitleBy);
+					$doc->exportCaption($this->Code);
 					$doc->exportCaption($this->Description);
+					$doc->exportCaption($this->Group);
 					$doc->exportCaption($this->ProcurementDate);
 					$doc->exportCaption($this->ProcurementCurrentCost);
-					$doc->exportCaption($this->DepreciationAmount);
-					$doc->exportCaption($this->DepreciationYtd);
-					$doc->exportCaption($this->NetBookValue);
-					$doc->exportCaption($this->Periode);
+					$doc->exportCaption($this->Economical_Life_Time_28in_Year29);
+					$doc->exportCaption($this->Salvage);
 					$doc->exportCaption($this->Qty);
 					$doc->exportCaption($this->Remarks);
 					$doc->exportCaption($this->Sign1Signature);
@@ -1930,6 +1950,7 @@ class v101_ho extends DbTable
 					$doc->exportCaption($this->Sign3JobTitle);
 					$doc->exportCaption($this->Sign4Signature);
 					$doc->exportCaption($this->Sign4JobTitle);
+					$doc->exportCaption($this->AssetDepartment);
 				} else {
 					$doc->exportCaption($this->id);
 					$doc->exportCaption($this->property_id);
@@ -1956,13 +1977,13 @@ class v101_ho extends DbTable
 					$doc->exportCaption($this->hoDepartmentBy);
 					$doc->exportCaption($this->hoSignatureBy);
 					$doc->exportCaption($this->hoJobTitleBy);
+					$doc->exportCaption($this->Code);
 					$doc->exportCaption($this->Description);
+					$doc->exportCaption($this->Group);
 					$doc->exportCaption($this->ProcurementDate);
 					$doc->exportCaption($this->ProcurementCurrentCost);
-					$doc->exportCaption($this->DepreciationAmount);
-					$doc->exportCaption($this->DepreciationYtd);
-					$doc->exportCaption($this->NetBookValue);
-					$doc->exportCaption($this->Periode);
+					$doc->exportCaption($this->Economical_Life_Time_28in_Year29);
+					$doc->exportCaption($this->Salvage);
 					$doc->exportCaption($this->Qty);
 					$doc->exportCaption($this->Sign1Signature);
 					$doc->exportCaption($this->Sign1JobTitle);
@@ -1972,6 +1993,7 @@ class v101_ho extends DbTable
 					$doc->exportCaption($this->Sign3JobTitle);
 					$doc->exportCaption($this->Sign4Signature);
 					$doc->exportCaption($this->Sign4JobTitle);
+					$doc->exportCaption($this->AssetDepartment);
 				}
 				$doc->endExportRow();
 			}
@@ -2028,13 +2050,13 @@ class v101_ho extends DbTable
 						$doc->exportField($this->hoDepartmentBy);
 						$doc->exportField($this->hoSignatureBy);
 						$doc->exportField($this->hoJobTitleBy);
+						$doc->exportField($this->Code);
 						$doc->exportField($this->Description);
+						$doc->exportField($this->Group);
 						$doc->exportField($this->ProcurementDate);
 						$doc->exportField($this->ProcurementCurrentCost);
-						$doc->exportField($this->DepreciationAmount);
-						$doc->exportField($this->DepreciationYtd);
-						$doc->exportField($this->NetBookValue);
-						$doc->exportField($this->Periode);
+						$doc->exportField($this->Economical_Life_Time_28in_Year29);
+						$doc->exportField($this->Salvage);
 						$doc->exportField($this->Qty);
 						$doc->exportField($this->Remarks);
 						$doc->exportField($this->Sign1Signature);
@@ -2045,6 +2067,7 @@ class v101_ho extends DbTable
 						$doc->exportField($this->Sign3JobTitle);
 						$doc->exportField($this->Sign4Signature);
 						$doc->exportField($this->Sign4JobTitle);
+						$doc->exportField($this->AssetDepartment);
 					} else {
 						$doc->exportField($this->id);
 						$doc->exportField($this->property_id);
@@ -2071,13 +2094,13 @@ class v101_ho extends DbTable
 						$doc->exportField($this->hoDepartmentBy);
 						$doc->exportField($this->hoSignatureBy);
 						$doc->exportField($this->hoJobTitleBy);
+						$doc->exportField($this->Code);
 						$doc->exportField($this->Description);
+						$doc->exportField($this->Group);
 						$doc->exportField($this->ProcurementDate);
 						$doc->exportField($this->ProcurementCurrentCost);
-						$doc->exportField($this->DepreciationAmount);
-						$doc->exportField($this->DepreciationYtd);
-						$doc->exportField($this->NetBookValue);
-						$doc->exportField($this->Periode);
+						$doc->exportField($this->Economical_Life_Time_28in_Year29);
+						$doc->exportField($this->Salvage);
 						$doc->exportField($this->Qty);
 						$doc->exportField($this->Sign1Signature);
 						$doc->exportField($this->Sign1JobTitle);
@@ -2087,6 +2110,7 @@ class v101_ho extends DbTable
 						$doc->exportField($this->Sign3JobTitle);
 						$doc->exportField($this->Sign4Signature);
 						$doc->exportField($this->Sign4JobTitle);
+						$doc->exportField($this->AssetDepartment);
 					}
 					$doc->endExportRow($rowCnt);
 				}

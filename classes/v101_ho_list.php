@@ -851,13 +851,13 @@ class v101_ho_list extends v101_ho
 		$this->hoDepartmentBy->setVisibility();
 		$this->hoSignatureBy->setVisibility();
 		$this->hoJobTitleBy->setVisibility();
+		$this->Code->setVisibility();
 		$this->Description->setVisibility();
+		$this->Group->setVisibility();
 		$this->ProcurementDate->setVisibility();
 		$this->ProcurementCurrentCost->setVisibility();
-		$this->DepreciationAmount->setVisibility();
-		$this->DepreciationYtd->setVisibility();
-		$this->NetBookValue->setVisibility();
-		$this->Periode->setVisibility();
+		$this->Economical_Life_Time_28in_Year29->setVisibility();
+		$this->Salvage->setVisibility();
 		$this->Qty->setVisibility();
 		$this->Remarks->Visible = FALSE;
 		$this->Sign1Signature->setVisibility();
@@ -868,6 +868,7 @@ class v101_ho_list extends v101_ho
 		$this->Sign3JobTitle->setVisibility();
 		$this->Sign4Signature->setVisibility();
 		$this->Sign4JobTitle->setVisibility();
+		$this->AssetDepartment->setVisibility();
 		$this->hideFieldsForAddEdit();
 
 		// Global Page Loading event (in userfn*.php)
@@ -1181,13 +1182,13 @@ class v101_ho_list extends v101_ho
 		$filterList = Concat($filterList, $this->hoDepartmentBy->AdvancedSearch->toJson(), ","); // Field hoDepartmentBy
 		$filterList = Concat($filterList, $this->hoSignatureBy->AdvancedSearch->toJson(), ","); // Field hoSignatureBy
 		$filterList = Concat($filterList, $this->hoJobTitleBy->AdvancedSearch->toJson(), ","); // Field hoJobTitleBy
+		$filterList = Concat($filterList, $this->Code->AdvancedSearch->toJson(), ","); // Field Code
 		$filterList = Concat($filterList, $this->Description->AdvancedSearch->toJson(), ","); // Field Description
+		$filterList = Concat($filterList, $this->Group->AdvancedSearch->toJson(), ","); // Field Group
 		$filterList = Concat($filterList, $this->ProcurementDate->AdvancedSearch->toJson(), ","); // Field ProcurementDate
 		$filterList = Concat($filterList, $this->ProcurementCurrentCost->AdvancedSearch->toJson(), ","); // Field ProcurementCurrentCost
-		$filterList = Concat($filterList, $this->DepreciationAmount->AdvancedSearch->toJson(), ","); // Field DepreciationAmount
-		$filterList = Concat($filterList, $this->DepreciationYtd->AdvancedSearch->toJson(), ","); // Field DepreciationYtd
-		$filterList = Concat($filterList, $this->NetBookValue->AdvancedSearch->toJson(), ","); // Field NetBookValue
-		$filterList = Concat($filterList, $this->Periode->AdvancedSearch->toJson(), ","); // Field Periode
+		$filterList = Concat($filterList, $this->Economical_Life_Time_28in_Year29->AdvancedSearch->toJson(), ","); // Field Economical Life Time (in Year)
+		$filterList = Concat($filterList, $this->Salvage->AdvancedSearch->toJson(), ","); // Field Salvage
 		$filterList = Concat($filterList, $this->Qty->AdvancedSearch->toJson(), ","); // Field Qty
 		$filterList = Concat($filterList, $this->Remarks->AdvancedSearch->toJson(), ","); // Field Remarks
 		$filterList = Concat($filterList, $this->Sign1Signature->AdvancedSearch->toJson(), ","); // Field Sign1Signature
@@ -1198,6 +1199,7 @@ class v101_ho_list extends v101_ho
 		$filterList = Concat($filterList, $this->Sign3JobTitle->AdvancedSearch->toJson(), ","); // Field Sign3JobTitle
 		$filterList = Concat($filterList, $this->Sign4Signature->AdvancedSearch->toJson(), ","); // Field Sign4Signature
 		$filterList = Concat($filterList, $this->Sign4JobTitle->AdvancedSearch->toJson(), ","); // Field Sign4JobTitle
+		$filterList = Concat($filterList, $this->AssetDepartment->AdvancedSearch->toJson(), ","); // Field AssetDepartment
 		if ($this->BasicSearch->Keyword != "") {
 			$wrk = "\"" . Config("TABLE_BASIC_SEARCH") . "\":\"" . JsEncode($this->BasicSearch->Keyword) . "\",\"" . Config("TABLE_BASIC_SEARCH_TYPE") . "\":\"" . JsEncode($this->BasicSearch->Type) . "\"";
 			$filterList = Concat($filterList, $wrk, ",");
@@ -1436,6 +1438,14 @@ class v101_ho_list extends v101_ho
 		$this->hoJobTitleBy->AdvancedSearch->SearchOperator2 = @$filter["w_hoJobTitleBy"];
 		$this->hoJobTitleBy->AdvancedSearch->save();
 
+		// Field Code
+		$this->Code->AdvancedSearch->SearchValue = @$filter["x_Code"];
+		$this->Code->AdvancedSearch->SearchOperator = @$filter["z_Code"];
+		$this->Code->AdvancedSearch->SearchCondition = @$filter["v_Code"];
+		$this->Code->AdvancedSearch->SearchValue2 = @$filter["y_Code"];
+		$this->Code->AdvancedSearch->SearchOperator2 = @$filter["w_Code"];
+		$this->Code->AdvancedSearch->save();
+
 		// Field Description
 		$this->Description->AdvancedSearch->SearchValue = @$filter["x_Description"];
 		$this->Description->AdvancedSearch->SearchOperator = @$filter["z_Description"];
@@ -1443,6 +1453,14 @@ class v101_ho_list extends v101_ho
 		$this->Description->AdvancedSearch->SearchValue2 = @$filter["y_Description"];
 		$this->Description->AdvancedSearch->SearchOperator2 = @$filter["w_Description"];
 		$this->Description->AdvancedSearch->save();
+
+		// Field Group
+		$this->Group->AdvancedSearch->SearchValue = @$filter["x_Group"];
+		$this->Group->AdvancedSearch->SearchOperator = @$filter["z_Group"];
+		$this->Group->AdvancedSearch->SearchCondition = @$filter["v_Group"];
+		$this->Group->AdvancedSearch->SearchValue2 = @$filter["y_Group"];
+		$this->Group->AdvancedSearch->SearchOperator2 = @$filter["w_Group"];
+		$this->Group->AdvancedSearch->save();
 
 		// Field ProcurementDate
 		$this->ProcurementDate->AdvancedSearch->SearchValue = @$filter["x_ProcurementDate"];
@@ -1460,37 +1478,21 @@ class v101_ho_list extends v101_ho
 		$this->ProcurementCurrentCost->AdvancedSearch->SearchOperator2 = @$filter["w_ProcurementCurrentCost"];
 		$this->ProcurementCurrentCost->AdvancedSearch->save();
 
-		// Field DepreciationAmount
-		$this->DepreciationAmount->AdvancedSearch->SearchValue = @$filter["x_DepreciationAmount"];
-		$this->DepreciationAmount->AdvancedSearch->SearchOperator = @$filter["z_DepreciationAmount"];
-		$this->DepreciationAmount->AdvancedSearch->SearchCondition = @$filter["v_DepreciationAmount"];
-		$this->DepreciationAmount->AdvancedSearch->SearchValue2 = @$filter["y_DepreciationAmount"];
-		$this->DepreciationAmount->AdvancedSearch->SearchOperator2 = @$filter["w_DepreciationAmount"];
-		$this->DepreciationAmount->AdvancedSearch->save();
+		// Field Economical Life Time (in Year)
+		$this->Economical_Life_Time_28in_Year29->AdvancedSearch->SearchValue = @$filter["x_Economical_Life_Time_28in_Year29"];
+		$this->Economical_Life_Time_28in_Year29->AdvancedSearch->SearchOperator = @$filter["z_Economical_Life_Time_28in_Year29"];
+		$this->Economical_Life_Time_28in_Year29->AdvancedSearch->SearchCondition = @$filter["v_Economical_Life_Time_28in_Year29"];
+		$this->Economical_Life_Time_28in_Year29->AdvancedSearch->SearchValue2 = @$filter["y_Economical_Life_Time_28in_Year29"];
+		$this->Economical_Life_Time_28in_Year29->AdvancedSearch->SearchOperator2 = @$filter["w_Economical_Life_Time_28in_Year29"];
+		$this->Economical_Life_Time_28in_Year29->AdvancedSearch->save();
 
-		// Field DepreciationYtd
-		$this->DepreciationYtd->AdvancedSearch->SearchValue = @$filter["x_DepreciationYtd"];
-		$this->DepreciationYtd->AdvancedSearch->SearchOperator = @$filter["z_DepreciationYtd"];
-		$this->DepreciationYtd->AdvancedSearch->SearchCondition = @$filter["v_DepreciationYtd"];
-		$this->DepreciationYtd->AdvancedSearch->SearchValue2 = @$filter["y_DepreciationYtd"];
-		$this->DepreciationYtd->AdvancedSearch->SearchOperator2 = @$filter["w_DepreciationYtd"];
-		$this->DepreciationYtd->AdvancedSearch->save();
-
-		// Field NetBookValue
-		$this->NetBookValue->AdvancedSearch->SearchValue = @$filter["x_NetBookValue"];
-		$this->NetBookValue->AdvancedSearch->SearchOperator = @$filter["z_NetBookValue"];
-		$this->NetBookValue->AdvancedSearch->SearchCondition = @$filter["v_NetBookValue"];
-		$this->NetBookValue->AdvancedSearch->SearchValue2 = @$filter["y_NetBookValue"];
-		$this->NetBookValue->AdvancedSearch->SearchOperator2 = @$filter["w_NetBookValue"];
-		$this->NetBookValue->AdvancedSearch->save();
-
-		// Field Periode
-		$this->Periode->AdvancedSearch->SearchValue = @$filter["x_Periode"];
-		$this->Periode->AdvancedSearch->SearchOperator = @$filter["z_Periode"];
-		$this->Periode->AdvancedSearch->SearchCondition = @$filter["v_Periode"];
-		$this->Periode->AdvancedSearch->SearchValue2 = @$filter["y_Periode"];
-		$this->Periode->AdvancedSearch->SearchOperator2 = @$filter["w_Periode"];
-		$this->Periode->AdvancedSearch->save();
+		// Field Salvage
+		$this->Salvage->AdvancedSearch->SearchValue = @$filter["x_Salvage"];
+		$this->Salvage->AdvancedSearch->SearchOperator = @$filter["z_Salvage"];
+		$this->Salvage->AdvancedSearch->SearchCondition = @$filter["v_Salvage"];
+		$this->Salvage->AdvancedSearch->SearchValue2 = @$filter["y_Salvage"];
+		$this->Salvage->AdvancedSearch->SearchOperator2 = @$filter["w_Salvage"];
+		$this->Salvage->AdvancedSearch->save();
 
 		// Field Qty
 		$this->Qty->AdvancedSearch->SearchValue = @$filter["x_Qty"];
@@ -1571,6 +1573,14 @@ class v101_ho_list extends v101_ho
 		$this->Sign4JobTitle->AdvancedSearch->SearchValue2 = @$filter["y_Sign4JobTitle"];
 		$this->Sign4JobTitle->AdvancedSearch->SearchOperator2 = @$filter["w_Sign4JobTitle"];
 		$this->Sign4JobTitle->AdvancedSearch->save();
+
+		// Field AssetDepartment
+		$this->AssetDepartment->AdvancedSearch->SearchValue = @$filter["x_AssetDepartment"];
+		$this->AssetDepartment->AdvancedSearch->SearchOperator = @$filter["z_AssetDepartment"];
+		$this->AssetDepartment->AdvancedSearch->SearchCondition = @$filter["v_AssetDepartment"];
+		$this->AssetDepartment->AdvancedSearch->SearchValue2 = @$filter["y_AssetDepartment"];
+		$this->AssetDepartment->AdvancedSearch->SearchOperator2 = @$filter["w_AssetDepartment"];
+		$this->AssetDepartment->AdvancedSearch->save();
 		$this->BasicSearch->setKeyword(@$filter[Config("TABLE_BASIC_SEARCH")]);
 		$this->BasicSearch->setType(@$filter[Config("TABLE_BASIC_SEARCH_TYPE")]);
 	}
@@ -1590,7 +1600,9 @@ class v101_ho_list extends v101_ho
 		$this->buildBasicSearchSql($where, $this->hoDepartmentBy, $arKeywords, $type);
 		$this->buildBasicSearchSql($where, $this->hoSignatureBy, $arKeywords, $type);
 		$this->buildBasicSearchSql($where, $this->hoJobTitleBy, $arKeywords, $type);
+		$this->buildBasicSearchSql($where, $this->Code, $arKeywords, $type);
 		$this->buildBasicSearchSql($where, $this->Description, $arKeywords, $type);
+		$this->buildBasicSearchSql($where, $this->Group, $arKeywords, $type);
 		$this->buildBasicSearchSql($where, $this->Remarks, $arKeywords, $type);
 		$this->buildBasicSearchSql($where, $this->Sign1Signature, $arKeywords, $type);
 		$this->buildBasicSearchSql($where, $this->Sign1JobTitle, $arKeywords, $type);
@@ -1600,6 +1612,7 @@ class v101_ho_list extends v101_ho
 		$this->buildBasicSearchSql($where, $this->Sign3JobTitle, $arKeywords, $type);
 		$this->buildBasicSearchSql($where, $this->Sign4Signature, $arKeywords, $type);
 		$this->buildBasicSearchSql($where, $this->Sign4JobTitle, $arKeywords, $type);
+		$this->buildBasicSearchSql($where, $this->AssetDepartment, $arKeywords, $type);
 		return $where;
 	}
 
@@ -1786,13 +1799,13 @@ class v101_ho_list extends v101_ho
 			$this->updateSort($this->hoDepartmentBy, $ctrl); // hoDepartmentBy
 			$this->updateSort($this->hoSignatureBy, $ctrl); // hoSignatureBy
 			$this->updateSort($this->hoJobTitleBy, $ctrl); // hoJobTitleBy
+			$this->updateSort($this->Code, $ctrl); // Code
 			$this->updateSort($this->Description, $ctrl); // Description
+			$this->updateSort($this->Group, $ctrl); // Group
 			$this->updateSort($this->ProcurementDate, $ctrl); // ProcurementDate
 			$this->updateSort($this->ProcurementCurrentCost, $ctrl); // ProcurementCurrentCost
-			$this->updateSort($this->DepreciationAmount, $ctrl); // DepreciationAmount
-			$this->updateSort($this->DepreciationYtd, $ctrl); // DepreciationYtd
-			$this->updateSort($this->NetBookValue, $ctrl); // NetBookValue
-			$this->updateSort($this->Periode, $ctrl); // Periode
+			$this->updateSort($this->Economical_Life_Time_28in_Year29, $ctrl); // Economical Life Time (in Year)
+			$this->updateSort($this->Salvage, $ctrl); // Salvage
 			$this->updateSort($this->Qty, $ctrl); // Qty
 			$this->updateSort($this->Sign1Signature, $ctrl); // Sign1Signature
 			$this->updateSort($this->Sign1JobTitle, $ctrl); // Sign1JobTitle
@@ -1802,6 +1815,7 @@ class v101_ho_list extends v101_ho
 			$this->updateSort($this->Sign3JobTitle, $ctrl); // Sign3JobTitle
 			$this->updateSort($this->Sign4Signature, $ctrl); // Sign4Signature
 			$this->updateSort($this->Sign4JobTitle, $ctrl); // Sign4JobTitle
+			$this->updateSort($this->AssetDepartment, $ctrl); // AssetDepartment
 			$this->setStartRecordNumber(1); // Reset start position
 		}
 	}
@@ -1862,13 +1876,13 @@ class v101_ho_list extends v101_ho
 				$this->hoDepartmentBy->setSort("");
 				$this->hoSignatureBy->setSort("");
 				$this->hoJobTitleBy->setSort("");
+				$this->Code->setSort("");
 				$this->Description->setSort("");
+				$this->Group->setSort("");
 				$this->ProcurementDate->setSort("");
 				$this->ProcurementCurrentCost->setSort("");
-				$this->DepreciationAmount->setSort("");
-				$this->DepreciationYtd->setSort("");
-				$this->NetBookValue->setSort("");
-				$this->Periode->setSort("");
+				$this->Economical_Life_Time_28in_Year29->setSort("");
+				$this->Salvage->setSort("");
 				$this->Qty->setSort("");
 				$this->Sign1Signature->setSort("");
 				$this->Sign1JobTitle->setSort("");
@@ -1878,6 +1892,7 @@ class v101_ho_list extends v101_ho
 				$this->Sign3JobTitle->setSort("");
 				$this->Sign4Signature->setSort("");
 				$this->Sign4JobTitle->setSort("");
+				$this->AssetDepartment->setSort("");
 			}
 
 			// Reset start position
@@ -2231,13 +2246,13 @@ class v101_ho_list extends v101_ho
 		$this->hoDepartmentBy->setDbValue($row['hoDepartmentBy']);
 		$this->hoSignatureBy->setDbValue($row['hoSignatureBy']);
 		$this->hoJobTitleBy->setDbValue($row['hoJobTitleBy']);
+		$this->Code->setDbValue($row['Code']);
 		$this->Description->setDbValue($row['Description']);
+		$this->Group->setDbValue($row['Group']);
 		$this->ProcurementDate->setDbValue($row['ProcurementDate']);
 		$this->ProcurementCurrentCost->setDbValue($row['ProcurementCurrentCost']);
-		$this->DepreciationAmount->setDbValue($row['DepreciationAmount']);
-		$this->DepreciationYtd->setDbValue($row['DepreciationYtd']);
-		$this->NetBookValue->setDbValue($row['NetBookValue']);
-		$this->Periode->setDbValue($row['Periode']);
+		$this->Economical_Life_Time_28in_Year29->setDbValue($row['Economical Life Time (in Year)']);
+		$this->Salvage->setDbValue($row['Salvage']);
 		$this->Qty->setDbValue($row['Qty']);
 		$this->Remarks->setDbValue($row['Remarks']);
 		$this->Sign1Signature->setDbValue($row['Sign1Signature']);
@@ -2248,6 +2263,7 @@ class v101_ho_list extends v101_ho
 		$this->Sign3JobTitle->setDbValue($row['Sign3JobTitle']);
 		$this->Sign4Signature->setDbValue($row['Sign4Signature']);
 		$this->Sign4JobTitle->setDbValue($row['Sign4JobTitle']);
+		$this->AssetDepartment->setDbValue($row['AssetDepartment']);
 	}
 
 	// Return a row with default values
@@ -2279,13 +2295,13 @@ class v101_ho_list extends v101_ho
 		$row['hoDepartmentBy'] = NULL;
 		$row['hoSignatureBy'] = NULL;
 		$row['hoJobTitleBy'] = NULL;
+		$row['Code'] = NULL;
 		$row['Description'] = NULL;
+		$row['Group'] = NULL;
 		$row['ProcurementDate'] = NULL;
 		$row['ProcurementCurrentCost'] = NULL;
-		$row['DepreciationAmount'] = NULL;
-		$row['DepreciationYtd'] = NULL;
-		$row['NetBookValue'] = NULL;
-		$row['Periode'] = NULL;
+		$row['Economical Life Time (in Year)'] = NULL;
+		$row['Salvage'] = NULL;
 		$row['Qty'] = NULL;
 		$row['Remarks'] = NULL;
 		$row['Sign1Signature'] = NULL;
@@ -2296,6 +2312,7 @@ class v101_ho_list extends v101_ho
 		$row['Sign3JobTitle'] = NULL;
 		$row['Sign4Signature'] = NULL;
 		$row['Sign4JobTitle'] = NULL;
+		$row['AssetDepartment'] = NULL;
 		return $row;
 	}
 
@@ -2344,16 +2361,8 @@ class v101_ho_list extends v101_ho
 			$this->ProcurementCurrentCost->CurrentValue = ConvertToFloatString($this->ProcurementCurrentCost->CurrentValue);
 
 		// Convert decimal values if posted back
-		if ($this->DepreciationAmount->FormValue == $this->DepreciationAmount->CurrentValue && is_numeric(ConvertToFloatString($this->DepreciationAmount->CurrentValue)))
-			$this->DepreciationAmount->CurrentValue = ConvertToFloatString($this->DepreciationAmount->CurrentValue);
-
-		// Convert decimal values if posted back
-		if ($this->DepreciationYtd->FormValue == $this->DepreciationYtd->CurrentValue && is_numeric(ConvertToFloatString($this->DepreciationYtd->CurrentValue)))
-			$this->DepreciationYtd->CurrentValue = ConvertToFloatString($this->DepreciationYtd->CurrentValue);
-
-		// Convert decimal values if posted back
-		if ($this->NetBookValue->FormValue == $this->NetBookValue->CurrentValue && is_numeric(ConvertToFloatString($this->NetBookValue->CurrentValue)))
-			$this->NetBookValue->CurrentValue = ConvertToFloatString($this->NetBookValue->CurrentValue);
+		if ($this->Salvage->FormValue == $this->Salvage->CurrentValue && is_numeric(ConvertToFloatString($this->Salvage->CurrentValue)))
+			$this->Salvage->CurrentValue = ConvertToFloatString($this->Salvage->CurrentValue);
 
 		// Convert decimal values if posted back
 		if ($this->Qty->FormValue == $this->Qty->CurrentValue && is_numeric(ConvertToFloatString($this->Qty->CurrentValue)))
@@ -2388,13 +2397,13 @@ class v101_ho_list extends v101_ho
 		// hoDepartmentBy
 		// hoSignatureBy
 		// hoJobTitleBy
+		// Code
 		// Description
+		// Group
 		// ProcurementDate
 		// ProcurementCurrentCost
-		// DepreciationAmount
-		// DepreciationYtd
-		// NetBookValue
-		// Periode
+		// Economical Life Time (in Year)
+		// Salvage
 		// Qty
 		// Remarks
 		// Sign1Signature
@@ -2405,6 +2414,7 @@ class v101_ho_list extends v101_ho
 		// Sign3JobTitle
 		// Sign4Signature
 		// Sign4JobTitle
+		// AssetDepartment
 
 		if ($this->RowType == ROWTYPE_VIEW) { // View row
 
@@ -2520,9 +2530,17 @@ class v101_ho_list extends v101_ho
 			$this->hoJobTitleBy->ViewValue = $this->hoJobTitleBy->CurrentValue;
 			$this->hoJobTitleBy->ViewCustomAttributes = "";
 
+			// Code
+			$this->Code->ViewValue = $this->Code->CurrentValue;
+			$this->Code->ViewCustomAttributes = "";
+
 			// Description
 			$this->Description->ViewValue = $this->Description->CurrentValue;
 			$this->Description->ViewCustomAttributes = "";
+
+			// Group
+			$this->Group->ViewValue = $this->Group->CurrentValue;
+			$this->Group->ViewCustomAttributes = "";
 
 			// ProcurementDate
 			$this->ProcurementDate->ViewValue = $this->ProcurementDate->CurrentValue;
@@ -2534,25 +2552,15 @@ class v101_ho_list extends v101_ho
 			$this->ProcurementCurrentCost->ViewValue = FormatNumber($this->ProcurementCurrentCost->ViewValue, 2, -2, -2, -2);
 			$this->ProcurementCurrentCost->ViewCustomAttributes = "";
 
-			// DepreciationAmount
-			$this->DepreciationAmount->ViewValue = $this->DepreciationAmount->CurrentValue;
-			$this->DepreciationAmount->ViewValue = FormatNumber($this->DepreciationAmount->ViewValue, 2, -2, -2, -2);
-			$this->DepreciationAmount->ViewCustomAttributes = "";
+			// Economical Life Time (in Year)
+			$this->Economical_Life_Time_28in_Year29->ViewValue = $this->Economical_Life_Time_28in_Year29->CurrentValue;
+			$this->Economical_Life_Time_28in_Year29->ViewValue = FormatNumber($this->Economical_Life_Time_28in_Year29->ViewValue, 0, -2, -2, -2);
+			$this->Economical_Life_Time_28in_Year29->ViewCustomAttributes = "";
 
-			// DepreciationYtd
-			$this->DepreciationYtd->ViewValue = $this->DepreciationYtd->CurrentValue;
-			$this->DepreciationYtd->ViewValue = FormatNumber($this->DepreciationYtd->ViewValue, 2, -2, -2, -2);
-			$this->DepreciationYtd->ViewCustomAttributes = "";
-
-			// NetBookValue
-			$this->NetBookValue->ViewValue = $this->NetBookValue->CurrentValue;
-			$this->NetBookValue->ViewValue = FormatNumber($this->NetBookValue->ViewValue, 2, -2, -2, -2);
-			$this->NetBookValue->ViewCustomAttributes = "";
-
-			// Periode
-			$this->Periode->ViewValue = $this->Periode->CurrentValue;
-			$this->Periode->ViewValue = FormatDateTime($this->Periode->ViewValue, 0);
-			$this->Periode->ViewCustomAttributes = "";
+			// Salvage
+			$this->Salvage->ViewValue = $this->Salvage->CurrentValue;
+			$this->Salvage->ViewValue = FormatNumber($this->Salvage->ViewValue, 2, -2, -2, -2);
+			$this->Salvage->ViewCustomAttributes = "";
 
 			// Qty
 			$this->Qty->ViewValue = $this->Qty->CurrentValue;
@@ -2590,6 +2598,10 @@ class v101_ho_list extends v101_ho
 			// Sign4JobTitle
 			$this->Sign4JobTitle->ViewValue = $this->Sign4JobTitle->CurrentValue;
 			$this->Sign4JobTitle->ViewCustomAttributes = "";
+
+			// AssetDepartment
+			$this->AssetDepartment->ViewValue = $this->AssetDepartment->CurrentValue;
+			$this->AssetDepartment->ViewCustomAttributes = "";
 
 			// id
 			$this->id->LinkCustomAttributes = "";
@@ -2716,10 +2728,20 @@ class v101_ho_list extends v101_ho
 			$this->hoJobTitleBy->HrefValue = "";
 			$this->hoJobTitleBy->TooltipValue = "";
 
+			// Code
+			$this->Code->LinkCustomAttributes = "";
+			$this->Code->HrefValue = "";
+			$this->Code->TooltipValue = "";
+
 			// Description
 			$this->Description->LinkCustomAttributes = "";
 			$this->Description->HrefValue = "";
 			$this->Description->TooltipValue = "";
+
+			// Group
+			$this->Group->LinkCustomAttributes = "";
+			$this->Group->HrefValue = "";
+			$this->Group->TooltipValue = "";
 
 			// ProcurementDate
 			$this->ProcurementDate->LinkCustomAttributes = "";
@@ -2731,25 +2753,15 @@ class v101_ho_list extends v101_ho
 			$this->ProcurementCurrentCost->HrefValue = "";
 			$this->ProcurementCurrentCost->TooltipValue = "";
 
-			// DepreciationAmount
-			$this->DepreciationAmount->LinkCustomAttributes = "";
-			$this->DepreciationAmount->HrefValue = "";
-			$this->DepreciationAmount->TooltipValue = "";
+			// Economical Life Time (in Year)
+			$this->Economical_Life_Time_28in_Year29->LinkCustomAttributes = "";
+			$this->Economical_Life_Time_28in_Year29->HrefValue = "";
+			$this->Economical_Life_Time_28in_Year29->TooltipValue = "";
 
-			// DepreciationYtd
-			$this->DepreciationYtd->LinkCustomAttributes = "";
-			$this->DepreciationYtd->HrefValue = "";
-			$this->DepreciationYtd->TooltipValue = "";
-
-			// NetBookValue
-			$this->NetBookValue->LinkCustomAttributes = "";
-			$this->NetBookValue->HrefValue = "";
-			$this->NetBookValue->TooltipValue = "";
-
-			// Periode
-			$this->Periode->LinkCustomAttributes = "";
-			$this->Periode->HrefValue = "";
-			$this->Periode->TooltipValue = "";
+			// Salvage
+			$this->Salvage->LinkCustomAttributes = "";
+			$this->Salvage->HrefValue = "";
+			$this->Salvage->TooltipValue = "";
 
 			// Qty
 			$this->Qty->LinkCustomAttributes = "";
@@ -2795,6 +2807,11 @@ class v101_ho_list extends v101_ho
 			$this->Sign4JobTitle->LinkCustomAttributes = "";
 			$this->Sign4JobTitle->HrefValue = "";
 			$this->Sign4JobTitle->TooltipValue = "";
+
+			// AssetDepartment
+			$this->AssetDepartment->LinkCustomAttributes = "";
+			$this->AssetDepartment->HrefValue = "";
+			$this->AssetDepartment->TooltipValue = "";
 		}
 
 		// Call Row Rendered event

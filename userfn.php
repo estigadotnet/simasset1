@@ -107,4 +107,20 @@ function PersonalData_Deleted($row) {
 
 	//echo "PersonalData Deleted";
 }
+
+function fCreatePenyusutan($rsnew) {
+
+	// ambil nilai economical life time
+	$q = "select EconomicalLifeTime from t006_assetgroup where id = ".$rsnew["group_id"]."";
+	$economicalLifeTime = ExecuteScalar($q);
+
+	//echo $economicalLifeTime;
+	$q = "insert into t006_assetdepreciation (
+		asset_id,
+		ListOfYears
+		) values (".
+		$rsnew["id"].", ".
+		$economicalLifeTime.")";
+	Execute($q);
+}
 ?>

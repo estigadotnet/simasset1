@@ -403,7 +403,7 @@ class t004_asset_list extends t004_asset
 		$this->ExportHtmlUrl = $this->pageUrl() . "export=html";
 		$this->ExportXmlUrl = $this->pageUrl() . "export=xml";
 		$this->ExportCsvUrl = $this->pageUrl() . "export=csv";
-		$this->AddUrl = "t004_assetadd.php";
+		$this->AddUrl = "t004_assetadd.php?" . Config("TABLE_SHOW_DETAIL") . "=";
 		$this->InlineAddUrl = $this->pageUrl() . "action=add";
 		$this->GridAddUrl = $this->pageUrl() . "action=gridadd";
 		$this->GridEditUrl = $this->pageUrl() . "action=gridedit";
@@ -1967,6 +1967,29 @@ class t004_asset_list extends t004_asset
 		$item->Visible = $Security->canDelete();
 		$item->OnLeft = TRUE;
 
+		// "detail_t006_assetdepreciation"
+		$item = &$this->ListOptions->add("detail_t006_assetdepreciation");
+		$item->CssClass = "text-nowrap";
+		$item->Visible = $Security->allowList(CurrentProjectID() . 't006_assetdepreciation') && !$this->ShowMultipleDetails;
+		$item->OnLeft = TRUE;
+		$item->ShowInButtonGroup = FALSE;
+		if (!isset($GLOBALS["t006_assetdepreciation_grid"]))
+			$GLOBALS["t006_assetdepreciation_grid"] = new t006_assetdepreciation_grid();
+
+		// Multiple details
+		if ($this->ShowMultipleDetails) {
+			$item = &$this->ListOptions->add("details");
+			$item->CssClass = "text-nowrap";
+			$item->Visible = $this->ShowMultipleDetails;
+			$item->OnLeft = TRUE;
+			$item->ShowInButtonGroup = FALSE;
+		}
+
+		// Set up detail pages
+		$pages = new SubPages();
+		$pages->add("t006_assetdepreciation");
+		$this->DetailPages = $pages;
+
 		// List actions
 		$item = &$this->ListOptions->add("listactions");
 		$item->CssClass = "text-nowrap";
@@ -2114,6 +2137,63 @@ class t004_asset_list extends t004_asset
 				$opt->Visible = TRUE;
 			}
 		}
+		$detailViewTblVar = "";
+		$detailCopyTblVar = "";
+		$detailEditTblVar = "";
+
+		// "detail_t006_assetdepreciation"
+		$opt = $this->ListOptions["detail_t006_assetdepreciation"];
+		if ($Security->allowList(CurrentProjectID() . 't006_assetdepreciation')) {
+			$body = $Language->phrase("DetailLink") . $Language->TablePhrase("t006_assetdepreciation", "TblCaption");
+			$body = "<a class=\"btn btn-default ew-row-link ew-detail\" data-action=\"list\" href=\"" . HtmlEncode("t006_assetdepreciationlist.php?" . Config("TABLE_SHOW_MASTER") . "=t004_asset&fk_id=" . urlencode(strval($this->id->CurrentValue)) . "") . "\">" . $body . "</a>";
+			$links = "";
+			if ($GLOBALS["t006_assetdepreciation_grid"]->DetailEdit && $Security->canEdit() && $Security->allowEdit(CurrentProjectID() . 't004_asset')) {
+				$caption = $Language->phrase("MasterDetailEditLink");
+				$url = $this->getEditUrl(Config("TABLE_SHOW_DETAIL") . "=t006_assetdepreciation");
+				$links .= "<li><a class=\"dropdown-item ew-row-link ew-detail-edit\" data-action=\"edit\" data-caption=\"" . HtmlTitle($caption) . "\" href=\"" . HtmlEncode($url) . "\">" . HtmlImageAndText($caption) . "</a></li>";
+				if ($detailEditTblVar != "")
+					$detailEditTblVar .= ",";
+				$detailEditTblVar .= "t006_assetdepreciation";
+			}
+			if ($GLOBALS["t006_assetdepreciation_grid"]->DetailAdd && $Security->canAdd() && $Security->allowAdd(CurrentProjectID() . 't004_asset')) {
+				$caption = $Language->phrase("MasterDetailCopyLink");
+				$url = $this->getCopyUrl(Config("TABLE_SHOW_DETAIL") . "=t006_assetdepreciation");
+				$links .= "<li><a class=\"dropdown-item ew-row-link ew-detail-copy\" data-action=\"add\" data-caption=\"" . HtmlTitle($caption) . "\" href=\"" . HtmlEncode($url) . "\">" . HtmlImageAndText($caption) . "</a></li>";
+				if ($detailCopyTblVar != "")
+					$detailCopyTblVar .= ",";
+				$detailCopyTblVar .= "t006_assetdepreciation";
+			}
+			if ($links != "") {
+				$body .= "<button class=\"dropdown-toggle btn btn-default ew-detail\" data-toggle=\"dropdown\"></button>";
+				$body .= "<ul class=\"dropdown-menu\">". $links . "</ul>";
+			}
+			$body = "<div class=\"btn-group btn-group-sm ew-btn-group\">" . $body . "</div>";
+			$opt->Body = $body;
+			if ($this->ShowMultipleDetails)
+				$opt->Visible = FALSE;
+		}
+		if ($this->ShowMultipleDetails) {
+			$body = "<div class=\"btn-group btn-group-sm ew-btn-group\">";
+			$links = "";
+			if ($detailViewTblVar != "") {
+				$links .= "<li><a class=\"dropdown-item ew-row-link ew-detail-view\" data-action=\"view\" data-caption=\"" . HtmlTitle($Language->phrase("MasterDetailViewLink")) . "\" href=\"" . HtmlEncode($this->getViewUrl(Config("TABLE_SHOW_DETAIL") . "=" . $detailViewTblVar)) . "\">" . HtmlImageAndText($Language->phrase("MasterDetailViewLink")) . "</a></li>";
+			}
+			if ($detailEditTblVar != "") {
+				$links .= "<li><a class=\"dropdown-item ew-row-link ew-detail-edit\" data-action=\"edit\" data-caption=\"" . HtmlTitle($Language->phrase("MasterDetailEditLink")) . "\" href=\"" . HtmlEncode($this->getEditUrl(Config("TABLE_SHOW_DETAIL") . "=" . $detailEditTblVar)) . "\">" . HtmlImageAndText($Language->phrase("MasterDetailEditLink")) . "</a></li>";
+			}
+			if ($detailCopyTblVar != "") {
+				$links .= "<li><a class=\"dropdown-item ew-row-link ew-detail-copy\" data-action=\"add\" data-caption=\"" . HtmlTitle($Language->phrase("MasterDetailCopyLink")) . "\" href=\"" . HtmlEncode($this->GetCopyUrl(Config("TABLE_SHOW_DETAIL") . "=" . $detailCopyTblVar)) . "\">" . HtmlImageAndText($Language->phrase("MasterDetailCopyLink")) . "</a></li>";
+			}
+			if ($links != "") {
+				$body .= "<button class=\"dropdown-toggle btn btn-default ew-master-detail\" title=\"" . HtmlTitle($Language->phrase("MultipleMasterDetails")) . "\" data-toggle=\"dropdown\">" . $Language->phrase("MultipleMasterDetails") . "</button>";
+				$body .= "<ul class=\"dropdown-menu ew-menu\">". $links . "</ul>";
+			}
+			$body .= "</div>";
+
+			// Multiple details
+			$opt = $this->ListOptions["details"];
+			$opt->Body = $body;
+		}
 
 		// "checkbox"
 		$opt = $this->ListOptions["checkbox"];
@@ -2145,6 +2225,37 @@ class t004_asset_list extends t004_asset
 		$item = &$option->add("gridadd");
 		$item->Body = "<a class=\"ew-add-edit ew-grid-add\" title=\"" . HtmlTitle($Language->phrase("GridAddLink")) . "\" data-caption=\"" . HtmlTitle($Language->phrase("GridAddLink")) . "\" href=\"" . HtmlEncode($this->GridAddUrl) . "\">" . $Language->phrase("GridAddLink") . "</a>";
 		$item->Visible = $this->GridAddUrl != "" && $Security->canAdd();
+		$option = $options["detail"];
+		$detailTableLink = "";
+		$item = &$option->add("detailadd_t006_assetdepreciation");
+		$url = $this->getAddUrl(Config("TABLE_SHOW_DETAIL") . "=t006_assetdepreciation");
+		if (!isset($GLOBALS["t006_assetdepreciation"]))
+			$GLOBALS["t006_assetdepreciation"] = new t006_assetdepreciation();
+		$caption = $Language->phrase("Add") . "&nbsp;" . $this->tableCaption() . "/" . $GLOBALS["t006_assetdepreciation"]->tableCaption();
+		$item->Body = "<a class=\"ew-detail-add-group ew-detail-add\" title=\"" . HtmlTitle($caption) . "\" data-caption=\"" . HtmlTitle($caption) . "\" href=\"" . HtmlEncode($url) . "\">" . $caption . "</a>";
+		$item->Visible = ($GLOBALS["t006_assetdepreciation"]->DetailAdd && $Security->allowAdd(CurrentProjectID() . 't004_asset') && $Security->canAdd());
+		if ($item->Visible) {
+			if ($detailTableLink != "")
+				$detailTableLink .= ",";
+			$detailTableLink .= "t006_assetdepreciation";
+		}
+
+		// Add multiple details
+		if ($this->ShowMultipleDetails) {
+			$item = &$option->add("detailsadd");
+			$url = $this->getAddUrl(Config("TABLE_SHOW_DETAIL") . "=" . $detailTableLink);
+			$caption = $Language->phrase("AddMasterDetailLink");
+			$item->Body = "<a class=\"ew-detail-add-group ew-detail-add\" title=\"" . HtmlTitle($caption) . "\" data-caption=\"" . HtmlTitle($caption) . "\" href=\"" . HtmlEncode($url) . "\">" . $caption . "</a>";
+			$item->Visible = $detailTableLink != "" && $Security->canAdd();
+
+			// Hide single master/detail items
+			$ar = explode(",", $detailTableLink);
+			$cnt = count($ar);
+			for ($i = 0; $i < $cnt; $i++) {
+				if ($item = $option["detailadd_" . $ar[$i]])
+					$item->Visible = FALSE;
+			}
+		}
 
 		// Add grid edit
 		$option = $options["addedit"];

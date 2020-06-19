@@ -337,6 +337,14 @@ loadjs.ready(["ft004_assetadd", "datetimepicker"], function() {
 	</div>
 <?php } ?>
 </div><!-- /page* -->
+<?php
+	if (in_array("t006_assetdepreciation", explode(",", $t004_asset->getCurrentDetailTable())) && $t006_assetdepreciation->DetailAdd) {
+?>
+<?php if ($t004_asset->getCurrentDetailTable() != "") { ?>
+<h4 class="ew-detail-caption"><?php echo $Language->tablePhrase("t006_assetdepreciation", "TblCaption") ?></h4>
+<?php } ?>
+<?php include_once "t006_assetdepreciationgrid.php" ?>
+<?php } ?>
 <?php if (!$t004_asset_add->IsModal) { ?>
 <div class="form-group row"><!-- buttons .form-group -->
 	<div class="<?php echo $t004_asset_add->OffsetColumnClass ?>"><!-- buttons offset -->

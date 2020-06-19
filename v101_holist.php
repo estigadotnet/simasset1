@@ -366,12 +366,30 @@ $v101_ho_list->ListOptions->render("header", "left");
 		</div></div></th>
 	<?php } ?>
 <?php } ?>
+<?php if ($v101_ho_list->Code->Visible) { // Code ?>
+	<?php if ($v101_ho_list->SortUrl($v101_ho_list->Code) == "") { ?>
+		<th data-name="Code" class="<?php echo $v101_ho_list->Code->headerCellClass() ?>"><div id="elh_v101_ho_Code" class="v101_ho_Code"><div class="ew-table-header-caption"><?php echo $v101_ho_list->Code->caption() ?></div></div></th>
+	<?php } else { ?>
+		<th data-name="Code" class="<?php echo $v101_ho_list->Code->headerCellClass() ?>"><div class="ew-pointer" onclick="ew.sort(event, '<?php echo $v101_ho_list->SortUrl($v101_ho_list->Code) ?>', 2);"><div id="elh_v101_ho_Code" class="v101_ho_Code">
+			<div class="ew-table-header-btn"><span class="ew-table-header-caption"><?php echo $v101_ho_list->Code->caption() ?><?php echo $Language->phrase("SrchLegend") ?></span><span class="ew-table-header-sort"><?php if ($v101_ho_list->Code->getSort() == "ASC") { ?><i class="fas fa-sort-up"></i><?php } elseif ($v101_ho_list->Code->getSort() == "DESC") { ?><i class="fas fa-sort-down"></i><?php } ?></span></div>
+		</div></div></th>
+	<?php } ?>
+<?php } ?>
 <?php if ($v101_ho_list->Description->Visible) { // Description ?>
 	<?php if ($v101_ho_list->SortUrl($v101_ho_list->Description) == "") { ?>
 		<th data-name="Description" class="<?php echo $v101_ho_list->Description->headerCellClass() ?>"><div id="elh_v101_ho_Description" class="v101_ho_Description"><div class="ew-table-header-caption"><?php echo $v101_ho_list->Description->caption() ?></div></div></th>
 	<?php } else { ?>
 		<th data-name="Description" class="<?php echo $v101_ho_list->Description->headerCellClass() ?>"><div class="ew-pointer" onclick="ew.sort(event, '<?php echo $v101_ho_list->SortUrl($v101_ho_list->Description) ?>', 2);"><div id="elh_v101_ho_Description" class="v101_ho_Description">
 			<div class="ew-table-header-btn"><span class="ew-table-header-caption"><?php echo $v101_ho_list->Description->caption() ?><?php echo $Language->phrase("SrchLegend") ?></span><span class="ew-table-header-sort"><?php if ($v101_ho_list->Description->getSort() == "ASC") { ?><i class="fas fa-sort-up"></i><?php } elseif ($v101_ho_list->Description->getSort() == "DESC") { ?><i class="fas fa-sort-down"></i><?php } ?></span></div>
+		</div></div></th>
+	<?php } ?>
+<?php } ?>
+<?php if ($v101_ho_list->Group->Visible) { // Group ?>
+	<?php if ($v101_ho_list->SortUrl($v101_ho_list->Group) == "") { ?>
+		<th data-name="Group" class="<?php echo $v101_ho_list->Group->headerCellClass() ?>"><div id="elh_v101_ho_Group" class="v101_ho_Group"><div class="ew-table-header-caption"><?php echo $v101_ho_list->Group->caption() ?></div></div></th>
+	<?php } else { ?>
+		<th data-name="Group" class="<?php echo $v101_ho_list->Group->headerCellClass() ?>"><div class="ew-pointer" onclick="ew.sort(event, '<?php echo $v101_ho_list->SortUrl($v101_ho_list->Group) ?>', 2);"><div id="elh_v101_ho_Group" class="v101_ho_Group">
+			<div class="ew-table-header-btn"><span class="ew-table-header-caption"><?php echo $v101_ho_list->Group->caption() ?><?php echo $Language->phrase("SrchLegend") ?></span><span class="ew-table-header-sort"><?php if ($v101_ho_list->Group->getSort() == "ASC") { ?><i class="fas fa-sort-up"></i><?php } elseif ($v101_ho_list->Group->getSort() == "DESC") { ?><i class="fas fa-sort-down"></i><?php } ?></span></div>
 		</div></div></th>
 	<?php } ?>
 <?php } ?>
@@ -393,39 +411,21 @@ $v101_ho_list->ListOptions->render("header", "left");
 		</div></div></th>
 	<?php } ?>
 <?php } ?>
-<?php if ($v101_ho_list->DepreciationAmount->Visible) { // DepreciationAmount ?>
-	<?php if ($v101_ho_list->SortUrl($v101_ho_list->DepreciationAmount) == "") { ?>
-		<th data-name="DepreciationAmount" class="<?php echo $v101_ho_list->DepreciationAmount->headerCellClass() ?>"><div id="elh_v101_ho_DepreciationAmount" class="v101_ho_DepreciationAmount"><div class="ew-table-header-caption"><?php echo $v101_ho_list->DepreciationAmount->caption() ?></div></div></th>
+<?php if ($v101_ho_list->Economical_Life_Time_28in_Year29->Visible) { // Economical Life Time (in Year) ?>
+	<?php if ($v101_ho_list->SortUrl($v101_ho_list->Economical_Life_Time_28in_Year29) == "") { ?>
+		<th data-name="Economical_Life_Time_28in_Year29" class="<?php echo $v101_ho_list->Economical_Life_Time_28in_Year29->headerCellClass() ?>"><div id="elh_v101_ho_Economical_Life_Time_28in_Year29" class="v101_ho_Economical_Life_Time_28in_Year29"><div class="ew-table-header-caption"><?php echo $v101_ho_list->Economical_Life_Time_28in_Year29->caption() ?></div></div></th>
 	<?php } else { ?>
-		<th data-name="DepreciationAmount" class="<?php echo $v101_ho_list->DepreciationAmount->headerCellClass() ?>"><div class="ew-pointer" onclick="ew.sort(event, '<?php echo $v101_ho_list->SortUrl($v101_ho_list->DepreciationAmount) ?>', 2);"><div id="elh_v101_ho_DepreciationAmount" class="v101_ho_DepreciationAmount">
-			<div class="ew-table-header-btn"><span class="ew-table-header-caption"><?php echo $v101_ho_list->DepreciationAmount->caption() ?></span><span class="ew-table-header-sort"><?php if ($v101_ho_list->DepreciationAmount->getSort() == "ASC") { ?><i class="fas fa-sort-up"></i><?php } elseif ($v101_ho_list->DepreciationAmount->getSort() == "DESC") { ?><i class="fas fa-sort-down"></i><?php } ?></span></div>
+		<th data-name="Economical_Life_Time_28in_Year29" class="<?php echo $v101_ho_list->Economical_Life_Time_28in_Year29->headerCellClass() ?>"><div class="ew-pointer" onclick="ew.sort(event, '<?php echo $v101_ho_list->SortUrl($v101_ho_list->Economical_Life_Time_28in_Year29) ?>', 2);"><div id="elh_v101_ho_Economical_Life_Time_28in_Year29" class="v101_ho_Economical_Life_Time_28in_Year29">
+			<div class="ew-table-header-btn"><span class="ew-table-header-caption"><?php echo $v101_ho_list->Economical_Life_Time_28in_Year29->caption() ?></span><span class="ew-table-header-sort"><?php if ($v101_ho_list->Economical_Life_Time_28in_Year29->getSort() == "ASC") { ?><i class="fas fa-sort-up"></i><?php } elseif ($v101_ho_list->Economical_Life_Time_28in_Year29->getSort() == "DESC") { ?><i class="fas fa-sort-down"></i><?php } ?></span></div>
 		</div></div></th>
 	<?php } ?>
 <?php } ?>
-<?php if ($v101_ho_list->DepreciationYtd->Visible) { // DepreciationYtd ?>
-	<?php if ($v101_ho_list->SortUrl($v101_ho_list->DepreciationYtd) == "") { ?>
-		<th data-name="DepreciationYtd" class="<?php echo $v101_ho_list->DepreciationYtd->headerCellClass() ?>"><div id="elh_v101_ho_DepreciationYtd" class="v101_ho_DepreciationYtd"><div class="ew-table-header-caption"><?php echo $v101_ho_list->DepreciationYtd->caption() ?></div></div></th>
+<?php if ($v101_ho_list->Salvage->Visible) { // Salvage ?>
+	<?php if ($v101_ho_list->SortUrl($v101_ho_list->Salvage) == "") { ?>
+		<th data-name="Salvage" class="<?php echo $v101_ho_list->Salvage->headerCellClass() ?>"><div id="elh_v101_ho_Salvage" class="v101_ho_Salvage"><div class="ew-table-header-caption"><?php echo $v101_ho_list->Salvage->caption() ?></div></div></th>
 	<?php } else { ?>
-		<th data-name="DepreciationYtd" class="<?php echo $v101_ho_list->DepreciationYtd->headerCellClass() ?>"><div class="ew-pointer" onclick="ew.sort(event, '<?php echo $v101_ho_list->SortUrl($v101_ho_list->DepreciationYtd) ?>', 2);"><div id="elh_v101_ho_DepreciationYtd" class="v101_ho_DepreciationYtd">
-			<div class="ew-table-header-btn"><span class="ew-table-header-caption"><?php echo $v101_ho_list->DepreciationYtd->caption() ?></span><span class="ew-table-header-sort"><?php if ($v101_ho_list->DepreciationYtd->getSort() == "ASC") { ?><i class="fas fa-sort-up"></i><?php } elseif ($v101_ho_list->DepreciationYtd->getSort() == "DESC") { ?><i class="fas fa-sort-down"></i><?php } ?></span></div>
-		</div></div></th>
-	<?php } ?>
-<?php } ?>
-<?php if ($v101_ho_list->NetBookValue->Visible) { // NetBookValue ?>
-	<?php if ($v101_ho_list->SortUrl($v101_ho_list->NetBookValue) == "") { ?>
-		<th data-name="NetBookValue" class="<?php echo $v101_ho_list->NetBookValue->headerCellClass() ?>"><div id="elh_v101_ho_NetBookValue" class="v101_ho_NetBookValue"><div class="ew-table-header-caption"><?php echo $v101_ho_list->NetBookValue->caption() ?></div></div></th>
-	<?php } else { ?>
-		<th data-name="NetBookValue" class="<?php echo $v101_ho_list->NetBookValue->headerCellClass() ?>"><div class="ew-pointer" onclick="ew.sort(event, '<?php echo $v101_ho_list->SortUrl($v101_ho_list->NetBookValue) ?>', 2);"><div id="elh_v101_ho_NetBookValue" class="v101_ho_NetBookValue">
-			<div class="ew-table-header-btn"><span class="ew-table-header-caption"><?php echo $v101_ho_list->NetBookValue->caption() ?></span><span class="ew-table-header-sort"><?php if ($v101_ho_list->NetBookValue->getSort() == "ASC") { ?><i class="fas fa-sort-up"></i><?php } elseif ($v101_ho_list->NetBookValue->getSort() == "DESC") { ?><i class="fas fa-sort-down"></i><?php } ?></span></div>
-		</div></div></th>
-	<?php } ?>
-<?php } ?>
-<?php if ($v101_ho_list->Periode->Visible) { // Periode ?>
-	<?php if ($v101_ho_list->SortUrl($v101_ho_list->Periode) == "") { ?>
-		<th data-name="Periode" class="<?php echo $v101_ho_list->Periode->headerCellClass() ?>"><div id="elh_v101_ho_Periode" class="v101_ho_Periode"><div class="ew-table-header-caption"><?php echo $v101_ho_list->Periode->caption() ?></div></div></th>
-	<?php } else { ?>
-		<th data-name="Periode" class="<?php echo $v101_ho_list->Periode->headerCellClass() ?>"><div class="ew-pointer" onclick="ew.sort(event, '<?php echo $v101_ho_list->SortUrl($v101_ho_list->Periode) ?>', 2);"><div id="elh_v101_ho_Periode" class="v101_ho_Periode">
-			<div class="ew-table-header-btn"><span class="ew-table-header-caption"><?php echo $v101_ho_list->Periode->caption() ?></span><span class="ew-table-header-sort"><?php if ($v101_ho_list->Periode->getSort() == "ASC") { ?><i class="fas fa-sort-up"></i><?php } elseif ($v101_ho_list->Periode->getSort() == "DESC") { ?><i class="fas fa-sort-down"></i><?php } ?></span></div>
+		<th data-name="Salvage" class="<?php echo $v101_ho_list->Salvage->headerCellClass() ?>"><div class="ew-pointer" onclick="ew.sort(event, '<?php echo $v101_ho_list->SortUrl($v101_ho_list->Salvage) ?>', 2);"><div id="elh_v101_ho_Salvage" class="v101_ho_Salvage">
+			<div class="ew-table-header-btn"><span class="ew-table-header-caption"><?php echo $v101_ho_list->Salvage->caption() ?></span><span class="ew-table-header-sort"><?php if ($v101_ho_list->Salvage->getSort() == "ASC") { ?><i class="fas fa-sort-up"></i><?php } elseif ($v101_ho_list->Salvage->getSort() == "DESC") { ?><i class="fas fa-sort-down"></i><?php } ?></span></div>
 		</div></div></th>
 	<?php } ?>
 <?php } ?>
@@ -507,6 +507,15 @@ $v101_ho_list->ListOptions->render("header", "left");
 	<?php } else { ?>
 		<th data-name="Sign4JobTitle" class="<?php echo $v101_ho_list->Sign4JobTitle->headerCellClass() ?>"><div class="ew-pointer" onclick="ew.sort(event, '<?php echo $v101_ho_list->SortUrl($v101_ho_list->Sign4JobTitle) ?>', 2);"><div id="elh_v101_ho_Sign4JobTitle" class="v101_ho_Sign4JobTitle">
 			<div class="ew-table-header-btn"><span class="ew-table-header-caption"><?php echo $v101_ho_list->Sign4JobTitle->caption() ?><?php echo $Language->phrase("SrchLegend") ?></span><span class="ew-table-header-sort"><?php if ($v101_ho_list->Sign4JobTitle->getSort() == "ASC") { ?><i class="fas fa-sort-up"></i><?php } elseif ($v101_ho_list->Sign4JobTitle->getSort() == "DESC") { ?><i class="fas fa-sort-down"></i><?php } ?></span></div>
+		</div></div></th>
+	<?php } ?>
+<?php } ?>
+<?php if ($v101_ho_list->AssetDepartment->Visible) { // AssetDepartment ?>
+	<?php if ($v101_ho_list->SortUrl($v101_ho_list->AssetDepartment) == "") { ?>
+		<th data-name="AssetDepartment" class="<?php echo $v101_ho_list->AssetDepartment->headerCellClass() ?>"><div id="elh_v101_ho_AssetDepartment" class="v101_ho_AssetDepartment"><div class="ew-table-header-caption"><?php echo $v101_ho_list->AssetDepartment->caption() ?></div></div></th>
+	<?php } else { ?>
+		<th data-name="AssetDepartment" class="<?php echo $v101_ho_list->AssetDepartment->headerCellClass() ?>"><div class="ew-pointer" onclick="ew.sort(event, '<?php echo $v101_ho_list->SortUrl($v101_ho_list->AssetDepartment) ?>', 2);"><div id="elh_v101_ho_AssetDepartment" class="v101_ho_AssetDepartment">
+			<div class="ew-table-header-btn"><span class="ew-table-header-caption"><?php echo $v101_ho_list->AssetDepartment->caption() ?><?php echo $Language->phrase("SrchLegend") ?></span><span class="ew-table-header-sort"><?php if ($v101_ho_list->AssetDepartment->getSort() == "ASC") { ?><i class="fas fa-sort-up"></i><?php } elseif ($v101_ho_list->AssetDepartment->getSort() == "DESC") { ?><i class="fas fa-sort-down"></i><?php } ?></span></div>
 		</div></div></th>
 	<?php } ?>
 <?php } ?>
@@ -750,10 +759,24 @@ $v101_ho_list->ListOptions->render("body", "left", $v101_ho_list->RowCount);
 </span>
 </td>
 	<?php } ?>
+	<?php if ($v101_ho_list->Code->Visible) { // Code ?>
+		<td data-name="Code" <?php echo $v101_ho_list->Code->cellAttributes() ?>>
+<span id="el<?php echo $v101_ho_list->RowCount ?>_v101_ho_Code">
+<span<?php echo $v101_ho_list->Code->viewAttributes() ?>><?php echo $v101_ho_list->Code->getViewValue() ?></span>
+</span>
+</td>
+	<?php } ?>
 	<?php if ($v101_ho_list->Description->Visible) { // Description ?>
 		<td data-name="Description" <?php echo $v101_ho_list->Description->cellAttributes() ?>>
 <span id="el<?php echo $v101_ho_list->RowCount ?>_v101_ho_Description">
 <span<?php echo $v101_ho_list->Description->viewAttributes() ?>><?php echo $v101_ho_list->Description->getViewValue() ?></span>
+</span>
+</td>
+	<?php } ?>
+	<?php if ($v101_ho_list->Group->Visible) { // Group ?>
+		<td data-name="Group" <?php echo $v101_ho_list->Group->cellAttributes() ?>>
+<span id="el<?php echo $v101_ho_list->RowCount ?>_v101_ho_Group">
+<span<?php echo $v101_ho_list->Group->viewAttributes() ?>><?php echo $v101_ho_list->Group->getViewValue() ?></span>
 </span>
 </td>
 	<?php } ?>
@@ -771,31 +794,17 @@ $v101_ho_list->ListOptions->render("body", "left", $v101_ho_list->RowCount);
 </span>
 </td>
 	<?php } ?>
-	<?php if ($v101_ho_list->DepreciationAmount->Visible) { // DepreciationAmount ?>
-		<td data-name="DepreciationAmount" <?php echo $v101_ho_list->DepreciationAmount->cellAttributes() ?>>
-<span id="el<?php echo $v101_ho_list->RowCount ?>_v101_ho_DepreciationAmount">
-<span<?php echo $v101_ho_list->DepreciationAmount->viewAttributes() ?>><?php echo $v101_ho_list->DepreciationAmount->getViewValue() ?></span>
+	<?php if ($v101_ho_list->Economical_Life_Time_28in_Year29->Visible) { // Economical Life Time (in Year) ?>
+		<td data-name="Economical_Life_Time_28in_Year29" <?php echo $v101_ho_list->Economical_Life_Time_28in_Year29->cellAttributes() ?>>
+<span id="el<?php echo $v101_ho_list->RowCount ?>_v101_ho_Economical_Life_Time_28in_Year29">
+<span<?php echo $v101_ho_list->Economical_Life_Time_28in_Year29->viewAttributes() ?>><?php echo $v101_ho_list->Economical_Life_Time_28in_Year29->getViewValue() ?></span>
 </span>
 </td>
 	<?php } ?>
-	<?php if ($v101_ho_list->DepreciationYtd->Visible) { // DepreciationYtd ?>
-		<td data-name="DepreciationYtd" <?php echo $v101_ho_list->DepreciationYtd->cellAttributes() ?>>
-<span id="el<?php echo $v101_ho_list->RowCount ?>_v101_ho_DepreciationYtd">
-<span<?php echo $v101_ho_list->DepreciationYtd->viewAttributes() ?>><?php echo $v101_ho_list->DepreciationYtd->getViewValue() ?></span>
-</span>
-</td>
-	<?php } ?>
-	<?php if ($v101_ho_list->NetBookValue->Visible) { // NetBookValue ?>
-		<td data-name="NetBookValue" <?php echo $v101_ho_list->NetBookValue->cellAttributes() ?>>
-<span id="el<?php echo $v101_ho_list->RowCount ?>_v101_ho_NetBookValue">
-<span<?php echo $v101_ho_list->NetBookValue->viewAttributes() ?>><?php echo $v101_ho_list->NetBookValue->getViewValue() ?></span>
-</span>
-</td>
-	<?php } ?>
-	<?php if ($v101_ho_list->Periode->Visible) { // Periode ?>
-		<td data-name="Periode" <?php echo $v101_ho_list->Periode->cellAttributes() ?>>
-<span id="el<?php echo $v101_ho_list->RowCount ?>_v101_ho_Periode">
-<span<?php echo $v101_ho_list->Periode->viewAttributes() ?>><?php echo $v101_ho_list->Periode->getViewValue() ?></span>
+	<?php if ($v101_ho_list->Salvage->Visible) { // Salvage ?>
+		<td data-name="Salvage" <?php echo $v101_ho_list->Salvage->cellAttributes() ?>>
+<span id="el<?php echo $v101_ho_list->RowCount ?>_v101_ho_Salvage">
+<span<?php echo $v101_ho_list->Salvage->viewAttributes() ?>><?php echo $v101_ho_list->Salvage->getViewValue() ?></span>
 </span>
 </td>
 	<?php } ?>
@@ -859,6 +868,13 @@ $v101_ho_list->ListOptions->render("body", "left", $v101_ho_list->RowCount);
 		<td data-name="Sign4JobTitle" <?php echo $v101_ho_list->Sign4JobTitle->cellAttributes() ?>>
 <span id="el<?php echo $v101_ho_list->RowCount ?>_v101_ho_Sign4JobTitle">
 <span<?php echo $v101_ho_list->Sign4JobTitle->viewAttributes() ?>><?php echo $v101_ho_list->Sign4JobTitle->getViewValue() ?></span>
+</span>
+</td>
+	<?php } ?>
+	<?php if ($v101_ho_list->AssetDepartment->Visible) { // AssetDepartment ?>
+		<td data-name="AssetDepartment" <?php echo $v101_ho_list->AssetDepartment->cellAttributes() ?>>
+<span id="el<?php echo $v101_ho_list->RowCount ?>_v101_ho_AssetDepartment">
+<span<?php echo $v101_ho_list->AssetDepartment->viewAttributes() ?>><?php echo $v101_ho_list->AssetDepartment->getViewValue() ?></span>
 </span>
 </td>
 	<?php } ?>

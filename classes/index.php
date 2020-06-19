@@ -299,6 +299,8 @@ class index
 			$this->terminate("t004_assetlist.php");
 		if ($Security->allowList(CurrentProjectID() . 't005_assetgroup'))
 			$this->terminate("t005_assetgrouplist.php");
+		if ($Security->allowList(CurrentProjectID() . 't006_assetdepreciation'))
+			$this->terminate("t006_assetdepreciationlist.php");
 		if ($Security->allowList(CurrentProjectID() . 't101_ho_head'))
 			$this->terminate("t101_ho_headlist.php");
 		if ($Security->allowList(CurrentProjectID() . 't102_ho_detail'))
@@ -315,6 +317,8 @@ class index
 			$this->terminate("t204_audittraillist.php");
 		if ($Security->allowList(CurrentProjectID() . 't205_parameter'))
 			$this->terminate("t205_parameterlist.php");
+		if ($Security->allowList(CurrentProjectID() . 'v101_ho'))
+			$this->terminate("v101_holist.php");
 		if ($Security->isLoggedIn()) {
 			$this->setFailureMessage(DeniedMessage() . "<br><br><a href=\"logout.php\">" . $Language->phrase("BackToLogin") . "</a>");
 		} else {

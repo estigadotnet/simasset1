@@ -775,6 +775,9 @@ class t004_asset_add extends t004_asset
 			$this->loadFormValues(); // Load form values
 		}
 
+		// Set up detail parameters
+		$this->setupDetailParms();
+
 		// Validate form if post back
 		if ($postBack) {
 			if (!$this->validateForm()) {
@@ -798,13 +801,19 @@ class t004_asset_add extends t004_asset
 						$this->setFailureMessage($Language->phrase("NoRecord")); // No record found
 					$this->terminate("t004_assetlist.php"); // No matching record, return to list
 				}
+
+				// Set up detail parameters
+				$this->setupDetailParms();
 				break;
 			case "insert": // Add new record
 				$this->SendEmail = TRUE; // Send email on add success
 				if ($this->addRow($this->OldRecordset)) { // Add successful
 					if ($this->getSuccessMessage() == "")
 						$this->setSuccessMessage($Language->phrase("AddSuccess")); // Set up success message
-					$returnUrl = $this->getReturnUrl();
+					if ($this->getCurrentDetailTable() != "") // Master/detail add
+						$returnUrl = $this->getDetailUrl();
+					else
+						$returnUrl = $this->getReturnUrl();
 					if (GetPageName($returnUrl) == "t004_assetlist.php")
 						$returnUrl = $this->addMasterUrl($returnUrl); // List page, return to List page with correct master key if necessary
 					elseif (GetPageName($returnUrl) == "t004_assetview.php")
@@ -821,6 +830,9 @@ class t004_asset_add extends t004_asset
 				} else {
 					$this->EventCancelled = TRUE; // Event cancelled
 					$this->restoreFormValues(); // Add failed, restore form values
+
+					// Set up detail parameters
+					$this->setupDetailParms();
 				}
 		}
 
@@ -1631,6 +1643,14 @@ class t004_asset_add extends t004_asset
 			}
 		}
 
+		// Validate detail grid
+		$detailTblVar = explode(",", $this->getCurrentDetailTable());
+		if (in_array("t006_assetdepreciation", $detailTblVar) && $GLOBALS["t006_assetdepreciation"]->DetailAdd) {
+			if (!isset($GLOBALS["t006_assetdepreciation_grid"]))
+				$GLOBALS["t006_assetdepreciation_grid"] = new t006_assetdepreciation_grid(); // Get detail page object
+			$GLOBALS["t006_assetdepreciation_grid"]->validateGridForm();
+		}
+
 		// Return validate result
 		$validateForm = ($FormError == "");
 
@@ -1648,6 +1668,10 @@ class t004_asset_add extends t004_asset
 	{
 		global $Language, $Security;
 		$conn = $this->getConnection();
+
+		// Begin transaction
+		if ($this->getCurrentDetailTable() != "")
+			$conn->beginTrans();
 
 		// Load db values from rsold
 		$this->loadDbValues($rsold);
@@ -1709,6 +1733,31 @@ class t004_asset_add extends t004_asset
 			}
 			$addRow = FALSE;
 		}
+
+		// Add detail records
+		if ($addRow) {
+			$detailTblVar = explode(",", $this->getCurrentDetailTable());
+			if (in_array("t006_assetdepreciation", $detailTblVar) && $GLOBALS["t006_assetdepreciation"]->DetailAdd) {
+				$GLOBALS["t006_assetdepreciation"]->asset_id->setSessionValue($this->id->CurrentValue); // Set master key
+				if (!isset($GLOBALS["t006_assetdepreciation_grid"]))
+					$GLOBALS["t006_assetdepreciation_grid"] = new t006_assetdepreciation_grid(); // Get detail page object
+				$Security->loadCurrentUserLevel($this->ProjectID . "t006_assetdepreciation"); // Load user level of detail table
+				$addRow = $GLOBALS["t006_assetdepreciation_grid"]->gridInsert();
+				$Security->loadCurrentUserLevel($this->ProjectID . $this->TableName); // Restore user level of master table
+				if (!$addRow) {
+					$GLOBALS["t006_assetdepreciation"]->asset_id->setSessionValue(""); // Clear master key if insert failed
+				}
+			}
+		}
+
+		// Commit/Rollback transaction
+		if ($this->getCurrentDetailTable() != "") {
+			if ($addRow) {
+				$conn->commitTrans(); // Commit transaction
+			} else {
+				$conn->rollbackTrans(); // Rollback transaction
+			}
+		}
 		if ($addRow) {
 
 			// Call Row Inserted event
@@ -1726,6 +1775,40 @@ class t004_asset_add extends t004_asset
 			WriteJson(["success" => TRUE, $this->TableVar => $row]);
 		}
 		return $addRow;
+	}
+
+	// Set up detail parms based on QueryString
+	protected function setupDetailParms()
+	{
+
+		// Get the keys for master table
+		$detailTblVar = Get(Config("TABLE_SHOW_DETAIL"));
+		if ($detailTblVar !== NULL) {
+			$this->setCurrentDetailTable($detailTblVar);
+		} else {
+			$detailTblVar = $this->getCurrentDetailTable();
+		}
+		if ($detailTblVar != "") {
+			$detailTblVar = explode(",", $detailTblVar);
+			if (in_array("t006_assetdepreciation", $detailTblVar)) {
+				if (!isset($GLOBALS["t006_assetdepreciation_grid"]))
+					$GLOBALS["t006_assetdepreciation_grid"] = new t006_assetdepreciation_grid();
+				if ($GLOBALS["t006_assetdepreciation_grid"]->DetailAdd) {
+					if ($this->CopyRecord)
+						$GLOBALS["t006_assetdepreciation_grid"]->CurrentMode = "copy";
+					else
+						$GLOBALS["t006_assetdepreciation_grid"]->CurrentMode = "add";
+					$GLOBALS["t006_assetdepreciation_grid"]->CurrentAction = "gridadd";
+
+					// Save current master table to detail table
+					$GLOBALS["t006_assetdepreciation_grid"]->setCurrentMasterTable($this->TableVar);
+					$GLOBALS["t006_assetdepreciation_grid"]->setStartRecordNumber(1);
+					$GLOBALS["t006_assetdepreciation_grid"]->asset_id->IsDetailKey = TRUE;
+					$GLOBALS["t006_assetdepreciation_grid"]->asset_id->CurrentValue = $this->id->CurrentValue;
+					$GLOBALS["t006_assetdepreciation_grid"]->asset_id->setSessionValue($GLOBALS["t006_assetdepreciation_grid"]->asset_id->CurrentValue);
+				}
+			}
+		}
 	}
 
 	// Set up Breadcrumb
