@@ -66,9 +66,13 @@ foreach ($r as $rs) {
 	$spreadsheet->getActiveSheet()->insertNewRowBefore($row, 1);
 	
 	$spreadsheet->getActiveSheet()->setCellValue('A' . $row, $no++)
-		->setCellValue('B' . $row, $rs["property_id"])
-		->setCellValue('C' . $row, $rs["TransactionNo"])
-		->setCellValue('D' . $row, $rs["TransactionDate"]);
+		->setCellValue('B' . $row, $rs["asset_id"])
+		->setCellValue('C' . $row, $rs["Description"])
+		->setCellValue('D' . $row, $rs["AssetDepartment"])
+		->setCellValue('E' . $row, $rs["ProcurementDate"])
+		->setCellValue('F' . $row, $rs["ProcurementCurrentCost"])
+		
+		;
 	$i++;
 }
 $spreadsheet->getActiveSheet()->removeRow($baseRow - 1, 1);

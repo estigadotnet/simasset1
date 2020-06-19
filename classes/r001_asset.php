@@ -31,13 +31,12 @@ class r001_asset extends ReportTable
 	public $property_id;
 	public $department_id;
 	public $signature_id;
+	public $Code;
 	public $Description;
+	public $group_id;
 	public $ProcurementDate;
 	public $ProcurementCurrentCost;
-	public $DepreciationAmount;
-	public $DepreciationYtd;
-	public $NetBookValue;
-	public $Periode;
+	public $Salvage;
 	public $Qty;
 	public $Remarks;
 
@@ -107,6 +106,14 @@ class r001_asset extends ReportTable
 		$this->signature_id->SourceTableVar = 't004_asset';
 		$this->fields['signature_id'] = &$this->signature_id;
 
+		// Code
+		$this->Code = new ReportField('r001_asset', 'r001_asset', 'x_Code', 'Code', '`Code`', '`Code`', 200, 25, -1, FALSE, '`Code`', FALSE, FALSE, FALSE, 'FORMATTED TEXT', 'TEXT');
+		$this->Code->Nullable = FALSE; // NOT NULL field
+		$this->Code->Required = TRUE; // Required field
+		$this->Code->Sortable = TRUE; // Allow sort
+		$this->Code->SourceTableVar = 't004_asset';
+		$this->fields['Code'] = &$this->Code;
+
 		// Description
 		$this->Description = new ReportField('r001_asset', 'r001_asset', 'x_Description', 'Description', '`Description`', '`Description`', 200, 255, -1, FALSE, '`Description`', FALSE, FALSE, FALSE, 'FORMATTED TEXT', 'TEXT');
 		$this->Description->Nullable = FALSE; // NOT NULL field
@@ -114,6 +121,16 @@ class r001_asset extends ReportTable
 		$this->Description->Sortable = TRUE; // Allow sort
 		$this->Description->SourceTableVar = 't004_asset';
 		$this->fields['Description'] = &$this->Description;
+
+		// group_id
+		$this->group_id = new ReportField('r001_asset', 'r001_asset', 'x_group_id', 'group_id', '`group_id`', '`group_id`', 3, 11, -1, FALSE, '`group_id`', FALSE, FALSE, FALSE, 'FORMATTED TEXT', 'TEXT');
+		$this->group_id->Nullable = FALSE; // NOT NULL field
+		$this->group_id->Required = TRUE; // Required field
+		$this->group_id->Sortable = TRUE; // Allow sort
+		$this->group_id->Lookup = new Lookup('group_id', 't005_assetgroup', FALSE, 'id', ["Description","EconomicalLifeTime","",""], [], [], [], [], [], [], '', '');
+		$this->group_id->DefaultErrorMessage = $Language->phrase("IncorrectInteger");
+		$this->group_id->SourceTableVar = 't004_asset';
+		$this->fields['group_id'] = &$this->group_id;
 
 		// ProcurementDate
 		$this->ProcurementDate = new ReportField('r001_asset', 'r001_asset', 'x_ProcurementDate', 'ProcurementDate', '`ProcurementDate`', CastDateFieldForLike("`ProcurementDate`", 7, "DB"), 133, 10, 7, FALSE, '`ProcurementDate`', FALSE, FALSE, FALSE, 'FORMATTED TEXT', 'TEXT');
@@ -133,41 +150,13 @@ class r001_asset extends ReportTable
 		$this->ProcurementCurrentCost->SourceTableVar = 't004_asset';
 		$this->fields['ProcurementCurrentCost'] = &$this->ProcurementCurrentCost;
 
-		// DepreciationAmount
-		$this->DepreciationAmount = new ReportField('r001_asset', 'r001_asset', 'x_DepreciationAmount', 'DepreciationAmount', '`DepreciationAmount`', '`DepreciationAmount`', 4, 14, -1, FALSE, '`DepreciationAmount`', FALSE, FALSE, FALSE, 'FORMATTED TEXT', 'TEXT');
-		$this->DepreciationAmount->Nullable = FALSE; // NOT NULL field
-		$this->DepreciationAmount->Required = TRUE; // Required field
-		$this->DepreciationAmount->Sortable = TRUE; // Allow sort
-		$this->DepreciationAmount->DefaultErrorMessage = $Language->phrase("IncorrectFloat");
-		$this->DepreciationAmount->SourceTableVar = 't004_asset';
-		$this->fields['DepreciationAmount'] = &$this->DepreciationAmount;
-
-		// DepreciationYtd
-		$this->DepreciationYtd = new ReportField('r001_asset', 'r001_asset', 'x_DepreciationYtd', 'DepreciationYtd', '`DepreciationYtd`', '`DepreciationYtd`', 4, 14, -1, FALSE, '`DepreciationYtd`', FALSE, FALSE, FALSE, 'FORMATTED TEXT', 'TEXT');
-		$this->DepreciationYtd->Nullable = FALSE; // NOT NULL field
-		$this->DepreciationYtd->Required = TRUE; // Required field
-		$this->DepreciationYtd->Sortable = TRUE; // Allow sort
-		$this->DepreciationYtd->DefaultErrorMessage = $Language->phrase("IncorrectFloat");
-		$this->DepreciationYtd->SourceTableVar = 't004_asset';
-		$this->fields['DepreciationYtd'] = &$this->DepreciationYtd;
-
-		// NetBookValue
-		$this->NetBookValue = new ReportField('r001_asset', 'r001_asset', 'x_NetBookValue', 'NetBookValue', '`NetBookValue`', '`NetBookValue`', 4, 14, -1, FALSE, '`NetBookValue`', FALSE, FALSE, FALSE, 'FORMATTED TEXT', 'TEXT');
-		$this->NetBookValue->Nullable = FALSE; // NOT NULL field
-		$this->NetBookValue->Required = TRUE; // Required field
-		$this->NetBookValue->Sortable = TRUE; // Allow sort
-		$this->NetBookValue->DefaultErrorMessage = $Language->phrase("IncorrectFloat");
-		$this->NetBookValue->SourceTableVar = 't004_asset';
-		$this->fields['NetBookValue'] = &$this->NetBookValue;
-
-		// Periode
-		$this->Periode = new ReportField('r001_asset', 'r001_asset', 'x_Periode', 'Periode', '`Periode`', CastDateFieldForLike("`Periode`", 7, "DB"), 133, 10, 7, FALSE, '`Periode`', FALSE, FALSE, FALSE, 'FORMATTED TEXT', 'TEXT');
-		$this->Periode->Nullable = FALSE; // NOT NULL field
-		$this->Periode->Required = TRUE; // Required field
-		$this->Periode->Sortable = TRUE; // Allow sort
-		$this->Periode->DefaultErrorMessage = str_replace("%s", $GLOBALS["DATE_SEPARATOR"], $Language->phrase("IncorrectDateDMY"));
-		$this->Periode->SourceTableVar = 't004_asset';
-		$this->fields['Periode'] = &$this->Periode;
+		// Salvage
+		$this->Salvage = new ReportField('r001_asset', 'r001_asset', 'x_Salvage', 'Salvage', '`Salvage`', '`Salvage`', 4, 14, -1, FALSE, '`Salvage`', FALSE, FALSE, FALSE, 'FORMATTED TEXT', 'TEXT');
+		$this->Salvage->Nullable = FALSE; // NOT NULL field
+		$this->Salvage->Sortable = TRUE; // Allow sort
+		$this->Salvage->DefaultErrorMessage = $Language->phrase("IncorrectFloat");
+		$this->Salvage->SourceTableVar = 't004_asset';
+		$this->fields['Salvage'] = &$this->Salvage;
 
 		// Qty
 		$this->Qty = new ReportField('r001_asset', 'r001_asset', 'x_Qty', 'Qty', '`Qty`', '`Qty`', 4, 14, -1, FALSE, '`Qty`', FALSE, FALSE, FALSE, 'FORMATTED TEXT', 'TEXT');

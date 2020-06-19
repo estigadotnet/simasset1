@@ -79,8 +79,14 @@ $t004_asset_delete->showMessage();
 <?php if ($t004_asset_delete->signature_id->Visible) { // signature_id ?>
 		<th class="<?php echo $t004_asset_delete->signature_id->headerCellClass() ?>"><span id="elh_t004_asset_signature_id" class="t004_asset_signature_id"><?php echo $t004_asset_delete->signature_id->caption() ?></span></th>
 <?php } ?>
+<?php if ($t004_asset_delete->Code->Visible) { // Code ?>
+		<th class="<?php echo $t004_asset_delete->Code->headerCellClass() ?>"><span id="elh_t004_asset_Code" class="t004_asset_Code"><?php echo $t004_asset_delete->Code->caption() ?></span></th>
+<?php } ?>
 <?php if ($t004_asset_delete->Description->Visible) { // Description ?>
 		<th class="<?php echo $t004_asset_delete->Description->headerCellClass() ?>"><span id="elh_t004_asset_Description" class="t004_asset_Description"><?php echo $t004_asset_delete->Description->caption() ?></span></th>
+<?php } ?>
+<?php if ($t004_asset_delete->group_id->Visible) { // group_id ?>
+		<th class="<?php echo $t004_asset_delete->group_id->headerCellClass() ?>"><span id="elh_t004_asset_group_id" class="t004_asset_group_id"><?php echo $t004_asset_delete->group_id->caption() ?></span></th>
 <?php } ?>
 <?php if ($t004_asset_delete->ProcurementDate->Visible) { // ProcurementDate ?>
 		<th class="<?php echo $t004_asset_delete->ProcurementDate->headerCellClass() ?>"><span id="elh_t004_asset_ProcurementDate" class="t004_asset_ProcurementDate"><?php echo $t004_asset_delete->ProcurementDate->caption() ?></span></th>
@@ -88,17 +94,8 @@ $t004_asset_delete->showMessage();
 <?php if ($t004_asset_delete->ProcurementCurrentCost->Visible) { // ProcurementCurrentCost ?>
 		<th class="<?php echo $t004_asset_delete->ProcurementCurrentCost->headerCellClass() ?>"><span id="elh_t004_asset_ProcurementCurrentCost" class="t004_asset_ProcurementCurrentCost"><?php echo $t004_asset_delete->ProcurementCurrentCost->caption() ?></span></th>
 <?php } ?>
-<?php if ($t004_asset_delete->DepreciationAmount->Visible) { // DepreciationAmount ?>
-		<th class="<?php echo $t004_asset_delete->DepreciationAmount->headerCellClass() ?>"><span id="elh_t004_asset_DepreciationAmount" class="t004_asset_DepreciationAmount"><?php echo $t004_asset_delete->DepreciationAmount->caption() ?></span></th>
-<?php } ?>
-<?php if ($t004_asset_delete->DepreciationYtd->Visible) { // DepreciationYtd ?>
-		<th class="<?php echo $t004_asset_delete->DepreciationYtd->headerCellClass() ?>"><span id="elh_t004_asset_DepreciationYtd" class="t004_asset_DepreciationYtd"><?php echo $t004_asset_delete->DepreciationYtd->caption() ?></span></th>
-<?php } ?>
-<?php if ($t004_asset_delete->NetBookValue->Visible) { // NetBookValue ?>
-		<th class="<?php echo $t004_asset_delete->NetBookValue->headerCellClass() ?>"><span id="elh_t004_asset_NetBookValue" class="t004_asset_NetBookValue"><?php echo $t004_asset_delete->NetBookValue->caption() ?></span></th>
-<?php } ?>
-<?php if ($t004_asset_delete->Periode->Visible) { // Periode ?>
-		<th class="<?php echo $t004_asset_delete->Periode->headerCellClass() ?>"><span id="elh_t004_asset_Periode" class="t004_asset_Periode"><?php echo $t004_asset_delete->Periode->caption() ?></span></th>
+<?php if ($t004_asset_delete->Salvage->Visible) { // Salvage ?>
+		<th class="<?php echo $t004_asset_delete->Salvage->headerCellClass() ?>"><span id="elh_t004_asset_Salvage" class="t004_asset_Salvage"><?php echo $t004_asset_delete->Salvage->caption() ?></span></th>
 <?php } ?>
 <?php if ($t004_asset_delete->Qty->Visible) { // Qty ?>
 		<th class="<?php echo $t004_asset_delete->Qty->headerCellClass() ?>"><span id="elh_t004_asset_Qty" class="t004_asset_Qty"><?php echo $t004_asset_delete->Qty->caption() ?></span></th>
@@ -148,10 +145,24 @@ while (!$t004_asset_delete->Recordset->EOF) {
 </span>
 </td>
 <?php } ?>
+<?php if ($t004_asset_delete->Code->Visible) { // Code ?>
+		<td <?php echo $t004_asset_delete->Code->cellAttributes() ?>>
+<span id="el<?php echo $t004_asset_delete->RowCount ?>_t004_asset_Code" class="t004_asset_Code">
+<span<?php echo $t004_asset_delete->Code->viewAttributes() ?>><?php echo $t004_asset_delete->Code->getViewValue() ?></span>
+</span>
+</td>
+<?php } ?>
 <?php if ($t004_asset_delete->Description->Visible) { // Description ?>
 		<td <?php echo $t004_asset_delete->Description->cellAttributes() ?>>
 <span id="el<?php echo $t004_asset_delete->RowCount ?>_t004_asset_Description" class="t004_asset_Description">
 <span<?php echo $t004_asset_delete->Description->viewAttributes() ?>><?php echo $t004_asset_delete->Description->getViewValue() ?></span>
+</span>
+</td>
+<?php } ?>
+<?php if ($t004_asset_delete->group_id->Visible) { // group_id ?>
+		<td <?php echo $t004_asset_delete->group_id->cellAttributes() ?>>
+<span id="el<?php echo $t004_asset_delete->RowCount ?>_t004_asset_group_id" class="t004_asset_group_id">
+<span<?php echo $t004_asset_delete->group_id->viewAttributes() ?>><?php echo $t004_asset_delete->group_id->getViewValue() ?></span>
 </span>
 </td>
 <?php } ?>
@@ -169,31 +180,10 @@ while (!$t004_asset_delete->Recordset->EOF) {
 </span>
 </td>
 <?php } ?>
-<?php if ($t004_asset_delete->DepreciationAmount->Visible) { // DepreciationAmount ?>
-		<td <?php echo $t004_asset_delete->DepreciationAmount->cellAttributes() ?>>
-<span id="el<?php echo $t004_asset_delete->RowCount ?>_t004_asset_DepreciationAmount" class="t004_asset_DepreciationAmount">
-<span<?php echo $t004_asset_delete->DepreciationAmount->viewAttributes() ?>><?php echo $t004_asset_delete->DepreciationAmount->getViewValue() ?></span>
-</span>
-</td>
-<?php } ?>
-<?php if ($t004_asset_delete->DepreciationYtd->Visible) { // DepreciationYtd ?>
-		<td <?php echo $t004_asset_delete->DepreciationYtd->cellAttributes() ?>>
-<span id="el<?php echo $t004_asset_delete->RowCount ?>_t004_asset_DepreciationYtd" class="t004_asset_DepreciationYtd">
-<span<?php echo $t004_asset_delete->DepreciationYtd->viewAttributes() ?>><?php echo $t004_asset_delete->DepreciationYtd->getViewValue() ?></span>
-</span>
-</td>
-<?php } ?>
-<?php if ($t004_asset_delete->NetBookValue->Visible) { // NetBookValue ?>
-		<td <?php echo $t004_asset_delete->NetBookValue->cellAttributes() ?>>
-<span id="el<?php echo $t004_asset_delete->RowCount ?>_t004_asset_NetBookValue" class="t004_asset_NetBookValue">
-<span<?php echo $t004_asset_delete->NetBookValue->viewAttributes() ?>><?php echo $t004_asset_delete->NetBookValue->getViewValue() ?></span>
-</span>
-</td>
-<?php } ?>
-<?php if ($t004_asset_delete->Periode->Visible) { // Periode ?>
-		<td <?php echo $t004_asset_delete->Periode->cellAttributes() ?>>
-<span id="el<?php echo $t004_asset_delete->RowCount ?>_t004_asset_Periode" class="t004_asset_Periode">
-<span<?php echo $t004_asset_delete->Periode->viewAttributes() ?>><?php echo $t004_asset_delete->Periode->getViewValue() ?></span>
+<?php if ($t004_asset_delete->Salvage->Visible) { // Salvage ?>
+		<td <?php echo $t004_asset_delete->Salvage->cellAttributes() ?>>
+<span id="el<?php echo $t004_asset_delete->RowCount ?>_t004_asset_Salvage" class="t004_asset_Salvage">
+<span<?php echo $t004_asset_delete->Salvage->viewAttributes() ?>><?php echo $t004_asset_delete->Salvage->getViewValue() ?></span>
 </span>
 </td>
 <?php } ?>

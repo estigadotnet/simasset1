@@ -4,20 +4,20 @@ namespace PHPMaker2020\p_simasset1;
 /**
  * Page class
  */
-class t004_asset_delete extends t004_asset
+class t005_assetgroup_add extends t005_assetgroup
 {
 
 	// Page ID
-	public $PageID = "delete";
+	public $PageID = "add";
 
 	// Project ID
 	public $ProjectID = "{E1C6E322-15B9-474C-85CF-A99378A9BC2B}";
 
 	// Table name
-	public $TableName = 't004_asset';
+	public $TableName = 't005_assetgroup';
 
 	// Page object name
-	public $PageObjName = "t004_asset_delete";
+	public $PageObjName = "t005_assetgroup_add";
 
 	// Audit Trail
 	public $AuditTrailOnAdd = TRUE;
@@ -349,10 +349,10 @@ class t004_asset_delete extends t004_asset
 		// Parent constuctor
 		parent::__construct();
 
-		// Table object (t004_asset)
-		if (!isset($GLOBALS["t004_asset"]) || get_class($GLOBALS["t004_asset"]) == PROJECT_NAMESPACE . "t004_asset") {
-			$GLOBALS["t004_asset"] = &$this;
-			$GLOBALS["Table"] = &$GLOBALS["t004_asset"];
+		// Table object (t005_assetgroup)
+		if (!isset($GLOBALS["t005_assetgroup"]) || get_class($GLOBALS["t005_assetgroup"]) == PROJECT_NAMESPACE . "t005_assetgroup") {
+			$GLOBALS["t005_assetgroup"] = &$this;
+			$GLOBALS["Table"] = &$GLOBALS["t005_assetgroup"];
 		}
 
 		// Table object (t201_users)
@@ -361,11 +361,11 @@ class t004_asset_delete extends t004_asset
 
 		// Page ID (for backward compatibility only)
 		if (!defined(PROJECT_NAMESPACE . "PAGE_ID"))
-			define(PROJECT_NAMESPACE . "PAGE_ID", 'delete');
+			define(PROJECT_NAMESPACE . "PAGE_ID", 'add');
 
 		// Table name (for backward compatibility only)
 		if (!defined(PROJECT_NAMESPACE . "TABLE_NAME"))
-			define(PROJECT_NAMESPACE . "TABLE_NAME", 't004_asset');
+			define(PROJECT_NAMESPACE . "TABLE_NAME", 't005_assetgroup');
 
 		// Start timer
 		if (!isset($GLOBALS["DebugTimer"]))
@@ -394,14 +394,14 @@ class t004_asset_delete extends t004_asset
 		Page_Unloaded();
 
 		// Export
-		global $t004_asset;
+		global $t005_assetgroup;
 		if ($this->CustomExport && $this->CustomExport == $this->Export && array_key_exists($this->CustomExport, Config("EXPORT_CLASSES"))) {
 				$content = ob_get_contents();
 			if ($ExportFileName == "")
 				$ExportFileName = $this->TableVar;
 			$class = PROJECT_NAMESPACE . Config("EXPORT_CLASSES." . $this->CustomExport);
 			if (class_exists($class)) {
-				$doc = new $class($t004_asset);
+				$doc = new $class($t005_assetgroup);
 				$doc->Text = @$content;
 				if ($this->isExport("email"))
 					echo $this->exportEmail($doc->Text);
@@ -429,8 +429,24 @@ class t004_asset_delete extends t004_asset
 		if ($url != "") {
 			if (!Config("DEBUG") && ob_get_length())
 				ob_end_clean();
-			SaveDebugMessage();
-			AddHeader("Location", $url);
+
+			// Handle modal response
+			if ($this->IsModal) { // Show as modal
+				$row = ["url" => $url, "modal" => "1"];
+				$pageName = GetPageName($url);
+				if ($pageName != $this->getListUrl()) { // Not List page
+					$row["caption"] = $this->getModalCaption($pageName);
+					if ($pageName == "t005_assetgroupview.php")
+						$row["view"] = "1";
+				} else { // List page should not be shown as modal => error
+					$row["error"] = $this->getFailureMessage();
+					$this->clearFailureMessage();
+				}
+				WriteJson($row);
+			} else {
+				SaveDebugMessage();
+				AddHeader("Location", $url);
+			}
 		}
 		exit();
 	}
@@ -527,6 +543,80 @@ class t004_asset_delete extends t004_asset
 			$this->id->Visible = FALSE;
 	}
 
+	// Lookup data
+	public function lookup()
+	{
+		global $Language, $Security;
+		if (!isset($Language))
+			$Language = new Language(Config("LANGUAGE_FOLDER"), Post("language", ""));
+
+		// Set up API request
+		if (!ValidApiRequest())
+			return FALSE;
+		$this->setupApiSecurity();
+
+		// Get lookup object
+		$fieldName = Post("field");
+		if (!array_key_exists($fieldName, $this->fields))
+			return FALSE;
+		$lookupField = $this->fields[$fieldName];
+		$lookup = $lookupField->Lookup;
+		if ($lookup === NULL)
+			return FALSE;
+		$tbl = $lookup->getTable();
+		if (!$Security->allowLookup(Config("PROJECT_ID") . $tbl->TableName)) // Lookup permission
+			return FALSE;
+
+		// Get lookup parameters
+		$lookupType = Post("ajax", "unknown");
+		$pageSize = -1;
+		$offset = -1;
+		$searchValue = "";
+		if (SameText($lookupType, "modal")) {
+			$searchValue = Post("sv", "");
+			$pageSize = Post("recperpage", 10);
+			$offset = Post("start", 0);
+		} elseif (SameText($lookupType, "autosuggest")) {
+			$searchValue = Param("q", "");
+			$pageSize = Param("n", -1);
+			$pageSize = is_numeric($pageSize) ? (int)$pageSize : -1;
+			if ($pageSize <= 0)
+				$pageSize = Config("AUTO_SUGGEST_MAX_ENTRIES");
+			$start = Param("start", -1);
+			$start = is_numeric($start) ? (int)$start : -1;
+			$page = Param("page", -1);
+			$page = is_numeric($page) ? (int)$page : -1;
+			$offset = $start >= 0 ? $start : ($page > 0 && $pageSize > 0 ? ($page - 1) * $pageSize : 0);
+		}
+		$userSelect = Decrypt(Post("s", ""));
+		$userFilter = Decrypt(Post("f", ""));
+		$userOrderBy = Decrypt(Post("o", ""));
+		$keys = Post("keys");
+		$lookup->LookupType = $lookupType; // Lookup type
+		if ($keys !== NULL) { // Selected records from modal
+			if (is_array($keys))
+				$keys = implode(Config("MULTIPLE_OPTION_SEPARATOR"), $keys);
+			$lookup->FilterFields = []; // Skip parent fields if any
+			$lookup->FilterValues[] = $keys; // Lookup values
+			$pageSize = -1; // Show all records
+		} else { // Lookup values
+			$lookup->FilterValues[] = Post("v0", Post("lookupValue", ""));
+		}
+		$cnt = is_array($lookup->FilterFields) ? count($lookup->FilterFields) : 0;
+		for ($i = 1; $i <= $cnt; $i++)
+			$lookup->FilterValues[] = Post("v" . $i, "");
+		$lookup->SearchValue = $searchValue;
+		$lookup->PageSize = $pageSize;
+		$lookup->Offset = $offset;
+		if ($userSelect != "")
+			$lookup->UserSelect = $userSelect;
+		if ($userFilter != "")
+			$lookup->UserFilter = $userFilter;
+		if ($userOrderBy != "")
+			$lookup->UserOrderBy = $userOrderBy;
+		$lookup->toJson($this); // Use settings from current page
+	}
+
 	// Set up API security
 	public function setupApiSecurity()
 	{
@@ -540,14 +630,15 @@ class t004_asset_delete extends t004_asset
 		$Security->loadUserID();
 		$Security->UserID_Loaded();
 	}
+	public $FormClassName = "ew-horizontal ew-form ew-add-form";
+	public $IsModal = FALSE;
+	public $IsMobileOrModal = FALSE;
 	public $DbMasterFilter = "";
 	public $DbDetailFilter = "";
 	public $StartRecord;
-	public $TotalRecords = 0;
-	public $RecordCount;
-	public $RecKeys = [];
-	public $StartRowCount = 1;
-	public $RowCount = 0;
+	public $Priv = 0;
+	public $OldRecordset;
+	public $CopyRecord;
 
 	//
 	// Page run
@@ -555,7 +646,11 @@ class t004_asset_delete extends t004_asset
 
 	public function run()
 	{
-		global $ExportType, $CustomExportType, $ExportFileName, $UserProfile, $Language, $Security, $CurrentForm;
+		global $ExportType, $CustomExportType, $ExportFileName, $UserProfile, $Language, $Security, $CurrentForm,
+			$FormError, $SkipHeaderFooter;
+
+		// Is modal
+		$this->IsModal = (Param("modal") == "1");
 
 		// User profile
 		$UserProfile = new UserProfile();
@@ -563,7 +658,7 @@ class t004_asset_delete extends t004_asset
 		// Security
 		if (ValidApiRequest()) { // API request
 			$this->setupApiSecurity(); // Set up API Security
-			if (!$Security->canDelete()) {
+			if (!$Security->canAdd()) {
 				SetStatus(401); // Unauthorized
 				return;
 			}
@@ -576,11 +671,11 @@ class t004_asset_delete extends t004_asset
 			$Security->loadCurrentUserLevel($this->ProjectID . $this->TableName);
 			if ($Security->isLoggedIn())
 				$Security->TablePermission_Loaded();
-			if (!$Security->canDelete()) {
+			if (!$Security->canAdd()) {
 				$Security->saveLastUrl();
 				$this->setFailureMessage(DeniedMessage()); // Set no permission
 				if ($Security->canList())
-					$this->terminate(GetUrl("t004_assetlist.php"));
+					$this->terminate(GetUrl("t005_assetgrouplist.php"));
 				else
 					$this->terminate(GetUrl("login.php"));
 				return;
@@ -591,19 +686,13 @@ class t004_asset_delete extends t004_asset
 				$Security->UserID_Loaded();
 			}
 		}
+
+		// Create form object
+		$CurrentForm = new HttpForm();
 		$this->CurrentAction = Param("action"); // Set up current action
 		$this->id->Visible = FALSE;
-		$this->property_id->setVisibility();
-		$this->department_id->setVisibility();
-		$this->signature_id->setVisibility();
-		$this->Code->setVisibility();
 		$this->Description->setVisibility();
-		$this->group_id->setVisibility();
-		$this->ProcurementDate->setVisibility();
-		$this->ProcurementCurrentCost->setVisibility();
-		$this->Salvage->setVisibility();
-		$this->Qty->setVisibility();
-		$this->Remarks->setVisibility();
+		$this->EconomicalLifeTime->setVisibility();
 		$this->hideFieldsForAddEdit();
 
 		// Do not use lookup cache
@@ -625,97 +714,165 @@ class t004_asset_delete extends t004_asset
 		$this->createToken();
 
 		// Set up lookup cache
-		$this->setupLookupOptions($this->property_id);
-		$this->setupLookupOptions($this->department_id);
-		$this->setupLookupOptions($this->signature_id);
-		$this->setupLookupOptions($this->group_id);
-
 		// Check permission
-		if (!$Security->canDelete()) {
+
+		if (!$Security->canAdd()) {
 			$this->setFailureMessage(DeniedMessage()); // No permission
-			$this->terminate("t004_assetlist.php");
+			$this->terminate("t005_assetgrouplist.php");
 			return;
+		}
+
+		// Check modal
+		if ($this->IsModal)
+			$SkipHeaderFooter = TRUE;
+		$this->IsMobileOrModal = IsMobile() || $this->IsModal;
+		$this->FormClassName = "ew-form ew-add-form ew-horizontal";
+		$postBack = FALSE;
+
+		// Set up current action
+		if (IsApi()) {
+			$this->CurrentAction = "insert"; // Add record directly
+			$postBack = TRUE;
+		} elseif (Post("action") !== NULL) {
+			$this->CurrentAction = Post("action"); // Get form action
+			$postBack = TRUE;
+		} else { // Not post back
+
+			// Load key values from QueryString
+			$this->CopyRecord = TRUE;
+			if (Get("id") !== NULL) {
+				$this->id->setQueryStringValue(Get("id"));
+				$this->setKey("id", $this->id->CurrentValue); // Set up key
+			} else {
+				$this->setKey("id", ""); // Clear key
+				$this->CopyRecord = FALSE;
+			}
+			if ($this->CopyRecord) {
+				$this->CurrentAction = "copy"; // Copy record
+			} else {
+				$this->CurrentAction = "show"; // Display blank record
+			}
+		}
+
+		// Load old record / default values
+		$loaded = $this->loadOldRecord();
+
+		// Load form values
+		if ($postBack) {
+			$this->loadFormValues(); // Load form values
+		}
+
+		// Validate form if post back
+		if ($postBack) {
+			if (!$this->validateForm()) {
+				$this->EventCancelled = TRUE; // Event cancelled
+				$this->restoreFormValues(); // Restore form values
+				$this->setFailureMessage($FormError);
+				if (IsApi()) {
+					$this->terminate();
+					return;
+				} else {
+					$this->CurrentAction = "show"; // Form error, reset action
+				}
+			}
+		}
+
+		// Perform current action
+		switch ($this->CurrentAction) {
+			case "copy": // Copy an existing record
+				if (!$loaded) { // Record not loaded
+					if ($this->getFailureMessage() == "")
+						$this->setFailureMessage($Language->phrase("NoRecord")); // No record found
+					$this->terminate("t005_assetgrouplist.php"); // No matching record, return to list
+				}
+				break;
+			case "insert": // Add new record
+				$this->SendEmail = TRUE; // Send email on add success
+				if ($this->addRow($this->OldRecordset)) { // Add successful
+					if ($this->getSuccessMessage() == "")
+						$this->setSuccessMessage($Language->phrase("AddSuccess")); // Set up success message
+					$returnUrl = $this->getReturnUrl();
+					if (GetPageName($returnUrl) == "t005_assetgrouplist.php")
+						$returnUrl = $this->addMasterUrl($returnUrl); // List page, return to List page with correct master key if necessary
+					elseif (GetPageName($returnUrl) == "t005_assetgroupview.php")
+						$returnUrl = $this->getViewUrl(); // View page, return to View page with keyurl directly
+					if (IsApi()) { // Return to caller
+						$this->terminate(TRUE);
+						return;
+					} else {
+						$this->terminate($returnUrl);
+					}
+				} elseif (IsApi()) { // API request, return
+					$this->terminate();
+					return;
+				} else {
+					$this->EventCancelled = TRUE; // Event cancelled
+					$this->restoreFormValues(); // Add failed, restore form values
+				}
 		}
 
 		// Set up Breadcrumb
 		$this->setupBreadcrumb();
 
-		// Load key parameters
-		$this->RecKeys = $this->getRecordKeys(); // Load record keys
-		$filter = $this->getFilterFromRecordKeys();
-		if ($filter == "") {
-			$this->terminate("t004_assetlist.php"); // Prevent SQL injection, return to list
-			return;
-		}
+		// Render row based on row type
+		$this->RowType = ROWTYPE_ADD; // Render add type
 
-		// Set up filter (WHERE Clause)
-		$this->CurrentFilter = $filter;
-
-		// Get action
-		if (IsApi()) {
-			$this->CurrentAction = "delete"; // Delete record directly
-		} elseif (Post("action") !== NULL) {
-			$this->CurrentAction = Post("action");
-		} elseif (Get("action") == "1") {
-			$this->CurrentAction = "delete"; // Delete record directly
-		} else {
-			$this->CurrentAction = "delete"; // Delete record directly
-		}
-		if ($this->isDelete()) {
-			$this->SendEmail = TRUE; // Send email on delete success
-			if ($this->deleteRows()) { // Delete rows
-				if ($this->getSuccessMessage() == "")
-					$this->setSuccessMessage($Language->phrase("DeleteSuccess")); // Set up success message
-				if (IsApi()) {
-					$this->terminate(TRUE);
-					return;
-				} else {
-					$this->terminate($this->getReturnUrl()); // Return to caller
-				}
-			} else { // Delete failed
-				if (IsApi()) {
-					$this->terminate();
-					return;
-				}
-				$this->terminate($this->getReturnUrl()); // Return to caller
-			}
-		}
-		if ($this->isShow()) { // Load records for display
-			if ($this->Recordset = $this->loadRecordset())
-				$this->TotalRecords = $this->Recordset->RecordCount(); // Get record count
-			if ($this->TotalRecords <= 0) { // No record found, exit
-				if ($this->Recordset)
-					$this->Recordset->close();
-				$this->terminate("t004_assetlist.php"); // Return to list
-			}
-		}
+		// Render row
+		$this->resetAttributes();
+		$this->renderRow();
 	}
 
-	// Load recordset
-	public function loadRecordset($offset = -1, $rowcnt = -1)
+	// Get upload files
+	protected function getUploadFiles()
+	{
+		global $CurrentForm, $Language;
+	}
+
+	// Load default values
+	protected function loadDefaultValues()
+	{
+		$this->id->CurrentValue = NULL;
+		$this->id->OldValue = $this->id->CurrentValue;
+		$this->Description->CurrentValue = NULL;
+		$this->Description->OldValue = $this->Description->CurrentValue;
+		$this->EconomicalLifeTime->CurrentValue = 5;
+	}
+
+	// Load form values
+	protected function loadFormValues()
 	{
 
-		// Load List page SQL
-		$sql = $this->getListSql();
-		$conn = $this->getConnection();
+		// Load from form
+		global $CurrentForm;
 
-		// Load recordset
-		$dbtype = GetConnectionType($this->Dbid);
-		if ($this->UseSelectLimit) {
-			$conn->raiseErrorFn = Config("ERROR_FUNC");
-			if ($dbtype == "MSSQL") {
-				$rs = $conn->selectLimit($sql, $rowcnt, $offset, ["_hasOrderBy" => trim($this->getOrderBy()) || trim($this->getSessionOrderBy())]);
-			} else {
-				$rs = $conn->selectLimit($sql, $rowcnt, $offset);
-			}
-			$conn->raiseErrorFn = "";
-		} else {
-			$rs = LoadRecordset($sql, $conn);
+		// Check field name 'Description' first before field var 'x_Description'
+		$val = $CurrentForm->hasValue("Description") ? $CurrentForm->getValue("Description") : $CurrentForm->getValue("x_Description");
+		if (!$this->Description->IsDetailKey) {
+			if (IsApi() && $val == NULL)
+				$this->Description->Visible = FALSE; // Disable update for API request
+			else
+				$this->Description->setFormValue($val);
 		}
 
-		// Call Recordset Selected event
-		$this->Recordset_Selected($rs);
-		return $rs;
+		// Check field name 'EconomicalLifeTime' first before field var 'x_EconomicalLifeTime'
+		$val = $CurrentForm->hasValue("EconomicalLifeTime") ? $CurrentForm->getValue("EconomicalLifeTime") : $CurrentForm->getValue("x_EconomicalLifeTime");
+		if (!$this->EconomicalLifeTime->IsDetailKey) {
+			if (IsApi() && $val == NULL)
+				$this->EconomicalLifeTime->Visible = FALSE; // Disable update for API request
+			else
+				$this->EconomicalLifeTime->setFormValue($val);
+		}
+
+		// Check field name 'id' first before field var 'x_id'
+		$val = $CurrentForm->hasValue("id") ? $CurrentForm->getValue("id") : $CurrentForm->getValue("x_id");
+	}
+
+	// Restore form values
+	public function restoreFormValues()
+	{
+		global $CurrentForm;
+		$this->Description->CurrentValue = $this->Description->FormValue;
+		$this->EconomicalLifeTime->CurrentValue = $this->EconomicalLifeTime->FormValue;
 	}
 
 	// Load row based on key values
@@ -754,36 +911,42 @@ class t004_asset_delete extends t004_asset
 		if (!$rs || $rs->EOF)
 			return;
 		$this->id->setDbValue($row['id']);
-		$this->property_id->setDbValue($row['property_id']);
-		$this->department_id->setDbValue($row['department_id']);
-		$this->signature_id->setDbValue($row['signature_id']);
-		$this->Code->setDbValue($row['Code']);
 		$this->Description->setDbValue($row['Description']);
-		$this->group_id->setDbValue($row['group_id']);
-		$this->ProcurementDate->setDbValue($row['ProcurementDate']);
-		$this->ProcurementCurrentCost->setDbValue($row['ProcurementCurrentCost']);
-		$this->Salvage->setDbValue($row['Salvage']);
-		$this->Qty->setDbValue($row['Qty']);
-		$this->Remarks->setDbValue($row['Remarks']);
+		$this->EconomicalLifeTime->setDbValue($row['EconomicalLifeTime']);
 	}
 
 	// Return a row with default values
 	protected function newRow()
 	{
+		$this->loadDefaultValues();
 		$row = [];
-		$row['id'] = NULL;
-		$row['property_id'] = NULL;
-		$row['department_id'] = NULL;
-		$row['signature_id'] = NULL;
-		$row['Code'] = NULL;
-		$row['Description'] = NULL;
-		$row['group_id'] = NULL;
-		$row['ProcurementDate'] = NULL;
-		$row['ProcurementCurrentCost'] = NULL;
-		$row['Salvage'] = NULL;
-		$row['Qty'] = NULL;
-		$row['Remarks'] = NULL;
+		$row['id'] = $this->id->CurrentValue;
+		$row['Description'] = $this->Description->CurrentValue;
+		$row['EconomicalLifeTime'] = $this->EconomicalLifeTime->CurrentValue;
 		return $row;
+	}
+
+	// Load old record
+	protected function loadOldRecord()
+	{
+
+		// Load key values from Session
+		$validKey = TRUE;
+		if (strval($this->getKey("id")) != "")
+			$this->id->OldValue = $this->getKey("id"); // id
+		else
+			$validKey = FALSE;
+
+		// Load old record
+		$this->OldRecordset = NULL;
+		if ($validKey) {
+			$this->CurrentFilter = $this->getRecordFilter();
+			$sql = $this->getCurrentSql();
+			$conn = $this->getConnection();
+			$this->OldRecordset = LoadRecordset($sql, $conn);
+		}
+		$this->loadRowValues($this->OldRecordset); // Load row values
+		return $validKey;
 	}
 
 	// Render row values based on field settings
@@ -792,35 +955,14 @@ class t004_asset_delete extends t004_asset
 		global $Security, $Language, $CurrentLanguage;
 
 		// Initialize URLs
-		// Convert decimal values if posted back
-
-		if ($this->ProcurementCurrentCost->FormValue == $this->ProcurementCurrentCost->CurrentValue && is_numeric(ConvertToFloatString($this->ProcurementCurrentCost->CurrentValue)))
-			$this->ProcurementCurrentCost->CurrentValue = ConvertToFloatString($this->ProcurementCurrentCost->CurrentValue);
-
-		// Convert decimal values if posted back
-		if ($this->Salvage->FormValue == $this->Salvage->CurrentValue && is_numeric(ConvertToFloatString($this->Salvage->CurrentValue)))
-			$this->Salvage->CurrentValue = ConvertToFloatString($this->Salvage->CurrentValue);
-
-		// Convert decimal values if posted back
-		if ($this->Qty->FormValue == $this->Qty->CurrentValue && is_numeric(ConvertToFloatString($this->Qty->CurrentValue)))
-			$this->Qty->CurrentValue = ConvertToFloatString($this->Qty->CurrentValue);
-
 		// Call Row_Rendering event
+
 		$this->Row_Rendering();
 
 		// Common render codes for all row types
 		// id
-		// property_id
-		// department_id
-		// signature_id
-		// Code
 		// Description
-		// group_id
-		// ProcurementDate
-		// ProcurementCurrentCost
-		// Salvage
-		// Qty
-		// Remarks
+		// EconomicalLifeTime
 
 		if ($this->RowType == ROWTYPE_VIEW) { // View row
 
@@ -828,252 +970,124 @@ class t004_asset_delete extends t004_asset
 			$this->id->ViewValue = $this->id->CurrentValue;
 			$this->id->ViewCustomAttributes = "";
 
-			// property_id
-			$curVal = strval($this->property_id->CurrentValue);
-			if ($curVal != "") {
-				$this->property_id->ViewValue = $this->property_id->lookupCacheOption($curVal);
-				if ($this->property_id->ViewValue === NULL) { // Lookup from database
-					$filterWrk = "`id`" . SearchString("=", $curVal, DATATYPE_NUMBER, "");
-					$sqlWrk = $this->property_id->Lookup->getSql(FALSE, $filterWrk, '', $this);
-					$rswrk = Conn()->execute($sqlWrk);
-					if ($rswrk && !$rswrk->EOF) { // Lookup values found
-						$arwrk = [];
-						$arwrk[1] = $rswrk->fields('df');
-						$this->property_id->ViewValue = $this->property_id->displayValue($arwrk);
-						$rswrk->Close();
-					} else {
-						$this->property_id->ViewValue = $this->property_id->CurrentValue;
-					}
-				}
-			} else {
-				$this->property_id->ViewValue = NULL;
-			}
-			$this->property_id->ViewCustomAttributes = "";
-
-			// department_id
-			$curVal = strval($this->department_id->CurrentValue);
-			if ($curVal != "") {
-				$this->department_id->ViewValue = $this->department_id->lookupCacheOption($curVal);
-				if ($this->department_id->ViewValue === NULL) { // Lookup from database
-					$filterWrk = "`id`" . SearchString("=", $curVal, DATATYPE_NUMBER, "");
-					$sqlWrk = $this->department_id->Lookup->getSql(FALSE, $filterWrk, '', $this);
-					$rswrk = Conn()->execute($sqlWrk);
-					if ($rswrk && !$rswrk->EOF) { // Lookup values found
-						$arwrk = [];
-						$arwrk[1] = $rswrk->fields('df');
-						$this->department_id->ViewValue = $this->department_id->displayValue($arwrk);
-						$rswrk->Close();
-					} else {
-						$this->department_id->ViewValue = $this->department_id->CurrentValue;
-					}
-				}
-			} else {
-				$this->department_id->ViewValue = NULL;
-			}
-			$this->department_id->ViewCustomAttributes = "";
-
-			// signature_id
-			$curVal = strval($this->signature_id->CurrentValue);
-			if ($curVal != "") {
-				$this->signature_id->ViewValue = $this->signature_id->lookupCacheOption($curVal);
-				if ($this->signature_id->ViewValue === NULL) { // Lookup from database
-					$filterWrk = "`id`" . SearchString("=", $curVal, DATATYPE_NUMBER, "");
-					$sqlWrk = $this->signature_id->Lookup->getSql(FALSE, $filterWrk, '', $this);
-					$rswrk = Conn()->execute($sqlWrk);
-					if ($rswrk && !$rswrk->EOF) { // Lookup values found
-						$arwrk = [];
-						$arwrk[1] = $rswrk->fields('df');
-						$this->signature_id->ViewValue = $this->signature_id->displayValue($arwrk);
-						$rswrk->Close();
-					} else {
-						$this->signature_id->ViewValue = $this->signature_id->CurrentValue;
-					}
-				}
-			} else {
-				$this->signature_id->ViewValue = NULL;
-			}
-			$this->signature_id->ViewCustomAttributes = "";
-
-			// Code
-			$this->Code->ViewValue = $this->Code->CurrentValue;
-			$this->Code->ViewCustomAttributes = "";
-
 			// Description
 			$this->Description->ViewValue = $this->Description->CurrentValue;
 			$this->Description->ViewCustomAttributes = "";
 
-			// group_id
-			$curVal = strval($this->group_id->CurrentValue);
-			if ($curVal != "") {
-				$this->group_id->ViewValue = $this->group_id->lookupCacheOption($curVal);
-				if ($this->group_id->ViewValue === NULL) { // Lookup from database
-					$filterWrk = "`id`" . SearchString("=", $curVal, DATATYPE_NUMBER, "");
-					$sqlWrk = $this->group_id->Lookup->getSql(FALSE, $filterWrk, '', $this);
-					$rswrk = Conn()->execute($sqlWrk);
-					if ($rswrk && !$rswrk->EOF) { // Lookup values found
-						$arwrk = [];
-						$arwrk[1] = $rswrk->fields('df');
-						$arwrk[2] = FormatNumber($rswrk->fields('df2'), 0, -2, -2, -2);
-						$this->group_id->ViewValue = $this->group_id->displayValue($arwrk);
-						$rswrk->Close();
-					} else {
-						$this->group_id->ViewValue = $this->group_id->CurrentValue;
-					}
-				}
-			} else {
-				$this->group_id->ViewValue = NULL;
-			}
-			$this->group_id->ViewCustomAttributes = "";
-
-			// ProcurementDate
-			$this->ProcurementDate->ViewValue = $this->ProcurementDate->CurrentValue;
-			$this->ProcurementDate->ViewValue = FormatDateTime($this->ProcurementDate->ViewValue, 7);
-			$this->ProcurementDate->ViewCustomAttributes = "";
-
-			// ProcurementCurrentCost
-			$this->ProcurementCurrentCost->ViewValue = $this->ProcurementCurrentCost->CurrentValue;
-			$this->ProcurementCurrentCost->ViewValue = FormatNumber($this->ProcurementCurrentCost->ViewValue, 2, -2, -2, -2);
-			$this->ProcurementCurrentCost->CellCssStyle .= "text-align: right;";
-			$this->ProcurementCurrentCost->ViewCustomAttributes = "";
-
-			// Salvage
-			$this->Salvage->ViewValue = $this->Salvage->CurrentValue;
-			$this->Salvage->ViewValue = FormatNumber($this->Salvage->ViewValue, 2, -2, -2, -2);
-			$this->Salvage->CellCssStyle .= "text-align: right;";
-			$this->Salvage->ViewCustomAttributes = "";
-
-			// Qty
-			$this->Qty->ViewValue = $this->Qty->CurrentValue;
-			$this->Qty->ViewValue = FormatNumber($this->Qty->ViewValue, 2, -2, -2, -2);
-			$this->Qty->CellCssStyle .= "text-align: right;";
-			$this->Qty->ViewCustomAttributes = "";
-
-			// Remarks
-			$this->Remarks->ViewValue = $this->Remarks->CurrentValue;
-			$this->Remarks->ViewCustomAttributes = "";
-
-			// property_id
-			$this->property_id->LinkCustomAttributes = "";
-			$this->property_id->HrefValue = "";
-			$this->property_id->TooltipValue = "";
-
-			// department_id
-			$this->department_id->LinkCustomAttributes = "";
-			$this->department_id->HrefValue = "";
-			$this->department_id->TooltipValue = "";
-
-			// signature_id
-			$this->signature_id->LinkCustomAttributes = "";
-			$this->signature_id->HrefValue = "";
-			$this->signature_id->TooltipValue = "";
-
-			// Code
-			$this->Code->LinkCustomAttributes = "";
-			$this->Code->HrefValue = "";
-			$this->Code->TooltipValue = "";
+			// EconomicalLifeTime
+			$this->EconomicalLifeTime->ViewValue = $this->EconomicalLifeTime->CurrentValue;
+			$this->EconomicalLifeTime->ViewValue = FormatNumber($this->EconomicalLifeTime->ViewValue, 0, -2, -2, -2);
+			$this->EconomicalLifeTime->CellCssStyle .= "text-align: right;";
+			$this->EconomicalLifeTime->ViewCustomAttributes = "";
 
 			// Description
 			$this->Description->LinkCustomAttributes = "";
 			$this->Description->HrefValue = "";
 			$this->Description->TooltipValue = "";
 
-			// group_id
-			$this->group_id->LinkCustomAttributes = "";
-			$this->group_id->HrefValue = "";
-			$this->group_id->TooltipValue = "";
+			// EconomicalLifeTime
+			$this->EconomicalLifeTime->LinkCustomAttributes = "";
+			$this->EconomicalLifeTime->HrefValue = "";
+			$this->EconomicalLifeTime->TooltipValue = "";
+		} elseif ($this->RowType == ROWTYPE_ADD) { // Add row
 
-			// ProcurementDate
-			$this->ProcurementDate->LinkCustomAttributes = "";
-			$this->ProcurementDate->HrefValue = "";
-			$this->ProcurementDate->TooltipValue = "";
+			// Description
+			$this->Description->EditAttrs["class"] = "form-control";
+			$this->Description->EditCustomAttributes = "";
+			if (!$this->Description->Raw)
+				$this->Description->CurrentValue = HtmlDecode($this->Description->CurrentValue);
+			$this->Description->EditValue = HtmlEncode($this->Description->CurrentValue);
+			$this->Description->PlaceHolder = RemoveHtml($this->Description->caption());
 
-			// ProcurementCurrentCost
-			$this->ProcurementCurrentCost->LinkCustomAttributes = "";
-			$this->ProcurementCurrentCost->HrefValue = "";
-			$this->ProcurementCurrentCost->TooltipValue = "";
+			// EconomicalLifeTime
+			$this->EconomicalLifeTime->EditAttrs["class"] = "form-control";
+			$this->EconomicalLifeTime->EditCustomAttributes = "";
+			$this->EconomicalLifeTime->EditValue = HtmlEncode($this->EconomicalLifeTime->CurrentValue);
+			$this->EconomicalLifeTime->PlaceHolder = RemoveHtml($this->EconomicalLifeTime->caption());
 
-			// Salvage
-			$this->Salvage->LinkCustomAttributes = "";
-			$this->Salvage->HrefValue = "";
-			$this->Salvage->TooltipValue = "";
+			// Add refer script
+			// Description
 
-			// Qty
-			$this->Qty->LinkCustomAttributes = "";
-			$this->Qty->HrefValue = "";
-			$this->Qty->TooltipValue = "";
+			$this->Description->LinkCustomAttributes = "";
+			$this->Description->HrefValue = "";
 
-			// Remarks
-			$this->Remarks->LinkCustomAttributes = "";
-			$this->Remarks->HrefValue = "";
-			$this->Remarks->TooltipValue = "";
+			// EconomicalLifeTime
+			$this->EconomicalLifeTime->LinkCustomAttributes = "";
+			$this->EconomicalLifeTime->HrefValue = "";
 		}
+		if ($this->RowType == ROWTYPE_ADD || $this->RowType == ROWTYPE_EDIT || $this->RowType == ROWTYPE_SEARCH) // Add/Edit/Search row
+			$this->setupFieldTitles();
 
 		// Call Row Rendered event
 		if ($this->RowType != ROWTYPE_AGGREGATEINIT)
 			$this->Row_Rendered();
 	}
 
-	// Delete records based on current filter
-	protected function deleteRows()
+	// Validate form
+	protected function validateForm()
+	{
+		global $Language, $FormError;
+
+		// Initialize form error message
+		$FormError = "";
+
+		// Check if validation required
+		if (!Config("SERVER_VALIDATE"))
+			return ($FormError == "");
+		if ($this->Description->Required) {
+			if (!$this->Description->IsDetailKey && $this->Description->FormValue != NULL && $this->Description->FormValue == "") {
+				AddMessage($FormError, str_replace("%s", $this->Description->caption(), $this->Description->RequiredErrorMessage));
+			}
+		}
+		if ($this->EconomicalLifeTime->Required) {
+			if (!$this->EconomicalLifeTime->IsDetailKey && $this->EconomicalLifeTime->FormValue != NULL && $this->EconomicalLifeTime->FormValue == "") {
+				AddMessage($FormError, str_replace("%s", $this->EconomicalLifeTime->caption(), $this->EconomicalLifeTime->RequiredErrorMessage));
+			}
+		}
+		if (!CheckInteger($this->EconomicalLifeTime->FormValue)) {
+			AddMessage($FormError, $this->EconomicalLifeTime->errorMessage());
+		}
+
+		// Return validate result
+		$validateForm = ($FormError == "");
+
+		// Call Form_CustomValidate event
+		$formCustomError = "";
+		$validateForm = $validateForm && $this->Form_CustomValidate($formCustomError);
+		if ($formCustomError != "") {
+			AddMessage($FormError, $formCustomError);
+		}
+		return $validateForm;
+	}
+
+	// Add record
+	protected function addRow($rsold = NULL)
 	{
 		global $Language, $Security;
-		if (!$Security->canDelete()) {
-			$this->setFailureMessage($Language->phrase("NoDeletePermission")); // No delete permission
-			return FALSE;
-		}
-		$deleteRows = TRUE;
-		$sql = $this->getCurrentSql();
 		$conn = $this->getConnection();
-		$conn->raiseErrorFn = Config("ERROR_FUNC");
-		$rs = $conn->execute($sql);
-		$conn->raiseErrorFn = "";
-		if ($rs === FALSE) {
-			return FALSE;
-		} elseif ($rs->EOF) {
-			$this->setFailureMessage($Language->phrase("NoRecord")); // No record found
-			$rs->close();
-			return FALSE;
+
+		// Load db values from rsold
+		$this->loadDbValues($rsold);
+		if ($rsold) {
 		}
-		$rows = ($rs) ? $rs->getRows() : [];
-		$conn->beginTrans();
-		if ($this->AuditTrailOnDelete)
-			$this->writeAuditTrailDummy($Language->phrase("BatchDeleteBegin")); // Batch delete begin
+		$rsnew = [];
 
-		// Clone old rows
-		$rsold = $rows;
-		if ($rs)
-			$rs->close();
+		// Description
+		$this->Description->setDbValueDef($rsnew, $this->Description->CurrentValue, "", FALSE);
 
-		// Call row deleting event
-		if ($deleteRows) {
-			foreach ($rsold as $row) {
-				$deleteRows = $this->Row_Deleting($row);
-				if (!$deleteRows)
-					break;
+		// EconomicalLifeTime
+		$this->EconomicalLifeTime->setDbValueDef($rsnew, $this->EconomicalLifeTime->CurrentValue, 0, strval($this->EconomicalLifeTime->CurrentValue) == "");
+
+		// Call Row Inserting event
+		$rs = ($rsold) ? $rsold->fields : NULL;
+		$insertRow = $this->Row_Inserting($rs, $rsnew);
+		if ($insertRow) {
+			$conn->raiseErrorFn = Config("ERROR_FUNC");
+			$addRow = $this->insert($rsnew);
+			$conn->raiseErrorFn = "";
+			if ($addRow) {
 			}
-		}
-		if ($deleteRows) {
-			$key = "";
-			foreach ($rsold as $row) {
-				$thisKey = "";
-				if ($thisKey != "")
-					$thisKey .= Config("COMPOSITE_KEY_SEPARATOR");
-				$thisKey .= $row['id'];
-				if (Config("DELETE_UPLOADED_FILES")) // Delete old files
-					$this->deleteUploadedFiles($row);
-				$conn->raiseErrorFn = Config("ERROR_FUNC");
-				$deleteRows = $this->delete($row); // Delete
-				$conn->raiseErrorFn = "";
-				if ($deleteRows === FALSE)
-					break;
-				if ($key != "")
-					$key .= ", ";
-				$key .= $thisKey;
-			}
-		}
-		if (!$deleteRows) {
-
-			// Set up error message
+		} else {
 			if ($this->getSuccessMessage() != "" || $this->getFailureMessage() != "") {
 
 				// Use the message, do nothing
@@ -1081,32 +1095,27 @@ class t004_asset_delete extends t004_asset
 				$this->setFailureMessage($this->CancelMessage);
 				$this->CancelMessage = "";
 			} else {
-				$this->setFailureMessage($Language->phrase("DeleteCancelled"));
+				$this->setFailureMessage($Language->phrase("InsertCancelled"));
 			}
+			$addRow = FALSE;
 		}
-		if ($deleteRows) {
-			$conn->commitTrans(); // Commit the changes
-			if ($this->AuditTrailOnDelete)
-				$this->writeAuditTrailDummy($Language->phrase("BatchDeleteSuccess")); // Batch delete success
-		} else {
-			$conn->rollbackTrans(); // Rollback changes
-			if ($this->AuditTrailOnDelete)
-				$this->writeAuditTrailDummy($Language->phrase("BatchDeleteRollback")); // Batch delete rollback
+		if ($addRow) {
+
+			// Call Row Inserted event
+			$rs = ($rsold) ? $rsold->fields : NULL;
+			$this->Row_Inserted($rs, $rsnew);
 		}
 
-		// Call Row Deleted event
-		if ($deleteRows) {
-			foreach ($rsold as $row) {
-				$this->Row_Deleted($row);
-			}
+		// Clean upload path if any
+		if ($addRow) {
 		}
 
-		// Write JSON for API request (Support single row only)
-		if (IsApi() && $deleteRows) {
-			$row = $this->getRecordsFromRecordset($rsold, TRUE);
+		// Write JSON for API request
+		if (IsApi() && $addRow) {
+			$row = $this->getRecordsFromRecordset([$rsnew], TRUE);
 			WriteJson(["success" => TRUE, $this->TableVar => $row]);
 		}
-		return $deleteRows;
+		return $addRow;
 	}
 
 	// Set up Breadcrumb
@@ -1115,9 +1124,9 @@ class t004_asset_delete extends t004_asset
 		global $Breadcrumb, $Language;
 		$Breadcrumb = new Breadcrumb();
 		$url = substr(CurrentUrl(), strrpos(CurrentUrl(), "/")+1);
-		$Breadcrumb->add("list", $this->TableVar, $this->addMasterUrl("t004_assetlist.php"), "", $this->TableVar, TRUE);
-		$pageId = "delete";
-		$Breadcrumb->add("delete", $pageId, $url);
+		$Breadcrumb->add("list", $this->TableVar, $this->addMasterUrl("t005_assetgrouplist.php"), "", $this->TableVar, TRUE);
+		$pageId = ($this->isCopy()) ? "Copy" : "Add";
+		$Breadcrumb->add("add", $pageId, $url);
 	}
 
 	// Setup lookup options
@@ -1134,14 +1143,6 @@ class t004_asset_delete extends t004_asset
 
 			// Set up lookup SQL and connection
 			switch ($fld->FieldVar) {
-				case "x_property_id":
-					break;
-				case "x_department_id":
-					break;
-				case "x_signature_id":
-					break;
-				case "x_group_id":
-					break;
 				default:
 					$lookupFilter = "";
 					break;
@@ -1162,16 +1163,6 @@ class t004_asset_delete extends t004_asset
 
 					// Format the field values
 					switch ($fld->FieldVar) {
-						case "x_property_id":
-							break;
-						case "x_department_id":
-							break;
-						case "x_signature_id":
-							break;
-						case "x_group_id":
-							$row[2] = FormatNumber($row[2], 0, -2, -2, -2);
-							$row['df2'] = $row[2];
-							break;
 					}
 					$ar[strval($row[0])] = $row;
 					$rs->moveNext();
@@ -1241,6 +1232,13 @@ class t004_asset_delete extends t004_asset
 		// Example:
 		//$footer = "your footer";
 
+	}
+
+	// Form Custom Validate event
+	function Form_CustomValidate(&$customError) {
+
+		// Return error message in CustomError
+		return TRUE;
 	}
 } // End class
 ?>

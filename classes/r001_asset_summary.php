@@ -695,13 +695,12 @@ class r001_asset_summary extends r001_asset
 		$this->property_id->setVisibility();
 		$this->department_id->setVisibility();
 		$this->signature_id->setVisibility();
+		$this->Code->setVisibility();
 		$this->Description->setVisibility();
+		$this->group_id->setVisibility();
 		$this->ProcurementDate->setVisibility();
 		$this->ProcurementCurrentCost->setVisibility();
-		$this->DepreciationAmount->setVisibility();
-		$this->DepreciationYtd->setVisibility();
-		$this->NetBookValue->setVisibility();
-		$this->Periode->setVisibility();
+		$this->Salvage->setVisibility();
 		$this->Qty->setVisibility();
 		$this->Remarks->setVisibility();
 
@@ -813,13 +812,12 @@ class r001_asset_summary extends r001_asset
 			$data["property_id"] = $record['property_id'];
 			$data["department_id"] = $record['department_id'];
 			$data["signature_id"] = $record['signature_id'];
+			$data["Code"] = $record['Code'];
 			$data["Description"] = $record['Description'];
+			$data["group_id"] = $record['group_id'];
 			$data["ProcurementDate"] = $record['ProcurementDate'];
 			$data["ProcurementCurrentCost"] = $record['ProcurementCurrentCost'];
-			$data["DepreciationAmount"] = $record['DepreciationAmount'];
-			$data["DepreciationYtd"] = $record['DepreciationYtd'];
-			$data["NetBookValue"] = $record['NetBookValue'];
-			$data["Periode"] = $record['Periode'];
+			$data["Salvage"] = $record['Salvage'];
 			$data["Qty"] = $record['Qty'];
 			$this->Rows[] = $data;
 		}
@@ -827,13 +825,12 @@ class r001_asset_summary extends r001_asset
 		$this->property_id->setDbValue($record['property_id']);
 		$this->department_id->setDbValue($record['department_id']);
 		$this->signature_id->setDbValue($record['signature_id']);
+		$this->Code->setDbValue($record['Code']);
 		$this->Description->setDbValue($record['Description']);
+		$this->group_id->setDbValue($record['group_id']);
 		$this->ProcurementDate->setDbValue($record['ProcurementDate']);
 		$this->ProcurementCurrentCost->setDbValue($record['ProcurementCurrentCost']);
-		$this->DepreciationAmount->setDbValue($record['DepreciationAmount']);
-		$this->DepreciationYtd->setDbValue($record['DepreciationYtd']);
-		$this->NetBookValue->setDbValue($record['NetBookValue']);
-		$this->Periode->setDbValue($record['Periode']);
+		$this->Salvage->setDbValue($record['Salvage']);
 		$this->Qty->setDbValue($record['Qty']);
 		$this->Remarks->setDbValue($record['Remarks']);
 	}
@@ -877,13 +874,12 @@ class r001_asset_summary extends r001_asset
 		// property_id
 		// department_id
 		// signature_id
+		// Code
 		// Description
+		// group_id
 		// ProcurementDate
 		// ProcurementCurrentCost
-		// DepreciationAmount
-		// DepreciationYtd
-		// NetBookValue
-		// Periode
+		// Salvage
 		// Qty
 		// Remarks
 
@@ -900,8 +896,14 @@ class r001_asset_summary extends r001_asset
 			// signature_id
 			$this->signature_id->HrefValue = "";
 
+			// Code
+			$this->Code->HrefValue = "";
+
 			// Description
 			$this->Description->HrefValue = "";
+
+			// group_id
+			$this->group_id->HrefValue = "";
 
 			// ProcurementDate
 			$this->ProcurementDate->HrefValue = "";
@@ -909,17 +911,8 @@ class r001_asset_summary extends r001_asset
 			// ProcurementCurrentCost
 			$this->ProcurementCurrentCost->HrefValue = "";
 
-			// DepreciationAmount
-			$this->DepreciationAmount->HrefValue = "";
-
-			// DepreciationYtd
-			$this->DepreciationYtd->HrefValue = "";
-
-			// NetBookValue
-			$this->NetBookValue->HrefValue = "";
-
-			// Periode
-			$this->Periode->HrefValue = "";
+			// Salvage
+			$this->Salvage->HrefValue = "";
 
 			// Qty
 			$this->Qty->HrefValue = "";
@@ -1003,10 +996,40 @@ class r001_asset_summary extends r001_asset
 			$this->signature_id->CellCssClass = ($this->RecordCount % 2 != 1 ? "ew-table-alt-row" : "ew-table-row");
 			$this->signature_id->ViewCustomAttributes = "";
 
+			// Code
+			$this->Code->ViewValue = $this->Code->CurrentValue;
+			$this->Code->CellCssClass = ($this->RecordCount % 2 != 1 ? "ew-table-alt-row" : "ew-table-row");
+			$this->Code->ViewCustomAttributes = "";
+
 			// Description
 			$this->Description->ViewValue = $this->Description->CurrentValue;
 			$this->Description->CellCssClass = ($this->RecordCount % 2 != 1 ? "ew-table-alt-row" : "ew-table-row");
 			$this->Description->ViewCustomAttributes = "";
+
+			// group_id
+			$this->group_id->ViewValue = $this->group_id->CurrentValue;
+			$curVal = strval($this->group_id->CurrentValue);
+			if ($curVal != "") {
+				$this->group_id->ViewValue = $this->group_id->lookupCacheOption($curVal);
+				if ($this->group_id->ViewValue === NULL) { // Lookup from database
+					$filterWrk = "`id`" . SearchString("=", $curVal, DATATYPE_NUMBER, "");
+					$sqlWrk = $this->group_id->Lookup->getSql(FALSE, $filterWrk, '', $this);
+					$rswrk = Conn()->execute($sqlWrk);
+					if ($rswrk && !$rswrk->EOF) { // Lookup values found
+						$arwrk = [];
+						$arwrk[1] = $rswrk->fields('df');
+						$arwrk[2] = FormatNumber($rswrk->fields('df2'), 0, -2, -2, -2);
+						$this->group_id->ViewValue = $this->group_id->displayValue($arwrk);
+						$rswrk->Close();
+					} else {
+						$this->group_id->ViewValue = $this->group_id->CurrentValue;
+					}
+				}
+			} else {
+				$this->group_id->ViewValue = NULL;
+			}
+			$this->group_id->CellCssClass = ($this->RecordCount % 2 != 1 ? "ew-table-alt-row" : "ew-table-row");
+			$this->group_id->ViewCustomAttributes = "";
 
 			// ProcurementDate
 			$this->ProcurementDate->ViewValue = $this->ProcurementDate->CurrentValue;
@@ -1021,37 +1044,18 @@ class r001_asset_summary extends r001_asset
 			$this->ProcurementCurrentCost->CellCssStyle .= "text-align: right;";
 			$this->ProcurementCurrentCost->ViewCustomAttributes = "";
 
-			// DepreciationAmount
-			$this->DepreciationAmount->ViewValue = $this->DepreciationAmount->CurrentValue;
-			$this->DepreciationAmount->ViewValue = FormatNumber($this->DepreciationAmount->ViewValue, 2, -2, -2, -2);
-			$this->DepreciationAmount->CellCssClass = ($this->RecordCount % 2 != 1 ? "ew-table-alt-row" : "ew-table-row");
-			$this->DepreciationAmount->CellCssStyle .= "text-align: right;";
-			$this->DepreciationAmount->ViewCustomAttributes = "";
-
-			// DepreciationYtd
-			$this->DepreciationYtd->ViewValue = $this->DepreciationYtd->CurrentValue;
-			$this->DepreciationYtd->ViewValue = FormatNumber($this->DepreciationYtd->ViewValue, 2, -2, -2, -2);
-			$this->DepreciationYtd->CellCssClass = ($this->RecordCount % 2 != 1 ? "ew-table-alt-row" : "ew-table-row");
-			$this->DepreciationYtd->CellCssStyle .= "text-align: right;";
-			$this->DepreciationYtd->ViewCustomAttributes = "";
-
-			// NetBookValue
-			$this->NetBookValue->ViewValue = $this->NetBookValue->CurrentValue;
-			$this->NetBookValue->ViewValue = FormatNumber($this->NetBookValue->ViewValue, 2, -2, -2, -2);
-			$this->NetBookValue->CellCssClass = ($this->RecordCount % 2 != 1 ? "ew-table-alt-row" : "ew-table-row");
-			$this->NetBookValue->CellCssStyle .= "text-align: right;";
-			$this->NetBookValue->ViewCustomAttributes = "";
-
-			// Periode
-			$this->Periode->ViewValue = $this->Periode->CurrentValue;
-			$this->Periode->ViewValue = FormatDateTime($this->Periode->ViewValue, 7);
-			$this->Periode->CellCssClass = ($this->RecordCount % 2 != 1 ? "ew-table-alt-row" : "ew-table-row");
-			$this->Periode->ViewCustomAttributes = "";
+			// Salvage
+			$this->Salvage->ViewValue = $this->Salvage->CurrentValue;
+			$this->Salvage->ViewValue = FormatNumber($this->Salvage->ViewValue, 2, -2, -2, -2);
+			$this->Salvage->CellCssClass = ($this->RecordCount % 2 != 1 ? "ew-table-alt-row" : "ew-table-row");
+			$this->Salvage->CellCssStyle .= "text-align: right;";
+			$this->Salvage->ViewCustomAttributes = "";
 
 			// Qty
 			$this->Qty->ViewValue = $this->Qty->CurrentValue;
 			$this->Qty->ViewValue = FormatNumber($this->Qty->ViewValue, 2, -2, -2, -2);
 			$this->Qty->CellCssClass = ($this->RecordCount % 2 != 1 ? "ew-table-alt-row" : "ew-table-row");
+			$this->Qty->CellCssStyle .= "text-align: right;";
 			$this->Qty->ViewCustomAttributes = "";
 
 			// Remarks
@@ -1074,10 +1078,20 @@ class r001_asset_summary extends r001_asset
 			$this->signature_id->HrefValue = "";
 			$this->signature_id->TooltipValue = "";
 
+			// Code
+			$this->Code->LinkCustomAttributes = "";
+			$this->Code->HrefValue = "";
+			$this->Code->TooltipValue = "";
+
 			// Description
 			$this->Description->LinkCustomAttributes = "";
 			$this->Description->HrefValue = "";
 			$this->Description->TooltipValue = "";
+
+			// group_id
+			$this->group_id->LinkCustomAttributes = "";
+			$this->group_id->HrefValue = "";
+			$this->group_id->TooltipValue = "";
 
 			// ProcurementDate
 			$this->ProcurementDate->LinkCustomAttributes = "";
@@ -1089,25 +1103,10 @@ class r001_asset_summary extends r001_asset
 			$this->ProcurementCurrentCost->HrefValue = "";
 			$this->ProcurementCurrentCost->TooltipValue = "";
 
-			// DepreciationAmount
-			$this->DepreciationAmount->LinkCustomAttributes = "";
-			$this->DepreciationAmount->HrefValue = "";
-			$this->DepreciationAmount->TooltipValue = "";
-
-			// DepreciationYtd
-			$this->DepreciationYtd->LinkCustomAttributes = "";
-			$this->DepreciationYtd->HrefValue = "";
-			$this->DepreciationYtd->TooltipValue = "";
-
-			// NetBookValue
-			$this->NetBookValue->LinkCustomAttributes = "";
-			$this->NetBookValue->HrefValue = "";
-			$this->NetBookValue->TooltipValue = "";
-
-			// Periode
-			$this->Periode->LinkCustomAttributes = "";
-			$this->Periode->HrefValue = "";
-			$this->Periode->TooltipValue = "";
+			// Salvage
+			$this->Salvage->LinkCustomAttributes = "";
+			$this->Salvage->HrefValue = "";
+			$this->Salvage->TooltipValue = "";
 
 			// Qty
 			$this->Qty->LinkCustomAttributes = "";
@@ -1151,6 +1150,15 @@ class r001_asset_summary extends r001_asset
 			$linkAttrs = &$this->signature_id->LinkAttrs;
 			$this->Cell_Rendered($this->signature_id, $currentValue, $viewValue, $viewAttrs, $cellAttrs, $hrefValue, $linkAttrs);
 
+			// Code
+			$currentValue = $this->Code->CurrentValue;
+			$viewValue = &$this->Code->ViewValue;
+			$viewAttrs = &$this->Code->ViewAttrs;
+			$cellAttrs = &$this->Code->CellAttrs;
+			$hrefValue = &$this->Code->HrefValue;
+			$linkAttrs = &$this->Code->LinkAttrs;
+			$this->Cell_Rendered($this->Code, $currentValue, $viewValue, $viewAttrs, $cellAttrs, $hrefValue, $linkAttrs);
+
 			// Description
 			$currentValue = $this->Description->CurrentValue;
 			$viewValue = &$this->Description->ViewValue;
@@ -1159,6 +1167,15 @@ class r001_asset_summary extends r001_asset
 			$hrefValue = &$this->Description->HrefValue;
 			$linkAttrs = &$this->Description->LinkAttrs;
 			$this->Cell_Rendered($this->Description, $currentValue, $viewValue, $viewAttrs, $cellAttrs, $hrefValue, $linkAttrs);
+
+			// group_id
+			$currentValue = $this->group_id->CurrentValue;
+			$viewValue = &$this->group_id->ViewValue;
+			$viewAttrs = &$this->group_id->ViewAttrs;
+			$cellAttrs = &$this->group_id->CellAttrs;
+			$hrefValue = &$this->group_id->HrefValue;
+			$linkAttrs = &$this->group_id->LinkAttrs;
+			$this->Cell_Rendered($this->group_id, $currentValue, $viewValue, $viewAttrs, $cellAttrs, $hrefValue, $linkAttrs);
 
 			// ProcurementDate
 			$currentValue = $this->ProcurementDate->CurrentValue;
@@ -1178,41 +1195,14 @@ class r001_asset_summary extends r001_asset
 			$linkAttrs = &$this->ProcurementCurrentCost->LinkAttrs;
 			$this->Cell_Rendered($this->ProcurementCurrentCost, $currentValue, $viewValue, $viewAttrs, $cellAttrs, $hrefValue, $linkAttrs);
 
-			// DepreciationAmount
-			$currentValue = $this->DepreciationAmount->CurrentValue;
-			$viewValue = &$this->DepreciationAmount->ViewValue;
-			$viewAttrs = &$this->DepreciationAmount->ViewAttrs;
-			$cellAttrs = &$this->DepreciationAmount->CellAttrs;
-			$hrefValue = &$this->DepreciationAmount->HrefValue;
-			$linkAttrs = &$this->DepreciationAmount->LinkAttrs;
-			$this->Cell_Rendered($this->DepreciationAmount, $currentValue, $viewValue, $viewAttrs, $cellAttrs, $hrefValue, $linkAttrs);
-
-			// DepreciationYtd
-			$currentValue = $this->DepreciationYtd->CurrentValue;
-			$viewValue = &$this->DepreciationYtd->ViewValue;
-			$viewAttrs = &$this->DepreciationYtd->ViewAttrs;
-			$cellAttrs = &$this->DepreciationYtd->CellAttrs;
-			$hrefValue = &$this->DepreciationYtd->HrefValue;
-			$linkAttrs = &$this->DepreciationYtd->LinkAttrs;
-			$this->Cell_Rendered($this->DepreciationYtd, $currentValue, $viewValue, $viewAttrs, $cellAttrs, $hrefValue, $linkAttrs);
-
-			// NetBookValue
-			$currentValue = $this->NetBookValue->CurrentValue;
-			$viewValue = &$this->NetBookValue->ViewValue;
-			$viewAttrs = &$this->NetBookValue->ViewAttrs;
-			$cellAttrs = &$this->NetBookValue->CellAttrs;
-			$hrefValue = &$this->NetBookValue->HrefValue;
-			$linkAttrs = &$this->NetBookValue->LinkAttrs;
-			$this->Cell_Rendered($this->NetBookValue, $currentValue, $viewValue, $viewAttrs, $cellAttrs, $hrefValue, $linkAttrs);
-
-			// Periode
-			$currentValue = $this->Periode->CurrentValue;
-			$viewValue = &$this->Periode->ViewValue;
-			$viewAttrs = &$this->Periode->ViewAttrs;
-			$cellAttrs = &$this->Periode->CellAttrs;
-			$hrefValue = &$this->Periode->HrefValue;
-			$linkAttrs = &$this->Periode->LinkAttrs;
-			$this->Cell_Rendered($this->Periode, $currentValue, $viewValue, $viewAttrs, $cellAttrs, $hrefValue, $linkAttrs);
+			// Salvage
+			$currentValue = $this->Salvage->CurrentValue;
+			$viewValue = &$this->Salvage->ViewValue;
+			$viewAttrs = &$this->Salvage->ViewAttrs;
+			$cellAttrs = &$this->Salvage->CellAttrs;
+			$hrefValue = &$this->Salvage->HrefValue;
+			$linkAttrs = &$this->Salvage->LinkAttrs;
+			$this->Cell_Rendered($this->Salvage, $currentValue, $viewValue, $viewAttrs, $cellAttrs, $hrefValue, $linkAttrs);
 
 			// Qty
 			$currentValue = $this->Qty->CurrentValue;
@@ -1285,19 +1275,17 @@ class r001_asset_summary extends r001_asset
 			$this->DetailColumnCount += 1;
 		if ($this->signature_id->Visible)
 			$this->DetailColumnCount += 1;
+		if ($this->Code->Visible)
+			$this->DetailColumnCount += 1;
 		if ($this->Description->Visible)
+			$this->DetailColumnCount += 1;
+		if ($this->group_id->Visible)
 			$this->DetailColumnCount += 1;
 		if ($this->ProcurementDate->Visible)
 			$this->DetailColumnCount += 1;
 		if ($this->ProcurementCurrentCost->Visible)
 			$this->DetailColumnCount += 1;
-		if ($this->DepreciationAmount->Visible)
-			$this->DetailColumnCount += 1;
-		if ($this->DepreciationYtd->Visible)
-			$this->DetailColumnCount += 1;
-		if ($this->NetBookValue->Visible)
-			$this->DetailColumnCount += 1;
-		if ($this->Periode->Visible)
+		if ($this->Salvage->Visible)
 			$this->DetailColumnCount += 1;
 		if ($this->Qty->Visible)
 			$this->DetailColumnCount += 1;
@@ -1426,6 +1414,8 @@ class r001_asset_summary extends r001_asset
 					break;
 				case "x_signature_id":
 					break;
+				case "x_group_id":
+					break;
 				default:
 					$lookupFilter = "";
 					break;
@@ -1451,6 +1441,10 @@ class r001_asset_summary extends r001_asset
 						case "x_department_id":
 							break;
 						case "x_signature_id":
+							break;
+						case "x_group_id":
+							$row[2] = FormatNumber($row[2], 0, -2, -2, -2);
+							$row['df2'] = $row[2];
 							break;
 					}
 					$ar[strval($row[0])] = $row;
@@ -1651,13 +1645,12 @@ class r001_asset_summary extends r001_asset
 			$this->property_id->setSort("");
 			$this->department_id->setSort("");
 			$this->signature_id->setSort("");
+			$this->Code->setSort("");
 			$this->Description->setSort("");
+			$this->group_id->setSort("");
 			$this->ProcurementDate->setSort("");
 			$this->ProcurementCurrentCost->setSort("");
-			$this->DepreciationAmount->setSort("");
-			$this->DepreciationYtd->setSort("");
-			$this->NetBookValue->setSort("");
-			$this->Periode->setSort("");
+			$this->Salvage->setSort("");
 			$this->Qty->setSort("");
 			$this->Remarks->setSort("");
 
@@ -1668,13 +1661,12 @@ class r001_asset_summary extends r001_asset
 			$this->updateSort($this->property_id, $ctrl); // property_id
 			$this->updateSort($this->department_id, $ctrl); // department_id
 			$this->updateSort($this->signature_id, $ctrl); // signature_id
+			$this->updateSort($this->Code, $ctrl); // Code
 			$this->updateSort($this->Description, $ctrl); // Description
+			$this->updateSort($this->group_id, $ctrl); // group_id
 			$this->updateSort($this->ProcurementDate, $ctrl); // ProcurementDate
 			$this->updateSort($this->ProcurementCurrentCost, $ctrl); // ProcurementCurrentCost
-			$this->updateSort($this->DepreciationAmount, $ctrl); // DepreciationAmount
-			$this->updateSort($this->DepreciationYtd, $ctrl); // DepreciationYtd
-			$this->updateSort($this->NetBookValue, $ctrl); // NetBookValue
-			$this->updateSort($this->Periode, $ctrl); // Periode
+			$this->updateSort($this->Salvage, $ctrl); // Salvage
 			$this->updateSort($this->Qty, $ctrl); // Qty
 			$this->updateSort($this->Remarks, $ctrl); // Remarks
 			$sortSql = $this->sortSql();

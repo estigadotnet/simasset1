@@ -4,7 +4,7 @@ namespace PHPMaker2020\p_simasset1;
 /**
  * Page class
  */
-class t004_asset_delete extends t004_asset
+class t005_assetgroup_delete extends t005_assetgroup
 {
 
 	// Page ID
@@ -14,10 +14,10 @@ class t004_asset_delete extends t004_asset
 	public $ProjectID = "{E1C6E322-15B9-474C-85CF-A99378A9BC2B}";
 
 	// Table name
-	public $TableName = 't004_asset';
+	public $TableName = 't005_assetgroup';
 
 	// Page object name
-	public $PageObjName = "t004_asset_delete";
+	public $PageObjName = "t005_assetgroup_delete";
 
 	// Audit Trail
 	public $AuditTrailOnAdd = TRUE;
@@ -349,10 +349,10 @@ class t004_asset_delete extends t004_asset
 		// Parent constuctor
 		parent::__construct();
 
-		// Table object (t004_asset)
-		if (!isset($GLOBALS["t004_asset"]) || get_class($GLOBALS["t004_asset"]) == PROJECT_NAMESPACE . "t004_asset") {
-			$GLOBALS["t004_asset"] = &$this;
-			$GLOBALS["Table"] = &$GLOBALS["t004_asset"];
+		// Table object (t005_assetgroup)
+		if (!isset($GLOBALS["t005_assetgroup"]) || get_class($GLOBALS["t005_assetgroup"]) == PROJECT_NAMESPACE . "t005_assetgroup") {
+			$GLOBALS["t005_assetgroup"] = &$this;
+			$GLOBALS["Table"] = &$GLOBALS["t005_assetgroup"];
 		}
 
 		// Table object (t201_users)
@@ -365,7 +365,7 @@ class t004_asset_delete extends t004_asset
 
 		// Table name (for backward compatibility only)
 		if (!defined(PROJECT_NAMESPACE . "TABLE_NAME"))
-			define(PROJECT_NAMESPACE . "TABLE_NAME", 't004_asset');
+			define(PROJECT_NAMESPACE . "TABLE_NAME", 't005_assetgroup');
 
 		// Start timer
 		if (!isset($GLOBALS["DebugTimer"]))
@@ -394,14 +394,14 @@ class t004_asset_delete extends t004_asset
 		Page_Unloaded();
 
 		// Export
-		global $t004_asset;
+		global $t005_assetgroup;
 		if ($this->CustomExport && $this->CustomExport == $this->Export && array_key_exists($this->CustomExport, Config("EXPORT_CLASSES"))) {
 				$content = ob_get_contents();
 			if ($ExportFileName == "")
 				$ExportFileName = $this->TableVar;
 			$class = PROJECT_NAMESPACE . Config("EXPORT_CLASSES." . $this->CustomExport);
 			if (class_exists($class)) {
-				$doc = new $class($t004_asset);
+				$doc = new $class($t005_assetgroup);
 				$doc->Text = @$content;
 				if ($this->isExport("email"))
 					echo $this->exportEmail($doc->Text);
@@ -580,7 +580,7 @@ class t004_asset_delete extends t004_asset
 				$Security->saveLastUrl();
 				$this->setFailureMessage(DeniedMessage()); // Set no permission
 				if ($Security->canList())
-					$this->terminate(GetUrl("t004_assetlist.php"));
+					$this->terminate(GetUrl("t005_assetgrouplist.php"));
 				else
 					$this->terminate(GetUrl("login.php"));
 				return;
@@ -593,17 +593,8 @@ class t004_asset_delete extends t004_asset
 		}
 		$this->CurrentAction = Param("action"); // Set up current action
 		$this->id->Visible = FALSE;
-		$this->property_id->setVisibility();
-		$this->department_id->setVisibility();
-		$this->signature_id->setVisibility();
-		$this->Code->setVisibility();
 		$this->Description->setVisibility();
-		$this->group_id->setVisibility();
-		$this->ProcurementDate->setVisibility();
-		$this->ProcurementCurrentCost->setVisibility();
-		$this->Salvage->setVisibility();
-		$this->Qty->setVisibility();
-		$this->Remarks->setVisibility();
+		$this->EconomicalLifeTime->setVisibility();
 		$this->hideFieldsForAddEdit();
 
 		// Do not use lookup cache
@@ -625,15 +616,11 @@ class t004_asset_delete extends t004_asset
 		$this->createToken();
 
 		// Set up lookup cache
-		$this->setupLookupOptions($this->property_id);
-		$this->setupLookupOptions($this->department_id);
-		$this->setupLookupOptions($this->signature_id);
-		$this->setupLookupOptions($this->group_id);
-
 		// Check permission
+
 		if (!$Security->canDelete()) {
 			$this->setFailureMessage(DeniedMessage()); // No permission
-			$this->terminate("t004_assetlist.php");
+			$this->terminate("t005_assetgrouplist.php");
 			return;
 		}
 
@@ -644,7 +631,7 @@ class t004_asset_delete extends t004_asset
 		$this->RecKeys = $this->getRecordKeys(); // Load record keys
 		$filter = $this->getFilterFromRecordKeys();
 		if ($filter == "") {
-			$this->terminate("t004_assetlist.php"); // Prevent SQL injection, return to list
+			$this->terminate("t005_assetgrouplist.php"); // Prevent SQL injection, return to list
 			return;
 		}
 
@@ -686,7 +673,7 @@ class t004_asset_delete extends t004_asset
 			if ($this->TotalRecords <= 0) { // No record found, exit
 				if ($this->Recordset)
 					$this->Recordset->close();
-				$this->terminate("t004_assetlist.php"); // Return to list
+				$this->terminate("t005_assetgrouplist.php"); // Return to list
 			}
 		}
 	}
@@ -754,17 +741,8 @@ class t004_asset_delete extends t004_asset
 		if (!$rs || $rs->EOF)
 			return;
 		$this->id->setDbValue($row['id']);
-		$this->property_id->setDbValue($row['property_id']);
-		$this->department_id->setDbValue($row['department_id']);
-		$this->signature_id->setDbValue($row['signature_id']);
-		$this->Code->setDbValue($row['Code']);
 		$this->Description->setDbValue($row['Description']);
-		$this->group_id->setDbValue($row['group_id']);
-		$this->ProcurementDate->setDbValue($row['ProcurementDate']);
-		$this->ProcurementCurrentCost->setDbValue($row['ProcurementCurrentCost']);
-		$this->Salvage->setDbValue($row['Salvage']);
-		$this->Qty->setDbValue($row['Qty']);
-		$this->Remarks->setDbValue($row['Remarks']);
+		$this->EconomicalLifeTime->setDbValue($row['EconomicalLifeTime']);
 	}
 
 	// Return a row with default values
@@ -772,17 +750,8 @@ class t004_asset_delete extends t004_asset
 	{
 		$row = [];
 		$row['id'] = NULL;
-		$row['property_id'] = NULL;
-		$row['department_id'] = NULL;
-		$row['signature_id'] = NULL;
-		$row['Code'] = NULL;
 		$row['Description'] = NULL;
-		$row['group_id'] = NULL;
-		$row['ProcurementDate'] = NULL;
-		$row['ProcurementCurrentCost'] = NULL;
-		$row['Salvage'] = NULL;
-		$row['Qty'] = NULL;
-		$row['Remarks'] = NULL;
+		$row['EconomicalLifeTime'] = NULL;
 		return $row;
 	}
 
@@ -792,35 +761,14 @@ class t004_asset_delete extends t004_asset
 		global $Security, $Language, $CurrentLanguage;
 
 		// Initialize URLs
-		// Convert decimal values if posted back
-
-		if ($this->ProcurementCurrentCost->FormValue == $this->ProcurementCurrentCost->CurrentValue && is_numeric(ConvertToFloatString($this->ProcurementCurrentCost->CurrentValue)))
-			$this->ProcurementCurrentCost->CurrentValue = ConvertToFloatString($this->ProcurementCurrentCost->CurrentValue);
-
-		// Convert decimal values if posted back
-		if ($this->Salvage->FormValue == $this->Salvage->CurrentValue && is_numeric(ConvertToFloatString($this->Salvage->CurrentValue)))
-			$this->Salvage->CurrentValue = ConvertToFloatString($this->Salvage->CurrentValue);
-
-		// Convert decimal values if posted back
-		if ($this->Qty->FormValue == $this->Qty->CurrentValue && is_numeric(ConvertToFloatString($this->Qty->CurrentValue)))
-			$this->Qty->CurrentValue = ConvertToFloatString($this->Qty->CurrentValue);
-
 		// Call Row_Rendering event
+
 		$this->Row_Rendering();
 
 		// Common render codes for all row types
 		// id
-		// property_id
-		// department_id
-		// signature_id
-		// Code
 		// Description
-		// group_id
-		// ProcurementDate
-		// ProcurementCurrentCost
-		// Salvage
-		// Qty
-		// Remarks
+		// EconomicalLifeTime
 
 		if ($this->RowType == ROWTYPE_VIEW) { // View row
 
@@ -828,184 +776,25 @@ class t004_asset_delete extends t004_asset
 			$this->id->ViewValue = $this->id->CurrentValue;
 			$this->id->ViewCustomAttributes = "";
 
-			// property_id
-			$curVal = strval($this->property_id->CurrentValue);
-			if ($curVal != "") {
-				$this->property_id->ViewValue = $this->property_id->lookupCacheOption($curVal);
-				if ($this->property_id->ViewValue === NULL) { // Lookup from database
-					$filterWrk = "`id`" . SearchString("=", $curVal, DATATYPE_NUMBER, "");
-					$sqlWrk = $this->property_id->Lookup->getSql(FALSE, $filterWrk, '', $this);
-					$rswrk = Conn()->execute($sqlWrk);
-					if ($rswrk && !$rswrk->EOF) { // Lookup values found
-						$arwrk = [];
-						$arwrk[1] = $rswrk->fields('df');
-						$this->property_id->ViewValue = $this->property_id->displayValue($arwrk);
-						$rswrk->Close();
-					} else {
-						$this->property_id->ViewValue = $this->property_id->CurrentValue;
-					}
-				}
-			} else {
-				$this->property_id->ViewValue = NULL;
-			}
-			$this->property_id->ViewCustomAttributes = "";
-
-			// department_id
-			$curVal = strval($this->department_id->CurrentValue);
-			if ($curVal != "") {
-				$this->department_id->ViewValue = $this->department_id->lookupCacheOption($curVal);
-				if ($this->department_id->ViewValue === NULL) { // Lookup from database
-					$filterWrk = "`id`" . SearchString("=", $curVal, DATATYPE_NUMBER, "");
-					$sqlWrk = $this->department_id->Lookup->getSql(FALSE, $filterWrk, '', $this);
-					$rswrk = Conn()->execute($sqlWrk);
-					if ($rswrk && !$rswrk->EOF) { // Lookup values found
-						$arwrk = [];
-						$arwrk[1] = $rswrk->fields('df');
-						$this->department_id->ViewValue = $this->department_id->displayValue($arwrk);
-						$rswrk->Close();
-					} else {
-						$this->department_id->ViewValue = $this->department_id->CurrentValue;
-					}
-				}
-			} else {
-				$this->department_id->ViewValue = NULL;
-			}
-			$this->department_id->ViewCustomAttributes = "";
-
-			// signature_id
-			$curVal = strval($this->signature_id->CurrentValue);
-			if ($curVal != "") {
-				$this->signature_id->ViewValue = $this->signature_id->lookupCacheOption($curVal);
-				if ($this->signature_id->ViewValue === NULL) { // Lookup from database
-					$filterWrk = "`id`" . SearchString("=", $curVal, DATATYPE_NUMBER, "");
-					$sqlWrk = $this->signature_id->Lookup->getSql(FALSE, $filterWrk, '', $this);
-					$rswrk = Conn()->execute($sqlWrk);
-					if ($rswrk && !$rswrk->EOF) { // Lookup values found
-						$arwrk = [];
-						$arwrk[1] = $rswrk->fields('df');
-						$this->signature_id->ViewValue = $this->signature_id->displayValue($arwrk);
-						$rswrk->Close();
-					} else {
-						$this->signature_id->ViewValue = $this->signature_id->CurrentValue;
-					}
-				}
-			} else {
-				$this->signature_id->ViewValue = NULL;
-			}
-			$this->signature_id->ViewCustomAttributes = "";
-
-			// Code
-			$this->Code->ViewValue = $this->Code->CurrentValue;
-			$this->Code->ViewCustomAttributes = "";
-
 			// Description
 			$this->Description->ViewValue = $this->Description->CurrentValue;
 			$this->Description->ViewCustomAttributes = "";
 
-			// group_id
-			$curVal = strval($this->group_id->CurrentValue);
-			if ($curVal != "") {
-				$this->group_id->ViewValue = $this->group_id->lookupCacheOption($curVal);
-				if ($this->group_id->ViewValue === NULL) { // Lookup from database
-					$filterWrk = "`id`" . SearchString("=", $curVal, DATATYPE_NUMBER, "");
-					$sqlWrk = $this->group_id->Lookup->getSql(FALSE, $filterWrk, '', $this);
-					$rswrk = Conn()->execute($sqlWrk);
-					if ($rswrk && !$rswrk->EOF) { // Lookup values found
-						$arwrk = [];
-						$arwrk[1] = $rswrk->fields('df');
-						$arwrk[2] = FormatNumber($rswrk->fields('df2'), 0, -2, -2, -2);
-						$this->group_id->ViewValue = $this->group_id->displayValue($arwrk);
-						$rswrk->Close();
-					} else {
-						$this->group_id->ViewValue = $this->group_id->CurrentValue;
-					}
-				}
-			} else {
-				$this->group_id->ViewValue = NULL;
-			}
-			$this->group_id->ViewCustomAttributes = "";
-
-			// ProcurementDate
-			$this->ProcurementDate->ViewValue = $this->ProcurementDate->CurrentValue;
-			$this->ProcurementDate->ViewValue = FormatDateTime($this->ProcurementDate->ViewValue, 7);
-			$this->ProcurementDate->ViewCustomAttributes = "";
-
-			// ProcurementCurrentCost
-			$this->ProcurementCurrentCost->ViewValue = $this->ProcurementCurrentCost->CurrentValue;
-			$this->ProcurementCurrentCost->ViewValue = FormatNumber($this->ProcurementCurrentCost->ViewValue, 2, -2, -2, -2);
-			$this->ProcurementCurrentCost->CellCssStyle .= "text-align: right;";
-			$this->ProcurementCurrentCost->ViewCustomAttributes = "";
-
-			// Salvage
-			$this->Salvage->ViewValue = $this->Salvage->CurrentValue;
-			$this->Salvage->ViewValue = FormatNumber($this->Salvage->ViewValue, 2, -2, -2, -2);
-			$this->Salvage->CellCssStyle .= "text-align: right;";
-			$this->Salvage->ViewCustomAttributes = "";
-
-			// Qty
-			$this->Qty->ViewValue = $this->Qty->CurrentValue;
-			$this->Qty->ViewValue = FormatNumber($this->Qty->ViewValue, 2, -2, -2, -2);
-			$this->Qty->CellCssStyle .= "text-align: right;";
-			$this->Qty->ViewCustomAttributes = "";
-
-			// Remarks
-			$this->Remarks->ViewValue = $this->Remarks->CurrentValue;
-			$this->Remarks->ViewCustomAttributes = "";
-
-			// property_id
-			$this->property_id->LinkCustomAttributes = "";
-			$this->property_id->HrefValue = "";
-			$this->property_id->TooltipValue = "";
-
-			// department_id
-			$this->department_id->LinkCustomAttributes = "";
-			$this->department_id->HrefValue = "";
-			$this->department_id->TooltipValue = "";
-
-			// signature_id
-			$this->signature_id->LinkCustomAttributes = "";
-			$this->signature_id->HrefValue = "";
-			$this->signature_id->TooltipValue = "";
-
-			// Code
-			$this->Code->LinkCustomAttributes = "";
-			$this->Code->HrefValue = "";
-			$this->Code->TooltipValue = "";
+			// EconomicalLifeTime
+			$this->EconomicalLifeTime->ViewValue = $this->EconomicalLifeTime->CurrentValue;
+			$this->EconomicalLifeTime->ViewValue = FormatNumber($this->EconomicalLifeTime->ViewValue, 0, -2, -2, -2);
+			$this->EconomicalLifeTime->CellCssStyle .= "text-align: right;";
+			$this->EconomicalLifeTime->ViewCustomAttributes = "";
 
 			// Description
 			$this->Description->LinkCustomAttributes = "";
 			$this->Description->HrefValue = "";
 			$this->Description->TooltipValue = "";
 
-			// group_id
-			$this->group_id->LinkCustomAttributes = "";
-			$this->group_id->HrefValue = "";
-			$this->group_id->TooltipValue = "";
-
-			// ProcurementDate
-			$this->ProcurementDate->LinkCustomAttributes = "";
-			$this->ProcurementDate->HrefValue = "";
-			$this->ProcurementDate->TooltipValue = "";
-
-			// ProcurementCurrentCost
-			$this->ProcurementCurrentCost->LinkCustomAttributes = "";
-			$this->ProcurementCurrentCost->HrefValue = "";
-			$this->ProcurementCurrentCost->TooltipValue = "";
-
-			// Salvage
-			$this->Salvage->LinkCustomAttributes = "";
-			$this->Salvage->HrefValue = "";
-			$this->Salvage->TooltipValue = "";
-
-			// Qty
-			$this->Qty->LinkCustomAttributes = "";
-			$this->Qty->HrefValue = "";
-			$this->Qty->TooltipValue = "";
-
-			// Remarks
-			$this->Remarks->LinkCustomAttributes = "";
-			$this->Remarks->HrefValue = "";
-			$this->Remarks->TooltipValue = "";
+			// EconomicalLifeTime
+			$this->EconomicalLifeTime->LinkCustomAttributes = "";
+			$this->EconomicalLifeTime->HrefValue = "";
+			$this->EconomicalLifeTime->TooltipValue = "";
 		}
 
 		// Call Row Rendered event
@@ -1115,7 +904,7 @@ class t004_asset_delete extends t004_asset
 		global $Breadcrumb, $Language;
 		$Breadcrumb = new Breadcrumb();
 		$url = substr(CurrentUrl(), strrpos(CurrentUrl(), "/")+1);
-		$Breadcrumb->add("list", $this->TableVar, $this->addMasterUrl("t004_assetlist.php"), "", $this->TableVar, TRUE);
+		$Breadcrumb->add("list", $this->TableVar, $this->addMasterUrl("t005_assetgrouplist.php"), "", $this->TableVar, TRUE);
 		$pageId = "delete";
 		$Breadcrumb->add("delete", $pageId, $url);
 	}
@@ -1134,14 +923,6 @@ class t004_asset_delete extends t004_asset
 
 			// Set up lookup SQL and connection
 			switch ($fld->FieldVar) {
-				case "x_property_id":
-					break;
-				case "x_department_id":
-					break;
-				case "x_signature_id":
-					break;
-				case "x_group_id":
-					break;
 				default:
 					$lookupFilter = "";
 					break;
@@ -1162,16 +943,6 @@ class t004_asset_delete extends t004_asset
 
 					// Format the field values
 					switch ($fld->FieldVar) {
-						case "x_property_id":
-							break;
-						case "x_department_id":
-							break;
-						case "x_signature_id":
-							break;
-						case "x_group_id":
-							$row[2] = FormatNumber($row[2], 0, -2, -2, -2);
-							$row['df2'] = $row[2];
-							break;
 					}
 					$ar[strval($row[0])] = $row;
 					$rs->moveNext();

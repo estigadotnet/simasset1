@@ -76,10 +76,20 @@ loadjs.ready("head", function() {
 				if (elm && !ew.isHidden(elm) && !ew.hasValue(elm))
 					return this.onError(elm, "<?php echo JsEncode(str_replace("%s", $t004_asset_list->signature_id->caption(), $t004_asset_list->signature_id->RequiredErrorMessage)) ?>");
 			<?php } ?>
+			<?php if ($t004_asset_list->Code->Required) { ?>
+				elm = this.getElements("x" + infix + "_Code");
+				if (elm && !ew.isHidden(elm) && !ew.hasValue(elm))
+					return this.onError(elm, "<?php echo JsEncode(str_replace("%s", $t004_asset_list->Code->caption(), $t004_asset_list->Code->RequiredErrorMessage)) ?>");
+			<?php } ?>
 			<?php if ($t004_asset_list->Description->Required) { ?>
 				elm = this.getElements("x" + infix + "_Description");
 				if (elm && !ew.isHidden(elm) && !ew.hasValue(elm))
 					return this.onError(elm, "<?php echo JsEncode(str_replace("%s", $t004_asset_list->Description->caption(), $t004_asset_list->Description->RequiredErrorMessage)) ?>");
+			<?php } ?>
+			<?php if ($t004_asset_list->group_id->Required) { ?>
+				elm = this.getElements("x" + infix + "_group_id");
+				if (elm && !ew.isHidden(elm) && !ew.hasValue(elm))
+					return this.onError(elm, "<?php echo JsEncode(str_replace("%s", $t004_asset_list->group_id->caption(), $t004_asset_list->group_id->RequiredErrorMessage)) ?>");
 			<?php } ?>
 			<?php if ($t004_asset_list->ProcurementDate->Required) { ?>
 				elm = this.getElements("x" + infix + "_ProcurementDate");
@@ -97,38 +107,14 @@ loadjs.ready("head", function() {
 				elm = this.getElements("x" + infix + "_ProcurementCurrentCost");
 				if (elm && !ew.checkNumber(elm.value))
 					return this.onError(elm, "<?php echo JsEncode($t004_asset_list->ProcurementCurrentCost->errorMessage()) ?>");
-			<?php if ($t004_asset_list->DepreciationAmount->Required) { ?>
-				elm = this.getElements("x" + infix + "_DepreciationAmount");
+			<?php if ($t004_asset_list->Salvage->Required) { ?>
+				elm = this.getElements("x" + infix + "_Salvage");
 				if (elm && !ew.isHidden(elm) && !ew.hasValue(elm))
-					return this.onError(elm, "<?php echo JsEncode(str_replace("%s", $t004_asset_list->DepreciationAmount->caption(), $t004_asset_list->DepreciationAmount->RequiredErrorMessage)) ?>");
+					return this.onError(elm, "<?php echo JsEncode(str_replace("%s", $t004_asset_list->Salvage->caption(), $t004_asset_list->Salvage->RequiredErrorMessage)) ?>");
 			<?php } ?>
-				elm = this.getElements("x" + infix + "_DepreciationAmount");
+				elm = this.getElements("x" + infix + "_Salvage");
 				if (elm && !ew.checkNumber(elm.value))
-					return this.onError(elm, "<?php echo JsEncode($t004_asset_list->DepreciationAmount->errorMessage()) ?>");
-			<?php if ($t004_asset_list->DepreciationYtd->Required) { ?>
-				elm = this.getElements("x" + infix + "_DepreciationYtd");
-				if (elm && !ew.isHidden(elm) && !ew.hasValue(elm))
-					return this.onError(elm, "<?php echo JsEncode(str_replace("%s", $t004_asset_list->DepreciationYtd->caption(), $t004_asset_list->DepreciationYtd->RequiredErrorMessage)) ?>");
-			<?php } ?>
-				elm = this.getElements("x" + infix + "_DepreciationYtd");
-				if (elm && !ew.checkNumber(elm.value))
-					return this.onError(elm, "<?php echo JsEncode($t004_asset_list->DepreciationYtd->errorMessage()) ?>");
-			<?php if ($t004_asset_list->NetBookValue->Required) { ?>
-				elm = this.getElements("x" + infix + "_NetBookValue");
-				if (elm && !ew.isHidden(elm) && !ew.hasValue(elm))
-					return this.onError(elm, "<?php echo JsEncode(str_replace("%s", $t004_asset_list->NetBookValue->caption(), $t004_asset_list->NetBookValue->RequiredErrorMessage)) ?>");
-			<?php } ?>
-				elm = this.getElements("x" + infix + "_NetBookValue");
-				if (elm && !ew.checkNumber(elm.value))
-					return this.onError(elm, "<?php echo JsEncode($t004_asset_list->NetBookValue->errorMessage()) ?>");
-			<?php if ($t004_asset_list->Periode->Required) { ?>
-				elm = this.getElements("x" + infix + "_Periode");
-				if (elm && !ew.isHidden(elm) && !ew.hasValue(elm))
-					return this.onError(elm, "<?php echo JsEncode(str_replace("%s", $t004_asset_list->Periode->caption(), $t004_asset_list->Periode->RequiredErrorMessage)) ?>");
-			<?php } ?>
-				elm = this.getElements("x" + infix + "_Periode");
-				if (elm && !ew.checkEuroDate(elm.value))
-					return this.onError(elm, "<?php echo JsEncode($t004_asset_list->Periode->errorMessage()) ?>");
+					return this.onError(elm, "<?php echo JsEncode($t004_asset_list->Salvage->errorMessage()) ?>");
 			<?php if ($t004_asset_list->Qty->Required) { ?>
 				elm = this.getElements("x" + infix + "_Qty");
 				if (elm && !ew.isHidden(elm) && !ew.hasValue(elm))
@@ -161,13 +147,12 @@ loadjs.ready("head", function() {
 		if (ew.valueChanged(fobj, infix, "property_id", false)) return false;
 		if (ew.valueChanged(fobj, infix, "department_id", false)) return false;
 		if (ew.valueChanged(fobj, infix, "signature_id", false)) return false;
+		if (ew.valueChanged(fobj, infix, "Code", false)) return false;
 		if (ew.valueChanged(fobj, infix, "Description", false)) return false;
+		if (ew.valueChanged(fobj, infix, "group_id", false)) return false;
 		if (ew.valueChanged(fobj, infix, "ProcurementDate", false)) return false;
 		if (ew.valueChanged(fobj, infix, "ProcurementCurrentCost", false)) return false;
-		if (ew.valueChanged(fobj, infix, "DepreciationAmount", false)) return false;
-		if (ew.valueChanged(fobj, infix, "DepreciationYtd", false)) return false;
-		if (ew.valueChanged(fobj, infix, "NetBookValue", false)) return false;
-		if (ew.valueChanged(fobj, infix, "Periode", false)) return false;
+		if (ew.valueChanged(fobj, infix, "Salvage", false)) return false;
 		if (ew.valueChanged(fobj, infix, "Qty", false)) return false;
 		if (ew.valueChanged(fobj, infix, "Remarks", false)) return false;
 		return true;
@@ -190,6 +175,8 @@ loadjs.ready("head", function() {
 	ft004_assetlist.lists["x_department_id"].options = <?php echo JsonEncode($t004_asset_list->department_id->lookupOptions()) ?>;
 	ft004_assetlist.lists["x_signature_id"] = <?php echo $t004_asset_list->signature_id->Lookup->toClientList($t004_asset_list) ?>;
 	ft004_assetlist.lists["x_signature_id"].options = <?php echo JsonEncode($t004_asset_list->signature_id->lookupOptions()) ?>;
+	ft004_assetlist.lists["x_group_id"] = <?php echo $t004_asset_list->group_id->Lookup->toClientList($t004_asset_list) ?>;
+	ft004_assetlist.lists["x_group_id"].options = <?php echo JsonEncode($t004_asset_list->group_id->lookupOptions()) ?>;
 	loadjs.done("ft004_assetlist");
 });
 var ft004_assetlistsrch;
@@ -288,12 +275,30 @@ $t004_asset_list->ListOptions->render("header", "left");
 		</div></div></th>
 	<?php } ?>
 <?php } ?>
+<?php if ($t004_asset_list->Code->Visible) { // Code ?>
+	<?php if ($t004_asset_list->SortUrl($t004_asset_list->Code) == "") { ?>
+		<th data-name="Code" class="<?php echo $t004_asset_list->Code->headerCellClass() ?>"><div id="elh_t004_asset_Code" class="t004_asset_Code"><div class="ew-table-header-caption"><?php echo $t004_asset_list->Code->caption() ?></div></div></th>
+	<?php } else { ?>
+		<th data-name="Code" class="<?php echo $t004_asset_list->Code->headerCellClass() ?>"><div class="ew-pointer" onclick="ew.sort(event, '<?php echo $t004_asset_list->SortUrl($t004_asset_list->Code) ?>', 2);"><div id="elh_t004_asset_Code" class="t004_asset_Code">
+			<div class="ew-table-header-btn"><span class="ew-table-header-caption"><?php echo $t004_asset_list->Code->caption() ?></span><span class="ew-table-header-sort"><?php if ($t004_asset_list->Code->getSort() == "ASC") { ?><i class="fas fa-sort-up"></i><?php } elseif ($t004_asset_list->Code->getSort() == "DESC") { ?><i class="fas fa-sort-down"></i><?php } ?></span></div>
+		</div></div></th>
+	<?php } ?>
+<?php } ?>
 <?php if ($t004_asset_list->Description->Visible) { // Description ?>
 	<?php if ($t004_asset_list->SortUrl($t004_asset_list->Description) == "") { ?>
 		<th data-name="Description" class="<?php echo $t004_asset_list->Description->headerCellClass() ?>"><div id="elh_t004_asset_Description" class="t004_asset_Description"><div class="ew-table-header-caption"><?php echo $t004_asset_list->Description->caption() ?></div></div></th>
 	<?php } else { ?>
 		<th data-name="Description" class="<?php echo $t004_asset_list->Description->headerCellClass() ?>"><div class="ew-pointer" onclick="ew.sort(event, '<?php echo $t004_asset_list->SortUrl($t004_asset_list->Description) ?>', 2);"><div id="elh_t004_asset_Description" class="t004_asset_Description">
 			<div class="ew-table-header-btn"><span class="ew-table-header-caption"><?php echo $t004_asset_list->Description->caption() ?></span><span class="ew-table-header-sort"><?php if ($t004_asset_list->Description->getSort() == "ASC") { ?><i class="fas fa-sort-up"></i><?php } elseif ($t004_asset_list->Description->getSort() == "DESC") { ?><i class="fas fa-sort-down"></i><?php } ?></span></div>
+		</div></div></th>
+	<?php } ?>
+<?php } ?>
+<?php if ($t004_asset_list->group_id->Visible) { // group_id ?>
+	<?php if ($t004_asset_list->SortUrl($t004_asset_list->group_id) == "") { ?>
+		<th data-name="group_id" class="<?php echo $t004_asset_list->group_id->headerCellClass() ?>"><div id="elh_t004_asset_group_id" class="t004_asset_group_id"><div class="ew-table-header-caption"><?php echo $t004_asset_list->group_id->caption() ?></div></div></th>
+	<?php } else { ?>
+		<th data-name="group_id" class="<?php echo $t004_asset_list->group_id->headerCellClass() ?>"><div class="ew-pointer" onclick="ew.sort(event, '<?php echo $t004_asset_list->SortUrl($t004_asset_list->group_id) ?>', 2);"><div id="elh_t004_asset_group_id" class="t004_asset_group_id">
+			<div class="ew-table-header-btn"><span class="ew-table-header-caption"><?php echo $t004_asset_list->group_id->caption() ?></span><span class="ew-table-header-sort"><?php if ($t004_asset_list->group_id->getSort() == "ASC") { ?><i class="fas fa-sort-up"></i><?php } elseif ($t004_asset_list->group_id->getSort() == "DESC") { ?><i class="fas fa-sort-down"></i><?php } ?></span></div>
 		</div></div></th>
 	<?php } ?>
 <?php } ?>
@@ -315,39 +320,12 @@ $t004_asset_list->ListOptions->render("header", "left");
 		</div></div></th>
 	<?php } ?>
 <?php } ?>
-<?php if ($t004_asset_list->DepreciationAmount->Visible) { // DepreciationAmount ?>
-	<?php if ($t004_asset_list->SortUrl($t004_asset_list->DepreciationAmount) == "") { ?>
-		<th data-name="DepreciationAmount" class="<?php echo $t004_asset_list->DepreciationAmount->headerCellClass() ?>"><div id="elh_t004_asset_DepreciationAmount" class="t004_asset_DepreciationAmount"><div class="ew-table-header-caption"><?php echo $t004_asset_list->DepreciationAmount->caption() ?></div></div></th>
+<?php if ($t004_asset_list->Salvage->Visible) { // Salvage ?>
+	<?php if ($t004_asset_list->SortUrl($t004_asset_list->Salvage) == "") { ?>
+		<th data-name="Salvage" class="<?php echo $t004_asset_list->Salvage->headerCellClass() ?>"><div id="elh_t004_asset_Salvage" class="t004_asset_Salvage"><div class="ew-table-header-caption"><?php echo $t004_asset_list->Salvage->caption() ?></div></div></th>
 	<?php } else { ?>
-		<th data-name="DepreciationAmount" class="<?php echo $t004_asset_list->DepreciationAmount->headerCellClass() ?>"><div class="ew-pointer" onclick="ew.sort(event, '<?php echo $t004_asset_list->SortUrl($t004_asset_list->DepreciationAmount) ?>', 2);"><div id="elh_t004_asset_DepreciationAmount" class="t004_asset_DepreciationAmount">
-			<div class="ew-table-header-btn"><span class="ew-table-header-caption"><?php echo $t004_asset_list->DepreciationAmount->caption() ?></span><span class="ew-table-header-sort"><?php if ($t004_asset_list->DepreciationAmount->getSort() == "ASC") { ?><i class="fas fa-sort-up"></i><?php } elseif ($t004_asset_list->DepreciationAmount->getSort() == "DESC") { ?><i class="fas fa-sort-down"></i><?php } ?></span></div>
-		</div></div></th>
-	<?php } ?>
-<?php } ?>
-<?php if ($t004_asset_list->DepreciationYtd->Visible) { // DepreciationYtd ?>
-	<?php if ($t004_asset_list->SortUrl($t004_asset_list->DepreciationYtd) == "") { ?>
-		<th data-name="DepreciationYtd" class="<?php echo $t004_asset_list->DepreciationYtd->headerCellClass() ?>"><div id="elh_t004_asset_DepreciationYtd" class="t004_asset_DepreciationYtd"><div class="ew-table-header-caption"><?php echo $t004_asset_list->DepreciationYtd->caption() ?></div></div></th>
-	<?php } else { ?>
-		<th data-name="DepreciationYtd" class="<?php echo $t004_asset_list->DepreciationYtd->headerCellClass() ?>"><div class="ew-pointer" onclick="ew.sort(event, '<?php echo $t004_asset_list->SortUrl($t004_asset_list->DepreciationYtd) ?>', 2);"><div id="elh_t004_asset_DepreciationYtd" class="t004_asset_DepreciationYtd">
-			<div class="ew-table-header-btn"><span class="ew-table-header-caption"><?php echo $t004_asset_list->DepreciationYtd->caption() ?></span><span class="ew-table-header-sort"><?php if ($t004_asset_list->DepreciationYtd->getSort() == "ASC") { ?><i class="fas fa-sort-up"></i><?php } elseif ($t004_asset_list->DepreciationYtd->getSort() == "DESC") { ?><i class="fas fa-sort-down"></i><?php } ?></span></div>
-		</div></div></th>
-	<?php } ?>
-<?php } ?>
-<?php if ($t004_asset_list->NetBookValue->Visible) { // NetBookValue ?>
-	<?php if ($t004_asset_list->SortUrl($t004_asset_list->NetBookValue) == "") { ?>
-		<th data-name="NetBookValue" class="<?php echo $t004_asset_list->NetBookValue->headerCellClass() ?>"><div id="elh_t004_asset_NetBookValue" class="t004_asset_NetBookValue"><div class="ew-table-header-caption"><?php echo $t004_asset_list->NetBookValue->caption() ?></div></div></th>
-	<?php } else { ?>
-		<th data-name="NetBookValue" class="<?php echo $t004_asset_list->NetBookValue->headerCellClass() ?>"><div class="ew-pointer" onclick="ew.sort(event, '<?php echo $t004_asset_list->SortUrl($t004_asset_list->NetBookValue) ?>', 2);"><div id="elh_t004_asset_NetBookValue" class="t004_asset_NetBookValue">
-			<div class="ew-table-header-btn"><span class="ew-table-header-caption"><?php echo $t004_asset_list->NetBookValue->caption() ?></span><span class="ew-table-header-sort"><?php if ($t004_asset_list->NetBookValue->getSort() == "ASC") { ?><i class="fas fa-sort-up"></i><?php } elseif ($t004_asset_list->NetBookValue->getSort() == "DESC") { ?><i class="fas fa-sort-down"></i><?php } ?></span></div>
-		</div></div></th>
-	<?php } ?>
-<?php } ?>
-<?php if ($t004_asset_list->Periode->Visible) { // Periode ?>
-	<?php if ($t004_asset_list->SortUrl($t004_asset_list->Periode) == "") { ?>
-		<th data-name="Periode" class="<?php echo $t004_asset_list->Periode->headerCellClass() ?>"><div id="elh_t004_asset_Periode" class="t004_asset_Periode"><div class="ew-table-header-caption"><?php echo $t004_asset_list->Periode->caption() ?></div></div></th>
-	<?php } else { ?>
-		<th data-name="Periode" class="<?php echo $t004_asset_list->Periode->headerCellClass() ?>"><div class="ew-pointer" onclick="ew.sort(event, '<?php echo $t004_asset_list->SortUrl($t004_asset_list->Periode) ?>', 2);"><div id="elh_t004_asset_Periode" class="t004_asset_Periode">
-			<div class="ew-table-header-btn"><span class="ew-table-header-caption"><?php echo $t004_asset_list->Periode->caption() ?></span><span class="ew-table-header-sort"><?php if ($t004_asset_list->Periode->getSort() == "ASC") { ?><i class="fas fa-sort-up"></i><?php } elseif ($t004_asset_list->Periode->getSort() == "DESC") { ?><i class="fas fa-sort-down"></i><?php } ?></span></div>
+		<th data-name="Salvage" class="<?php echo $t004_asset_list->Salvage->headerCellClass() ?>"><div class="ew-pointer" onclick="ew.sort(event, '<?php echo $t004_asset_list->SortUrl($t004_asset_list->Salvage) ?>', 2);"><div id="elh_t004_asset_Salvage" class="t004_asset_Salvage">
+			<div class="ew-table-header-btn"><span class="ew-table-header-caption"><?php echo $t004_asset_list->Salvage->caption() ?></span><span class="ew-table-header-sort"><?php if ($t004_asset_list->Salvage->getSort() == "ASC") { ?><i class="fas fa-sort-up"></i><?php } elseif ($t004_asset_list->Salvage->getSort() == "DESC") { ?><i class="fas fa-sort-down"></i><?php } ?></span></div>
 		</div></div></th>
 	<?php } ?>
 <?php } ?>
@@ -604,6 +582,26 @@ $t004_asset_list->ListOptions->render("body", "left", $t004_asset_list->RowCount
 <?php } ?>
 </td>
 	<?php } ?>
+	<?php if ($t004_asset_list->Code->Visible) { // Code ?>
+		<td data-name="Code" <?php echo $t004_asset_list->Code->cellAttributes() ?>>
+<?php if ($t004_asset->RowType == ROWTYPE_ADD) { // Add record ?>
+<span id="el<?php echo $t004_asset_list->RowCount ?>_t004_asset_Code" class="form-group">
+<input type="text" data-table="t004_asset" data-field="x_Code" name="x<?php echo $t004_asset_list->RowIndex ?>_Code" id="x<?php echo $t004_asset_list->RowIndex ?>_Code" size="30" maxlength="25" placeholder="<?php echo HtmlEncode($t004_asset_list->Code->getPlaceHolder()) ?>" value="<?php echo $t004_asset_list->Code->EditValue ?>"<?php echo $t004_asset_list->Code->editAttributes() ?>>
+</span>
+<input type="hidden" data-table="t004_asset" data-field="x_Code" name="o<?php echo $t004_asset_list->RowIndex ?>_Code" id="o<?php echo $t004_asset_list->RowIndex ?>_Code" value="<?php echo HtmlEncode($t004_asset_list->Code->OldValue) ?>">
+<?php } ?>
+<?php if ($t004_asset->RowType == ROWTYPE_EDIT) { // Edit record ?>
+<span id="el<?php echo $t004_asset_list->RowCount ?>_t004_asset_Code" class="form-group">
+<input type="text" data-table="t004_asset" data-field="x_Code" name="x<?php echo $t004_asset_list->RowIndex ?>_Code" id="x<?php echo $t004_asset_list->RowIndex ?>_Code" size="30" maxlength="25" placeholder="<?php echo HtmlEncode($t004_asset_list->Code->getPlaceHolder()) ?>" value="<?php echo $t004_asset_list->Code->EditValue ?>"<?php echo $t004_asset_list->Code->editAttributes() ?>>
+</span>
+<?php } ?>
+<?php if ($t004_asset->RowType == ROWTYPE_VIEW) { // View record ?>
+<span id="el<?php echo $t004_asset_list->RowCount ?>_t004_asset_Code">
+<span<?php echo $t004_asset_list->Code->viewAttributes() ?>><?php echo $t004_asset_list->Code->getViewValue() ?></span>
+</span>
+<?php } ?>
+</td>
+	<?php } ?>
 	<?php if ($t004_asset_list->Description->Visible) { // Description ?>
 		<td data-name="Description" <?php echo $t004_asset_list->Description->cellAttributes() ?>>
 <?php if ($t004_asset->RowType == ROWTYPE_ADD) { // Add record ?>
@@ -620,6 +618,40 @@ $t004_asset_list->ListOptions->render("body", "left", $t004_asset_list->RowCount
 <?php if ($t004_asset->RowType == ROWTYPE_VIEW) { // View record ?>
 <span id="el<?php echo $t004_asset_list->RowCount ?>_t004_asset_Description">
 <span<?php echo $t004_asset_list->Description->viewAttributes() ?>><?php echo $t004_asset_list->Description->getViewValue() ?></span>
+</span>
+<?php } ?>
+</td>
+	<?php } ?>
+	<?php if ($t004_asset_list->group_id->Visible) { // group_id ?>
+		<td data-name="group_id" <?php echo $t004_asset_list->group_id->cellAttributes() ?>>
+<?php if ($t004_asset->RowType == ROWTYPE_ADD) { // Add record ?>
+<span id="el<?php echo $t004_asset_list->RowCount ?>_t004_asset_group_id" class="form-group">
+<div class="input-group ew-lookup-list">
+	<div class="form-control ew-lookup-text" tabindex="-1" id="lu_x<?php echo $t004_asset_list->RowIndex ?>_group_id"><?php echo EmptyValue(strval($t004_asset_list->group_id->ViewValue)) ? $Language->phrase("PleaseSelect") : $t004_asset_list->group_id->ViewValue ?></div>
+	<div class="input-group-append">
+		<button type="button" title="<?php echo HtmlEncode(str_replace("%s", RemoveHtml($t004_asset_list->group_id->caption()), $Language->phrase("LookupLink", TRUE))) ?>" class="ew-lookup-btn btn btn-default"<?php echo ($t004_asset_list->group_id->ReadOnly || $t004_asset_list->group_id->Disabled) ? " disabled" : "" ?> onclick="ew.modalLookupShow({lnk:this,el:'x<?php echo $t004_asset_list->RowIndex ?>_group_id',m:0,n:10});"><i class="fas fa-search ew-icon"></i></button>
+	</div>
+</div>
+<?php echo $t004_asset_list->group_id->Lookup->getParamTag($t004_asset_list, "p_x" . $t004_asset_list->RowIndex . "_group_id") ?>
+<input type="hidden" data-table="t004_asset" data-field="x_group_id" data-multiple="0" data-lookup="1" data-value-separator="<?php echo $t004_asset_list->group_id->displayValueSeparatorAttribute() ?>" name="x<?php echo $t004_asset_list->RowIndex ?>_group_id" id="x<?php echo $t004_asset_list->RowIndex ?>_group_id" value="<?php echo $t004_asset_list->group_id->CurrentValue ?>"<?php echo $t004_asset_list->group_id->editAttributes() ?>>
+</span>
+<input type="hidden" data-table="t004_asset" data-field="x_group_id" name="o<?php echo $t004_asset_list->RowIndex ?>_group_id" id="o<?php echo $t004_asset_list->RowIndex ?>_group_id" value="<?php echo HtmlEncode($t004_asset_list->group_id->OldValue) ?>">
+<?php } ?>
+<?php if ($t004_asset->RowType == ROWTYPE_EDIT) { // Edit record ?>
+<span id="el<?php echo $t004_asset_list->RowCount ?>_t004_asset_group_id" class="form-group">
+<div class="input-group ew-lookup-list">
+	<div class="form-control ew-lookup-text" tabindex="-1" id="lu_x<?php echo $t004_asset_list->RowIndex ?>_group_id"><?php echo EmptyValue(strval($t004_asset_list->group_id->ViewValue)) ? $Language->phrase("PleaseSelect") : $t004_asset_list->group_id->ViewValue ?></div>
+	<div class="input-group-append">
+		<button type="button" title="<?php echo HtmlEncode(str_replace("%s", RemoveHtml($t004_asset_list->group_id->caption()), $Language->phrase("LookupLink", TRUE))) ?>" class="ew-lookup-btn btn btn-default"<?php echo ($t004_asset_list->group_id->ReadOnly || $t004_asset_list->group_id->Disabled) ? " disabled" : "" ?> onclick="ew.modalLookupShow({lnk:this,el:'x<?php echo $t004_asset_list->RowIndex ?>_group_id',m:0,n:10});"><i class="fas fa-search ew-icon"></i></button>
+	</div>
+</div>
+<?php echo $t004_asset_list->group_id->Lookup->getParamTag($t004_asset_list, "p_x" . $t004_asset_list->RowIndex . "_group_id") ?>
+<input type="hidden" data-table="t004_asset" data-field="x_group_id" data-multiple="0" data-lookup="1" data-value-separator="<?php echo $t004_asset_list->group_id->displayValueSeparatorAttribute() ?>" name="x<?php echo $t004_asset_list->RowIndex ?>_group_id" id="x<?php echo $t004_asset_list->RowIndex ?>_group_id" value="<?php echo $t004_asset_list->group_id->CurrentValue ?>"<?php echo $t004_asset_list->group_id->editAttributes() ?>>
+</span>
+<?php } ?>
+<?php if ($t004_asset->RowType == ROWTYPE_VIEW) { // View record ?>
+<span id="el<?php echo $t004_asset_list->RowCount ?>_t004_asset_group_id">
+<span<?php echo $t004_asset_list->group_id->viewAttributes() ?>><?php echo $t004_asset_list->group_id->getViewValue() ?></span>
 </span>
 <?php } ?>
 </td>
@@ -678,96 +710,22 @@ loadjs.ready(["ft004_assetlist", "datetimepicker"], function() {
 <?php } ?>
 </td>
 	<?php } ?>
-	<?php if ($t004_asset_list->DepreciationAmount->Visible) { // DepreciationAmount ?>
-		<td data-name="DepreciationAmount" <?php echo $t004_asset_list->DepreciationAmount->cellAttributes() ?>>
+	<?php if ($t004_asset_list->Salvage->Visible) { // Salvage ?>
+		<td data-name="Salvage" <?php echo $t004_asset_list->Salvage->cellAttributes() ?>>
 <?php if ($t004_asset->RowType == ROWTYPE_ADD) { // Add record ?>
-<span id="el<?php echo $t004_asset_list->RowCount ?>_t004_asset_DepreciationAmount" class="form-group">
-<input type="text" data-table="t004_asset" data-field="x_DepreciationAmount" name="x<?php echo $t004_asset_list->RowIndex ?>_DepreciationAmount" id="x<?php echo $t004_asset_list->RowIndex ?>_DepreciationAmount" size="10" maxlength="14" placeholder="<?php echo HtmlEncode($t004_asset_list->DepreciationAmount->getPlaceHolder()) ?>" value="<?php echo $t004_asset_list->DepreciationAmount->EditValue ?>"<?php echo $t004_asset_list->DepreciationAmount->editAttributes() ?>>
+<span id="el<?php echo $t004_asset_list->RowCount ?>_t004_asset_Salvage" class="form-group">
+<input type="text" data-table="t004_asset" data-field="x_Salvage" name="x<?php echo $t004_asset_list->RowIndex ?>_Salvage" id="x<?php echo $t004_asset_list->RowIndex ?>_Salvage" size="10" maxlength="14" placeholder="<?php echo HtmlEncode($t004_asset_list->Salvage->getPlaceHolder()) ?>" value="<?php echo $t004_asset_list->Salvage->EditValue ?>"<?php echo $t004_asset_list->Salvage->editAttributes() ?>>
 </span>
-<input type="hidden" data-table="t004_asset" data-field="x_DepreciationAmount" name="o<?php echo $t004_asset_list->RowIndex ?>_DepreciationAmount" id="o<?php echo $t004_asset_list->RowIndex ?>_DepreciationAmount" value="<?php echo HtmlEncode($t004_asset_list->DepreciationAmount->OldValue) ?>">
+<input type="hidden" data-table="t004_asset" data-field="x_Salvage" name="o<?php echo $t004_asset_list->RowIndex ?>_Salvage" id="o<?php echo $t004_asset_list->RowIndex ?>_Salvage" value="<?php echo HtmlEncode($t004_asset_list->Salvage->OldValue) ?>">
 <?php } ?>
 <?php if ($t004_asset->RowType == ROWTYPE_EDIT) { // Edit record ?>
-<span id="el<?php echo $t004_asset_list->RowCount ?>_t004_asset_DepreciationAmount" class="form-group">
-<input type="text" data-table="t004_asset" data-field="x_DepreciationAmount" name="x<?php echo $t004_asset_list->RowIndex ?>_DepreciationAmount" id="x<?php echo $t004_asset_list->RowIndex ?>_DepreciationAmount" size="10" maxlength="14" placeholder="<?php echo HtmlEncode($t004_asset_list->DepreciationAmount->getPlaceHolder()) ?>" value="<?php echo $t004_asset_list->DepreciationAmount->EditValue ?>"<?php echo $t004_asset_list->DepreciationAmount->editAttributes() ?>>
+<span id="el<?php echo $t004_asset_list->RowCount ?>_t004_asset_Salvage" class="form-group">
+<input type="text" data-table="t004_asset" data-field="x_Salvage" name="x<?php echo $t004_asset_list->RowIndex ?>_Salvage" id="x<?php echo $t004_asset_list->RowIndex ?>_Salvage" size="10" maxlength="14" placeholder="<?php echo HtmlEncode($t004_asset_list->Salvage->getPlaceHolder()) ?>" value="<?php echo $t004_asset_list->Salvage->EditValue ?>"<?php echo $t004_asset_list->Salvage->editAttributes() ?>>
 </span>
 <?php } ?>
 <?php if ($t004_asset->RowType == ROWTYPE_VIEW) { // View record ?>
-<span id="el<?php echo $t004_asset_list->RowCount ?>_t004_asset_DepreciationAmount">
-<span<?php echo $t004_asset_list->DepreciationAmount->viewAttributes() ?>><?php echo $t004_asset_list->DepreciationAmount->getViewValue() ?></span>
-</span>
-<?php } ?>
-</td>
-	<?php } ?>
-	<?php if ($t004_asset_list->DepreciationYtd->Visible) { // DepreciationYtd ?>
-		<td data-name="DepreciationYtd" <?php echo $t004_asset_list->DepreciationYtd->cellAttributes() ?>>
-<?php if ($t004_asset->RowType == ROWTYPE_ADD) { // Add record ?>
-<span id="el<?php echo $t004_asset_list->RowCount ?>_t004_asset_DepreciationYtd" class="form-group">
-<input type="text" data-table="t004_asset" data-field="x_DepreciationYtd" name="x<?php echo $t004_asset_list->RowIndex ?>_DepreciationYtd" id="x<?php echo $t004_asset_list->RowIndex ?>_DepreciationYtd" size="10" maxlength="14" placeholder="<?php echo HtmlEncode($t004_asset_list->DepreciationYtd->getPlaceHolder()) ?>" value="<?php echo $t004_asset_list->DepreciationYtd->EditValue ?>"<?php echo $t004_asset_list->DepreciationYtd->editAttributes() ?>>
-</span>
-<input type="hidden" data-table="t004_asset" data-field="x_DepreciationYtd" name="o<?php echo $t004_asset_list->RowIndex ?>_DepreciationYtd" id="o<?php echo $t004_asset_list->RowIndex ?>_DepreciationYtd" value="<?php echo HtmlEncode($t004_asset_list->DepreciationYtd->OldValue) ?>">
-<?php } ?>
-<?php if ($t004_asset->RowType == ROWTYPE_EDIT) { // Edit record ?>
-<span id="el<?php echo $t004_asset_list->RowCount ?>_t004_asset_DepreciationYtd" class="form-group">
-<input type="text" data-table="t004_asset" data-field="x_DepreciationYtd" name="x<?php echo $t004_asset_list->RowIndex ?>_DepreciationYtd" id="x<?php echo $t004_asset_list->RowIndex ?>_DepreciationYtd" size="10" maxlength="14" placeholder="<?php echo HtmlEncode($t004_asset_list->DepreciationYtd->getPlaceHolder()) ?>" value="<?php echo $t004_asset_list->DepreciationYtd->EditValue ?>"<?php echo $t004_asset_list->DepreciationYtd->editAttributes() ?>>
-</span>
-<?php } ?>
-<?php if ($t004_asset->RowType == ROWTYPE_VIEW) { // View record ?>
-<span id="el<?php echo $t004_asset_list->RowCount ?>_t004_asset_DepreciationYtd">
-<span<?php echo $t004_asset_list->DepreciationYtd->viewAttributes() ?>><?php echo $t004_asset_list->DepreciationYtd->getViewValue() ?></span>
-</span>
-<?php } ?>
-</td>
-	<?php } ?>
-	<?php if ($t004_asset_list->NetBookValue->Visible) { // NetBookValue ?>
-		<td data-name="NetBookValue" <?php echo $t004_asset_list->NetBookValue->cellAttributes() ?>>
-<?php if ($t004_asset->RowType == ROWTYPE_ADD) { // Add record ?>
-<span id="el<?php echo $t004_asset_list->RowCount ?>_t004_asset_NetBookValue" class="form-group">
-<input type="text" data-table="t004_asset" data-field="x_NetBookValue" name="x<?php echo $t004_asset_list->RowIndex ?>_NetBookValue" id="x<?php echo $t004_asset_list->RowIndex ?>_NetBookValue" size="10" maxlength="14" placeholder="<?php echo HtmlEncode($t004_asset_list->NetBookValue->getPlaceHolder()) ?>" value="<?php echo $t004_asset_list->NetBookValue->EditValue ?>"<?php echo $t004_asset_list->NetBookValue->editAttributes() ?>>
-</span>
-<input type="hidden" data-table="t004_asset" data-field="x_NetBookValue" name="o<?php echo $t004_asset_list->RowIndex ?>_NetBookValue" id="o<?php echo $t004_asset_list->RowIndex ?>_NetBookValue" value="<?php echo HtmlEncode($t004_asset_list->NetBookValue->OldValue) ?>">
-<?php } ?>
-<?php if ($t004_asset->RowType == ROWTYPE_EDIT) { // Edit record ?>
-<span id="el<?php echo $t004_asset_list->RowCount ?>_t004_asset_NetBookValue" class="form-group">
-<input type="text" data-table="t004_asset" data-field="x_NetBookValue" name="x<?php echo $t004_asset_list->RowIndex ?>_NetBookValue" id="x<?php echo $t004_asset_list->RowIndex ?>_NetBookValue" size="10" maxlength="14" placeholder="<?php echo HtmlEncode($t004_asset_list->NetBookValue->getPlaceHolder()) ?>" value="<?php echo $t004_asset_list->NetBookValue->EditValue ?>"<?php echo $t004_asset_list->NetBookValue->editAttributes() ?>>
-</span>
-<?php } ?>
-<?php if ($t004_asset->RowType == ROWTYPE_VIEW) { // View record ?>
-<span id="el<?php echo $t004_asset_list->RowCount ?>_t004_asset_NetBookValue">
-<span<?php echo $t004_asset_list->NetBookValue->viewAttributes() ?>><?php echo $t004_asset_list->NetBookValue->getViewValue() ?></span>
-</span>
-<?php } ?>
-</td>
-	<?php } ?>
-	<?php if ($t004_asset_list->Periode->Visible) { // Periode ?>
-		<td data-name="Periode" <?php echo $t004_asset_list->Periode->cellAttributes() ?>>
-<?php if ($t004_asset->RowType == ROWTYPE_ADD) { // Add record ?>
-<span id="el<?php echo $t004_asset_list->RowCount ?>_t004_asset_Periode" class="form-group">
-<input type="text" data-table="t004_asset" data-field="x_Periode" data-format="7" name="x<?php echo $t004_asset_list->RowIndex ?>_Periode" id="x<?php echo $t004_asset_list->RowIndex ?>_Periode" size="10" maxlength="10" placeholder="<?php echo HtmlEncode($t004_asset_list->Periode->getPlaceHolder()) ?>" value="<?php echo $t004_asset_list->Periode->EditValue ?>"<?php echo $t004_asset_list->Periode->editAttributes() ?>>
-<?php if (!$t004_asset_list->Periode->ReadOnly && !$t004_asset_list->Periode->Disabled && !isset($t004_asset_list->Periode->EditAttrs["readonly"]) && !isset($t004_asset_list->Periode->EditAttrs["disabled"])) { ?>
-<script>
-loadjs.ready(["ft004_assetlist", "datetimepicker"], function() {
-	ew.createDateTimePicker("ft004_assetlist", "x<?php echo $t004_asset_list->RowIndex ?>_Periode", {"ignoreReadonly":true,"useCurrent":false,"format":7});
-});
-</script>
-<?php } ?>
-</span>
-<input type="hidden" data-table="t004_asset" data-field="x_Periode" name="o<?php echo $t004_asset_list->RowIndex ?>_Periode" id="o<?php echo $t004_asset_list->RowIndex ?>_Periode" value="<?php echo HtmlEncode($t004_asset_list->Periode->OldValue) ?>">
-<?php } ?>
-<?php if ($t004_asset->RowType == ROWTYPE_EDIT) { // Edit record ?>
-<span id="el<?php echo $t004_asset_list->RowCount ?>_t004_asset_Periode" class="form-group">
-<input type="text" data-table="t004_asset" data-field="x_Periode" data-format="7" name="x<?php echo $t004_asset_list->RowIndex ?>_Periode" id="x<?php echo $t004_asset_list->RowIndex ?>_Periode" size="10" maxlength="10" placeholder="<?php echo HtmlEncode($t004_asset_list->Periode->getPlaceHolder()) ?>" value="<?php echo $t004_asset_list->Periode->EditValue ?>"<?php echo $t004_asset_list->Periode->editAttributes() ?>>
-<?php if (!$t004_asset_list->Periode->ReadOnly && !$t004_asset_list->Periode->Disabled && !isset($t004_asset_list->Periode->EditAttrs["readonly"]) && !isset($t004_asset_list->Periode->EditAttrs["disabled"])) { ?>
-<script>
-loadjs.ready(["ft004_assetlist", "datetimepicker"], function() {
-	ew.createDateTimePicker("ft004_assetlist", "x<?php echo $t004_asset_list->RowIndex ?>_Periode", {"ignoreReadonly":true,"useCurrent":false,"format":7});
-});
-</script>
-<?php } ?>
-</span>
-<?php } ?>
-<?php if ($t004_asset->RowType == ROWTYPE_VIEW) { // View record ?>
-<span id="el<?php echo $t004_asset_list->RowCount ?>_t004_asset_Periode">
-<span<?php echo $t004_asset_list->Periode->viewAttributes() ?>><?php echo $t004_asset_list->Periode->getViewValue() ?></span>
+<span id="el<?php echo $t004_asset_list->RowCount ?>_t004_asset_Salvage">
+<span<?php echo $t004_asset_list->Salvage->viewAttributes() ?>><?php echo $t004_asset_list->Salvage->getViewValue() ?></span>
 </span>
 <?php } ?>
 </td>
@@ -911,12 +869,35 @@ $t004_asset_list->ListOptions->render("body", "left", $t004_asset_list->RowIndex
 <input type="hidden" data-table="t004_asset" data-field="x_signature_id" name="o<?php echo $t004_asset_list->RowIndex ?>_signature_id" id="o<?php echo $t004_asset_list->RowIndex ?>_signature_id" value="<?php echo HtmlEncode($t004_asset_list->signature_id->OldValue) ?>">
 </td>
 	<?php } ?>
+	<?php if ($t004_asset_list->Code->Visible) { // Code ?>
+		<td data-name="Code">
+<span id="el$rowindex$_t004_asset_Code" class="form-group t004_asset_Code">
+<input type="text" data-table="t004_asset" data-field="x_Code" name="x<?php echo $t004_asset_list->RowIndex ?>_Code" id="x<?php echo $t004_asset_list->RowIndex ?>_Code" size="30" maxlength="25" placeholder="<?php echo HtmlEncode($t004_asset_list->Code->getPlaceHolder()) ?>" value="<?php echo $t004_asset_list->Code->EditValue ?>"<?php echo $t004_asset_list->Code->editAttributes() ?>>
+</span>
+<input type="hidden" data-table="t004_asset" data-field="x_Code" name="o<?php echo $t004_asset_list->RowIndex ?>_Code" id="o<?php echo $t004_asset_list->RowIndex ?>_Code" value="<?php echo HtmlEncode($t004_asset_list->Code->OldValue) ?>">
+</td>
+	<?php } ?>
 	<?php if ($t004_asset_list->Description->Visible) { // Description ?>
 		<td data-name="Description">
 <span id="el$rowindex$_t004_asset_Description" class="form-group t004_asset_Description">
 <input type="text" data-table="t004_asset" data-field="x_Description" name="x<?php echo $t004_asset_list->RowIndex ?>_Description" id="x<?php echo $t004_asset_list->RowIndex ?>_Description" size="30" maxlength="255" placeholder="<?php echo HtmlEncode($t004_asset_list->Description->getPlaceHolder()) ?>" value="<?php echo $t004_asset_list->Description->EditValue ?>"<?php echo $t004_asset_list->Description->editAttributes() ?>>
 </span>
 <input type="hidden" data-table="t004_asset" data-field="x_Description" name="o<?php echo $t004_asset_list->RowIndex ?>_Description" id="o<?php echo $t004_asset_list->RowIndex ?>_Description" value="<?php echo HtmlEncode($t004_asset_list->Description->OldValue) ?>">
+</td>
+	<?php } ?>
+	<?php if ($t004_asset_list->group_id->Visible) { // group_id ?>
+		<td data-name="group_id">
+<span id="el$rowindex$_t004_asset_group_id" class="form-group t004_asset_group_id">
+<div class="input-group ew-lookup-list">
+	<div class="form-control ew-lookup-text" tabindex="-1" id="lu_x<?php echo $t004_asset_list->RowIndex ?>_group_id"><?php echo EmptyValue(strval($t004_asset_list->group_id->ViewValue)) ? $Language->phrase("PleaseSelect") : $t004_asset_list->group_id->ViewValue ?></div>
+	<div class="input-group-append">
+		<button type="button" title="<?php echo HtmlEncode(str_replace("%s", RemoveHtml($t004_asset_list->group_id->caption()), $Language->phrase("LookupLink", TRUE))) ?>" class="ew-lookup-btn btn btn-default"<?php echo ($t004_asset_list->group_id->ReadOnly || $t004_asset_list->group_id->Disabled) ? " disabled" : "" ?> onclick="ew.modalLookupShow({lnk:this,el:'x<?php echo $t004_asset_list->RowIndex ?>_group_id',m:0,n:10});"><i class="fas fa-search ew-icon"></i></button>
+	</div>
+</div>
+<?php echo $t004_asset_list->group_id->Lookup->getParamTag($t004_asset_list, "p_x" . $t004_asset_list->RowIndex . "_group_id") ?>
+<input type="hidden" data-table="t004_asset" data-field="x_group_id" data-multiple="0" data-lookup="1" data-value-separator="<?php echo $t004_asset_list->group_id->displayValueSeparatorAttribute() ?>" name="x<?php echo $t004_asset_list->RowIndex ?>_group_id" id="x<?php echo $t004_asset_list->RowIndex ?>_group_id" value="<?php echo $t004_asset_list->group_id->CurrentValue ?>"<?php echo $t004_asset_list->group_id->editAttributes() ?>>
+</span>
+<input type="hidden" data-table="t004_asset" data-field="x_group_id" name="o<?php echo $t004_asset_list->RowIndex ?>_group_id" id="o<?php echo $t004_asset_list->RowIndex ?>_group_id" value="<?php echo HtmlEncode($t004_asset_list->group_id->OldValue) ?>">
 </td>
 	<?php } ?>
 	<?php if ($t004_asset_list->ProcurementDate->Visible) { // ProcurementDate ?>
@@ -942,43 +923,12 @@ loadjs.ready(["ft004_assetlist", "datetimepicker"], function() {
 <input type="hidden" data-table="t004_asset" data-field="x_ProcurementCurrentCost" name="o<?php echo $t004_asset_list->RowIndex ?>_ProcurementCurrentCost" id="o<?php echo $t004_asset_list->RowIndex ?>_ProcurementCurrentCost" value="<?php echo HtmlEncode($t004_asset_list->ProcurementCurrentCost->OldValue) ?>">
 </td>
 	<?php } ?>
-	<?php if ($t004_asset_list->DepreciationAmount->Visible) { // DepreciationAmount ?>
-		<td data-name="DepreciationAmount">
-<span id="el$rowindex$_t004_asset_DepreciationAmount" class="form-group t004_asset_DepreciationAmount">
-<input type="text" data-table="t004_asset" data-field="x_DepreciationAmount" name="x<?php echo $t004_asset_list->RowIndex ?>_DepreciationAmount" id="x<?php echo $t004_asset_list->RowIndex ?>_DepreciationAmount" size="10" maxlength="14" placeholder="<?php echo HtmlEncode($t004_asset_list->DepreciationAmount->getPlaceHolder()) ?>" value="<?php echo $t004_asset_list->DepreciationAmount->EditValue ?>"<?php echo $t004_asset_list->DepreciationAmount->editAttributes() ?>>
+	<?php if ($t004_asset_list->Salvage->Visible) { // Salvage ?>
+		<td data-name="Salvage">
+<span id="el$rowindex$_t004_asset_Salvage" class="form-group t004_asset_Salvage">
+<input type="text" data-table="t004_asset" data-field="x_Salvage" name="x<?php echo $t004_asset_list->RowIndex ?>_Salvage" id="x<?php echo $t004_asset_list->RowIndex ?>_Salvage" size="10" maxlength="14" placeholder="<?php echo HtmlEncode($t004_asset_list->Salvage->getPlaceHolder()) ?>" value="<?php echo $t004_asset_list->Salvage->EditValue ?>"<?php echo $t004_asset_list->Salvage->editAttributes() ?>>
 </span>
-<input type="hidden" data-table="t004_asset" data-field="x_DepreciationAmount" name="o<?php echo $t004_asset_list->RowIndex ?>_DepreciationAmount" id="o<?php echo $t004_asset_list->RowIndex ?>_DepreciationAmount" value="<?php echo HtmlEncode($t004_asset_list->DepreciationAmount->OldValue) ?>">
-</td>
-	<?php } ?>
-	<?php if ($t004_asset_list->DepreciationYtd->Visible) { // DepreciationYtd ?>
-		<td data-name="DepreciationYtd">
-<span id="el$rowindex$_t004_asset_DepreciationYtd" class="form-group t004_asset_DepreciationYtd">
-<input type="text" data-table="t004_asset" data-field="x_DepreciationYtd" name="x<?php echo $t004_asset_list->RowIndex ?>_DepreciationYtd" id="x<?php echo $t004_asset_list->RowIndex ?>_DepreciationYtd" size="10" maxlength="14" placeholder="<?php echo HtmlEncode($t004_asset_list->DepreciationYtd->getPlaceHolder()) ?>" value="<?php echo $t004_asset_list->DepreciationYtd->EditValue ?>"<?php echo $t004_asset_list->DepreciationYtd->editAttributes() ?>>
-</span>
-<input type="hidden" data-table="t004_asset" data-field="x_DepreciationYtd" name="o<?php echo $t004_asset_list->RowIndex ?>_DepreciationYtd" id="o<?php echo $t004_asset_list->RowIndex ?>_DepreciationYtd" value="<?php echo HtmlEncode($t004_asset_list->DepreciationYtd->OldValue) ?>">
-</td>
-	<?php } ?>
-	<?php if ($t004_asset_list->NetBookValue->Visible) { // NetBookValue ?>
-		<td data-name="NetBookValue">
-<span id="el$rowindex$_t004_asset_NetBookValue" class="form-group t004_asset_NetBookValue">
-<input type="text" data-table="t004_asset" data-field="x_NetBookValue" name="x<?php echo $t004_asset_list->RowIndex ?>_NetBookValue" id="x<?php echo $t004_asset_list->RowIndex ?>_NetBookValue" size="10" maxlength="14" placeholder="<?php echo HtmlEncode($t004_asset_list->NetBookValue->getPlaceHolder()) ?>" value="<?php echo $t004_asset_list->NetBookValue->EditValue ?>"<?php echo $t004_asset_list->NetBookValue->editAttributes() ?>>
-</span>
-<input type="hidden" data-table="t004_asset" data-field="x_NetBookValue" name="o<?php echo $t004_asset_list->RowIndex ?>_NetBookValue" id="o<?php echo $t004_asset_list->RowIndex ?>_NetBookValue" value="<?php echo HtmlEncode($t004_asset_list->NetBookValue->OldValue) ?>">
-</td>
-	<?php } ?>
-	<?php if ($t004_asset_list->Periode->Visible) { // Periode ?>
-		<td data-name="Periode">
-<span id="el$rowindex$_t004_asset_Periode" class="form-group t004_asset_Periode">
-<input type="text" data-table="t004_asset" data-field="x_Periode" data-format="7" name="x<?php echo $t004_asset_list->RowIndex ?>_Periode" id="x<?php echo $t004_asset_list->RowIndex ?>_Periode" size="10" maxlength="10" placeholder="<?php echo HtmlEncode($t004_asset_list->Periode->getPlaceHolder()) ?>" value="<?php echo $t004_asset_list->Periode->EditValue ?>"<?php echo $t004_asset_list->Periode->editAttributes() ?>>
-<?php if (!$t004_asset_list->Periode->ReadOnly && !$t004_asset_list->Periode->Disabled && !isset($t004_asset_list->Periode->EditAttrs["readonly"]) && !isset($t004_asset_list->Periode->EditAttrs["disabled"])) { ?>
-<script>
-loadjs.ready(["ft004_assetlist", "datetimepicker"], function() {
-	ew.createDateTimePicker("ft004_assetlist", "x<?php echo $t004_asset_list->RowIndex ?>_Periode", {"ignoreReadonly":true,"useCurrent":false,"format":7});
-});
-</script>
-<?php } ?>
-</span>
-<input type="hidden" data-table="t004_asset" data-field="x_Periode" name="o<?php echo $t004_asset_list->RowIndex ?>_Periode" id="o<?php echo $t004_asset_list->RowIndex ?>_Periode" value="<?php echo HtmlEncode($t004_asset_list->Periode->OldValue) ?>">
+<input type="hidden" data-table="t004_asset" data-field="x_Salvage" name="o<?php echo $t004_asset_list->RowIndex ?>_Salvage" id="o<?php echo $t004_asset_list->RowIndex ?>_Salvage" value="<?php echo HtmlEncode($t004_asset_list->Salvage->OldValue) ?>">
 </td>
 	<?php } ?>
 	<?php if ($t004_asset_list->Qty->Visible) { // Qty ?>

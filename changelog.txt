@@ -1,3 +1,16 @@
+[1.0.5] - 9:48 AM 6/19/2020
+* added
+  - setup - asset group
+
+
+
+[1.0.4] - 9:48 AM 6/19/2020
+* changed
+  - ubah field structure di tabel t004_asset,
+    disesuaikan dengan contoh excel simulasi mencari nilai penyusutan
+
+
+
 [1.0.3] - 6:13 AM 6/17/2020
 * added
   - report: cetak form handover

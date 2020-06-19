@@ -71,10 +71,20 @@ loadjs.ready("head", function() {
 				if (elm && !ew.isHidden(elm) && !ew.hasValue(elm))
 					return this.onError(elm, "<?php echo JsEncode(str_replace("%s", $t004_asset_edit->signature_id->caption(), $t004_asset_edit->signature_id->RequiredErrorMessage)) ?>");
 			<?php } ?>
+			<?php if ($t004_asset_edit->Code->Required) { ?>
+				elm = this.getElements("x" + infix + "_Code");
+				if (elm && !ew.isHidden(elm) && !ew.hasValue(elm))
+					return this.onError(elm, "<?php echo JsEncode(str_replace("%s", $t004_asset_edit->Code->caption(), $t004_asset_edit->Code->RequiredErrorMessage)) ?>");
+			<?php } ?>
 			<?php if ($t004_asset_edit->Description->Required) { ?>
 				elm = this.getElements("x" + infix + "_Description");
 				if (elm && !ew.isHidden(elm) && !ew.hasValue(elm))
 					return this.onError(elm, "<?php echo JsEncode(str_replace("%s", $t004_asset_edit->Description->caption(), $t004_asset_edit->Description->RequiredErrorMessage)) ?>");
+			<?php } ?>
+			<?php if ($t004_asset_edit->group_id->Required) { ?>
+				elm = this.getElements("x" + infix + "_group_id");
+				if (elm && !ew.isHidden(elm) && !ew.hasValue(elm))
+					return this.onError(elm, "<?php echo JsEncode(str_replace("%s", $t004_asset_edit->group_id->caption(), $t004_asset_edit->group_id->RequiredErrorMessage)) ?>");
 			<?php } ?>
 			<?php if ($t004_asset_edit->ProcurementDate->Required) { ?>
 				elm = this.getElements("x" + infix + "_ProcurementDate");
@@ -92,38 +102,14 @@ loadjs.ready("head", function() {
 				elm = this.getElements("x" + infix + "_ProcurementCurrentCost");
 				if (elm && !ew.checkNumber(elm.value))
 					return this.onError(elm, "<?php echo JsEncode($t004_asset_edit->ProcurementCurrentCost->errorMessage()) ?>");
-			<?php if ($t004_asset_edit->DepreciationAmount->Required) { ?>
-				elm = this.getElements("x" + infix + "_DepreciationAmount");
+			<?php if ($t004_asset_edit->Salvage->Required) { ?>
+				elm = this.getElements("x" + infix + "_Salvage");
 				if (elm && !ew.isHidden(elm) && !ew.hasValue(elm))
-					return this.onError(elm, "<?php echo JsEncode(str_replace("%s", $t004_asset_edit->DepreciationAmount->caption(), $t004_asset_edit->DepreciationAmount->RequiredErrorMessage)) ?>");
+					return this.onError(elm, "<?php echo JsEncode(str_replace("%s", $t004_asset_edit->Salvage->caption(), $t004_asset_edit->Salvage->RequiredErrorMessage)) ?>");
 			<?php } ?>
-				elm = this.getElements("x" + infix + "_DepreciationAmount");
+				elm = this.getElements("x" + infix + "_Salvage");
 				if (elm && !ew.checkNumber(elm.value))
-					return this.onError(elm, "<?php echo JsEncode($t004_asset_edit->DepreciationAmount->errorMessage()) ?>");
-			<?php if ($t004_asset_edit->DepreciationYtd->Required) { ?>
-				elm = this.getElements("x" + infix + "_DepreciationYtd");
-				if (elm && !ew.isHidden(elm) && !ew.hasValue(elm))
-					return this.onError(elm, "<?php echo JsEncode(str_replace("%s", $t004_asset_edit->DepreciationYtd->caption(), $t004_asset_edit->DepreciationYtd->RequiredErrorMessage)) ?>");
-			<?php } ?>
-				elm = this.getElements("x" + infix + "_DepreciationYtd");
-				if (elm && !ew.checkNumber(elm.value))
-					return this.onError(elm, "<?php echo JsEncode($t004_asset_edit->DepreciationYtd->errorMessage()) ?>");
-			<?php if ($t004_asset_edit->NetBookValue->Required) { ?>
-				elm = this.getElements("x" + infix + "_NetBookValue");
-				if (elm && !ew.isHidden(elm) && !ew.hasValue(elm))
-					return this.onError(elm, "<?php echo JsEncode(str_replace("%s", $t004_asset_edit->NetBookValue->caption(), $t004_asset_edit->NetBookValue->RequiredErrorMessage)) ?>");
-			<?php } ?>
-				elm = this.getElements("x" + infix + "_NetBookValue");
-				if (elm && !ew.checkNumber(elm.value))
-					return this.onError(elm, "<?php echo JsEncode($t004_asset_edit->NetBookValue->errorMessage()) ?>");
-			<?php if ($t004_asset_edit->Periode->Required) { ?>
-				elm = this.getElements("x" + infix + "_Periode");
-				if (elm && !ew.isHidden(elm) && !ew.hasValue(elm))
-					return this.onError(elm, "<?php echo JsEncode(str_replace("%s", $t004_asset_edit->Periode->caption(), $t004_asset_edit->Periode->RequiredErrorMessage)) ?>");
-			<?php } ?>
-				elm = this.getElements("x" + infix + "_Periode");
-				if (elm && !ew.checkEuroDate(elm.value))
-					return this.onError(elm, "<?php echo JsEncode($t004_asset_edit->Periode->errorMessage()) ?>");
+					return this.onError(elm, "<?php echo JsEncode($t004_asset_edit->Salvage->errorMessage()) ?>");
 			<?php if ($t004_asset_edit->Qty->Required) { ?>
 				elm = this.getElements("x" + infix + "_Qty");
 				if (elm && !ew.isHidden(elm) && !ew.hasValue(elm))
@@ -171,6 +157,8 @@ loadjs.ready("head", function() {
 	ft004_assetedit.lists["x_department_id"].options = <?php echo JsonEncode($t004_asset_edit->department_id->lookupOptions()) ?>;
 	ft004_assetedit.lists["x_signature_id"] = <?php echo $t004_asset_edit->signature_id->Lookup->toClientList($t004_asset_edit) ?>;
 	ft004_assetedit.lists["x_signature_id"].options = <?php echo JsonEncode($t004_asset_edit->signature_id->lookupOptions()) ?>;
+	ft004_assetedit.lists["x_group_id"] = <?php echo $t004_asset_edit->group_id->Lookup->toClientList($t004_asset_edit) ?>;
+	ft004_assetedit.lists["x_group_id"].options = <?php echo JsonEncode($t004_asset_edit->group_id->lookupOptions()) ?>;
 	loadjs.done("ft004_assetedit");
 });
 </script>
@@ -254,6 +242,16 @@ $t004_asset_edit->showMessage();
 <?php echo $t004_asset_edit->signature_id->CustomMsg ?></div></div>
 	</div>
 <?php } ?>
+<?php if ($t004_asset_edit->Code->Visible) { // Code ?>
+	<div id="r_Code" class="form-group row">
+		<label id="elh_t004_asset_Code" for="x_Code" class="<?php echo $t004_asset_edit->LeftColumnClass ?>"><?php echo $t004_asset_edit->Code->caption() ?><?php echo $t004_asset_edit->Code->Required ? $Language->phrase("FieldRequiredIndicator") : "" ?></label>
+		<div class="<?php echo $t004_asset_edit->RightColumnClass ?>"><div <?php echo $t004_asset_edit->Code->cellAttributes() ?>>
+<span id="el_t004_asset_Code">
+<input type="text" data-table="t004_asset" data-field="x_Code" name="x_Code" id="x_Code" size="30" maxlength="25" placeholder="<?php echo HtmlEncode($t004_asset_edit->Code->getPlaceHolder()) ?>" value="<?php echo $t004_asset_edit->Code->EditValue ?>"<?php echo $t004_asset_edit->Code->editAttributes() ?>>
+</span>
+<?php echo $t004_asset_edit->Code->CustomMsg ?></div></div>
+	</div>
+<?php } ?>
 <?php if ($t004_asset_edit->Description->Visible) { // Description ?>
 	<div id="r_Description" class="form-group row">
 		<label id="elh_t004_asset_Description" for="x_Description" class="<?php echo $t004_asset_edit->LeftColumnClass ?>"><?php echo $t004_asset_edit->Description->caption() ?><?php echo $t004_asset_edit->Description->Required ? $Language->phrase("FieldRequiredIndicator") : "" ?></label>
@@ -262,6 +260,23 @@ $t004_asset_edit->showMessage();
 <input type="text" data-table="t004_asset" data-field="x_Description" name="x_Description" id="x_Description" size="30" maxlength="255" placeholder="<?php echo HtmlEncode($t004_asset_edit->Description->getPlaceHolder()) ?>" value="<?php echo $t004_asset_edit->Description->EditValue ?>"<?php echo $t004_asset_edit->Description->editAttributes() ?>>
 </span>
 <?php echo $t004_asset_edit->Description->CustomMsg ?></div></div>
+	</div>
+<?php } ?>
+<?php if ($t004_asset_edit->group_id->Visible) { // group_id ?>
+	<div id="r_group_id" class="form-group row">
+		<label id="elh_t004_asset_group_id" for="x_group_id" class="<?php echo $t004_asset_edit->LeftColumnClass ?>"><?php echo $t004_asset_edit->group_id->caption() ?><?php echo $t004_asset_edit->group_id->Required ? $Language->phrase("FieldRequiredIndicator") : "" ?></label>
+		<div class="<?php echo $t004_asset_edit->RightColumnClass ?>"><div <?php echo $t004_asset_edit->group_id->cellAttributes() ?>>
+<span id="el_t004_asset_group_id">
+<div class="input-group ew-lookup-list">
+	<div class="form-control ew-lookup-text" tabindex="-1" id="lu_x_group_id"><?php echo EmptyValue(strval($t004_asset_edit->group_id->ViewValue)) ? $Language->phrase("PleaseSelect") : $t004_asset_edit->group_id->ViewValue ?></div>
+	<div class="input-group-append">
+		<button type="button" title="<?php echo HtmlEncode(str_replace("%s", RemoveHtml($t004_asset_edit->group_id->caption()), $Language->phrase("LookupLink", TRUE))) ?>" class="ew-lookup-btn btn btn-default"<?php echo ($t004_asset_edit->group_id->ReadOnly || $t004_asset_edit->group_id->Disabled) ? " disabled" : "" ?> onclick="ew.modalLookupShow({lnk:this,el:'x_group_id',m:0,n:10});"><i class="fas fa-search ew-icon"></i></button>
+	</div>
+</div>
+<?php echo $t004_asset_edit->group_id->Lookup->getParamTag($t004_asset_edit, "p_x_group_id") ?>
+<input type="hidden" data-table="t004_asset" data-field="x_group_id" data-multiple="0" data-lookup="1" data-value-separator="<?php echo $t004_asset_edit->group_id->displayValueSeparatorAttribute() ?>" name="x_group_id" id="x_group_id" value="<?php echo $t004_asset_edit->group_id->CurrentValue ?>"<?php echo $t004_asset_edit->group_id->editAttributes() ?>>
+</span>
+<?php echo $t004_asset_edit->group_id->CustomMsg ?></div></div>
 	</div>
 <?php } ?>
 <?php if ($t004_asset_edit->ProcurementDate->Visible) { // ProcurementDate ?>
@@ -291,51 +306,14 @@ loadjs.ready(["ft004_assetedit", "datetimepicker"], function() {
 <?php echo $t004_asset_edit->ProcurementCurrentCost->CustomMsg ?></div></div>
 	</div>
 <?php } ?>
-<?php if ($t004_asset_edit->DepreciationAmount->Visible) { // DepreciationAmount ?>
-	<div id="r_DepreciationAmount" class="form-group row">
-		<label id="elh_t004_asset_DepreciationAmount" for="x_DepreciationAmount" class="<?php echo $t004_asset_edit->LeftColumnClass ?>"><?php echo $t004_asset_edit->DepreciationAmount->caption() ?><?php echo $t004_asset_edit->DepreciationAmount->Required ? $Language->phrase("FieldRequiredIndicator") : "" ?></label>
-		<div class="<?php echo $t004_asset_edit->RightColumnClass ?>"><div <?php echo $t004_asset_edit->DepreciationAmount->cellAttributes() ?>>
-<span id="el_t004_asset_DepreciationAmount">
-<input type="text" data-table="t004_asset" data-field="x_DepreciationAmount" name="x_DepreciationAmount" id="x_DepreciationAmount" size="10" maxlength="14" placeholder="<?php echo HtmlEncode($t004_asset_edit->DepreciationAmount->getPlaceHolder()) ?>" value="<?php echo $t004_asset_edit->DepreciationAmount->EditValue ?>"<?php echo $t004_asset_edit->DepreciationAmount->editAttributes() ?>>
+<?php if ($t004_asset_edit->Salvage->Visible) { // Salvage ?>
+	<div id="r_Salvage" class="form-group row">
+		<label id="elh_t004_asset_Salvage" for="x_Salvage" class="<?php echo $t004_asset_edit->LeftColumnClass ?>"><?php echo $t004_asset_edit->Salvage->caption() ?><?php echo $t004_asset_edit->Salvage->Required ? $Language->phrase("FieldRequiredIndicator") : "" ?></label>
+		<div class="<?php echo $t004_asset_edit->RightColumnClass ?>"><div <?php echo $t004_asset_edit->Salvage->cellAttributes() ?>>
+<span id="el_t004_asset_Salvage">
+<input type="text" data-table="t004_asset" data-field="x_Salvage" name="x_Salvage" id="x_Salvage" size="10" maxlength="14" placeholder="<?php echo HtmlEncode($t004_asset_edit->Salvage->getPlaceHolder()) ?>" value="<?php echo $t004_asset_edit->Salvage->EditValue ?>"<?php echo $t004_asset_edit->Salvage->editAttributes() ?>>
 </span>
-<?php echo $t004_asset_edit->DepreciationAmount->CustomMsg ?></div></div>
-	</div>
-<?php } ?>
-<?php if ($t004_asset_edit->DepreciationYtd->Visible) { // DepreciationYtd ?>
-	<div id="r_DepreciationYtd" class="form-group row">
-		<label id="elh_t004_asset_DepreciationYtd" for="x_DepreciationYtd" class="<?php echo $t004_asset_edit->LeftColumnClass ?>"><?php echo $t004_asset_edit->DepreciationYtd->caption() ?><?php echo $t004_asset_edit->DepreciationYtd->Required ? $Language->phrase("FieldRequiredIndicator") : "" ?></label>
-		<div class="<?php echo $t004_asset_edit->RightColumnClass ?>"><div <?php echo $t004_asset_edit->DepreciationYtd->cellAttributes() ?>>
-<span id="el_t004_asset_DepreciationYtd">
-<input type="text" data-table="t004_asset" data-field="x_DepreciationYtd" name="x_DepreciationYtd" id="x_DepreciationYtd" size="10" maxlength="14" placeholder="<?php echo HtmlEncode($t004_asset_edit->DepreciationYtd->getPlaceHolder()) ?>" value="<?php echo $t004_asset_edit->DepreciationYtd->EditValue ?>"<?php echo $t004_asset_edit->DepreciationYtd->editAttributes() ?>>
-</span>
-<?php echo $t004_asset_edit->DepreciationYtd->CustomMsg ?></div></div>
-	</div>
-<?php } ?>
-<?php if ($t004_asset_edit->NetBookValue->Visible) { // NetBookValue ?>
-	<div id="r_NetBookValue" class="form-group row">
-		<label id="elh_t004_asset_NetBookValue" for="x_NetBookValue" class="<?php echo $t004_asset_edit->LeftColumnClass ?>"><?php echo $t004_asset_edit->NetBookValue->caption() ?><?php echo $t004_asset_edit->NetBookValue->Required ? $Language->phrase("FieldRequiredIndicator") : "" ?></label>
-		<div class="<?php echo $t004_asset_edit->RightColumnClass ?>"><div <?php echo $t004_asset_edit->NetBookValue->cellAttributes() ?>>
-<span id="el_t004_asset_NetBookValue">
-<input type="text" data-table="t004_asset" data-field="x_NetBookValue" name="x_NetBookValue" id="x_NetBookValue" size="10" maxlength="14" placeholder="<?php echo HtmlEncode($t004_asset_edit->NetBookValue->getPlaceHolder()) ?>" value="<?php echo $t004_asset_edit->NetBookValue->EditValue ?>"<?php echo $t004_asset_edit->NetBookValue->editAttributes() ?>>
-</span>
-<?php echo $t004_asset_edit->NetBookValue->CustomMsg ?></div></div>
-	</div>
-<?php } ?>
-<?php if ($t004_asset_edit->Periode->Visible) { // Periode ?>
-	<div id="r_Periode" class="form-group row">
-		<label id="elh_t004_asset_Periode" for="x_Periode" class="<?php echo $t004_asset_edit->LeftColumnClass ?>"><?php echo $t004_asset_edit->Periode->caption() ?><?php echo $t004_asset_edit->Periode->Required ? $Language->phrase("FieldRequiredIndicator") : "" ?></label>
-		<div class="<?php echo $t004_asset_edit->RightColumnClass ?>"><div <?php echo $t004_asset_edit->Periode->cellAttributes() ?>>
-<span id="el_t004_asset_Periode">
-<input type="text" data-table="t004_asset" data-field="x_Periode" data-format="7" name="x_Periode" id="x_Periode" size="10" maxlength="10" placeholder="<?php echo HtmlEncode($t004_asset_edit->Periode->getPlaceHolder()) ?>" value="<?php echo $t004_asset_edit->Periode->EditValue ?>"<?php echo $t004_asset_edit->Periode->editAttributes() ?>>
-<?php if (!$t004_asset_edit->Periode->ReadOnly && !$t004_asset_edit->Periode->Disabled && !isset($t004_asset_edit->Periode->EditAttrs["readonly"]) && !isset($t004_asset_edit->Periode->EditAttrs["disabled"])) { ?>
-<script>
-loadjs.ready(["ft004_assetedit", "datetimepicker"], function() {
-	ew.createDateTimePicker("ft004_assetedit", "x_Periode", {"ignoreReadonly":true,"useCurrent":false,"format":7});
-});
-</script>
-<?php } ?>
-</span>
-<?php echo $t004_asset_edit->Periode->CustomMsg ?></div></div>
+<?php echo $t004_asset_edit->Salvage->CustomMsg ?></div></div>
 	</div>
 <?php } ?>
 <?php if ($t004_asset_edit->Qty->Visible) { // Qty ?>

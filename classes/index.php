@@ -285,6 +285,8 @@ class index
 		$Security->loadUserLevel(); // Load User Level
 		if ($Security->allowList(CurrentProjectID() . 'd301_home'))
 			$this->terminate("d301_homedsb.php"); // Exit and go to default page
+		if ($Security->allowList(CurrentProjectID() . 'c101_ho.php'))
+			$this->terminate("c101_ho.php");
 		if ($Security->allowList(CurrentProjectID() . 'r001_asset'))
 			$this->terminate("r001_assetsmry.php");
 		if ($Security->allowList(CurrentProjectID() . 't001_property'))
@@ -295,6 +297,8 @@ class index
 			$this->terminate("t003_signaturelist.php");
 		if ($Security->allowList(CurrentProjectID() . 't004_asset'))
 			$this->terminate("t004_assetlist.php");
+		if ($Security->allowList(CurrentProjectID() . 't005_assetgroup'))
+			$this->terminate("t005_assetgrouplist.php");
 		if ($Security->allowList(CurrentProjectID() . 't101_ho_head'))
 			$this->terminate("t101_ho_headlist.php");
 		if ($Security->allowList(CurrentProjectID() . 't102_ho_detail'))
@@ -311,10 +315,6 @@ class index
 			$this->terminate("t204_audittraillist.php");
 		if ($Security->allowList(CurrentProjectID() . 't205_parameter'))
 			$this->terminate("t205_parameterlist.php");
-		if ($Security->allowList(CurrentProjectID() . 'c101_ho.php'))
-			$this->terminate("c101_ho.php");
-		if ($Security->allowList(CurrentProjectID() . 'v101_ho'))
-			$this->terminate("v101_holist.php");
 		if ($Security->isLoggedIn()) {
 			$this->setFailureMessage(DeniedMessage() . "<br><br><a href=\"logout.php\">" . $Language->phrase("BackToLogin") . "</a>");
 		} else {

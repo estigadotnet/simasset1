@@ -57,18 +57,9 @@ loadjs.ready("head", function() {
 		elm = this.getElements("x" + infix + "_ProcurementCurrentCost");
 		if (elm && !ew.checkNumber(elm.value))
 			return this.onError(elm, "<?php echo JsEncode($t004_asset_search->ProcurementCurrentCost->errorMessage()) ?>");
-		elm = this.getElements("x" + infix + "_DepreciationAmount");
+		elm = this.getElements("x" + infix + "_Salvage");
 		if (elm && !ew.checkNumber(elm.value))
-			return this.onError(elm, "<?php echo JsEncode($t004_asset_search->DepreciationAmount->errorMessage()) ?>");
-		elm = this.getElements("x" + infix + "_DepreciationYtd");
-		if (elm && !ew.checkNumber(elm.value))
-			return this.onError(elm, "<?php echo JsEncode($t004_asset_search->DepreciationYtd->errorMessage()) ?>");
-		elm = this.getElements("x" + infix + "_NetBookValue");
-		if (elm && !ew.checkNumber(elm.value))
-			return this.onError(elm, "<?php echo JsEncode($t004_asset_search->NetBookValue->errorMessage()) ?>");
-		elm = this.getElements("x" + infix + "_Periode");
-		if (elm && !ew.checkEuroDate(elm.value))
-			return this.onError(elm, "<?php echo JsEncode($t004_asset_search->Periode->errorMessage()) ?>");
+			return this.onError(elm, "<?php echo JsEncode($t004_asset_search->Salvage->errorMessage()) ?>");
 		elm = this.getElements("x" + infix + "_Qty");
 		if (elm && !ew.checkNumber(elm.value))
 			return this.onError(elm, "<?php echo JsEncode($t004_asset_search->Qty->errorMessage()) ?>");
@@ -96,6 +87,8 @@ loadjs.ready("head", function() {
 	ft004_assetsearch.lists["x_department_id"].options = <?php echo JsonEncode($t004_asset_search->department_id->lookupOptions()) ?>;
 	ft004_assetsearch.lists["x_signature_id"] = <?php echo $t004_asset_search->signature_id->Lookup->toClientList($t004_asset_search) ?>;
 	ft004_assetsearch.lists["x_signature_id"].options = <?php echo JsonEncode($t004_asset_search->signature_id->lookupOptions()) ?>;
+	ft004_assetsearch.lists["x_group_id"] = <?php echo $t004_asset_search->group_id->Lookup->toClientList($t004_asset_search) ?>;
+	ft004_assetsearch.lists["x_group_id"].options = <?php echo JsonEncode($t004_asset_search->group_id->lookupOptions()) ?>;
 	loadjs.done("ft004_assetsearch");
 });
 </script>
@@ -185,6 +178,21 @@ $t004_asset_search->showMessage();
 		</div></div>
 	</div>
 <?php } ?>
+<?php if ($t004_asset_search->Code->Visible) { // Code ?>
+	<div id="r_Code" class="form-group row">
+		<label for="x_Code" class="<?php echo $t004_asset_search->LeftColumnClass ?>"><span id="elh_t004_asset_Code"><?php echo $t004_asset_search->Code->caption() ?></span>
+		<span class="ew-search-operator">
+<?php echo $Language->phrase("LIKE") ?>
+<input type="hidden" name="z_Code" id="z_Code" value="LIKE">
+</span>
+		</label>
+		<div class="<?php echo $t004_asset_search->RightColumnClass ?>"><div <?php echo $t004_asset_search->Code->cellAttributes() ?>>
+			<span id="el_t004_asset_Code" class="ew-search-field">
+<input type="text" data-table="t004_asset" data-field="x_Code" name="x_Code" id="x_Code" size="30" maxlength="25" placeholder="<?php echo HtmlEncode($t004_asset_search->Code->getPlaceHolder()) ?>" value="<?php echo $t004_asset_search->Code->EditValue ?>"<?php echo $t004_asset_search->Code->editAttributes() ?>>
+</span>
+		</div></div>
+	</div>
+<?php } ?>
 <?php if ($t004_asset_search->Description->Visible) { // Description ?>
 	<div id="r_Description" class="form-group row">
 		<label for="x_Description" class="<?php echo $t004_asset_search->LeftColumnClass ?>"><span id="elh_t004_asset_Description"><?php echo $t004_asset_search->Description->caption() ?></span>
@@ -196,6 +204,28 @@ $t004_asset_search->showMessage();
 		<div class="<?php echo $t004_asset_search->RightColumnClass ?>"><div <?php echo $t004_asset_search->Description->cellAttributes() ?>>
 			<span id="el_t004_asset_Description" class="ew-search-field">
 <input type="text" data-table="t004_asset" data-field="x_Description" name="x_Description" id="x_Description" size="30" maxlength="255" placeholder="<?php echo HtmlEncode($t004_asset_search->Description->getPlaceHolder()) ?>" value="<?php echo $t004_asset_search->Description->EditValue ?>"<?php echo $t004_asset_search->Description->editAttributes() ?>>
+</span>
+		</div></div>
+	</div>
+<?php } ?>
+<?php if ($t004_asset_search->group_id->Visible) { // group_id ?>
+	<div id="r_group_id" class="form-group row">
+		<label for="x_group_id" class="<?php echo $t004_asset_search->LeftColumnClass ?>"><span id="elh_t004_asset_group_id"><?php echo $t004_asset_search->group_id->caption() ?></span>
+		<span class="ew-search-operator">
+<?php echo $Language->phrase("=") ?>
+<input type="hidden" name="z_group_id" id="z_group_id" value="=">
+</span>
+		</label>
+		<div class="<?php echo $t004_asset_search->RightColumnClass ?>"><div <?php echo $t004_asset_search->group_id->cellAttributes() ?>>
+			<span id="el_t004_asset_group_id" class="ew-search-field">
+<div class="input-group ew-lookup-list">
+	<div class="form-control ew-lookup-text" tabindex="-1" id="lu_x_group_id"><?php echo EmptyValue(strval($t004_asset_search->group_id->AdvancedSearch->ViewValue)) ? $Language->phrase("PleaseSelect") : $t004_asset_search->group_id->AdvancedSearch->ViewValue ?></div>
+	<div class="input-group-append">
+		<button type="button" title="<?php echo HtmlEncode(str_replace("%s", RemoveHtml($t004_asset_search->group_id->caption()), $Language->phrase("LookupLink", TRUE))) ?>" class="ew-lookup-btn btn btn-default"<?php echo ($t004_asset_search->group_id->ReadOnly || $t004_asset_search->group_id->Disabled) ? " disabled" : "" ?> onclick="ew.modalLookupShow({lnk:this,el:'x_group_id',m:0,n:10});"><i class="fas fa-search ew-icon"></i></button>
+	</div>
+</div>
+<?php echo $t004_asset_search->group_id->Lookup->getParamTag($t004_asset_search, "p_x_group_id") ?>
+<input type="hidden" data-table="t004_asset" data-field="x_group_id" data-multiple="0" data-lookup="1" data-value-separator="<?php echo $t004_asset_search->group_id->displayValueSeparatorAttribute() ?>" name="x_group_id" id="x_group_id" value="<?php echo $t004_asset_search->group_id->AdvancedSearch->SearchValue ?>"<?php echo $t004_asset_search->group_id->editAttributes() ?>>
 </span>
 		</div></div>
 	</div>
@@ -237,69 +267,17 @@ loadjs.ready(["ft004_assetsearch", "datetimepicker"], function() {
 		</div></div>
 	</div>
 <?php } ?>
-<?php if ($t004_asset_search->DepreciationAmount->Visible) { // DepreciationAmount ?>
-	<div id="r_DepreciationAmount" class="form-group row">
-		<label for="x_DepreciationAmount" class="<?php echo $t004_asset_search->LeftColumnClass ?>"><span id="elh_t004_asset_DepreciationAmount"><?php echo $t004_asset_search->DepreciationAmount->caption() ?></span>
+<?php if ($t004_asset_search->Salvage->Visible) { // Salvage ?>
+	<div id="r_Salvage" class="form-group row">
+		<label for="x_Salvage" class="<?php echo $t004_asset_search->LeftColumnClass ?>"><span id="elh_t004_asset_Salvage"><?php echo $t004_asset_search->Salvage->caption() ?></span>
 		<span class="ew-search-operator">
 <?php echo $Language->phrase("=") ?>
-<input type="hidden" name="z_DepreciationAmount" id="z_DepreciationAmount" value="=">
+<input type="hidden" name="z_Salvage" id="z_Salvage" value="=">
 </span>
 		</label>
-		<div class="<?php echo $t004_asset_search->RightColumnClass ?>"><div <?php echo $t004_asset_search->DepreciationAmount->cellAttributes() ?>>
-			<span id="el_t004_asset_DepreciationAmount" class="ew-search-field">
-<input type="text" data-table="t004_asset" data-field="x_DepreciationAmount" name="x_DepreciationAmount" id="x_DepreciationAmount" size="10" maxlength="14" placeholder="<?php echo HtmlEncode($t004_asset_search->DepreciationAmount->getPlaceHolder()) ?>" value="<?php echo $t004_asset_search->DepreciationAmount->EditValue ?>"<?php echo $t004_asset_search->DepreciationAmount->editAttributes() ?>>
-</span>
-		</div></div>
-	</div>
-<?php } ?>
-<?php if ($t004_asset_search->DepreciationYtd->Visible) { // DepreciationYtd ?>
-	<div id="r_DepreciationYtd" class="form-group row">
-		<label for="x_DepreciationYtd" class="<?php echo $t004_asset_search->LeftColumnClass ?>"><span id="elh_t004_asset_DepreciationYtd"><?php echo $t004_asset_search->DepreciationYtd->caption() ?></span>
-		<span class="ew-search-operator">
-<?php echo $Language->phrase("=") ?>
-<input type="hidden" name="z_DepreciationYtd" id="z_DepreciationYtd" value="=">
-</span>
-		</label>
-		<div class="<?php echo $t004_asset_search->RightColumnClass ?>"><div <?php echo $t004_asset_search->DepreciationYtd->cellAttributes() ?>>
-			<span id="el_t004_asset_DepreciationYtd" class="ew-search-field">
-<input type="text" data-table="t004_asset" data-field="x_DepreciationYtd" name="x_DepreciationYtd" id="x_DepreciationYtd" size="10" maxlength="14" placeholder="<?php echo HtmlEncode($t004_asset_search->DepreciationYtd->getPlaceHolder()) ?>" value="<?php echo $t004_asset_search->DepreciationYtd->EditValue ?>"<?php echo $t004_asset_search->DepreciationYtd->editAttributes() ?>>
-</span>
-		</div></div>
-	</div>
-<?php } ?>
-<?php if ($t004_asset_search->NetBookValue->Visible) { // NetBookValue ?>
-	<div id="r_NetBookValue" class="form-group row">
-		<label for="x_NetBookValue" class="<?php echo $t004_asset_search->LeftColumnClass ?>"><span id="elh_t004_asset_NetBookValue"><?php echo $t004_asset_search->NetBookValue->caption() ?></span>
-		<span class="ew-search-operator">
-<?php echo $Language->phrase("=") ?>
-<input type="hidden" name="z_NetBookValue" id="z_NetBookValue" value="=">
-</span>
-		</label>
-		<div class="<?php echo $t004_asset_search->RightColumnClass ?>"><div <?php echo $t004_asset_search->NetBookValue->cellAttributes() ?>>
-			<span id="el_t004_asset_NetBookValue" class="ew-search-field">
-<input type="text" data-table="t004_asset" data-field="x_NetBookValue" name="x_NetBookValue" id="x_NetBookValue" size="10" maxlength="14" placeholder="<?php echo HtmlEncode($t004_asset_search->NetBookValue->getPlaceHolder()) ?>" value="<?php echo $t004_asset_search->NetBookValue->EditValue ?>"<?php echo $t004_asset_search->NetBookValue->editAttributes() ?>>
-</span>
-		</div></div>
-	</div>
-<?php } ?>
-<?php if ($t004_asset_search->Periode->Visible) { // Periode ?>
-	<div id="r_Periode" class="form-group row">
-		<label for="x_Periode" class="<?php echo $t004_asset_search->LeftColumnClass ?>"><span id="elh_t004_asset_Periode"><?php echo $t004_asset_search->Periode->caption() ?></span>
-		<span class="ew-search-operator">
-<?php echo $Language->phrase("=") ?>
-<input type="hidden" name="z_Periode" id="z_Periode" value="=">
-</span>
-		</label>
-		<div class="<?php echo $t004_asset_search->RightColumnClass ?>"><div <?php echo $t004_asset_search->Periode->cellAttributes() ?>>
-			<span id="el_t004_asset_Periode" class="ew-search-field">
-<input type="text" data-table="t004_asset" data-field="x_Periode" data-format="7" name="x_Periode" id="x_Periode" size="10" maxlength="10" placeholder="<?php echo HtmlEncode($t004_asset_search->Periode->getPlaceHolder()) ?>" value="<?php echo $t004_asset_search->Periode->EditValue ?>"<?php echo $t004_asset_search->Periode->editAttributes() ?>>
-<?php if (!$t004_asset_search->Periode->ReadOnly && !$t004_asset_search->Periode->Disabled && !isset($t004_asset_search->Periode->EditAttrs["readonly"]) && !isset($t004_asset_search->Periode->EditAttrs["disabled"])) { ?>
-<script>
-loadjs.ready(["ft004_assetsearch", "datetimepicker"], function() {
-	ew.createDateTimePicker("ft004_assetsearch", "x_Periode", {"ignoreReadonly":true,"useCurrent":false,"format":7});
-});
-</script>
-<?php } ?>
+		<div class="<?php echo $t004_asset_search->RightColumnClass ?>"><div <?php echo $t004_asset_search->Salvage->cellAttributes() ?>>
+			<span id="el_t004_asset_Salvage" class="ew-search-field">
+<input type="text" data-table="t004_asset" data-field="x_Salvage" name="x_Salvage" id="x_Salvage" size="10" maxlength="14" placeholder="<?php echo HtmlEncode($t004_asset_search->Salvage->getPlaceHolder()) ?>" value="<?php echo $t004_asset_search->Salvage->EditValue ?>"<?php echo $t004_asset_search->Salvage->editAttributes() ?>>
 </span>
 		</div></div>
 	</div>

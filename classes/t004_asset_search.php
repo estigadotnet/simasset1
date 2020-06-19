@@ -684,13 +684,12 @@ class t004_asset_search extends t004_asset
 		$this->property_id->setVisibility();
 		$this->department_id->setVisibility();
 		$this->signature_id->setVisibility();
+		$this->Code->setVisibility();
 		$this->Description->setVisibility();
+		$this->group_id->setVisibility();
 		$this->ProcurementDate->setVisibility();
 		$this->ProcurementCurrentCost->setVisibility();
-		$this->DepreciationAmount->setVisibility();
-		$this->DepreciationYtd->setVisibility();
-		$this->NetBookValue->setVisibility();
-		$this->Periode->setVisibility();
+		$this->Salvage->setVisibility();
 		$this->Qty->setVisibility();
 		$this->Remarks->setVisibility();
 		$this->hideFieldsForAddEdit();
@@ -717,6 +716,7 @@ class t004_asset_search extends t004_asset
 		$this->setupLookupOptions($this->property_id);
 		$this->setupLookupOptions($this->department_id);
 		$this->setupLookupOptions($this->signature_id);
+		$this->setupLookupOptions($this->group_id);
 
 		// Set up Breadcrumb
 		$this->setupBreadcrumb();
@@ -764,13 +764,12 @@ class t004_asset_search extends t004_asset
 		$this->buildSearchUrl($srchUrl, $this->property_id); // property_id
 		$this->buildSearchUrl($srchUrl, $this->department_id); // department_id
 		$this->buildSearchUrl($srchUrl, $this->signature_id); // signature_id
+		$this->buildSearchUrl($srchUrl, $this->Code); // Code
 		$this->buildSearchUrl($srchUrl, $this->Description); // Description
+		$this->buildSearchUrl($srchUrl, $this->group_id); // group_id
 		$this->buildSearchUrl($srchUrl, $this->ProcurementDate); // ProcurementDate
 		$this->buildSearchUrl($srchUrl, $this->ProcurementCurrentCost); // ProcurementCurrentCost
-		$this->buildSearchUrl($srchUrl, $this->DepreciationAmount); // DepreciationAmount
-		$this->buildSearchUrl($srchUrl, $this->DepreciationYtd); // DepreciationYtd
-		$this->buildSearchUrl($srchUrl, $this->NetBookValue); // NetBookValue
-		$this->buildSearchUrl($srchUrl, $this->Periode); // Periode
+		$this->buildSearchUrl($srchUrl, $this->Salvage); // Salvage
 		$this->buildSearchUrl($srchUrl, $this->Qty); // Qty
 		$this->buildSearchUrl($srchUrl, $this->Remarks); // Remarks
 		if ($srchUrl != "")
@@ -851,19 +850,17 @@ class t004_asset_search extends t004_asset
 			$got = TRUE;
 		if ($this->signature_id->AdvancedSearch->post())
 			$got = TRUE;
+		if ($this->Code->AdvancedSearch->post())
+			$got = TRUE;
 		if ($this->Description->AdvancedSearch->post())
+			$got = TRUE;
+		if ($this->group_id->AdvancedSearch->post())
 			$got = TRUE;
 		if ($this->ProcurementDate->AdvancedSearch->post())
 			$got = TRUE;
 		if ($this->ProcurementCurrentCost->AdvancedSearch->post())
 			$got = TRUE;
-		if ($this->DepreciationAmount->AdvancedSearch->post())
-			$got = TRUE;
-		if ($this->DepreciationYtd->AdvancedSearch->post())
-			$got = TRUE;
-		if ($this->NetBookValue->AdvancedSearch->post())
-			$got = TRUE;
-		if ($this->Periode->AdvancedSearch->post())
+		if ($this->Salvage->AdvancedSearch->post())
 			$got = TRUE;
 		if ($this->Qty->AdvancedSearch->post())
 			$got = TRUE;
@@ -884,16 +881,8 @@ class t004_asset_search extends t004_asset
 			$this->ProcurementCurrentCost->CurrentValue = ConvertToFloatString($this->ProcurementCurrentCost->CurrentValue);
 
 		// Convert decimal values if posted back
-		if ($this->DepreciationAmount->FormValue == $this->DepreciationAmount->CurrentValue && is_numeric(ConvertToFloatString($this->DepreciationAmount->CurrentValue)))
-			$this->DepreciationAmount->CurrentValue = ConvertToFloatString($this->DepreciationAmount->CurrentValue);
-
-		// Convert decimal values if posted back
-		if ($this->DepreciationYtd->FormValue == $this->DepreciationYtd->CurrentValue && is_numeric(ConvertToFloatString($this->DepreciationYtd->CurrentValue)))
-			$this->DepreciationYtd->CurrentValue = ConvertToFloatString($this->DepreciationYtd->CurrentValue);
-
-		// Convert decimal values if posted back
-		if ($this->NetBookValue->FormValue == $this->NetBookValue->CurrentValue && is_numeric(ConvertToFloatString($this->NetBookValue->CurrentValue)))
-			$this->NetBookValue->CurrentValue = ConvertToFloatString($this->NetBookValue->CurrentValue);
+		if ($this->Salvage->FormValue == $this->Salvage->CurrentValue && is_numeric(ConvertToFloatString($this->Salvage->CurrentValue)))
+			$this->Salvage->CurrentValue = ConvertToFloatString($this->Salvage->CurrentValue);
 
 		// Convert decimal values if posted back
 		if ($this->Qty->FormValue == $this->Qty->CurrentValue && is_numeric(ConvertToFloatString($this->Qty->CurrentValue)))
@@ -907,13 +896,12 @@ class t004_asset_search extends t004_asset
 		// property_id
 		// department_id
 		// signature_id
+		// Code
 		// Description
+		// group_id
 		// ProcurementDate
 		// ProcurementCurrentCost
-		// DepreciationAmount
-		// DepreciationYtd
-		// NetBookValue
-		// Periode
+		// Salvage
 		// Qty
 		// Remarks
 
@@ -989,9 +977,36 @@ class t004_asset_search extends t004_asset
 			}
 			$this->signature_id->ViewCustomAttributes = "";
 
+			// Code
+			$this->Code->ViewValue = $this->Code->CurrentValue;
+			$this->Code->ViewCustomAttributes = "";
+
 			// Description
 			$this->Description->ViewValue = $this->Description->CurrentValue;
 			$this->Description->ViewCustomAttributes = "";
+
+			// group_id
+			$curVal = strval($this->group_id->CurrentValue);
+			if ($curVal != "") {
+				$this->group_id->ViewValue = $this->group_id->lookupCacheOption($curVal);
+				if ($this->group_id->ViewValue === NULL) { // Lookup from database
+					$filterWrk = "`id`" . SearchString("=", $curVal, DATATYPE_NUMBER, "");
+					$sqlWrk = $this->group_id->Lookup->getSql(FALSE, $filterWrk, '', $this);
+					$rswrk = Conn()->execute($sqlWrk);
+					if ($rswrk && !$rswrk->EOF) { // Lookup values found
+						$arwrk = [];
+						$arwrk[1] = $rswrk->fields('df');
+						$arwrk[2] = FormatNumber($rswrk->fields('df2'), 0, -2, -2, -2);
+						$this->group_id->ViewValue = $this->group_id->displayValue($arwrk);
+						$rswrk->Close();
+					} else {
+						$this->group_id->ViewValue = $this->group_id->CurrentValue;
+					}
+				}
+			} else {
+				$this->group_id->ViewValue = NULL;
+			}
+			$this->group_id->ViewCustomAttributes = "";
 
 			// ProcurementDate
 			$this->ProcurementDate->ViewValue = $this->ProcurementDate->CurrentValue;
@@ -1004,28 +1019,11 @@ class t004_asset_search extends t004_asset
 			$this->ProcurementCurrentCost->CellCssStyle .= "text-align: right;";
 			$this->ProcurementCurrentCost->ViewCustomAttributes = "";
 
-			// DepreciationAmount
-			$this->DepreciationAmount->ViewValue = $this->DepreciationAmount->CurrentValue;
-			$this->DepreciationAmount->ViewValue = FormatNumber($this->DepreciationAmount->ViewValue, 2, -2, -2, -2);
-			$this->DepreciationAmount->CellCssStyle .= "text-align: right;";
-			$this->DepreciationAmount->ViewCustomAttributes = "";
-
-			// DepreciationYtd
-			$this->DepreciationYtd->ViewValue = $this->DepreciationYtd->CurrentValue;
-			$this->DepreciationYtd->ViewValue = FormatNumber($this->DepreciationYtd->ViewValue, 2, -2, -2, -2);
-			$this->DepreciationYtd->CellCssStyle .= "text-align: right;";
-			$this->DepreciationYtd->ViewCustomAttributes = "";
-
-			// NetBookValue
-			$this->NetBookValue->ViewValue = $this->NetBookValue->CurrentValue;
-			$this->NetBookValue->ViewValue = FormatNumber($this->NetBookValue->ViewValue, 2, -2, -2, -2);
-			$this->NetBookValue->CellCssStyle .= "text-align: right;";
-			$this->NetBookValue->ViewCustomAttributes = "";
-
-			// Periode
-			$this->Periode->ViewValue = $this->Periode->CurrentValue;
-			$this->Periode->ViewValue = FormatDateTime($this->Periode->ViewValue, 7);
-			$this->Periode->ViewCustomAttributes = "";
+			// Salvage
+			$this->Salvage->ViewValue = $this->Salvage->CurrentValue;
+			$this->Salvage->ViewValue = FormatNumber($this->Salvage->ViewValue, 2, -2, -2, -2);
+			$this->Salvage->CellCssStyle .= "text-align: right;";
+			$this->Salvage->ViewCustomAttributes = "";
 
 			// Qty
 			$this->Qty->ViewValue = $this->Qty->CurrentValue;
@@ -1052,10 +1050,20 @@ class t004_asset_search extends t004_asset
 			$this->signature_id->HrefValue = "";
 			$this->signature_id->TooltipValue = "";
 
+			// Code
+			$this->Code->LinkCustomAttributes = "";
+			$this->Code->HrefValue = "";
+			$this->Code->TooltipValue = "";
+
 			// Description
 			$this->Description->LinkCustomAttributes = "";
 			$this->Description->HrefValue = "";
 			$this->Description->TooltipValue = "";
+
+			// group_id
+			$this->group_id->LinkCustomAttributes = "";
+			$this->group_id->HrefValue = "";
+			$this->group_id->TooltipValue = "";
 
 			// ProcurementDate
 			$this->ProcurementDate->LinkCustomAttributes = "";
@@ -1067,25 +1075,10 @@ class t004_asset_search extends t004_asset
 			$this->ProcurementCurrentCost->HrefValue = "";
 			$this->ProcurementCurrentCost->TooltipValue = "";
 
-			// DepreciationAmount
-			$this->DepreciationAmount->LinkCustomAttributes = "";
-			$this->DepreciationAmount->HrefValue = "";
-			$this->DepreciationAmount->TooltipValue = "";
-
-			// DepreciationYtd
-			$this->DepreciationYtd->LinkCustomAttributes = "";
-			$this->DepreciationYtd->HrefValue = "";
-			$this->DepreciationYtd->TooltipValue = "";
-
-			// NetBookValue
-			$this->NetBookValue->LinkCustomAttributes = "";
-			$this->NetBookValue->HrefValue = "";
-			$this->NetBookValue->TooltipValue = "";
-
-			// Periode
-			$this->Periode->LinkCustomAttributes = "";
-			$this->Periode->HrefValue = "";
-			$this->Periode->TooltipValue = "";
+			// Salvage
+			$this->Salvage->LinkCustomAttributes = "";
+			$this->Salvage->HrefValue = "";
+			$this->Salvage->TooltipValue = "";
 
 			// Qty
 			$this->Qty->LinkCustomAttributes = "";
@@ -1194,6 +1187,14 @@ class t004_asset_search extends t004_asset
 				$this->signature_id->EditValue = $arwrk;
 			}
 
+			// Code
+			$this->Code->EditAttrs["class"] = "form-control";
+			$this->Code->EditCustomAttributes = "";
+			if (!$this->Code->Raw)
+				$this->Code->AdvancedSearch->SearchValue = HtmlDecode($this->Code->AdvancedSearch->SearchValue);
+			$this->Code->EditValue = HtmlEncode($this->Code->AdvancedSearch->SearchValue);
+			$this->Code->PlaceHolder = RemoveHtml($this->Code->caption());
+
 			// Description
 			$this->Description->EditAttrs["class"] = "form-control";
 			$this->Description->EditCustomAttributes = "";
@@ -1201,6 +1202,43 @@ class t004_asset_search extends t004_asset
 				$this->Description->AdvancedSearch->SearchValue = HtmlDecode($this->Description->AdvancedSearch->SearchValue);
 			$this->Description->EditValue = HtmlEncode($this->Description->AdvancedSearch->SearchValue);
 			$this->Description->PlaceHolder = RemoveHtml($this->Description->caption());
+
+			// group_id
+			$this->group_id->EditCustomAttributes = "";
+			$curVal = trim(strval($this->group_id->AdvancedSearch->SearchValue));
+			if ($curVal != "")
+				$this->group_id->AdvancedSearch->ViewValue = $this->group_id->lookupCacheOption($curVal);
+			else
+				$this->group_id->AdvancedSearch->ViewValue = $this->group_id->Lookup !== NULL && is_array($this->group_id->Lookup->Options) ? $curVal : NULL;
+			if ($this->group_id->AdvancedSearch->ViewValue !== NULL) { // Load from cache
+				$this->group_id->EditValue = array_values($this->group_id->Lookup->Options);
+				if ($this->group_id->AdvancedSearch->ViewValue == "")
+					$this->group_id->AdvancedSearch->ViewValue = $Language->phrase("PleaseSelect");
+			} else { // Lookup from database
+				if ($curVal == "") {
+					$filterWrk = "0=1";
+				} else {
+					$filterWrk = "`id`" . SearchString("=", $this->group_id->AdvancedSearch->SearchValue, DATATYPE_NUMBER, "");
+				}
+				$sqlWrk = $this->group_id->Lookup->getSql(TRUE, $filterWrk, '', $this);
+				$rswrk = Conn()->execute($sqlWrk);
+				if ($rswrk && !$rswrk->EOF) { // Lookup values found
+					$arwrk = [];
+					$arwrk[1] = HtmlEncode($rswrk->fields('df'));
+					$arwrk[2] = HtmlEncode(FormatNumber($rswrk->fields('df2'), 0, -2, -2, -2));
+					$this->group_id->AdvancedSearch->ViewValue = $this->group_id->displayValue($arwrk);
+				} else {
+					$this->group_id->AdvancedSearch->ViewValue = $Language->phrase("PleaseSelect");
+				}
+				$arwrk = $rswrk ? $rswrk->getRows() : [];
+				if ($rswrk)
+					$rswrk->close();
+				$rowcnt = count($arwrk);
+				for ($i = 0; $i < $rowcnt; $i++) {
+					$arwrk[$i][2] = FormatNumber($arwrk[$i][2], 0, -2, -2, -2);
+				}
+				$this->group_id->EditValue = $arwrk;
+			}
 
 			// ProcurementDate
 			$this->ProcurementDate->EditAttrs["class"] = "form-control";
@@ -1214,29 +1252,11 @@ class t004_asset_search extends t004_asset
 			$this->ProcurementCurrentCost->EditValue = HtmlEncode($this->ProcurementCurrentCost->AdvancedSearch->SearchValue);
 			$this->ProcurementCurrentCost->PlaceHolder = RemoveHtml($this->ProcurementCurrentCost->caption());
 
-			// DepreciationAmount
-			$this->DepreciationAmount->EditAttrs["class"] = "form-control";
-			$this->DepreciationAmount->EditCustomAttributes = "";
-			$this->DepreciationAmount->EditValue = HtmlEncode($this->DepreciationAmount->AdvancedSearch->SearchValue);
-			$this->DepreciationAmount->PlaceHolder = RemoveHtml($this->DepreciationAmount->caption());
-
-			// DepreciationYtd
-			$this->DepreciationYtd->EditAttrs["class"] = "form-control";
-			$this->DepreciationYtd->EditCustomAttributes = "";
-			$this->DepreciationYtd->EditValue = HtmlEncode($this->DepreciationYtd->AdvancedSearch->SearchValue);
-			$this->DepreciationYtd->PlaceHolder = RemoveHtml($this->DepreciationYtd->caption());
-
-			// NetBookValue
-			$this->NetBookValue->EditAttrs["class"] = "form-control";
-			$this->NetBookValue->EditCustomAttributes = "";
-			$this->NetBookValue->EditValue = HtmlEncode($this->NetBookValue->AdvancedSearch->SearchValue);
-			$this->NetBookValue->PlaceHolder = RemoveHtml($this->NetBookValue->caption());
-
-			// Periode
-			$this->Periode->EditAttrs["class"] = "form-control";
-			$this->Periode->EditCustomAttributes = "";
-			$this->Periode->EditValue = HtmlEncode(FormatDateTime(UnFormatDateTime($this->Periode->AdvancedSearch->SearchValue, 7), 7));
-			$this->Periode->PlaceHolder = RemoveHtml($this->Periode->caption());
+			// Salvage
+			$this->Salvage->EditAttrs["class"] = "form-control";
+			$this->Salvage->EditCustomAttributes = "";
+			$this->Salvage->EditValue = HtmlEncode($this->Salvage->AdvancedSearch->SearchValue);
+			$this->Salvage->PlaceHolder = RemoveHtml($this->Salvage->caption());
 
 			// Qty
 			$this->Qty->EditAttrs["class"] = "form-control";
@@ -1275,17 +1295,8 @@ class t004_asset_search extends t004_asset
 		if (!CheckNumber($this->ProcurementCurrentCost->AdvancedSearch->SearchValue)) {
 			AddMessage($SearchError, $this->ProcurementCurrentCost->errorMessage());
 		}
-		if (!CheckNumber($this->DepreciationAmount->AdvancedSearch->SearchValue)) {
-			AddMessage($SearchError, $this->DepreciationAmount->errorMessage());
-		}
-		if (!CheckNumber($this->DepreciationYtd->AdvancedSearch->SearchValue)) {
-			AddMessage($SearchError, $this->DepreciationYtd->errorMessage());
-		}
-		if (!CheckNumber($this->NetBookValue->AdvancedSearch->SearchValue)) {
-			AddMessage($SearchError, $this->NetBookValue->errorMessage());
-		}
-		if (!CheckEuroDate($this->Periode->AdvancedSearch->SearchValue)) {
-			AddMessage($SearchError, $this->Periode->errorMessage());
+		if (!CheckNumber($this->Salvage->AdvancedSearch->SearchValue)) {
+			AddMessage($SearchError, $this->Salvage->errorMessage());
 		}
 		if (!CheckNumber($this->Qty->AdvancedSearch->SearchValue)) {
 			AddMessage($SearchError, $this->Qty->errorMessage());
@@ -1309,13 +1320,12 @@ class t004_asset_search extends t004_asset
 		$this->property_id->AdvancedSearch->load();
 		$this->department_id->AdvancedSearch->load();
 		$this->signature_id->AdvancedSearch->load();
+		$this->Code->AdvancedSearch->load();
 		$this->Description->AdvancedSearch->load();
+		$this->group_id->AdvancedSearch->load();
 		$this->ProcurementDate->AdvancedSearch->load();
 		$this->ProcurementCurrentCost->AdvancedSearch->load();
-		$this->DepreciationAmount->AdvancedSearch->load();
-		$this->DepreciationYtd->AdvancedSearch->load();
-		$this->NetBookValue->AdvancedSearch->load();
-		$this->Periode->AdvancedSearch->load();
+		$this->Salvage->AdvancedSearch->load();
 		$this->Qty->AdvancedSearch->load();
 		$this->Remarks->AdvancedSearch->load();
 	}
@@ -1351,6 +1361,8 @@ class t004_asset_search extends t004_asset
 					break;
 				case "x_signature_id":
 					break;
+				case "x_group_id":
+					break;
 				default:
 					$lookupFilter = "";
 					break;
@@ -1376,6 +1388,10 @@ class t004_asset_search extends t004_asset
 						case "x_department_id":
 							break;
 						case "x_signature_id":
+							break;
+						case "x_group_id":
+							$row[2] = FormatNumber($row[2], 0, -2, -2, -2);
+							$row['df2'] = $row[2];
 							break;
 					}
 					$ar[strval($row[0])] = $row;

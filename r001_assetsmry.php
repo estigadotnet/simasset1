@@ -118,12 +118,30 @@ while ($r001_asset_summary->RecordCount < count($r001_asset_summary->DetailRecor
 	</div></div></th>
 	<?php } ?>
 <?php } ?>
+<?php if ($r001_asset_summary->Code->Visible) { ?>
+	<?php if ($r001_asset_summary->sortUrl($r001_asset_summary->Code) == "") { ?>
+	<th data-name="Code" class="<?php echo $r001_asset_summary->Code->headerCellClass() ?>"><div class="r001_asset_Code"><div class="ew-table-header-caption"><?php echo $r001_asset_summary->Code->caption() ?></div></div></th>
+	<?php } else { ?>
+	<th data-name="Code" class="<?php echo $r001_asset_summary->Code->headerCellClass() ?>"><div class="ew-pointer" onclick="ew.sort(event, '<?php echo $r001_asset_summary->sortUrl($r001_asset_summary->Code) ?>', 2);"><div class="r001_asset_Code">
+		<div class="ew-table-header-btn"><span class="ew-table-header-caption"><?php echo $r001_asset_summary->Code->caption() ?></span><span class="ew-table-header-sort"><?php if ($r001_asset_summary->Code->getSort() == "ASC") { ?><i class="fas fa-sort-up"></i><?php } elseif ($r001_asset_summary->Code->getSort() == "DESC") { ?><i class="fas fa-sort-down"></i><?php } ?></span></div>
+	</div></div></th>
+	<?php } ?>
+<?php } ?>
 <?php if ($r001_asset_summary->Description->Visible) { ?>
 	<?php if ($r001_asset_summary->sortUrl($r001_asset_summary->Description) == "") { ?>
 	<th data-name="Description" class="<?php echo $r001_asset_summary->Description->headerCellClass() ?>"><div class="r001_asset_Description"><div class="ew-table-header-caption"><?php echo $r001_asset_summary->Description->caption() ?></div></div></th>
 	<?php } else { ?>
 	<th data-name="Description" class="<?php echo $r001_asset_summary->Description->headerCellClass() ?>"><div class="ew-pointer" onclick="ew.sort(event, '<?php echo $r001_asset_summary->sortUrl($r001_asset_summary->Description) ?>', 2);"><div class="r001_asset_Description">
 		<div class="ew-table-header-btn"><span class="ew-table-header-caption"><?php echo $r001_asset_summary->Description->caption() ?></span><span class="ew-table-header-sort"><?php if ($r001_asset_summary->Description->getSort() == "ASC") { ?><i class="fas fa-sort-up"></i><?php } elseif ($r001_asset_summary->Description->getSort() == "DESC") { ?><i class="fas fa-sort-down"></i><?php } ?></span></div>
+	</div></div></th>
+	<?php } ?>
+<?php } ?>
+<?php if ($r001_asset_summary->group_id->Visible) { ?>
+	<?php if ($r001_asset_summary->sortUrl($r001_asset_summary->group_id) == "") { ?>
+	<th data-name="group_id" class="<?php echo $r001_asset_summary->group_id->headerCellClass() ?>"><div class="r001_asset_group_id"><div class="ew-table-header-caption"><?php echo $r001_asset_summary->group_id->caption() ?></div></div></th>
+	<?php } else { ?>
+	<th data-name="group_id" class="<?php echo $r001_asset_summary->group_id->headerCellClass() ?>"><div class="ew-pointer" onclick="ew.sort(event, '<?php echo $r001_asset_summary->sortUrl($r001_asset_summary->group_id) ?>', 2);"><div class="r001_asset_group_id">
+		<div class="ew-table-header-btn"><span class="ew-table-header-caption"><?php echo $r001_asset_summary->group_id->caption() ?></span><span class="ew-table-header-sort"><?php if ($r001_asset_summary->group_id->getSort() == "ASC") { ?><i class="fas fa-sort-up"></i><?php } elseif ($r001_asset_summary->group_id->getSort() == "DESC") { ?><i class="fas fa-sort-down"></i><?php } ?></span></div>
 	</div></div></th>
 	<?php } ?>
 <?php } ?>
@@ -145,39 +163,12 @@ while ($r001_asset_summary->RecordCount < count($r001_asset_summary->DetailRecor
 	</div></div></th>
 	<?php } ?>
 <?php } ?>
-<?php if ($r001_asset_summary->DepreciationAmount->Visible) { ?>
-	<?php if ($r001_asset_summary->sortUrl($r001_asset_summary->DepreciationAmount) == "") { ?>
-	<th data-name="DepreciationAmount" class="<?php echo $r001_asset_summary->DepreciationAmount->headerCellClass() ?>"><div class="r001_asset_DepreciationAmount"><div class="ew-table-header-caption"><?php echo $r001_asset_summary->DepreciationAmount->caption() ?></div></div></th>
+<?php if ($r001_asset_summary->Salvage->Visible) { ?>
+	<?php if ($r001_asset_summary->sortUrl($r001_asset_summary->Salvage) == "") { ?>
+	<th data-name="Salvage" class="<?php echo $r001_asset_summary->Salvage->headerCellClass() ?>"><div class="r001_asset_Salvage"><div class="ew-table-header-caption"><?php echo $r001_asset_summary->Salvage->caption() ?></div></div></th>
 	<?php } else { ?>
-	<th data-name="DepreciationAmount" class="<?php echo $r001_asset_summary->DepreciationAmount->headerCellClass() ?>"><div class="ew-pointer" onclick="ew.sort(event, '<?php echo $r001_asset_summary->sortUrl($r001_asset_summary->DepreciationAmount) ?>', 2);"><div class="r001_asset_DepreciationAmount">
-		<div class="ew-table-header-btn"><span class="ew-table-header-caption"><?php echo $r001_asset_summary->DepreciationAmount->caption() ?></span><span class="ew-table-header-sort"><?php if ($r001_asset_summary->DepreciationAmount->getSort() == "ASC") { ?><i class="fas fa-sort-up"></i><?php } elseif ($r001_asset_summary->DepreciationAmount->getSort() == "DESC") { ?><i class="fas fa-sort-down"></i><?php } ?></span></div>
-	</div></div></th>
-	<?php } ?>
-<?php } ?>
-<?php if ($r001_asset_summary->DepreciationYtd->Visible) { ?>
-	<?php if ($r001_asset_summary->sortUrl($r001_asset_summary->DepreciationYtd) == "") { ?>
-	<th data-name="DepreciationYtd" class="<?php echo $r001_asset_summary->DepreciationYtd->headerCellClass() ?>"><div class="r001_asset_DepreciationYtd"><div class="ew-table-header-caption"><?php echo $r001_asset_summary->DepreciationYtd->caption() ?></div></div></th>
-	<?php } else { ?>
-	<th data-name="DepreciationYtd" class="<?php echo $r001_asset_summary->DepreciationYtd->headerCellClass() ?>"><div class="ew-pointer" onclick="ew.sort(event, '<?php echo $r001_asset_summary->sortUrl($r001_asset_summary->DepreciationYtd) ?>', 2);"><div class="r001_asset_DepreciationYtd">
-		<div class="ew-table-header-btn"><span class="ew-table-header-caption"><?php echo $r001_asset_summary->DepreciationYtd->caption() ?></span><span class="ew-table-header-sort"><?php if ($r001_asset_summary->DepreciationYtd->getSort() == "ASC") { ?><i class="fas fa-sort-up"></i><?php } elseif ($r001_asset_summary->DepreciationYtd->getSort() == "DESC") { ?><i class="fas fa-sort-down"></i><?php } ?></span></div>
-	</div></div></th>
-	<?php } ?>
-<?php } ?>
-<?php if ($r001_asset_summary->NetBookValue->Visible) { ?>
-	<?php if ($r001_asset_summary->sortUrl($r001_asset_summary->NetBookValue) == "") { ?>
-	<th data-name="NetBookValue" class="<?php echo $r001_asset_summary->NetBookValue->headerCellClass() ?>"><div class="r001_asset_NetBookValue"><div class="ew-table-header-caption"><?php echo $r001_asset_summary->NetBookValue->caption() ?></div></div></th>
-	<?php } else { ?>
-	<th data-name="NetBookValue" class="<?php echo $r001_asset_summary->NetBookValue->headerCellClass() ?>"><div class="ew-pointer" onclick="ew.sort(event, '<?php echo $r001_asset_summary->sortUrl($r001_asset_summary->NetBookValue) ?>', 2);"><div class="r001_asset_NetBookValue">
-		<div class="ew-table-header-btn"><span class="ew-table-header-caption"><?php echo $r001_asset_summary->NetBookValue->caption() ?></span><span class="ew-table-header-sort"><?php if ($r001_asset_summary->NetBookValue->getSort() == "ASC") { ?><i class="fas fa-sort-up"></i><?php } elseif ($r001_asset_summary->NetBookValue->getSort() == "DESC") { ?><i class="fas fa-sort-down"></i><?php } ?></span></div>
-	</div></div></th>
-	<?php } ?>
-<?php } ?>
-<?php if ($r001_asset_summary->Periode->Visible) { ?>
-	<?php if ($r001_asset_summary->sortUrl($r001_asset_summary->Periode) == "") { ?>
-	<th data-name="Periode" class="<?php echo $r001_asset_summary->Periode->headerCellClass() ?>"><div class="r001_asset_Periode"><div class="ew-table-header-caption"><?php echo $r001_asset_summary->Periode->caption() ?></div></div></th>
-	<?php } else { ?>
-	<th data-name="Periode" class="<?php echo $r001_asset_summary->Periode->headerCellClass() ?>"><div class="ew-pointer" onclick="ew.sort(event, '<?php echo $r001_asset_summary->sortUrl($r001_asset_summary->Periode) ?>', 2);"><div class="r001_asset_Periode">
-		<div class="ew-table-header-btn"><span class="ew-table-header-caption"><?php echo $r001_asset_summary->Periode->caption() ?></span><span class="ew-table-header-sort"><?php if ($r001_asset_summary->Periode->getSort() == "ASC") { ?><i class="fas fa-sort-up"></i><?php } elseif ($r001_asset_summary->Periode->getSort() == "DESC") { ?><i class="fas fa-sort-down"></i><?php } ?></span></div>
+	<th data-name="Salvage" class="<?php echo $r001_asset_summary->Salvage->headerCellClass() ?>"><div class="ew-pointer" onclick="ew.sort(event, '<?php echo $r001_asset_summary->sortUrl($r001_asset_summary->Salvage) ?>', 2);"><div class="r001_asset_Salvage">
+		<div class="ew-table-header-btn"><span class="ew-table-header-caption"><?php echo $r001_asset_summary->Salvage->caption() ?></span><span class="ew-table-header-sort"><?php if ($r001_asset_summary->Salvage->getSort() == "ASC") { ?><i class="fas fa-sort-up"></i><?php } elseif ($r001_asset_summary->Salvage->getSort() == "DESC") { ?><i class="fas fa-sort-down"></i><?php } ?></span></div>
 	</div></div></th>
 	<?php } ?>
 <?php } ?>
@@ -236,9 +227,19 @@ while ($r001_asset_summary->RecordCount < count($r001_asset_summary->DetailRecor
 <span<?php echo $r001_asset_summary->signature_id->viewAttributes() ?>><?php echo $r001_asset_summary->signature_id->getViewValue() ?></span>
 </td>
 <?php } ?>
+<?php if ($r001_asset_summary->Code->Visible) { ?>
+		<td data-field="Code"<?php echo $r001_asset_summary->Code->cellAttributes() ?>>
+<span<?php echo $r001_asset_summary->Code->viewAttributes() ?>><?php echo $r001_asset_summary->Code->getViewValue() ?></span>
+</td>
+<?php } ?>
 <?php if ($r001_asset_summary->Description->Visible) { ?>
 		<td data-field="Description"<?php echo $r001_asset_summary->Description->cellAttributes() ?>>
 <span<?php echo $r001_asset_summary->Description->viewAttributes() ?>><?php echo $r001_asset_summary->Description->getViewValue() ?></span>
+</td>
+<?php } ?>
+<?php if ($r001_asset_summary->group_id->Visible) { ?>
+		<td data-field="group_id"<?php echo $r001_asset_summary->group_id->cellAttributes() ?>>
+<span<?php echo $r001_asset_summary->group_id->viewAttributes() ?>><?php echo $r001_asset_summary->group_id->getViewValue() ?></span>
 </td>
 <?php } ?>
 <?php if ($r001_asset_summary->ProcurementDate->Visible) { ?>
@@ -251,24 +252,9 @@ while ($r001_asset_summary->RecordCount < count($r001_asset_summary->DetailRecor
 <span<?php echo $r001_asset_summary->ProcurementCurrentCost->viewAttributes() ?>><?php echo $r001_asset_summary->ProcurementCurrentCost->getViewValue() ?></span>
 </td>
 <?php } ?>
-<?php if ($r001_asset_summary->DepreciationAmount->Visible) { ?>
-		<td data-field="DepreciationAmount"<?php echo $r001_asset_summary->DepreciationAmount->cellAttributes() ?>>
-<span<?php echo $r001_asset_summary->DepreciationAmount->viewAttributes() ?>><?php echo $r001_asset_summary->DepreciationAmount->getViewValue() ?></span>
-</td>
-<?php } ?>
-<?php if ($r001_asset_summary->DepreciationYtd->Visible) { ?>
-		<td data-field="DepreciationYtd"<?php echo $r001_asset_summary->DepreciationYtd->cellAttributes() ?>>
-<span<?php echo $r001_asset_summary->DepreciationYtd->viewAttributes() ?>><?php echo $r001_asset_summary->DepreciationYtd->getViewValue() ?></span>
-</td>
-<?php } ?>
-<?php if ($r001_asset_summary->NetBookValue->Visible) { ?>
-		<td data-field="NetBookValue"<?php echo $r001_asset_summary->NetBookValue->cellAttributes() ?>>
-<span<?php echo $r001_asset_summary->NetBookValue->viewAttributes() ?>><?php echo $r001_asset_summary->NetBookValue->getViewValue() ?></span>
-</td>
-<?php } ?>
-<?php if ($r001_asset_summary->Periode->Visible) { ?>
-		<td data-field="Periode"<?php echo $r001_asset_summary->Periode->cellAttributes() ?>>
-<span<?php echo $r001_asset_summary->Periode->viewAttributes() ?>><?php echo $r001_asset_summary->Periode->getViewValue() ?></span>
+<?php if ($r001_asset_summary->Salvage->Visible) { ?>
+		<td data-field="Salvage"<?php echo $r001_asset_summary->Salvage->cellAttributes() ?>>
+<span<?php echo $r001_asset_summary->Salvage->viewAttributes() ?>><?php echo $r001_asset_summary->Salvage->getViewValue() ?></span>
 </td>
 <?php } ?>
 <?php if ($r001_asset_summary->Qty->Visible) { ?>
