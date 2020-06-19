@@ -1,3 +1,13 @@
+  menu      : SETUP
+  sub-menu  : ASSET
+  proses    : penambahan daftar penyusutan untuk tiap2 asset (item)
+  start @   : 12:33 PM 6/19/2020
+  pending @ :
+  done @    : 
+  note      : -
+
+
+
 [5:59 AM 6/17/2020]
   menu     : SETUP
   sub-menu : SIGNATURE
@@ -47,9 +57,10 @@
   - start at: 10:09 AM 5/21/2020
 
 
-  menu     : 
-  sub-menu : 
-  proses   : 
-  start @  : 
-  done @   : 
-  note     : 
+  menu      : 
+  sub-menu  : 
+  proses    : 
+  start @   : 
+  pending @ : 
+  done @    : 
+  note      : 
