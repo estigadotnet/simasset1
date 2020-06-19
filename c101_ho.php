@@ -66,7 +66,7 @@ foreach ($r as $rs) {
 	$spreadsheet->getActiveSheet()->insertNewRowBefore($row, 1);
 	
 	$spreadsheet->getActiveSheet()->setCellValue('A' . $row, $no++)
-		->setCellValue('B' . $row, $rs["asset_id"])
+		->setCellValue('B' . $row, $rs["Code"])
 		->setCellValue('C' . $row, $rs["Description"])
 		->setCellValue('D' . $row, $rs["AssetDepartment"])
 		->setCellValue('E' . $row, $rs["ProcurementDate"])
@@ -75,7 +75,7 @@ foreach ($r as $rs) {
 		;
 	$i++;
 }
-$spreadsheet->getActiveSheet()->removeRow($baseRow - 1, 1);
+$spreadsheet->getActiveSheet()->removeRow($baseRow, 1);
 $writer = \PhpOffice\PhpSpreadsheet\IOFactory::createWriter($spreadsheet, 'Xlsx');
 $writer->save('write.xlsx');
 header("location: write.xlsx");

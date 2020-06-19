@@ -561,17 +561,14 @@ CREATE TABLE `t205_parameter` (
 -- Stand-in structure for view `v101_ho`
 -- (See below for the actual view)
 --
-CREATE TABLE `v101_ho` (
-);
+
 
 -- --------------------------------------------------------
 
 --
 -- Structure for view `v101_ho`
 --
-DROP TABLE IF EXISTS `v101_ho`;
 
-CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `v101_ho`  AS  select `a`.`id` AS `id`,`a`.`property_id` AS `property_id`,`a`.`TransactionNo` AS `TransactionNo`,`a`.`TransactionDate` AS `TransactionDate`,`a`.`TransactionType` AS `TransactionType`,`a`.`HandedOverTo` AS `HandedOverTo`,`a`.`CodeNoTo` AS `CodeNoTo`,`a`.`DepartmentTo` AS `DepartmentTo`,`a`.`HandedOverBy` AS `HandedOverBy`,`a`.`CodeNoBy` AS `CodeNoBy`,`a`.`DepartmentBy` AS `DepartmentBy`,`a`.`Sign1` AS `Sign1`,`a`.`Sign2` AS `Sign2`,`a`.`Sign3` AS `Sign3`,`a`.`Sign4` AS `Sign4`,`b`.`id` AS `hodetail_id`,`b`.`asset_id` AS `asset_id`,`c`.`Property` AS `Property`,`c`.`TemplateFile` AS `TemplateFile`,`d`.`Department` AS `hoDepartmentTo`,`e`.`Signature` AS `hoSignatureTo`,`e`.`JobTitle` AS `hoJobTitleTo`,`f`.`Department` AS `hoDepartmentBy`,`g`.`Signature` AS `hoSignatureBy`,`g`.`JobTitle` AS `hoJobTitleBy`,`h`.`Description` AS `Description`,`h`.`ProcurementDate` AS `ProcurementDate`,`h`.`ProcurementCurrentCost` AS `ProcurementCurrentCost`,`h`.`DepreciationAmount` AS `DepreciationAmount`,`h`.`DepreciationYtd` AS `DepreciationYtd`,`h`.`NetBookValue` AS `NetBookValue`,`h`.`Periode` AS `Periode`,`h`.`Qty` AS `Qty`,`h`.`Remarks` AS `Remarks`,`i`.`Signature` AS `Sign1Signature`,`i`.`JobTitle` AS `Sign1JobTitle`,`j`.`Signature` AS `Sign2Signature`,`j`.`JobTitle` AS `Sign2JobTitle`,`k`.`Signature` AS `Sign3Signature`,`k`.`JobTitle` AS `Sign3JobTitle`,`l`.`Signature` AS `Sign4Signature`,`l`.`JobTitle` AS `Sign4JobTitle`,`m`.`Department` AS `AssetDepartment` from ((((((((((((`t101_ho_head` `a` left join `t102_ho_detail` `b` on(`a`.`id` = `b`.`hohead_id`)) left join `t001_property` `c` on(`a`.`property_id` = `c`.`id`)) left join `t002_department` `d` on(`a`.`DepartmentTo` = `d`.`id`)) left join `t003_signature` `e` on(`a`.`HandedOverTo` = `e`.`id`)) left join `t002_department` `f` on(`a`.`DepartmentBy` = `f`.`id`)) left join `t003_signature` `g` on(`a`.`HandedOverBy` = `g`.`id`)) left join `t004_asset` `h` on(`b`.`asset_id` = `h`.`id`)) left join `t003_signature` `i` on(`a`.`Sign1` = `i`.`id`)) left join `t003_signature` `j` on(`a`.`Sign2` = `j`.`id`)) left join `t003_signature` `k` on(`a`.`Sign3` = `k`.`id`)) left join `t003_signature` `l` on(`a`.`Sign4` = `l`.`id`)) left join `t002_department` `m` on(`h`.`department_id` = `m`.`id`)) ;
 
 --
 -- Indexes for dumped tables
