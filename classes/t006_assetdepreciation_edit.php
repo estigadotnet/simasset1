@@ -1064,12 +1064,12 @@ class t006_assetdepreciation_edit extends t006_assetdepreciation
 
 			// ListOfYears
 			$this->ListOfYears->ViewValue = $this->ListOfYears->CurrentValue;
-			$this->ListOfYears->ViewValue = FormatNumber($this->ListOfYears->ViewValue, 0, -2, -2, -2);
 			$this->ListOfYears->ViewCustomAttributes = "";
 
 			// NumberOfMonths
 			$this->NumberOfMonths->ViewValue = $this->NumberOfMonths->CurrentValue;
 			$this->NumberOfMonths->ViewValue = FormatNumber($this->NumberOfMonths->ViewValue, 0, -2, -2, -2);
+			$this->NumberOfMonths->CellCssStyle .= "text-align: right;";
 			$this->NumberOfMonths->ViewCustomAttributes = "";
 
 			// DepreciationAmount

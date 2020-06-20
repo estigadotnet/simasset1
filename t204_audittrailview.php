@@ -172,6 +172,12 @@ $t204_audittrail_view->showMessage();
 	</tr>
 <?php } ?>
 </table>
+<?php if (!$t204_audittrail_view->IsModal) { ?>
+<?php if (!$t204_audittrail_view->isExport()) { ?>
+<?php echo $t204_audittrail_view->Pager->render() ?>
+<div class="clearfix"></div>
+<?php } ?>
+<?php } ?>
 </form>
 <?php
 $t204_audittrail_view->showPageFooter();

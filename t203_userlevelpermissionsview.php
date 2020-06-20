@@ -102,6 +102,12 @@ $t203_userlevelpermissions_view->showMessage();
 	</tr>
 <?php } ?>
 </table>
+<?php if (!$t203_userlevelpermissions_view->IsModal) { ?>
+<?php if (!$t203_userlevelpermissions_view->isExport()) { ?>
+<?php echo $t203_userlevelpermissions_view->Pager->render() ?>
+<div class="clearfix"></div>
+<?php } ?>
+<?php } ?>
 </form>
 <?php
 $t203_userlevelpermissions_view->showPageFooter();

@@ -35,6 +35,14 @@ class t006_assetdepreciation_grid extends t006_assetdepreciation
 	public $ViewUrl;
 	public $ListUrl;
 
+	// Audit Trail
+	public $AuditTrailOnAdd = TRUE;
+	public $AuditTrailOnEdit = TRUE;
+	public $AuditTrailOnDelete = TRUE;
+	public $AuditTrailOnView = FALSE;
+	public $AuditTrailOnViewData = FALSE;
+	public $AuditTrailOnSearch = FALSE;
+
 	// Page headings
 	public $Heading = "";
 	public $Subheading = "";
@@ -961,6 +969,8 @@ class t006_assetdepreciation_grid extends t006_assetdepreciation
 				$this->setFailureMessage($Language->phrase("GridEditCancelled")); // Set grid edit cancelled message
 			return FALSE;
 		}
+		if ($this->AuditTrailOnEdit)
+			$this->writeAuditTrailDummy($Language->phrase("BatchUpdateBegin")); // Batch update begin
 		$key = "";
 
 		// Update row index and get row key
@@ -1027,8 +1037,12 @@ class t006_assetdepreciation_grid extends t006_assetdepreciation
 
 			// Call Grid_Updated event
 			$this->Grid_Updated($rsold, $rsnew);
+			if ($this->AuditTrailOnEdit)
+				$this->writeAuditTrailDummy($Language->phrase("BatchUpdateSuccess")); // Batch update success
 			$this->clearInlineMode(); // Clear inline edit mode
 		} else {
+			if ($this->AuditTrailOnEdit)
+				$this->writeAuditTrailDummy($Language->phrase("BatchUpdateRollback")); // Batch update rollback
 			if ($this->getFailureMessage() == "")
 				$this->setFailureMessage($Language->phrase("UpdateFailed")); // Set update failed message
 		}
@@ -1094,6 +1108,8 @@ class t006_assetdepreciation_grid extends t006_assetdepreciation
 		// Init key filter
 		$wrkfilter = "";
 		$addcnt = 0;
+		if ($this->AuditTrailOnAdd)
+			$this->writeAuditTrailDummy($Language->phrase("BatchInsertBegin")); // Batch insert begin
 		$key = "";
 
 		// Get row count
@@ -1157,8 +1173,12 @@ class t006_assetdepreciation_grid extends t006_assetdepreciation
 
 			// Call Grid_Inserted event
 			$this->Grid_Inserted($rsnew);
+			if ($this->AuditTrailOnAdd)
+				$this->writeAuditTrailDummy($Language->phrase("BatchInsertSuccess")); // Batch insert success
 			$this->clearInlineMode(); // Clear grid add mode
 		} else {
+			if ($this->AuditTrailOnAdd)
+				$this->writeAuditTrailDummy($Language->phrase("BatchInsertRollback")); // Batch insert rollback
 			if ($this->getFailureMessage() == "")
 				$this->setFailureMessage($Language->phrase("InsertFailed")); // Set insert failed message
 		}
@@ -1335,24 +1355,6 @@ class t006_assetdepreciation_grid extends t006_assetdepreciation
 		$item->Visible = $Security->canView();
 		$item->OnLeft = TRUE;
 
-		// "edit"
-		$item = &$this->ListOptions->add("edit");
-		$item->CssClass = "text-nowrap";
-		$item->Visible = $Security->canEdit();
-		$item->OnLeft = TRUE;
-
-		// "copy"
-		$item = &$this->ListOptions->add("copy");
-		$item->CssClass = "text-nowrap";
-		$item->Visible = $Security->canAdd();
-		$item->OnLeft = TRUE;
-
-		// "delete"
-		$item = &$this->ListOptions->add("delete");
-		$item->CssClass = "text-nowrap";
-		$item->Visible = $Security->canDelete();
-		$item->OnLeft = TRUE;
-
 		// Drop down button for ListOptions
 		$this->ListOptions->UseDropDownButton = FALSE;
 		$this->ListOptions->DropDownButtonPhrase = $Language->phrase("ButtonListOptions");
@@ -1407,7 +1409,7 @@ class t006_assetdepreciation_grid extends t006_assetdepreciation
 				$options = &$this->ListOptions;
 				$options->UseButtonGroup = TRUE; // Use button group for grid delete button
 				$opt = $options["griddelete"];
-				if (!$Security->canDelete() && is_numeric($this->RowIndex) && ($this->RowAction == "" || $this->RowAction == "edit")) { // Do not allow delete existing record
+				if (is_numeric($this->RowIndex) && ($this->RowAction == "" || $this->RowAction == "edit")) { // Do not allow delete existing record
 					$opt->Body = "&nbsp;";
 				} else {
 					$opt->Body = "<a class=\"ew-grid-link ew-grid-delete\" title=\"" . HtmlTitle($Language->phrase("DeleteLink")) . "\" data-caption=\"" . HtmlTitle($Language->phrase("DeleteLink")) . "\" onclick=\"return ew.deleteGridRow(this, " . $this->RowIndex . ");\">" . $Language->phrase("DeleteLink") . "</a>";
@@ -1424,31 +1426,6 @@ class t006_assetdepreciation_grid extends t006_assetdepreciation
 		} else {
 			$opt->Body = "";
 		}
-
-		// "edit"
-		$opt = $this->ListOptions["edit"];
-		$editcaption = HtmlTitle($Language->phrase("EditLink"));
-		if ($Security->canEdit()) {
-			$opt->Body = "<a class=\"ew-row-link ew-edit\" title=\"" . HtmlTitle($Language->phrase("EditLink")) . "\" data-caption=\"" . HtmlTitle($Language->phrase("EditLink")) . "\" href=\"" . HtmlEncode($this->EditUrl) . "\">" . $Language->phrase("EditLink") . "</a>";
-		} else {
-			$opt->Body = "";
-		}
-
-		// "copy"
-		$opt = $this->ListOptions["copy"];
-		$copycaption = HtmlTitle($Language->phrase("CopyLink"));
-		if ($Security->canAdd()) {
-			$opt->Body = "<a class=\"ew-row-link ew-copy\" title=\"" . $copycaption . "\" data-caption=\"" . $copycaption . "\" href=\"" . HtmlEncode($this->CopyUrl) . "\">" . $Language->phrase("CopyLink") . "</a>";
-		} else {
-			$opt->Body = "";
-		}
-
-		// "delete"
-		$opt = $this->ListOptions["delete"];
-		if ($Security->canDelete())
-			$opt->Body = "<a class=\"ew-row-link ew-delete\"" . "" . " title=\"" . HtmlTitle($Language->phrase("DeleteLink")) . "\" data-caption=\"" . HtmlTitle($Language->phrase("DeleteLink")) . "\" href=\"" . HtmlEncode($this->DeleteUrl) . "\">" . $Language->phrase("DeleteLink") . "</a>";
-		else
-			$opt->Body = "";
 		} // End View mode
 		if ($this->CurrentMode == "edit" && is_numeric($this->RowIndex) && $this->RowAction != "delete") {
 			$this->MultiSelectKey .= "<input type=\"hidden\" name=\"" . $keyName . "\" id=\"" . $keyName . "\" value=\"" . $this->id->CurrentValue . "\">";
@@ -1481,15 +1458,6 @@ class t006_assetdepreciation_grid extends t006_assetdepreciation
 		$item = &$option->add($option->GroupOptionName);
 		$item->Body = "";
 		$item->Visible = FALSE;
-
-		// Add
-		if ($this->CurrentMode == "view") { // Check view mode
-			$item = &$option->add("add");
-			$addcaption = HtmlTitle($Language->phrase("AddLink"));
-			$this->AddUrl = $this->getAddUrl();
-			$item->Body = "<a class=\"ew-add-edit ew-add\" title=\"" . $addcaption . "\" data-caption=\"" . $addcaption . "\" href=\"" . HtmlEncode($this->AddUrl) . "\">" . $Language->phrase("AddLink") . "</a>";
-			$item->Visible = $this->AddUrl != "" && $Security->canAdd();
-		}
 	}
 
 	// Render other options
@@ -1503,7 +1471,7 @@ class t006_assetdepreciation_grid extends t006_assetdepreciation
 				$option->UseDropDownButton = FALSE;
 				$item = &$option->add("addblankrow");
 				$item->Body = "<a class=\"ew-add-edit ew-add-blank-row\" title=\"" . HtmlTitle($Language->phrase("AddBlankRow")) . "\" data-caption=\"" . HtmlTitle($Language->phrase("AddBlankRow")) . "\" href=\"#\" onclick=\"return ew.addGridRow(this);\">" . $Language->phrase("AddBlankRow") . "</a>";
-				$item->Visible = $Security->canAdd();
+				$item->Visible = FALSE;
 				$this->ShowOtherOptions = $item->Visible;
 			}
 		}
@@ -1806,27 +1774,30 @@ class t006_assetdepreciation_grid extends t006_assetdepreciation
 
 			// ListOfYears
 			$this->ListOfYears->ViewValue = $this->ListOfYears->CurrentValue;
-			$this->ListOfYears->ViewValue = FormatNumber($this->ListOfYears->ViewValue, 0, -2, -2, -2);
 			$this->ListOfYears->ViewCustomAttributes = "";
 
 			// NumberOfMonths
 			$this->NumberOfMonths->ViewValue = $this->NumberOfMonths->CurrentValue;
 			$this->NumberOfMonths->ViewValue = FormatNumber($this->NumberOfMonths->ViewValue, 0, -2, -2, -2);
+			$this->NumberOfMonths->CellCssStyle .= "text-align: right;";
 			$this->NumberOfMonths->ViewCustomAttributes = "";
 
 			// DepreciationAmount
 			$this->DepreciationAmount->ViewValue = $this->DepreciationAmount->CurrentValue;
 			$this->DepreciationAmount->ViewValue = FormatNumber($this->DepreciationAmount->ViewValue, 2, -2, -2, -2);
+			$this->DepreciationAmount->CellCssStyle .= "text-align: right;";
 			$this->DepreciationAmount->ViewCustomAttributes = "";
 
 			// DepreciationYtd
 			$this->DepreciationYtd->ViewValue = $this->DepreciationYtd->CurrentValue;
 			$this->DepreciationYtd->ViewValue = FormatNumber($this->DepreciationYtd->ViewValue, 2, -2, -2, -2);
+			$this->DepreciationYtd->CellCssStyle .= "text-align: right;";
 			$this->DepreciationYtd->ViewCustomAttributes = "";
 
 			// NetBookValue
 			$this->NetBookValue->ViewValue = $this->NetBookValue->CurrentValue;
 			$this->NetBookValue->ViewValue = FormatNumber($this->NetBookValue->ViewValue, 2, -2, -2, -2);
+			$this->NetBookValue->CellCssStyle .= "text-align: right;";
 			$this->NetBookValue->ViewCustomAttributes = "";
 
 			// asset_id
@@ -2130,6 +2101,8 @@ class t006_assetdepreciation_grid extends t006_assetdepreciation
 			return FALSE;
 		}
 		$rows = ($rs) ? $rs->getRows() : [];
+		if ($this->AuditTrailOnDelete)
+			$this->writeAuditTrailDummy($Language->phrase("BatchDeleteBegin")); // Batch delete begin
 
 		// Clone old rows
 		$rsold = $rows;

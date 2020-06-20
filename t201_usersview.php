@@ -342,6 +342,12 @@ $t201_users_view->showMessage();
 	</tr>
 <?php } ?>
 </table>
+<?php if (!$t201_users_view->IsModal) { ?>
+<?php if (!$t201_users_view->isExport()) { ?>
+<?php echo $t201_users_view->Pager->render() ?>
+<div class="clearfix"></div>
+<?php } ?>
+<?php } ?>
 </form>
 <?php
 $t201_users_view->showPageFooter();

@@ -82,6 +82,12 @@ $t102_ho_detail_view->showMessage();
 	</tr>
 <?php } ?>
 </table>
+<?php if (!$t102_ho_detail_view->IsModal) { ?>
+<?php if (!$t102_ho_detail_view->isExport()) { ?>
+<?php echo $t102_ho_detail_view->Pager->render() ?>
+<div class="clearfix"></div>
+<?php } ?>
+<?php } ?>
 </form>
 <?php
 $t102_ho_detail_view->showPageFooter();

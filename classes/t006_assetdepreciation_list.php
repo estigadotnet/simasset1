@@ -59,6 +59,14 @@ class t006_assetdepreciation_list extends t006_assetdepreciation
 	public $MultiDeleteUrl;
 	public $MultiUpdateUrl;
 
+	// Audit Trail
+	public $AuditTrailOnAdd = TRUE;
+	public $AuditTrailOnEdit = TRUE;
+	public $AuditTrailOnDelete = TRUE;
+	public $AuditTrailOnView = FALSE;
+	public $AuditTrailOnViewData = FALSE;
+	public $AuditTrailOnSearch = FALSE;
+
 	// Page headings
 	public $Heading = "";
 	public $Subheading = "";
@@ -1175,24 +1183,6 @@ class t006_assetdepreciation_list extends t006_assetdepreciation
 		$item->Visible = $Security->canView();
 		$item->OnLeft = TRUE;
 
-		// "edit"
-		$item = &$this->ListOptions->add("edit");
-		$item->CssClass = "text-nowrap";
-		$item->Visible = $Security->canEdit();
-		$item->OnLeft = TRUE;
-
-		// "copy"
-		$item = &$this->ListOptions->add("copy");
-		$item->CssClass = "text-nowrap";
-		$item->Visible = $Security->canAdd();
-		$item->OnLeft = TRUE;
-
-		// "delete"
-		$item = &$this->ListOptions->add("delete");
-		$item->CssClass = "text-nowrap";
-		$item->Visible = $Security->canDelete();
-		$item->OnLeft = TRUE;
-
 		// List actions
 		$item = &$this->ListOptions->add("listactions");
 		$item->CssClass = "text-nowrap";
@@ -1244,31 +1234,6 @@ class t006_assetdepreciation_list extends t006_assetdepreciation
 			$opt->Body = "";
 		}
 
-		// "edit"
-		$opt = $this->ListOptions["edit"];
-		$editcaption = HtmlTitle($Language->phrase("EditLink"));
-		if ($Security->canEdit()) {
-			$opt->Body = "<a class=\"ew-row-link ew-edit\" title=\"" . HtmlTitle($Language->phrase("EditLink")) . "\" data-caption=\"" . HtmlTitle($Language->phrase("EditLink")) . "\" href=\"" . HtmlEncode($this->EditUrl) . "\">" . $Language->phrase("EditLink") . "</a>";
-		} else {
-			$opt->Body = "";
-		}
-
-		// "copy"
-		$opt = $this->ListOptions["copy"];
-		$copycaption = HtmlTitle($Language->phrase("CopyLink"));
-		if ($Security->canAdd()) {
-			$opt->Body = "<a class=\"ew-row-link ew-copy\" title=\"" . $copycaption . "\" data-caption=\"" . $copycaption . "\" href=\"" . HtmlEncode($this->CopyUrl) . "\">" . $Language->phrase("CopyLink") . "</a>";
-		} else {
-			$opt->Body = "";
-		}
-
-		// "delete"
-		$opt = $this->ListOptions["delete"];
-		if ($Security->canDelete())
-			$opt->Body = "<a class=\"ew-row-link ew-delete\"" . "" . " title=\"" . HtmlTitle($Language->phrase("DeleteLink")) . "\" data-caption=\"" . HtmlTitle($Language->phrase("DeleteLink")) . "\" href=\"" . HtmlEncode($this->DeleteUrl) . "\">" . $Language->phrase("DeleteLink") . "</a>";
-		else
-			$opt->Body = "";
-
 		// Set up list action buttons
 		$opt = $this->ListOptions["listactions"];
 		if ($opt && !$this->isExport() && !$this->CurrentAction) {
@@ -1312,13 +1277,6 @@ class t006_assetdepreciation_list extends t006_assetdepreciation
 	{
 		global $Language, $Security;
 		$options = &$this->OtherOptions;
-		$option = $options["addedit"];
-
-		// Add
-		$item = &$option->add("add");
-		$addcaption = HtmlTitle($Language->phrase("AddLink"));
-		$item->Body = "<a class=\"ew-add-edit ew-add\" title=\"" . $addcaption . "\" data-caption=\"" . $addcaption . "\" href=\"" . HtmlEncode($this->AddUrl) . "\">" . $Language->phrase("AddLink") . "</a>";
-		$item->Visible = $this->AddUrl != "" && $Security->canAdd();
 		$option = $options["action"];
 
 		// Set up options default
@@ -1630,27 +1588,30 @@ class t006_assetdepreciation_list extends t006_assetdepreciation
 
 			// ListOfYears
 			$this->ListOfYears->ViewValue = $this->ListOfYears->CurrentValue;
-			$this->ListOfYears->ViewValue = FormatNumber($this->ListOfYears->ViewValue, 0, -2, -2, -2);
 			$this->ListOfYears->ViewCustomAttributes = "";
 
 			// NumberOfMonths
 			$this->NumberOfMonths->ViewValue = $this->NumberOfMonths->CurrentValue;
 			$this->NumberOfMonths->ViewValue = FormatNumber($this->NumberOfMonths->ViewValue, 0, -2, -2, -2);
+			$this->NumberOfMonths->CellCssStyle .= "text-align: right;";
 			$this->NumberOfMonths->ViewCustomAttributes = "";
 
 			// DepreciationAmount
 			$this->DepreciationAmount->ViewValue = $this->DepreciationAmount->CurrentValue;
 			$this->DepreciationAmount->ViewValue = FormatNumber($this->DepreciationAmount->ViewValue, 2, -2, -2, -2);
+			$this->DepreciationAmount->CellCssStyle .= "text-align: right;";
 			$this->DepreciationAmount->ViewCustomAttributes = "";
 
 			// DepreciationYtd
 			$this->DepreciationYtd->ViewValue = $this->DepreciationYtd->CurrentValue;
 			$this->DepreciationYtd->ViewValue = FormatNumber($this->DepreciationYtd->ViewValue, 2, -2, -2, -2);
+			$this->DepreciationYtd->CellCssStyle .= "text-align: right;";
 			$this->DepreciationYtd->ViewCustomAttributes = "";
 
 			// NetBookValue
 			$this->NetBookValue->ViewValue = $this->NetBookValue->CurrentValue;
 			$this->NetBookValue->ViewValue = FormatNumber($this->NetBookValue->ViewValue, 2, -2, -2, -2);
+			$this->NetBookValue->CellCssStyle .= "text-align: right;";
 			$this->NetBookValue->ViewCustomAttributes = "";
 
 			// asset_id

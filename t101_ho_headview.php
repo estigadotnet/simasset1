@@ -212,6 +212,12 @@ $t101_ho_head_view->showMessage();
 	</tr>
 <?php } ?>
 </table>
+<?php if (!$t101_ho_head_view->IsModal) { ?>
+<?php if (!$t101_ho_head_view->isExport()) { ?>
+<?php echo $t101_ho_head_view->Pager->render() ?>
+<div class="clearfix"></div>
+<?php } ?>
+<?php } ?>
 <?php
 	if (in_array("t102_ho_detail", explode(",", $t101_ho_head->getCurrentDetailTable())) && $t102_ho_detail->DetailView) {
 ?>

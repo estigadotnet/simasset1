@@ -112,6 +112,12 @@ $t205_parameter_view->showMessage();
 	</tr>
 <?php } ?>
 </table>
+<?php if (!$t205_parameter_view->IsModal) { ?>
+<?php if (!$t205_parameter_view->isExport()) { ?>
+<?php echo $t205_parameter_view->Pager->render() ?>
+<div class="clearfix"></div>
+<?php } ?>
+<?php } ?>
 </form>
 <?php
 $t205_parameter_view->showPageFooter();

@@ -51,6 +51,14 @@ class t006_assetdepreciation_view extends t006_assetdepreciation
 	public $MultiDeleteUrl;
 	public $MultiUpdateUrl;
 
+	// Audit Trail
+	public $AuditTrailOnAdd = TRUE;
+	public $AuditTrailOnEdit = TRUE;
+	public $AuditTrailOnDelete = TRUE;
+	public $AuditTrailOnView = FALSE;
+	public $AuditTrailOnViewData = FALSE;
+	public $AuditTrailOnSearch = FALSE;
+
 	// Page headings
 	public $Heading = "";
 	public $Subheading = "";
@@ -802,29 +810,46 @@ class t006_assetdepreciation_view extends t006_assetdepreciation
 				$this->id->setFormValue(Route(2));
 				$this->RecKey["id"] = $this->id->FormValue;
 			} else {
-				$returnUrl = "t006_assetdepreciationlist.php"; // Return to list
+				$loadCurrentRecord = TRUE;
 			}
 
 			// Get action
 			$this->CurrentAction = "show"; // Display
 			switch ($this->CurrentAction) {
 				case "show": // Get a record to display
+					$this->StartRecord = 1; // Initialize start position
+					if ($this->Recordset = $this->loadRecordset()) // Load records
+						$this->TotalRecords = $this->Recordset->RecordCount(); // Get record count
+					if ($this->TotalRecords <= 0) { // No record found
+						if ($this->getSuccessMessage() == "" && $this->getFailureMessage() == "")
+							$this->setFailureMessage($Language->phrase("NoRecord")); // Set no record message
+						$this->terminate("t006_assetdepreciationlist.php"); // Return to list page
+					} elseif ($loadCurrentRecord) { // Load current record position
+						$this->setupStartRecord(); // Set up start record position
 
-					// Load record based on key
-					if (IsApi()) {
-						$filter = $this->getRecordFilter();
-						$this->CurrentFilter = $filter;
-						$sql = $this->getCurrentSql();
-						$conn = $this->getConnection();
-						$this->Recordset = LoadRecordset($sql, $conn);
-						$res = $this->Recordset && !$this->Recordset->EOF;
-					} else {
-						$res = $this->loadRow();
+						// Point to current record
+						if ($this->StartRecord <= $this->TotalRecords) {
+							$matchRecord = TRUE;
+							$this->Recordset->move($this->StartRecord - 1);
+						}
+					} else { // Match key values
+						while (!$this->Recordset->EOF) {
+							if (SameString($this->id->CurrentValue, $this->Recordset->fields('id'))) {
+								$this->setStartRecordNumber($this->StartRecord); // Save record position
+								$matchRecord = TRUE;
+								break;
+							} else {
+								$this->StartRecord++;
+								$this->Recordset->moveNext();
+							}
+						}
 					}
-					if (!$res) { // Load record based on key
+					if (!$matchRecord) {
 						if ($this->getSuccessMessage() == "" && $this->getFailureMessage() == "")
 							$this->setFailureMessage($Language->phrase("NoRecord")); // Set no record message
 						$returnUrl = "t006_assetdepreciationlist.php"; // No matching record, return to list
+					} else {
+						$this->loadRowValues($this->Recordset); // Load row values
 					}
 			}
 		} else {
@@ -851,6 +876,9 @@ class t006_assetdepreciation_view extends t006_assetdepreciation
 			WriteJson(["success" => TRUE, $this->TableVar => $rows]);
 			$this->terminate(TRUE);
 		}
+
+		// Set up pager
+		$this->Pager = new PrevNextPager($this->StartRecord, $this->DisplayRecords, $this->TotalRecords, "", $this->RecordRange, $this->AutoHidePager);
 	}
 
 	// Set up other options
@@ -860,41 +888,6 @@ class t006_assetdepreciation_view extends t006_assetdepreciation
 		$options = &$this->OtherOptions;
 		$option = $options["action"];
 
-		// Add
-		$item = &$option->add("add");
-		$addcaption = HtmlTitle($Language->phrase("ViewPageAddLink"));
-		if ($this->IsModal) // Modal
-			$item->Body = "<a class=\"ew-action ew-add\" title=\"" . $addcaption . "\" data-caption=\"" . $addcaption . "\" href=\"#\" onclick=\"return ew.modalDialogShow({lnk:this,url:'" . HtmlEncode($this->AddUrl) . "'});\">" . $Language->phrase("ViewPageAddLink") . "</a>";
-		else
-			$item->Body = "<a class=\"ew-action ew-add\" title=\"" . $addcaption . "\" data-caption=\"" . $addcaption . "\" href=\"" . HtmlEncode($this->AddUrl) . "\">" . $Language->phrase("ViewPageAddLink") . "</a>";
-		$item->Visible = ($this->AddUrl != "" && $Security->canAdd());
-
-		// Edit
-		$item = &$option->add("edit");
-		$editcaption = HtmlTitle($Language->phrase("ViewPageEditLink"));
-		if ($this->IsModal) // Modal
-			$item->Body = "<a class=\"ew-action ew-edit\" title=\"" . $editcaption . "\" data-caption=\"" . $editcaption . "\" href=\"#\" onclick=\"return ew.modalDialogShow({lnk:this,url:'" . HtmlEncode($this->EditUrl) . "'});\">" . $Language->phrase("ViewPageEditLink") . "</a>";
-		else
-			$item->Body = "<a class=\"ew-action ew-edit\" title=\"" . $editcaption . "\" data-caption=\"" . $editcaption . "\" href=\"" . HtmlEncode($this->EditUrl) . "\">" . $Language->phrase("ViewPageEditLink") . "</a>";
-		$item->Visible = ($this->EditUrl != "" && $Security->canEdit());
-
-		// Copy
-		$item = &$option->add("copy");
-		$copycaption = HtmlTitle($Language->phrase("ViewPageCopyLink"));
-		if ($this->IsModal) // Modal
-			$item->Body = "<a class=\"ew-action ew-copy\" title=\"" . $copycaption . "\" data-caption=\"" . $copycaption . "\" href=\"#\" onclick=\"return ew.modalDialogShow({lnk:this,btn:'AddBtn',url:'" . HtmlEncode($this->CopyUrl) . "'});\">" . $Language->phrase("ViewPageCopyLink") . "</a>";
-		else
-			$item->Body = "<a class=\"ew-action ew-copy\" title=\"" . $copycaption . "\" data-caption=\"" . $copycaption . "\" href=\"" . HtmlEncode($this->CopyUrl) . "\">" . $Language->phrase("ViewPageCopyLink") . "</a>";
-		$item->Visible = ($this->CopyUrl != "" && $Security->canAdd());
-
-		// Delete
-		$item = &$option->add("delete");
-		if ($this->IsModal) // Handle as inline delete
-			$item->Body = "<a onclick=\"return ew.confirmDelete(this);\" class=\"ew-action ew-delete\" title=\"" . HtmlTitle($Language->phrase("ViewPageDeleteLink")) . "\" data-caption=\"" . HtmlTitle($Language->phrase("ViewPageDeleteLink")) . "\" href=\"" . HtmlEncode(UrlAddQuery($this->DeleteUrl, "action=1")) . "\">" . $Language->phrase("ViewPageDeleteLink") . "</a>";
-		else
-			$item->Body = "<a class=\"ew-action ew-delete\" title=\"" . HtmlTitle($Language->phrase("ViewPageDeleteLink")) . "\" data-caption=\"" . HtmlTitle($Language->phrase("ViewPageDeleteLink")) . "\" href=\"" . HtmlEncode($this->DeleteUrl) . "\">" . $Language->phrase("ViewPageDeleteLink") . "</a>";
-		$item->Visible = ($this->DeleteUrl != "" && $Security->canDelete());
-
 		// Set up action default
 		$option = $options["action"];
 		$option->DropDownButtonPhrase = $Language->phrase("ButtonActions");
@@ -903,6 +896,33 @@ class t006_assetdepreciation_view extends t006_assetdepreciation
 		$item = &$option->add($option->GroupOptionName);
 		$item->Body = "";
 		$item->Visible = FALSE;
+	}
+
+	// Load recordset
+	public function loadRecordset($offset = -1, $rowcnt = -1)
+	{
+
+		// Load List page SQL
+		$sql = $this->getListSql();
+		$conn = $this->getConnection();
+
+		// Load recordset
+		$dbtype = GetConnectionType($this->Dbid);
+		if ($this->UseSelectLimit) {
+			$conn->raiseErrorFn = Config("ERROR_FUNC");
+			if ($dbtype == "MSSQL") {
+				$rs = $conn->selectLimit($sql, $rowcnt, $offset, ["_hasOrderBy" => trim($this->getOrderBy()) || trim($this->getSessionOrderBy())]);
+			} else {
+				$rs = $conn->selectLimit($sql, $rowcnt, $offset);
+			}
+			$conn->raiseErrorFn = "";
+		} else {
+			$rs = LoadRecordset($sql, $conn);
+		}
+
+		// Call Recordset Selected event
+		$this->Recordset_Selected($rs);
+		return $rs;
 	}
 
 	// Load row based on key values
@@ -940,6 +960,8 @@ class t006_assetdepreciation_view extends t006_assetdepreciation
 		$this->Row_Selected($row);
 		if (!$rs || $rs->EOF)
 			return;
+		if ($this->AuditTrailOnView)
+			$this->writeAuditTrailOnView($row);
 		$this->id->setDbValue($row['id']);
 		$this->asset_id->setDbValue($row['asset_id']);
 		$this->ListOfYears->setDbValue($row['ListOfYears']);
@@ -1013,27 +1035,30 @@ class t006_assetdepreciation_view extends t006_assetdepreciation
 
 			// ListOfYears
 			$this->ListOfYears->ViewValue = $this->ListOfYears->CurrentValue;
-			$this->ListOfYears->ViewValue = FormatNumber($this->ListOfYears->ViewValue, 0, -2, -2, -2);
 			$this->ListOfYears->ViewCustomAttributes = "";
 
 			// NumberOfMonths
 			$this->NumberOfMonths->ViewValue = $this->NumberOfMonths->CurrentValue;
 			$this->NumberOfMonths->ViewValue = FormatNumber($this->NumberOfMonths->ViewValue, 0, -2, -2, -2);
+			$this->NumberOfMonths->CellCssStyle .= "text-align: right;";
 			$this->NumberOfMonths->ViewCustomAttributes = "";
 
 			// DepreciationAmount
 			$this->DepreciationAmount->ViewValue = $this->DepreciationAmount->CurrentValue;
 			$this->DepreciationAmount->ViewValue = FormatNumber($this->DepreciationAmount->ViewValue, 2, -2, -2, -2);
+			$this->DepreciationAmount->CellCssStyle .= "text-align: right;";
 			$this->DepreciationAmount->ViewCustomAttributes = "";
 
 			// DepreciationYtd
 			$this->DepreciationYtd->ViewValue = $this->DepreciationYtd->CurrentValue;
 			$this->DepreciationYtd->ViewValue = FormatNumber($this->DepreciationYtd->ViewValue, 2, -2, -2, -2);
+			$this->DepreciationYtd->CellCssStyle .= "text-align: right;";
 			$this->DepreciationYtd->ViewCustomAttributes = "";
 
 			// NetBookValue
 			$this->NetBookValue->ViewValue = $this->NetBookValue->CurrentValue;
 			$this->NetBookValue->ViewValue = FormatNumber($this->NetBookValue->ViewValue, 2, -2, -2, -2);
+			$this->NetBookValue->CellCssStyle .= "text-align: right;";
 			$this->NetBookValue->ViewCustomAttributes = "";
 
 			// asset_id

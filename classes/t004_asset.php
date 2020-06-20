@@ -1614,6 +1614,7 @@ class t004_asset extends DbTable
 
 		//echo "Row Updated";
 		fDeletePenyusutan($rsold["id"]);
+		$rsnew["id"] = $rsold["id"];
 		fCreatePenyusutan($rsnew);
 	}
 

@@ -172,6 +172,12 @@ $t103_opname_view->showMessage();
 	</tr>
 <?php } ?>
 </table>
+<?php if (!$t103_opname_view->IsModal) { ?>
+<?php if (!$t103_opname_view->isExport()) { ?>
+<?php echo $t103_opname_view->Pager->render() ?>
+<div class="clearfix"></div>
+<?php } ?>
+<?php } ?>
 </form>
 <?php
 $t103_opname_view->showPageFooter();

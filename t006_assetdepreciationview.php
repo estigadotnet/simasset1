@@ -132,6 +132,12 @@ $t006_assetdepreciation_view->showMessage();
 	</tr>
 <?php } ?>
 </table>
+<?php if (!$t006_assetdepreciation_view->IsModal) { ?>
+<?php if (!$t006_assetdepreciation_view->isExport()) { ?>
+<?php echo $t006_assetdepreciation_view->Pager->render() ?>
+<div class="clearfix"></div>
+<?php } ?>
+<?php } ?>
 </form>
 <?php
 $t006_assetdepreciation_view->showPageFooter();

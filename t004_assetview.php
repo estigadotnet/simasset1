@@ -202,6 +202,12 @@ $t004_asset_view->showMessage();
 	</tr>
 <?php } ?>
 </table>
+<?php if (!$t004_asset_view->IsModal) { ?>
+<?php if (!$t004_asset_view->isExport()) { ?>
+<?php echo $t004_asset_view->Pager->render() ?>
+<div class="clearfix"></div>
+<?php } ?>
+<?php } ?>
 <?php
 	if (in_array("t006_assetdepreciation", explode(",", $t004_asset->getCurrentDetailTable())) && $t006_assetdepreciation->DetailView) {
 ?>

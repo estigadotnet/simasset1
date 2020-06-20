@@ -92,6 +92,12 @@ $t202_userlevels_view->showMessage();
 	</tr>
 <?php } ?>
 </table>
+<?php if (!$t202_userlevels_view->IsModal) { ?>
+<?php if (!$t202_userlevels_view->isExport()) { ?>
+<?php echo $t202_userlevels_view->Pager->render() ?>
+<div class="clearfix"></div>
+<?php } ?>
+<?php } ?>
 </form>
 <?php
 $t202_userlevels_view->showPageFooter();
