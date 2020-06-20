@@ -190,6 +190,24 @@ while ($r001_asset_summary->RecordCount < count($r001_asset_summary->DetailRecor
 	</div></div></th>
 	<?php } ?>
 <?php } ?>
+<?php if ($r001_asset_summary->PeriodBegin->Visible) { ?>
+	<?php if ($r001_asset_summary->sortUrl($r001_asset_summary->PeriodBegin) == "") { ?>
+	<th data-name="PeriodBegin" class="<?php echo $r001_asset_summary->PeriodBegin->headerCellClass() ?>"><div class="r001_asset_PeriodBegin"><div class="ew-table-header-caption"><?php echo $r001_asset_summary->PeriodBegin->caption() ?></div></div></th>
+	<?php } else { ?>
+	<th data-name="PeriodBegin" class="<?php echo $r001_asset_summary->PeriodBegin->headerCellClass() ?>"><div class="ew-pointer" onclick="ew.sort(event, '<?php echo $r001_asset_summary->sortUrl($r001_asset_summary->PeriodBegin) ?>', 2);"><div class="r001_asset_PeriodBegin">
+		<div class="ew-table-header-btn"><span class="ew-table-header-caption"><?php echo $r001_asset_summary->PeriodBegin->caption() ?></span><span class="ew-table-header-sort"><?php if ($r001_asset_summary->PeriodBegin->getSort() == "ASC") { ?><i class="fas fa-sort-up"></i><?php } elseif ($r001_asset_summary->PeriodBegin->getSort() == "DESC") { ?><i class="fas fa-sort-down"></i><?php } ?></span></div>
+	</div></div></th>
+	<?php } ?>
+<?php } ?>
+<?php if ($r001_asset_summary->PeriodEnd->Visible) { ?>
+	<?php if ($r001_asset_summary->sortUrl($r001_asset_summary->PeriodEnd) == "") { ?>
+	<th data-name="PeriodEnd" class="<?php echo $r001_asset_summary->PeriodEnd->headerCellClass() ?>"><div class="r001_asset_PeriodEnd"><div class="ew-table-header-caption"><?php echo $r001_asset_summary->PeriodEnd->caption() ?></div></div></th>
+	<?php } else { ?>
+	<th data-name="PeriodEnd" class="<?php echo $r001_asset_summary->PeriodEnd->headerCellClass() ?>"><div class="ew-pointer" onclick="ew.sort(event, '<?php echo $r001_asset_summary->sortUrl($r001_asset_summary->PeriodEnd) ?>', 2);"><div class="r001_asset_PeriodEnd">
+		<div class="ew-table-header-btn"><span class="ew-table-header-caption"><?php echo $r001_asset_summary->PeriodEnd->caption() ?></span><span class="ew-table-header-sort"><?php if ($r001_asset_summary->PeriodEnd->getSort() == "ASC") { ?><i class="fas fa-sort-up"></i><?php } elseif ($r001_asset_summary->PeriodEnd->getSort() == "DESC") { ?><i class="fas fa-sort-down"></i><?php } ?></span></div>
+	</div></div></th>
+	<?php } ?>
+<?php } ?>
 	</tr>
 </thead>
 <tbody>
@@ -265,6 +283,16 @@ while ($r001_asset_summary->RecordCount < count($r001_asset_summary->DetailRecor
 <?php if ($r001_asset_summary->Remarks->Visible) { ?>
 		<td data-field="Remarks"<?php echo $r001_asset_summary->Remarks->cellAttributes() ?>>
 <span<?php echo $r001_asset_summary->Remarks->viewAttributes() ?>><?php echo $r001_asset_summary->Remarks->getViewValue() ?></span>
+</td>
+<?php } ?>
+<?php if ($r001_asset_summary->PeriodBegin->Visible) { ?>
+		<td data-field="PeriodBegin"<?php echo $r001_asset_summary->PeriodBegin->cellAttributes() ?>>
+<span<?php echo $r001_asset_summary->PeriodBegin->viewAttributes() ?>><?php echo $r001_asset_summary->PeriodBegin->getViewValue() ?></span>
+</td>
+<?php } ?>
+<?php if ($r001_asset_summary->PeriodEnd->Visible) { ?>
+		<td data-field="PeriodEnd"<?php echo $r001_asset_summary->PeriodEnd->cellAttributes() ?>>
+<span<?php echo $r001_asset_summary->PeriodEnd->viewAttributes() ?>><?php echo $r001_asset_summary->PeriodEnd->getViewValue() ?></span>
 </td>
 <?php } ?>
 	</tr>

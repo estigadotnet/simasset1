@@ -702,6 +702,8 @@ class t004_asset_add extends t004_asset
 		$this->Salvage->setVisibility();
 		$this->Qty->setVisibility();
 		$this->Remarks->setVisibility();
+		$this->PeriodBegin->Visible = FALSE;
+		$this->PeriodEnd->Visible = FALSE;
 		$this->hideFieldsForAddEdit();
 
 		// Do not use lookup cache
@@ -877,6 +879,10 @@ class t004_asset_add extends t004_asset
 		$this->Qty->CurrentValue = 0.00;
 		$this->Remarks->CurrentValue = NULL;
 		$this->Remarks->OldValue = $this->Remarks->CurrentValue;
+		$this->PeriodBegin->CurrentValue = NULL;
+		$this->PeriodBegin->OldValue = $this->PeriodBegin->CurrentValue;
+		$this->PeriodEnd->CurrentValue = NULL;
+		$this->PeriodEnd->OldValue = $this->PeriodEnd->CurrentValue;
 	}
 
 	// Load form values
@@ -1055,6 +1061,8 @@ class t004_asset_add extends t004_asset
 		$this->Salvage->setDbValue($row['Salvage']);
 		$this->Qty->setDbValue($row['Qty']);
 		$this->Remarks->setDbValue($row['Remarks']);
+		$this->PeriodBegin->setDbValue($row['PeriodBegin']);
+		$this->PeriodEnd->setDbValue($row['PeriodEnd']);
 	}
 
 	// Return a row with default values
@@ -1074,6 +1082,8 @@ class t004_asset_add extends t004_asset
 		$row['Salvage'] = $this->Salvage->CurrentValue;
 		$row['Qty'] = $this->Qty->CurrentValue;
 		$row['Remarks'] = $this->Remarks->CurrentValue;
+		$row['PeriodBegin'] = $this->PeriodBegin->CurrentValue;
+		$row['PeriodEnd'] = $this->PeriodEnd->CurrentValue;
 		return $row;
 	}
 
@@ -1135,6 +1145,8 @@ class t004_asset_add extends t004_asset
 		// Salvage
 		// Qty
 		// Remarks
+		// PeriodBegin
+		// PeriodEnd
 
 		if ($this->RowType == ROWTYPE_VIEW) { // View row
 
@@ -1265,6 +1277,16 @@ class t004_asset_add extends t004_asset
 			// Remarks
 			$this->Remarks->ViewValue = $this->Remarks->CurrentValue;
 			$this->Remarks->ViewCustomAttributes = "";
+
+			// PeriodBegin
+			$this->PeriodBegin->ViewValue = $this->PeriodBegin->CurrentValue;
+			$this->PeriodBegin->ViewValue = FormatDateTime($this->PeriodBegin->ViewValue, 7);
+			$this->PeriodBegin->ViewCustomAttributes = "";
+
+			// PeriodEnd
+			$this->PeriodEnd->ViewValue = $this->PeriodEnd->CurrentValue;
+			$this->PeriodEnd->ViewValue = FormatDateTime($this->PeriodEnd->ViewValue, 7);
+			$this->PeriodEnd->ViewCustomAttributes = "";
 
 			// property_id
 			$this->property_id->LinkCustomAttributes = "";

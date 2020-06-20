@@ -123,6 +123,16 @@ loadjs.ready("head", function() {
 				if (elm && !ew.isHidden(elm) && !ew.hasValue(elm))
 					return this.onError(elm, "<?php echo JsEncode(str_replace("%s", $t004_asset_edit->Remarks->caption(), $t004_asset_edit->Remarks->RequiredErrorMessage)) ?>");
 			<?php } ?>
+			<?php if ($t004_asset_edit->PeriodBegin->Required) { ?>
+				elm = this.getElements("x" + infix + "_PeriodBegin");
+				if (elm && !ew.isHidden(elm) && !ew.hasValue(elm))
+					return this.onError(elm, "<?php echo JsEncode(str_replace("%s", $t004_asset_edit->PeriodBegin->caption(), $t004_asset_edit->PeriodBegin->RequiredErrorMessage)) ?>");
+			<?php } ?>
+			<?php if ($t004_asset_edit->PeriodEnd->Required) { ?>
+				elm = this.getElements("x" + infix + "_PeriodEnd");
+				if (elm && !ew.isHidden(elm) && !ew.hasValue(elm))
+					return this.onError(elm, "<?php echo JsEncode(str_replace("%s", $t004_asset_edit->PeriodEnd->caption(), $t004_asset_edit->PeriodEnd->RequiredErrorMessage)) ?>");
+			<?php } ?>
 
 				// Call Form_CustomValidate event
 				if (!this.Form_CustomValidate(fobj))
@@ -334,6 +344,28 @@ loadjs.ready(["ft004_assetedit", "datetimepicker"], function() {
 <textarea data-table="t004_asset" data-field="x_Remarks" name="x_Remarks" id="x_Remarks" cols="15" rows="1" placeholder="<?php echo HtmlEncode($t004_asset_edit->Remarks->getPlaceHolder()) ?>"<?php echo $t004_asset_edit->Remarks->editAttributes() ?>><?php echo $t004_asset_edit->Remarks->EditValue ?></textarea>
 </span>
 <?php echo $t004_asset_edit->Remarks->CustomMsg ?></div></div>
+	</div>
+<?php } ?>
+<?php if ($t004_asset_edit->PeriodBegin->Visible) { // PeriodBegin ?>
+	<div id="r_PeriodBegin" class="form-group row">
+		<label id="elh_t004_asset_PeriodBegin" for="x_PeriodBegin" class="<?php echo $t004_asset_edit->LeftColumnClass ?>"><?php echo $t004_asset_edit->PeriodBegin->caption() ?><?php echo $t004_asset_edit->PeriodBegin->Required ? $Language->phrase("FieldRequiredIndicator") : "" ?></label>
+		<div class="<?php echo $t004_asset_edit->RightColumnClass ?>"><div <?php echo $t004_asset_edit->PeriodBegin->cellAttributes() ?>>
+<span id="el_t004_asset_PeriodBegin">
+<span<?php echo $t004_asset_edit->PeriodBegin->viewAttributes() ?>><input type="text" readonly class="form-control-plaintext" value="<?php echo HtmlEncode(RemoveHtml($t004_asset_edit->PeriodBegin->EditValue)) ?>"></span>
+</span>
+<input type="hidden" data-table="t004_asset" data-field="x_PeriodBegin" name="x_PeriodBegin" id="x_PeriodBegin" value="<?php echo HtmlEncode($t004_asset_edit->PeriodBegin->CurrentValue) ?>">
+<?php echo $t004_asset_edit->PeriodBegin->CustomMsg ?></div></div>
+	</div>
+<?php } ?>
+<?php if ($t004_asset_edit->PeriodEnd->Visible) { // PeriodEnd ?>
+	<div id="r_PeriodEnd" class="form-group row">
+		<label id="elh_t004_asset_PeriodEnd" for="x_PeriodEnd" class="<?php echo $t004_asset_edit->LeftColumnClass ?>"><?php echo $t004_asset_edit->PeriodEnd->caption() ?><?php echo $t004_asset_edit->PeriodEnd->Required ? $Language->phrase("FieldRequiredIndicator") : "" ?></label>
+		<div class="<?php echo $t004_asset_edit->RightColumnClass ?>"><div <?php echo $t004_asset_edit->PeriodEnd->cellAttributes() ?>>
+<span id="el_t004_asset_PeriodEnd">
+<span<?php echo $t004_asset_edit->PeriodEnd->viewAttributes() ?>><input type="text" readonly class="form-control-plaintext" value="<?php echo HtmlEncode(RemoveHtml($t004_asset_edit->PeriodEnd->EditValue)) ?>"></span>
+</span>
+<input type="hidden" data-table="t004_asset" data-field="x_PeriodEnd" name="x_PeriodEnd" id="x_PeriodEnd" value="<?php echo HtmlEncode($t004_asset_edit->PeriodEnd->CurrentValue) ?>">
+<?php echo $t004_asset_edit->PeriodEnd->CustomMsg ?></div></div>
 	</div>
 <?php } ?>
 </div><!-- /page* -->

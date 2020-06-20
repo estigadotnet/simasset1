@@ -698,7 +698,11 @@ class t004_asset_edit extends t004_asset
 		$this->Salvage->setVisibility();
 		$this->Qty->setVisibility();
 		$this->Remarks->setVisibility();
+		$this->PeriodBegin->setVisibility();
+		$this->PeriodEnd->setVisibility();
 		$this->hideFieldsForAddEdit();
+		$this->PeriodBegin->Required = FALSE;
+		$this->PeriodEnd->Required = FALSE;
 
 		// Do not use lookup cache
 		$this->setUseLookupCache(FALSE);
@@ -988,6 +992,26 @@ class t004_asset_edit extends t004_asset
 				$this->Remarks->setFormValue($val);
 		}
 
+		// Check field name 'PeriodBegin' first before field var 'x_PeriodBegin'
+		$val = $CurrentForm->hasValue("PeriodBegin") ? $CurrentForm->getValue("PeriodBegin") : $CurrentForm->getValue("x_PeriodBegin");
+		if (!$this->PeriodBegin->IsDetailKey) {
+			if (IsApi() && $val == NULL)
+				$this->PeriodBegin->Visible = FALSE; // Disable update for API request
+			else
+				$this->PeriodBegin->setFormValue($val);
+			$this->PeriodBegin->CurrentValue = UnFormatDateTime($this->PeriodBegin->CurrentValue, 7);
+		}
+
+		// Check field name 'PeriodEnd' first before field var 'x_PeriodEnd'
+		$val = $CurrentForm->hasValue("PeriodEnd") ? $CurrentForm->getValue("PeriodEnd") : $CurrentForm->getValue("x_PeriodEnd");
+		if (!$this->PeriodEnd->IsDetailKey) {
+			if (IsApi() && $val == NULL)
+				$this->PeriodEnd->Visible = FALSE; // Disable update for API request
+			else
+				$this->PeriodEnd->setFormValue($val);
+			$this->PeriodEnd->CurrentValue = UnFormatDateTime($this->PeriodEnd->CurrentValue, 7);
+		}
+
 		// Check field name 'id' first before field var 'x_id'
 		$val = $CurrentForm->hasValue("id") ? $CurrentForm->getValue("id") : $CurrentForm->getValue("x_id");
 		if (!$this->id->IsDetailKey)
@@ -1011,6 +1035,10 @@ class t004_asset_edit extends t004_asset
 		$this->Salvage->CurrentValue = $this->Salvage->FormValue;
 		$this->Qty->CurrentValue = $this->Qty->FormValue;
 		$this->Remarks->CurrentValue = $this->Remarks->FormValue;
+		$this->PeriodBegin->CurrentValue = $this->PeriodBegin->FormValue;
+		$this->PeriodBegin->CurrentValue = UnFormatDateTime($this->PeriodBegin->CurrentValue, 7);
+		$this->PeriodEnd->CurrentValue = $this->PeriodEnd->FormValue;
+		$this->PeriodEnd->CurrentValue = UnFormatDateTime($this->PeriodEnd->CurrentValue, 7);
 	}
 
 	// Load row based on key values
@@ -1060,6 +1088,8 @@ class t004_asset_edit extends t004_asset
 		$this->Salvage->setDbValue($row['Salvage']);
 		$this->Qty->setDbValue($row['Qty']);
 		$this->Remarks->setDbValue($row['Remarks']);
+		$this->PeriodBegin->setDbValue($row['PeriodBegin']);
+		$this->PeriodEnd->setDbValue($row['PeriodEnd']);
 	}
 
 	// Return a row with default values
@@ -1078,6 +1108,8 @@ class t004_asset_edit extends t004_asset
 		$row['Salvage'] = NULL;
 		$row['Qty'] = NULL;
 		$row['Remarks'] = NULL;
+		$row['PeriodBegin'] = NULL;
+		$row['PeriodEnd'] = NULL;
 		return $row;
 	}
 
@@ -1139,6 +1171,8 @@ class t004_asset_edit extends t004_asset
 		// Salvage
 		// Qty
 		// Remarks
+		// PeriodBegin
+		// PeriodEnd
 
 		if ($this->RowType == ROWTYPE_VIEW) { // View row
 
@@ -1270,6 +1304,16 @@ class t004_asset_edit extends t004_asset
 			$this->Remarks->ViewValue = $this->Remarks->CurrentValue;
 			$this->Remarks->ViewCustomAttributes = "";
 
+			// PeriodBegin
+			$this->PeriodBegin->ViewValue = $this->PeriodBegin->CurrentValue;
+			$this->PeriodBegin->ViewValue = FormatDateTime($this->PeriodBegin->ViewValue, 7);
+			$this->PeriodBegin->ViewCustomAttributes = "";
+
+			// PeriodEnd
+			$this->PeriodEnd->ViewValue = $this->PeriodEnd->CurrentValue;
+			$this->PeriodEnd->ViewValue = FormatDateTime($this->PeriodEnd->ViewValue, 7);
+			$this->PeriodEnd->ViewCustomAttributes = "";
+
 			// property_id
 			$this->property_id->LinkCustomAttributes = "";
 			$this->property_id->HrefValue = "";
@@ -1324,6 +1368,16 @@ class t004_asset_edit extends t004_asset
 			$this->Remarks->LinkCustomAttributes = "";
 			$this->Remarks->HrefValue = "";
 			$this->Remarks->TooltipValue = "";
+
+			// PeriodBegin
+			$this->PeriodBegin->LinkCustomAttributes = "";
+			$this->PeriodBegin->HrefValue = "";
+			$this->PeriodBegin->TooltipValue = "";
+
+			// PeriodEnd
+			$this->PeriodEnd->LinkCustomAttributes = "";
+			$this->PeriodEnd->HrefValue = "";
+			$this->PeriodEnd->TooltipValue = "";
 		} elseif ($this->RowType == ROWTYPE_EDIT) { // Edit row
 
 			// property_id
@@ -1514,6 +1568,20 @@ class t004_asset_edit extends t004_asset
 			$this->Remarks->EditValue = HtmlEncode($this->Remarks->CurrentValue);
 			$this->Remarks->PlaceHolder = RemoveHtml($this->Remarks->caption());
 
+			// PeriodBegin
+			$this->PeriodBegin->EditAttrs["class"] = "form-control";
+			$this->PeriodBegin->EditCustomAttributes = "";
+			$this->PeriodBegin->EditValue = $this->PeriodBegin->CurrentValue;
+			$this->PeriodBegin->EditValue = FormatDateTime($this->PeriodBegin->EditValue, 7);
+			$this->PeriodBegin->ViewCustomAttributes = "";
+
+			// PeriodEnd
+			$this->PeriodEnd->EditAttrs["class"] = "form-control";
+			$this->PeriodEnd->EditCustomAttributes = "";
+			$this->PeriodEnd->EditValue = $this->PeriodEnd->CurrentValue;
+			$this->PeriodEnd->EditValue = FormatDateTime($this->PeriodEnd->EditValue, 7);
+			$this->PeriodEnd->ViewCustomAttributes = "";
+
 			// Edit refer script
 			// property_id
 
@@ -1559,6 +1627,16 @@ class t004_asset_edit extends t004_asset
 			// Remarks
 			$this->Remarks->LinkCustomAttributes = "";
 			$this->Remarks->HrefValue = "";
+
+			// PeriodBegin
+			$this->PeriodBegin->LinkCustomAttributes = "";
+			$this->PeriodBegin->HrefValue = "";
+			$this->PeriodBegin->TooltipValue = "";
+
+			// PeriodEnd
+			$this->PeriodEnd->LinkCustomAttributes = "";
+			$this->PeriodEnd->HrefValue = "";
+			$this->PeriodEnd->TooltipValue = "";
 		}
 		if ($this->RowType == ROWTYPE_ADD || $this->RowType == ROWTYPE_EDIT || $this->RowType == ROWTYPE_SEARCH) // Add/Edit/Search row
 			$this->setupFieldTitles();
@@ -1644,6 +1722,16 @@ class t004_asset_edit extends t004_asset
 		if ($this->Remarks->Required) {
 			if (!$this->Remarks->IsDetailKey && $this->Remarks->FormValue != NULL && $this->Remarks->FormValue == "") {
 				AddMessage($FormError, str_replace("%s", $this->Remarks->caption(), $this->Remarks->RequiredErrorMessage));
+			}
+		}
+		if ($this->PeriodBegin->Required) {
+			if (!$this->PeriodBegin->IsDetailKey && $this->PeriodBegin->FormValue != NULL && $this->PeriodBegin->FormValue == "") {
+				AddMessage($FormError, str_replace("%s", $this->PeriodBegin->caption(), $this->PeriodBegin->RequiredErrorMessage));
+			}
+		}
+		if ($this->PeriodEnd->Required) {
+			if (!$this->PeriodEnd->IsDetailKey && $this->PeriodEnd->FormValue != NULL && $this->PeriodEnd->FormValue == "") {
+				AddMessage($FormError, str_replace("%s", $this->PeriodEnd->caption(), $this->PeriodEnd->RequiredErrorMessage));
 			}
 		}
 

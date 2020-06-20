@@ -39,6 +39,8 @@ class r001_asset extends ReportTable
 	public $Salvage;
 	public $Qty;
 	public $Remarks;
+	public $PeriodBegin;
+	public $PeriodEnd;
 
 	// Constructor
 	public function __construct()
@@ -172,6 +174,24 @@ class r001_asset extends ReportTable
 		$this->Remarks->Sortable = TRUE; // Allow sort
 		$this->Remarks->SourceTableVar = 't004_asset';
 		$this->fields['Remarks'] = &$this->Remarks;
+
+		// PeriodBegin
+		$this->PeriodBegin = new ReportField('r001_asset', 'r001_asset', 'x_PeriodBegin', 'PeriodBegin', '`PeriodBegin`', CastDateFieldForLike("`PeriodBegin`", 7, "DB"), 133, 10, 7, FALSE, '`PeriodBegin`', FALSE, FALSE, FALSE, 'FORMATTED TEXT', 'TEXT');
+		$this->PeriodBegin->Nullable = FALSE; // NOT NULL field
+		$this->PeriodBegin->Required = TRUE; // Required field
+		$this->PeriodBegin->Sortable = TRUE; // Allow sort
+		$this->PeriodBegin->DefaultErrorMessage = str_replace("%s", $GLOBALS["DATE_SEPARATOR"], $Language->phrase("IncorrectDateDMY"));
+		$this->PeriodBegin->SourceTableVar = 't004_asset';
+		$this->fields['PeriodBegin'] = &$this->PeriodBegin;
+
+		// PeriodEnd
+		$this->PeriodEnd = new ReportField('r001_asset', 'r001_asset', 'x_PeriodEnd', 'PeriodEnd', '`PeriodEnd`', CastDateFieldForLike("`PeriodEnd`", 7, "DB"), 133, 10, 7, FALSE, '`PeriodEnd`', FALSE, FALSE, FALSE, 'FORMATTED TEXT', 'TEXT');
+		$this->PeriodEnd->Nullable = FALSE; // NOT NULL field
+		$this->PeriodEnd->Required = TRUE; // Required field
+		$this->PeriodEnd->Sortable = TRUE; // Allow sort
+		$this->PeriodEnd->DefaultErrorMessage = str_replace("%s", $GLOBALS["DATE_SEPARATOR"], $Language->phrase("IncorrectDateDMY"));
+		$this->PeriodEnd->SourceTableVar = 't004_asset';
+		$this->fields['PeriodEnd'] = &$this->PeriodEnd;
 	}
 
 	// Field Visibility

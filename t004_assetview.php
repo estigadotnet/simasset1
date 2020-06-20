@@ -71,16 +71,6 @@ $t004_asset_view->showMessage();
 <input type="hidden" name="t" value="t004_asset">
 <input type="hidden" name="modal" value="<?php echo (int)$t004_asset_view->IsModal ?>">
 <table class="table table-striped table-sm ew-view-table">
-<?php if ($t004_asset_view->id->Visible) { // id ?>
-	<tr id="r_id">
-		<td class="<?php echo $t004_asset_view->TableLeftColumnClass ?>"><span id="elh_t004_asset_id"><?php echo $t004_asset_view->id->caption() ?></span></td>
-		<td data-name="id" <?php echo $t004_asset_view->id->cellAttributes() ?>>
-<span id="el_t004_asset_id">
-<span<?php echo $t004_asset_view->id->viewAttributes() ?>><?php echo $t004_asset_view->id->getViewValue() ?></span>
-</span>
-</td>
-	</tr>
-<?php } ?>
 <?php if ($t004_asset_view->property_id->Visible) { // property_id ?>
 	<tr id="r_property_id">
 		<td class="<?php echo $t004_asset_view->TableLeftColumnClass ?>"><span id="elh_t004_asset_property_id"><?php echo $t004_asset_view->property_id->caption() ?></span></td>
@@ -111,12 +101,32 @@ $t004_asset_view->showMessage();
 </td>
 	</tr>
 <?php } ?>
+<?php if ($t004_asset_view->Code->Visible) { // Code ?>
+	<tr id="r_Code">
+		<td class="<?php echo $t004_asset_view->TableLeftColumnClass ?>"><span id="elh_t004_asset_Code"><?php echo $t004_asset_view->Code->caption() ?></span></td>
+		<td data-name="Code" <?php echo $t004_asset_view->Code->cellAttributes() ?>>
+<span id="el_t004_asset_Code">
+<span<?php echo $t004_asset_view->Code->viewAttributes() ?>><?php echo $t004_asset_view->Code->getViewValue() ?></span>
+</span>
+</td>
+	</tr>
+<?php } ?>
 <?php if ($t004_asset_view->Description->Visible) { // Description ?>
 	<tr id="r_Description">
 		<td class="<?php echo $t004_asset_view->TableLeftColumnClass ?>"><span id="elh_t004_asset_Description"><?php echo $t004_asset_view->Description->caption() ?></span></td>
 		<td data-name="Description" <?php echo $t004_asset_view->Description->cellAttributes() ?>>
 <span id="el_t004_asset_Description">
 <span<?php echo $t004_asset_view->Description->viewAttributes() ?>><?php echo $t004_asset_view->Description->getViewValue() ?></span>
+</span>
+</td>
+	</tr>
+<?php } ?>
+<?php if ($t004_asset_view->group_id->Visible) { // group_id ?>
+	<tr id="r_group_id">
+		<td class="<?php echo $t004_asset_view->TableLeftColumnClass ?>"><span id="elh_t004_asset_group_id"><?php echo $t004_asset_view->group_id->caption() ?></span></td>
+		<td data-name="group_id" <?php echo $t004_asset_view->group_id->cellAttributes() ?>>
+<span id="el_t004_asset_group_id">
+<span<?php echo $t004_asset_view->group_id->viewAttributes() ?>><?php echo $t004_asset_view->group_id->getViewValue() ?></span>
 </span>
 </td>
 	</tr>
@@ -141,42 +151,12 @@ $t004_asset_view->showMessage();
 </td>
 	</tr>
 <?php } ?>
-<?php if ($t004_asset_view->DepreciationAmount->Visible) { // DepreciationAmount ?>
-	<tr id="r_DepreciationAmount">
-		<td class="<?php echo $t004_asset_view->TableLeftColumnClass ?>"><span id="elh_t004_asset_DepreciationAmount"><?php echo $t004_asset_view->DepreciationAmount->caption() ?></span></td>
-		<td data-name="DepreciationAmount" <?php echo $t004_asset_view->DepreciationAmount->cellAttributes() ?>>
-<span id="el_t004_asset_DepreciationAmount">
-<span<?php echo $t004_asset_view->DepreciationAmount->viewAttributes() ?>><?php echo $t004_asset_view->DepreciationAmount->getViewValue() ?></span>
-</span>
-</td>
-	</tr>
-<?php } ?>
-<?php if ($t004_asset_view->DepreciationYtd->Visible) { // DepreciationYtd ?>
-	<tr id="r_DepreciationYtd">
-		<td class="<?php echo $t004_asset_view->TableLeftColumnClass ?>"><span id="elh_t004_asset_DepreciationYtd"><?php echo $t004_asset_view->DepreciationYtd->caption() ?></span></td>
-		<td data-name="DepreciationYtd" <?php echo $t004_asset_view->DepreciationYtd->cellAttributes() ?>>
-<span id="el_t004_asset_DepreciationYtd">
-<span<?php echo $t004_asset_view->DepreciationYtd->viewAttributes() ?>><?php echo $t004_asset_view->DepreciationYtd->getViewValue() ?></span>
-</span>
-</td>
-	</tr>
-<?php } ?>
-<?php if ($t004_asset_view->NetBookValue->Visible) { // NetBookValue ?>
-	<tr id="r_NetBookValue">
-		<td class="<?php echo $t004_asset_view->TableLeftColumnClass ?>"><span id="elh_t004_asset_NetBookValue"><?php echo $t004_asset_view->NetBookValue->caption() ?></span></td>
-		<td data-name="NetBookValue" <?php echo $t004_asset_view->NetBookValue->cellAttributes() ?>>
-<span id="el_t004_asset_NetBookValue">
-<span<?php echo $t004_asset_view->NetBookValue->viewAttributes() ?>><?php echo $t004_asset_view->NetBookValue->getViewValue() ?></span>
-</span>
-</td>
-	</tr>
-<?php } ?>
-<?php if ($t004_asset_view->Periode->Visible) { // Periode ?>
-	<tr id="r_Periode">
-		<td class="<?php echo $t004_asset_view->TableLeftColumnClass ?>"><span id="elh_t004_asset_Periode"><?php echo $t004_asset_view->Periode->caption() ?></span></td>
-		<td data-name="Periode" <?php echo $t004_asset_view->Periode->cellAttributes() ?>>
-<span id="el_t004_asset_Periode">
-<span<?php echo $t004_asset_view->Periode->viewAttributes() ?>><?php echo $t004_asset_view->Periode->getViewValue() ?></span>
+<?php if ($t004_asset_view->Salvage->Visible) { // Salvage ?>
+	<tr id="r_Salvage">
+		<td class="<?php echo $t004_asset_view->TableLeftColumnClass ?>"><span id="elh_t004_asset_Salvage"><?php echo $t004_asset_view->Salvage->caption() ?></span></td>
+		<td data-name="Salvage" <?php echo $t004_asset_view->Salvage->cellAttributes() ?>>
+<span id="el_t004_asset_Salvage">
+<span<?php echo $t004_asset_view->Salvage->viewAttributes() ?>><?php echo $t004_asset_view->Salvage->getViewValue() ?></span>
 </span>
 </td>
 	</tr>
@@ -201,7 +181,35 @@ $t004_asset_view->showMessage();
 </td>
 	</tr>
 <?php } ?>
+<?php if ($t004_asset_view->PeriodBegin->Visible) { // PeriodBegin ?>
+	<tr id="r_PeriodBegin">
+		<td class="<?php echo $t004_asset_view->TableLeftColumnClass ?>"><span id="elh_t004_asset_PeriodBegin"><?php echo $t004_asset_view->PeriodBegin->caption() ?></span></td>
+		<td data-name="PeriodBegin" <?php echo $t004_asset_view->PeriodBegin->cellAttributes() ?>>
+<span id="el_t004_asset_PeriodBegin">
+<span<?php echo $t004_asset_view->PeriodBegin->viewAttributes() ?>><?php echo $t004_asset_view->PeriodBegin->getViewValue() ?></span>
+</span>
+</td>
+	</tr>
+<?php } ?>
+<?php if ($t004_asset_view->PeriodEnd->Visible) { // PeriodEnd ?>
+	<tr id="r_PeriodEnd">
+		<td class="<?php echo $t004_asset_view->TableLeftColumnClass ?>"><span id="elh_t004_asset_PeriodEnd"><?php echo $t004_asset_view->PeriodEnd->caption() ?></span></td>
+		<td data-name="PeriodEnd" <?php echo $t004_asset_view->PeriodEnd->cellAttributes() ?>>
+<span id="el_t004_asset_PeriodEnd">
+<span<?php echo $t004_asset_view->PeriodEnd->viewAttributes() ?>><?php echo $t004_asset_view->PeriodEnd->getViewValue() ?></span>
+</span>
+</td>
+	</tr>
+<?php } ?>
 </table>
+<?php
+	if (in_array("t006_assetdepreciation", explode(",", $t004_asset->getCurrentDetailTable())) && $t006_assetdepreciation->DetailView) {
+?>
+<?php if ($t004_asset->getCurrentDetailTable() != "") { ?>
+<h4 class="ew-detail-caption"><?php echo $Language->tablePhrase("t006_assetdepreciation", "TblCaption") ?></h4>
+<?php } ?>
+<?php include_once "t006_assetdepreciationgrid.php" ?>
+<?php } ?>
 </form>
 <?php
 $t004_asset_view->showPageFooter();

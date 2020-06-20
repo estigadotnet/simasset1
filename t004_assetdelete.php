@@ -103,6 +103,12 @@ $t004_asset_delete->showMessage();
 <?php if ($t004_asset_delete->Remarks->Visible) { // Remarks ?>
 		<th class="<?php echo $t004_asset_delete->Remarks->headerCellClass() ?>"><span id="elh_t004_asset_Remarks" class="t004_asset_Remarks"><?php echo $t004_asset_delete->Remarks->caption() ?></span></th>
 <?php } ?>
+<?php if ($t004_asset_delete->PeriodBegin->Visible) { // PeriodBegin ?>
+		<th class="<?php echo $t004_asset_delete->PeriodBegin->headerCellClass() ?>"><span id="elh_t004_asset_PeriodBegin" class="t004_asset_PeriodBegin"><?php echo $t004_asset_delete->PeriodBegin->caption() ?></span></th>
+<?php } ?>
+<?php if ($t004_asset_delete->PeriodEnd->Visible) { // PeriodEnd ?>
+		<th class="<?php echo $t004_asset_delete->PeriodEnd->headerCellClass() ?>"><span id="elh_t004_asset_PeriodEnd" class="t004_asset_PeriodEnd"><?php echo $t004_asset_delete->PeriodEnd->caption() ?></span></th>
+<?php } ?>
 	</tr>
 	</thead>
 	<tbody>
@@ -198,6 +204,20 @@ while (!$t004_asset_delete->Recordset->EOF) {
 		<td <?php echo $t004_asset_delete->Remarks->cellAttributes() ?>>
 <span id="el<?php echo $t004_asset_delete->RowCount ?>_t004_asset_Remarks" class="t004_asset_Remarks">
 <span<?php echo $t004_asset_delete->Remarks->viewAttributes() ?>><?php echo $t004_asset_delete->Remarks->getViewValue() ?></span>
+</span>
+</td>
+<?php } ?>
+<?php if ($t004_asset_delete->PeriodBegin->Visible) { // PeriodBegin ?>
+		<td <?php echo $t004_asset_delete->PeriodBegin->cellAttributes() ?>>
+<span id="el<?php echo $t004_asset_delete->RowCount ?>_t004_asset_PeriodBegin" class="t004_asset_PeriodBegin">
+<span<?php echo $t004_asset_delete->PeriodBegin->viewAttributes() ?>><?php echo $t004_asset_delete->PeriodBegin->getViewValue() ?></span>
+</span>
+</td>
+<?php } ?>
+<?php if ($t004_asset_delete->PeriodEnd->Visible) { // PeriodEnd ?>
+		<td <?php echo $t004_asset_delete->PeriodEnd->cellAttributes() ?>>
+<span id="el<?php echo $t004_asset_delete->RowCount ?>_t004_asset_PeriodEnd" class="t004_asset_PeriodEnd">
+<span<?php echo $t004_asset_delete->PeriodEnd->viewAttributes() ?>><?php echo $t004_asset_delete->PeriodEnd->getViewValue() ?></span>
 </span>
 </td>
 <?php } ?>

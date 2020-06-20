@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8" standalone="yes"?>
-<ew-language date="2020/6/19" version="16.0.1" id="en" name="English" desc="English" author="e.World Technology Ltd.">
+<ew-language date="2020/6/20" version="16.0.1" id="en" name="English" desc="English" author="e.World Technology Ltd.">
   <!--
 	*** Important Notes:
 	1. Language ID should follow: https://developers.google.com/recaptcha/docs/language,
@@ -880,6 +880,9 @@
     <menu id="21">
       <phrase id="menutext" value="Depreciation List" />
     </menu>
+    <menu id="23">
+      <phrase id="menutext" value="Trial" />
+    </menu>
     <menu id="16">
       <phrase id="menutext" value="Proses" />
     </menu>
@@ -966,6 +969,12 @@
       <field id="remarks">
         <phrase id="fldcaption" value="Remarks" />
       </field>
+      <field id="periodbegin">
+        <phrase id="fldcaption" value="Period Begin" />
+      </field>
+      <field id="periodend">
+        <phrase id="fldcaption" value="Period End" />
+      </field>
     </table>
     <table id="t001_property">
       <phrase id="tblcaption" value="Property" />
@@ -1037,6 +1046,12 @@
       </field>
       <field id="remarks">
         <phrase id="fldcaption" value="Remarks" />
+      </field>
+      <field id="periodbegin">
+        <phrase id="fldcaption" value="Period Begin" />
+      </field>
+      <field id="periodend">
+        <phrase id="fldcaption" value="Period End" />
       </field>
     </table>
     <table id="t005_assetgroup">
@@ -1464,6 +1479,9 @@
       <field id="assetdepartment">
         <phrase id="fldcaption" value="Asset Department" />
       </field>
+    </table>
+    <table id="c9">
+      <phrase id="tblcaption" value="Trial" />
     </table>
   </project>
 </ew-language>

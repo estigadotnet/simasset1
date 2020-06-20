@@ -108,19 +108,35 @@ function PersonalData_Deleted($row) {
 	//echo "PersonalData Deleted";
 }
 
+function fDeletePenyusutan($id) {
+
+	// delete data penyusutan berdasarkan asset_id = $id
+	$q = "delete from t006_assetdepreciation where asset_id = ".$id."";
+	Execute($q);
+}
+
 function fCreatePenyusutan($rsnew) {
 
+	// create data penyusutan
+	$q = "insert into t006_assetdepreciation (
+		asset_id
+		) values (".
+		$rsnew["id"].")";
+	Execute($q);
+}
+
+function fCariAwalAkhirPeriode($group_id, $ProcurementDate) {
+
 	// ambil nilai economical life time
-	$q = "select EconomicalLifeTime from t006_assetgroup where id = ".$rsnew["group_id"]."";
+	$q = "select EconomicalLifeTime from t005_assetgroup where id = ".$group_id."";
 	$economicalLifeTime = ExecuteScalar($q);
 
-	//echo $economicalLifeTime;
-	$q = "insert into t006_assetdepreciation (
-		asset_id,
-		ListOfYears
-		) values (".
-		$rsnew["id"].", ".
-		$economicalLifeTime.")";
-	Execute($q);
+	// ambil nilai awal periode
+	$date = date_create($ProcurementDate);
+	$awalPeriode = date_format($date, "Y-m-t");
+
+	// ambil nilai akhir periode
+	$akhirPeriode = \PhpOffice\PhpSpreadsheet\Shared\Date::excelToDateTimeObject(\PhpOffice\PhpSpreadsheet\Calculation\DateTime::EDATE($awalPeriode, ($economicalLifeTime*12)-1))->format("Y-m-d");
+	return array($awalPeriode, $akhirPeriode);
 }
 ?>

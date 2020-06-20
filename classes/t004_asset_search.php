@@ -692,6 +692,8 @@ class t004_asset_search extends t004_asset
 		$this->Salvage->setVisibility();
 		$this->Qty->setVisibility();
 		$this->Remarks->setVisibility();
+		$this->PeriodBegin->setVisibility();
+		$this->PeriodEnd->setVisibility();
 		$this->hideFieldsForAddEdit();
 
 		// Do not use lookup cache
@@ -772,6 +774,8 @@ class t004_asset_search extends t004_asset
 		$this->buildSearchUrl($srchUrl, $this->Salvage); // Salvage
 		$this->buildSearchUrl($srchUrl, $this->Qty); // Qty
 		$this->buildSearchUrl($srchUrl, $this->Remarks); // Remarks
+		$this->buildSearchUrl($srchUrl, $this->PeriodBegin); // PeriodBegin
+		$this->buildSearchUrl($srchUrl, $this->PeriodEnd); // PeriodEnd
 		if ($srchUrl != "")
 			$srchUrl .= "&";
 		$srchUrl .= "cmd=search";
@@ -866,6 +870,10 @@ class t004_asset_search extends t004_asset
 			$got = TRUE;
 		if ($this->Remarks->AdvancedSearch->post())
 			$got = TRUE;
+		if ($this->PeriodBegin->AdvancedSearch->post())
+			$got = TRUE;
+		if ($this->PeriodEnd->AdvancedSearch->post())
+			$got = TRUE;
 		return $got;
 	}
 
@@ -904,6 +912,8 @@ class t004_asset_search extends t004_asset
 		// Salvage
 		// Qty
 		// Remarks
+		// PeriodBegin
+		// PeriodEnd
 
 		if ($this->RowType == ROWTYPE_VIEW) { // View row
 
@@ -1035,6 +1045,16 @@ class t004_asset_search extends t004_asset
 			$this->Remarks->ViewValue = $this->Remarks->CurrentValue;
 			$this->Remarks->ViewCustomAttributes = "";
 
+			// PeriodBegin
+			$this->PeriodBegin->ViewValue = $this->PeriodBegin->CurrentValue;
+			$this->PeriodBegin->ViewValue = FormatDateTime($this->PeriodBegin->ViewValue, 7);
+			$this->PeriodBegin->ViewCustomAttributes = "";
+
+			// PeriodEnd
+			$this->PeriodEnd->ViewValue = $this->PeriodEnd->CurrentValue;
+			$this->PeriodEnd->ViewValue = FormatDateTime($this->PeriodEnd->ViewValue, 7);
+			$this->PeriodEnd->ViewCustomAttributes = "";
+
 			// property_id
 			$this->property_id->LinkCustomAttributes = "";
 			$this->property_id->HrefValue = "";
@@ -1089,6 +1109,16 @@ class t004_asset_search extends t004_asset
 			$this->Remarks->LinkCustomAttributes = "";
 			$this->Remarks->HrefValue = "";
 			$this->Remarks->TooltipValue = "";
+
+			// PeriodBegin
+			$this->PeriodBegin->LinkCustomAttributes = "";
+			$this->PeriodBegin->HrefValue = "";
+			$this->PeriodBegin->TooltipValue = "";
+
+			// PeriodEnd
+			$this->PeriodEnd->LinkCustomAttributes = "";
+			$this->PeriodEnd->HrefValue = "";
+			$this->PeriodEnd->TooltipValue = "";
 		} elseif ($this->RowType == ROWTYPE_SEARCH) { // Search row
 
 			// property_id
@@ -1269,6 +1299,18 @@ class t004_asset_search extends t004_asset
 			$this->Remarks->EditCustomAttributes = "";
 			$this->Remarks->EditValue = HtmlEncode($this->Remarks->AdvancedSearch->SearchValue);
 			$this->Remarks->PlaceHolder = RemoveHtml($this->Remarks->caption());
+
+			// PeriodBegin
+			$this->PeriodBegin->EditAttrs["class"] = "form-control";
+			$this->PeriodBegin->EditCustomAttributes = "";
+			$this->PeriodBegin->EditValue = HtmlEncode(FormatDateTime(UnFormatDateTime($this->PeriodBegin->AdvancedSearch->SearchValue, 7), 7));
+			$this->PeriodBegin->PlaceHolder = RemoveHtml($this->PeriodBegin->caption());
+
+			// PeriodEnd
+			$this->PeriodEnd->EditAttrs["class"] = "form-control";
+			$this->PeriodEnd->EditCustomAttributes = "";
+			$this->PeriodEnd->EditValue = HtmlEncode(FormatDateTime(UnFormatDateTime($this->PeriodEnd->AdvancedSearch->SearchValue, 7), 7));
+			$this->PeriodEnd->PlaceHolder = RemoveHtml($this->PeriodEnd->caption());
 		}
 		if ($this->RowType == ROWTYPE_ADD || $this->RowType == ROWTYPE_EDIT || $this->RowType == ROWTYPE_SEARCH) // Add/Edit/Search row
 			$this->setupFieldTitles();
@@ -1301,6 +1343,12 @@ class t004_asset_search extends t004_asset
 		if (!CheckNumber($this->Qty->AdvancedSearch->SearchValue)) {
 			AddMessage($SearchError, $this->Qty->errorMessage());
 		}
+		if (!CheckEuroDate($this->PeriodBegin->AdvancedSearch->SearchValue)) {
+			AddMessage($SearchError, $this->PeriodBegin->errorMessage());
+		}
+		if (!CheckEuroDate($this->PeriodEnd->AdvancedSearch->SearchValue)) {
+			AddMessage($SearchError, $this->PeriodEnd->errorMessage());
+		}
 
 		// Return validate result
 		$validateSearch = ($SearchError == "");
@@ -1328,6 +1376,8 @@ class t004_asset_search extends t004_asset
 		$this->Salvage->AdvancedSearch->load();
 		$this->Qty->AdvancedSearch->load();
 		$this->Remarks->AdvancedSearch->load();
+		$this->PeriodBegin->AdvancedSearch->load();
+		$this->PeriodEnd->AdvancedSearch->load();
 	}
 
 	// Set up Breadcrumb

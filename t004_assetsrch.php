@@ -63,6 +63,12 @@ loadjs.ready("head", function() {
 		elm = this.getElements("x" + infix + "_Qty");
 		if (elm && !ew.checkNumber(elm.value))
 			return this.onError(elm, "<?php echo JsEncode($t004_asset_search->Qty->errorMessage()) ?>");
+		elm = this.getElements("x" + infix + "_PeriodBegin");
+		if (elm && !ew.checkEuroDate(elm.value))
+			return this.onError(elm, "<?php echo JsEncode($t004_asset_search->PeriodBegin->errorMessage()) ?>");
+		elm = this.getElements("x" + infix + "_PeriodEnd");
+		if (elm && !ew.checkEuroDate(elm.value))
+			return this.onError(elm, "<?php echo JsEncode($t004_asset_search->PeriodEnd->errorMessage()) ?>");
 
 		// Call Form_CustomValidate event
 		if (!this.Form_CustomValidate(fobj))
@@ -308,6 +314,50 @@ loadjs.ready(["ft004_assetsearch", "datetimepicker"], function() {
 		<div class="<?php echo $t004_asset_search->RightColumnClass ?>"><div <?php echo $t004_asset_search->Remarks->cellAttributes() ?>>
 			<span id="el_t004_asset_Remarks" class="ew-search-field">
 <input type="text" data-table="t004_asset" data-field="x_Remarks" name="x_Remarks" id="x_Remarks" size="15" maxlength="65535" placeholder="<?php echo HtmlEncode($t004_asset_search->Remarks->getPlaceHolder()) ?>" value="<?php echo $t004_asset_search->Remarks->EditValue ?>"<?php echo $t004_asset_search->Remarks->editAttributes() ?>>
+</span>
+		</div></div>
+	</div>
+<?php } ?>
+<?php if ($t004_asset_search->PeriodBegin->Visible) { // PeriodBegin ?>
+	<div id="r_PeriodBegin" class="form-group row">
+		<label for="x_PeriodBegin" class="<?php echo $t004_asset_search->LeftColumnClass ?>"><span id="elh_t004_asset_PeriodBegin"><?php echo $t004_asset_search->PeriodBegin->caption() ?></span>
+		<span class="ew-search-operator">
+<?php echo $Language->phrase("=") ?>
+<input type="hidden" name="z_PeriodBegin" id="z_PeriodBegin" value="=">
+</span>
+		</label>
+		<div class="<?php echo $t004_asset_search->RightColumnClass ?>"><div <?php echo $t004_asset_search->PeriodBegin->cellAttributes() ?>>
+			<span id="el_t004_asset_PeriodBegin" class="ew-search-field">
+<input type="text" data-table="t004_asset" data-field="x_PeriodBegin" data-format="7" name="x_PeriodBegin" id="x_PeriodBegin" size="10" maxlength="10" placeholder="<?php echo HtmlEncode($t004_asset_search->PeriodBegin->getPlaceHolder()) ?>" value="<?php echo $t004_asset_search->PeriodBegin->EditValue ?>"<?php echo $t004_asset_search->PeriodBegin->editAttributes() ?>>
+<?php if (!$t004_asset_search->PeriodBegin->ReadOnly && !$t004_asset_search->PeriodBegin->Disabled && !isset($t004_asset_search->PeriodBegin->EditAttrs["readonly"]) && !isset($t004_asset_search->PeriodBegin->EditAttrs["disabled"])) { ?>
+<script>
+loadjs.ready(["ft004_assetsearch", "datetimepicker"], function() {
+	ew.createDateTimePicker("ft004_assetsearch", "x_PeriodBegin", {"ignoreReadonly":true,"useCurrent":false,"format":7});
+});
+</script>
+<?php } ?>
+</span>
+		</div></div>
+	</div>
+<?php } ?>
+<?php if ($t004_asset_search->PeriodEnd->Visible) { // PeriodEnd ?>
+	<div id="r_PeriodEnd" class="form-group row">
+		<label for="x_PeriodEnd" class="<?php echo $t004_asset_search->LeftColumnClass ?>"><span id="elh_t004_asset_PeriodEnd"><?php echo $t004_asset_search->PeriodEnd->caption() ?></span>
+		<span class="ew-search-operator">
+<?php echo $Language->phrase("=") ?>
+<input type="hidden" name="z_PeriodEnd" id="z_PeriodEnd" value="=">
+</span>
+		</label>
+		<div class="<?php echo $t004_asset_search->RightColumnClass ?>"><div <?php echo $t004_asset_search->PeriodEnd->cellAttributes() ?>>
+			<span id="el_t004_asset_PeriodEnd" class="ew-search-field">
+<input type="text" data-table="t004_asset" data-field="x_PeriodEnd" data-format="7" name="x_PeriodEnd" id="x_PeriodEnd" size="10" maxlength="10" placeholder="<?php echo HtmlEncode($t004_asset_search->PeriodEnd->getPlaceHolder()) ?>" value="<?php echo $t004_asset_search->PeriodEnd->EditValue ?>"<?php echo $t004_asset_search->PeriodEnd->editAttributes() ?>>
+<?php if (!$t004_asset_search->PeriodEnd->ReadOnly && !$t004_asset_search->PeriodEnd->Disabled && !isset($t004_asset_search->PeriodEnd->EditAttrs["readonly"]) && !isset($t004_asset_search->PeriodEnd->EditAttrs["disabled"])) { ?>
+<script>
+loadjs.ready(["ft004_assetsearch", "datetimepicker"], function() {
+	ew.createDateTimePicker("ft004_assetsearch", "x_PeriodEnd", {"ignoreReadonly":true,"useCurrent":false,"format":7});
+});
+</script>
+<?php } ?>
 </span>
 		</div></div>
 	</div>

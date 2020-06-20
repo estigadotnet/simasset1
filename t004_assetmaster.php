@@ -115,6 +115,26 @@ namespace PHPMaker2020\p_simasset1;
 </td>
 		</tr>
 <?php } ?>
+<?php if ($t004_asset->PeriodBegin->Visible) { // PeriodBegin ?>
+		<tr id="r_PeriodBegin">
+			<td class="<?php echo $t004_asset->TableLeftColumnClass ?>"><?php echo $t004_asset->PeriodBegin->caption() ?></td>
+			<td <?php echo $t004_asset->PeriodBegin->cellAttributes() ?>>
+<span id="el_t004_asset_PeriodBegin">
+<span<?php echo $t004_asset->PeriodBegin->viewAttributes() ?>><?php echo $t004_asset->PeriodBegin->getViewValue() ?></span>
+</span>
+</td>
+		</tr>
+<?php } ?>
+<?php if ($t004_asset->PeriodEnd->Visible) { // PeriodEnd ?>
+		<tr id="r_PeriodEnd">
+			<td class="<?php echo $t004_asset->TableLeftColumnClass ?>"><?php echo $t004_asset->PeriodEnd->caption() ?></td>
+			<td <?php echo $t004_asset->PeriodEnd->cellAttributes() ?>>
+<span id="el_t004_asset_PeriodEnd">
+<span<?php echo $t004_asset->PeriodEnd->viewAttributes() ?>><?php echo $t004_asset->PeriodEnd->getViewValue() ?></span>
+</span>
+</td>
+		</tr>
+<?php } ?>
 	</tbody>
 </table>
 </div>

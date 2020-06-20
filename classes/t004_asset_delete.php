@@ -604,6 +604,8 @@ class t004_asset_delete extends t004_asset
 		$this->Salvage->setVisibility();
 		$this->Qty->setVisibility();
 		$this->Remarks->setVisibility();
+		$this->PeriodBegin->setVisibility();
+		$this->PeriodEnd->setVisibility();
 		$this->hideFieldsForAddEdit();
 
 		// Do not use lookup cache
@@ -765,6 +767,8 @@ class t004_asset_delete extends t004_asset
 		$this->Salvage->setDbValue($row['Salvage']);
 		$this->Qty->setDbValue($row['Qty']);
 		$this->Remarks->setDbValue($row['Remarks']);
+		$this->PeriodBegin->setDbValue($row['PeriodBegin']);
+		$this->PeriodEnd->setDbValue($row['PeriodEnd']);
 	}
 
 	// Return a row with default values
@@ -783,6 +787,8 @@ class t004_asset_delete extends t004_asset
 		$row['Salvage'] = NULL;
 		$row['Qty'] = NULL;
 		$row['Remarks'] = NULL;
+		$row['PeriodBegin'] = NULL;
+		$row['PeriodEnd'] = NULL;
 		return $row;
 	}
 
@@ -821,6 +827,8 @@ class t004_asset_delete extends t004_asset
 		// Salvage
 		// Qty
 		// Remarks
+		// PeriodBegin
+		// PeriodEnd
 
 		if ($this->RowType == ROWTYPE_VIEW) { // View row
 
@@ -952,6 +960,16 @@ class t004_asset_delete extends t004_asset
 			$this->Remarks->ViewValue = $this->Remarks->CurrentValue;
 			$this->Remarks->ViewCustomAttributes = "";
 
+			// PeriodBegin
+			$this->PeriodBegin->ViewValue = $this->PeriodBegin->CurrentValue;
+			$this->PeriodBegin->ViewValue = FormatDateTime($this->PeriodBegin->ViewValue, 7);
+			$this->PeriodBegin->ViewCustomAttributes = "";
+
+			// PeriodEnd
+			$this->PeriodEnd->ViewValue = $this->PeriodEnd->CurrentValue;
+			$this->PeriodEnd->ViewValue = FormatDateTime($this->PeriodEnd->ViewValue, 7);
+			$this->PeriodEnd->ViewCustomAttributes = "";
+
 			// property_id
 			$this->property_id->LinkCustomAttributes = "";
 			$this->property_id->HrefValue = "";
@@ -1006,6 +1024,16 @@ class t004_asset_delete extends t004_asset
 			$this->Remarks->LinkCustomAttributes = "";
 			$this->Remarks->HrefValue = "";
 			$this->Remarks->TooltipValue = "";
+
+			// PeriodBegin
+			$this->PeriodBegin->LinkCustomAttributes = "";
+			$this->PeriodBegin->HrefValue = "";
+			$this->PeriodBegin->TooltipValue = "";
+
+			// PeriodEnd
+			$this->PeriodEnd->LinkCustomAttributes = "";
+			$this->PeriodEnd->HrefValue = "";
+			$this->PeriodEnd->TooltipValue = "";
 		}
 
 		// Call Row Rendered event

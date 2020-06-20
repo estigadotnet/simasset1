@@ -45,6 +45,8 @@ class t004_asset extends DbTable
 	public $Salvage;
 	public $Qty;
 	public $Remarks;
+	public $PeriodBegin;
+	public $PeriodEnd;
 
 	// Constructor
 	public function __construct()
@@ -181,6 +183,22 @@ class t004_asset extends DbTable
 		$this->Remarks = new DbField('t004_asset', 't004_asset', 'x_Remarks', 'Remarks', '`Remarks`', '`Remarks`', 201, 65535, -1, FALSE, '`Remarks`', FALSE, FALSE, FALSE, 'FORMATTED TEXT', 'TEXTAREA');
 		$this->Remarks->Sortable = TRUE; // Allow sort
 		$this->fields['Remarks'] = &$this->Remarks;
+
+		// PeriodBegin
+		$this->PeriodBegin = new DbField('t004_asset', 't004_asset', 'x_PeriodBegin', 'PeriodBegin', '`PeriodBegin`', CastDateFieldForLike("`PeriodBegin`", 7, "DB"), 133, 10, 7, FALSE, '`PeriodBegin`', FALSE, FALSE, FALSE, 'FORMATTED TEXT', 'TEXT');
+		$this->PeriodBegin->Nullable = FALSE; // NOT NULL field
+		$this->PeriodBegin->Required = TRUE; // Required field
+		$this->PeriodBegin->Sortable = TRUE; // Allow sort
+		$this->PeriodBegin->DefaultErrorMessage = str_replace("%s", $GLOBALS["DATE_SEPARATOR"], $Language->phrase("IncorrectDateDMY"));
+		$this->fields['PeriodBegin'] = &$this->PeriodBegin;
+
+		// PeriodEnd
+		$this->PeriodEnd = new DbField('t004_asset', 't004_asset', 'x_PeriodEnd', 'PeriodEnd', '`PeriodEnd`', CastDateFieldForLike("`PeriodEnd`", 7, "DB"), 133, 10, 7, FALSE, '`PeriodEnd`', FALSE, FALSE, FALSE, 'FORMATTED TEXT', 'TEXT');
+		$this->PeriodEnd->Nullable = FALSE; // NOT NULL field
+		$this->PeriodEnd->Required = TRUE; // Required field
+		$this->PeriodEnd->Sortable = TRUE; // Allow sort
+		$this->PeriodEnd->DefaultErrorMessage = str_replace("%s", $GLOBALS["DATE_SEPARATOR"], $Language->phrase("IncorrectDateDMY"));
+		$this->fields['PeriodEnd'] = &$this->PeriodEnd;
 	}
 
 	// Field Visibility
@@ -654,6 +672,8 @@ class t004_asset extends DbTable
 		$this->Salvage->DbValue = $row['Salvage'];
 		$this->Qty->DbValue = $row['Qty'];
 		$this->Remarks->DbValue = $row['Remarks'];
+		$this->PeriodBegin->DbValue = $row['PeriodBegin'];
+		$this->PeriodEnd->DbValue = $row['PeriodEnd'];
 	}
 
 	// Delete uploaded files
@@ -902,6 +922,8 @@ class t004_asset extends DbTable
 		$this->Salvage->setDbValue($rs->fields('Salvage'));
 		$this->Qty->setDbValue($rs->fields('Qty'));
 		$this->Remarks->setDbValue($rs->fields('Remarks'));
+		$this->PeriodBegin->setDbValue($rs->fields('PeriodBegin'));
+		$this->PeriodEnd->setDbValue($rs->fields('PeriodEnd'));
 	}
 
 	// Render list row values
@@ -925,6 +947,8 @@ class t004_asset extends DbTable
 		// Salvage
 		// Qty
 		// Remarks
+		// PeriodBegin
+		// PeriodEnd
 		// id
 
 		$this->id->ViewValue = $this->id->CurrentValue;
@@ -1054,6 +1078,16 @@ class t004_asset extends DbTable
 		$this->Remarks->ViewValue = $this->Remarks->CurrentValue;
 		$this->Remarks->ViewCustomAttributes = "";
 
+		// PeriodBegin
+		$this->PeriodBegin->ViewValue = $this->PeriodBegin->CurrentValue;
+		$this->PeriodBegin->ViewValue = FormatDateTime($this->PeriodBegin->ViewValue, 7);
+		$this->PeriodBegin->ViewCustomAttributes = "";
+
+		// PeriodEnd
+		$this->PeriodEnd->ViewValue = $this->PeriodEnd->CurrentValue;
+		$this->PeriodEnd->ViewValue = FormatDateTime($this->PeriodEnd->ViewValue, 7);
+		$this->PeriodEnd->ViewCustomAttributes = "";
+
 		// id
 		$this->id->LinkCustomAttributes = "";
 		$this->id->HrefValue = "";
@@ -1113,6 +1147,16 @@ class t004_asset extends DbTable
 		$this->Remarks->LinkCustomAttributes = "";
 		$this->Remarks->HrefValue = "";
 		$this->Remarks->TooltipValue = "";
+
+		// PeriodBegin
+		$this->PeriodBegin->LinkCustomAttributes = "";
+		$this->PeriodBegin->HrefValue = "";
+		$this->PeriodBegin->TooltipValue = "";
+
+		// PeriodEnd
+		$this->PeriodEnd->LinkCustomAttributes = "";
+		$this->PeriodEnd->HrefValue = "";
+		$this->PeriodEnd->TooltipValue = "";
 
 		// Call Row Rendered event
 		$this->Row_Rendered();
@@ -1206,6 +1250,20 @@ class t004_asset extends DbTable
 		$this->Remarks->EditValue = $this->Remarks->CurrentValue;
 		$this->Remarks->PlaceHolder = RemoveHtml($this->Remarks->caption());
 
+		// PeriodBegin
+		$this->PeriodBegin->EditAttrs["class"] = "form-control";
+		$this->PeriodBegin->EditCustomAttributes = "";
+		$this->PeriodBegin->EditValue = $this->PeriodBegin->CurrentValue;
+		$this->PeriodBegin->EditValue = FormatDateTime($this->PeriodBegin->EditValue, 7);
+		$this->PeriodBegin->ViewCustomAttributes = "";
+
+		// PeriodEnd
+		$this->PeriodEnd->EditAttrs["class"] = "form-control";
+		$this->PeriodEnd->EditCustomAttributes = "";
+		$this->PeriodEnd->EditValue = $this->PeriodEnd->CurrentValue;
+		$this->PeriodEnd->EditValue = FormatDateTime($this->PeriodEnd->EditValue, 7);
+		$this->PeriodEnd->ViewCustomAttributes = "";
+
 		// Call Row Rendered event
 		$this->Row_Rendered();
 	}
@@ -1246,6 +1304,8 @@ class t004_asset extends DbTable
 					$doc->exportCaption($this->Salvage);
 					$doc->exportCaption($this->Qty);
 					$doc->exportCaption($this->Remarks);
+					$doc->exportCaption($this->PeriodBegin);
+					$doc->exportCaption($this->PeriodEnd);
 				} else {
 					$doc->exportCaption($this->id);
 					$doc->exportCaption($this->property_id);
@@ -1259,6 +1319,8 @@ class t004_asset extends DbTable
 					$doc->exportCaption($this->Salvage);
 					$doc->exportCaption($this->Qty);
 					$doc->exportCaption($this->Remarks);
+					$doc->exportCaption($this->PeriodBegin);
+					$doc->exportCaption($this->PeriodEnd);
 				}
 				$doc->endExportRow();
 			}
@@ -1301,6 +1363,8 @@ class t004_asset extends DbTable
 						$doc->exportField($this->Salvage);
 						$doc->exportField($this->Qty);
 						$doc->exportField($this->Remarks);
+						$doc->exportField($this->PeriodBegin);
+						$doc->exportField($this->PeriodEnd);
 					} else {
 						$doc->exportField($this->id);
 						$doc->exportField($this->property_id);
@@ -1314,6 +1378,8 @@ class t004_asset extends DbTable
 						$doc->exportField($this->Salvage);
 						$doc->exportField($this->Qty);
 						$doc->exportField($this->Remarks);
+						$doc->exportField($this->PeriodBegin);
+						$doc->exportField($this->PeriodEnd);
 					}
 					$doc->endExportRow($rowCnt);
 				}
@@ -1513,7 +1579,11 @@ class t004_asset extends DbTable
 
 		// Enter your code here
 		// To cancel, set return value to FALSE
+		// ambil nilai economical life time
+		// ambil nilai awal periode
+		// ambil nilai akhir periode
 
+		list($rsnew["PeriodBegin"], $rsnew["PeriodEnd"]) = fCariAwalAkhirPeriode($rsnew["group_id"], $rsnew["ProcurementDate"]);
 		return TRUE;
 	}
 
@@ -1531,7 +1601,11 @@ class t004_asset extends DbTable
 
 		// Enter your code here
 		// To cancel, set return value to FALSE
+		// ambil nilai economical life time
+		// ambil nilai awal periode
+		// ambil nilai akhir periode
 
+		list($rsnew["PeriodBegin"], $rsnew["PeriodEnd"]) = fCariAwalAkhirPeriode($rsnew["group_id"], $rsnew["ProcurementDate"]);
 		return TRUE;
 	}
 
@@ -1539,6 +1613,8 @@ class t004_asset extends DbTable
 	function Row_Updated($rsold, &$rsnew) {
 
 		//echo "Row Updated";
+		fDeletePenyusutan($rsold["id"]);
+		fCreatePenyusutan($rsnew);
 	}
 
 	// Row Update Conflict event

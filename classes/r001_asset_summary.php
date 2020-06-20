@@ -703,6 +703,8 @@ class r001_asset_summary extends r001_asset
 		$this->Salvage->setVisibility();
 		$this->Qty->setVisibility();
 		$this->Remarks->setVisibility();
+		$this->PeriodBegin->setVisibility();
+		$this->PeriodEnd->setVisibility();
 
 		// Set up groups per page dynamically
 		$this->setupDisplayGroups();
@@ -819,6 +821,8 @@ class r001_asset_summary extends r001_asset
 			$data["ProcurementCurrentCost"] = $record['ProcurementCurrentCost'];
 			$data["Salvage"] = $record['Salvage'];
 			$data["Qty"] = $record['Qty'];
+			$data["PeriodBegin"] = $record['PeriodBegin'];
+			$data["PeriodEnd"] = $record['PeriodEnd'];
 			$this->Rows[] = $data;
 		}
 		$this->id->setDbValue($record['id']);
@@ -833,6 +837,8 @@ class r001_asset_summary extends r001_asset
 		$this->Salvage->setDbValue($record['Salvage']);
 		$this->Qty->setDbValue($record['Qty']);
 		$this->Remarks->setDbValue($record['Remarks']);
+		$this->PeriodBegin->setDbValue($record['PeriodBegin']);
+		$this->PeriodEnd->setDbValue($record['PeriodEnd']);
 	}
 
 	// Render row
@@ -882,6 +888,8 @@ class r001_asset_summary extends r001_asset
 		// Salvage
 		// Qty
 		// Remarks
+		// PeriodBegin
+		// PeriodEnd
 
 		if ($this->RowType == ROWTYPE_SEARCH) { // Search row
 		} elseif ($this->RowType == ROWTYPE_TOTAL && !($this->RowTotalType == ROWTOTAL_GROUP && $this->RowTotalSubType == ROWTOTAL_HEADER)) { // Summary row
@@ -919,6 +927,12 @@ class r001_asset_summary extends r001_asset
 
 			// Remarks
 			$this->Remarks->HrefValue = "";
+
+			// PeriodBegin
+			$this->PeriodBegin->HrefValue = "";
+
+			// PeriodEnd
+			$this->PeriodEnd->HrefValue = "";
 		} else {
 			if ($this->RowTotalType == ROWTOTAL_GROUP && $this->RowTotalSubType == ROWTOTAL_HEADER) {
 			} else {
@@ -1063,6 +1077,18 @@ class r001_asset_summary extends r001_asset
 			$this->Remarks->CellCssClass = ($this->RecordCount % 2 != 1 ? "ew-table-alt-row" : "ew-table-row");
 			$this->Remarks->ViewCustomAttributes = "";
 
+			// PeriodBegin
+			$this->PeriodBegin->ViewValue = $this->PeriodBegin->CurrentValue;
+			$this->PeriodBegin->ViewValue = FormatDateTime($this->PeriodBegin->ViewValue, 7);
+			$this->PeriodBegin->CellCssClass = ($this->RecordCount % 2 != 1 ? "ew-table-alt-row" : "ew-table-row");
+			$this->PeriodBegin->ViewCustomAttributes = "";
+
+			// PeriodEnd
+			$this->PeriodEnd->ViewValue = $this->PeriodEnd->CurrentValue;
+			$this->PeriodEnd->ViewValue = FormatDateTime($this->PeriodEnd->ViewValue, 7);
+			$this->PeriodEnd->CellCssClass = ($this->RecordCount % 2 != 1 ? "ew-table-alt-row" : "ew-table-row");
+			$this->PeriodEnd->ViewCustomAttributes = "";
+
 			// property_id
 			$this->property_id->LinkCustomAttributes = "";
 			$this->property_id->HrefValue = "";
@@ -1117,6 +1143,16 @@ class r001_asset_summary extends r001_asset
 			$this->Remarks->LinkCustomAttributes = "";
 			$this->Remarks->HrefValue = "";
 			$this->Remarks->TooltipValue = "";
+
+			// PeriodBegin
+			$this->PeriodBegin->LinkCustomAttributes = "";
+			$this->PeriodBegin->HrefValue = "";
+			$this->PeriodBegin->TooltipValue = "";
+
+			// PeriodEnd
+			$this->PeriodEnd->LinkCustomAttributes = "";
+			$this->PeriodEnd->HrefValue = "";
+			$this->PeriodEnd->TooltipValue = "";
 		}
 
 		// Call Cell_Rendered event
@@ -1221,6 +1257,24 @@ class r001_asset_summary extends r001_asset
 			$hrefValue = &$this->Remarks->HrefValue;
 			$linkAttrs = &$this->Remarks->LinkAttrs;
 			$this->Cell_Rendered($this->Remarks, $currentValue, $viewValue, $viewAttrs, $cellAttrs, $hrefValue, $linkAttrs);
+
+			// PeriodBegin
+			$currentValue = $this->PeriodBegin->CurrentValue;
+			$viewValue = &$this->PeriodBegin->ViewValue;
+			$viewAttrs = &$this->PeriodBegin->ViewAttrs;
+			$cellAttrs = &$this->PeriodBegin->CellAttrs;
+			$hrefValue = &$this->PeriodBegin->HrefValue;
+			$linkAttrs = &$this->PeriodBegin->LinkAttrs;
+			$this->Cell_Rendered($this->PeriodBegin, $currentValue, $viewValue, $viewAttrs, $cellAttrs, $hrefValue, $linkAttrs);
+
+			// PeriodEnd
+			$currentValue = $this->PeriodEnd->CurrentValue;
+			$viewValue = &$this->PeriodEnd->ViewValue;
+			$viewAttrs = &$this->PeriodEnd->ViewAttrs;
+			$cellAttrs = &$this->PeriodEnd->CellAttrs;
+			$hrefValue = &$this->PeriodEnd->HrefValue;
+			$linkAttrs = &$this->PeriodEnd->LinkAttrs;
+			$this->Cell_Rendered($this->PeriodEnd, $currentValue, $viewValue, $viewAttrs, $cellAttrs, $hrefValue, $linkAttrs);
 		}
 
 		// Call Row_Rendered event
@@ -1290,6 +1344,10 @@ class r001_asset_summary extends r001_asset
 		if ($this->Qty->Visible)
 			$this->DetailColumnCount += 1;
 		if ($this->Remarks->Visible)
+			$this->DetailColumnCount += 1;
+		if ($this->PeriodBegin->Visible)
+			$this->DetailColumnCount += 1;
+		if ($this->PeriodEnd->Visible)
 			$this->DetailColumnCount += 1;
 	}
 
@@ -1653,6 +1711,8 @@ class r001_asset_summary extends r001_asset
 			$this->Salvage->setSort("");
 			$this->Qty->setSort("");
 			$this->Remarks->setSort("");
+			$this->PeriodBegin->setSort("");
+			$this->PeriodEnd->setSort("");
 
 		// Check for an Order parameter
 		} elseif ($orderBy != "") {
@@ -1669,6 +1729,8 @@ class r001_asset_summary extends r001_asset
 			$this->updateSort($this->Salvage, $ctrl); // Salvage
 			$this->updateSort($this->Qty, $ctrl); // Qty
 			$this->updateSort($this->Remarks, $ctrl); // Remarks
+			$this->updateSort($this->PeriodBegin, $ctrl); // PeriodBegin
+			$this->updateSort($this->PeriodEnd, $ctrl); // PeriodEnd
 			$sortSql = $this->sortSql();
 			$this->setOrderBy($sortSql);
 			$this->setStartGroup(1);
