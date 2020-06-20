@@ -1,3 +1,9 @@
+[1.0.6] - 11:38 PM 6/20/2020
+* added
+  - setup - asset - depreciation list
+
+
+
 [1.0.5] - 9:48 AM 6/19/2020
 * added
   - setup - asset group
