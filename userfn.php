@@ -108,6 +108,13 @@ function PersonalData_Deleted($row) {
 	//echo "PersonalData Deleted";
 }
 
+function fCariDepreciationAmountYtd($asset_id, $listOfYears) {
+	$q = "select * from t006_assetdepreciation where asset_id = ".$asset_id."
+		and ListOfYears = ".$listOfYears."";
+	$r = ExecuteRow($q);
+	return $r;
+}
+
 function fDeletePenyusutan($id) {
 
 	// delete data penyusutan berdasarkan asset_id = $id

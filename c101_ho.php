@@ -52,7 +52,7 @@ $row = $baserow+ 5; $spreadsheet->getActiveSheet()->setCellValue('D'.$row, $r[0]
 $row = $baserow+ 9; $spreadsheet->getActiveSheet()->setCellValue('D'.$row, $r[0]["hoSignatureBy"]);
 $row = $baserow+10; $spreadsheet->getActiveSheet()->setCellValue('D'.$row, $r[0]["CodeNoBy"]);
 $row = $baserow+11; $spreadsheet->getActiveSheet()->setCellValue('D'.$row, $r[0]["hoDepartmentBy"]);
-$row = $baserow+12; $spreadsheet->getActiveSheet()->setCellValue('D'.$row, $r[0]["TransactionDate"]);
+$row = $baserow+12; $spreadsheet->getActiveSheet()->setCellValue('D'.$row, date_format(date_create($r[0]["TransactionDate"]), "d-m-Y"));
 
 
 // cetak handover data detail
@@ -64,13 +64,18 @@ $baseRow = 28;
 foreach ($r as $rs) {
 	$row = $baseRow + $i;
 	$spreadsheet->getActiveSheet()->insertNewRowBefore($row, 1);
+
+	$rD = fCariDepreciationAmountYtd($rs["asset_id"], date_format(date_create($rs["TransactionDate"]), "Y"));
 	
 	$spreadsheet->getActiveSheet()->setCellValue('A' . $row, $no++)
 		->setCellValue('B' . $row, $rs["Code"])
 		->setCellValue('C' . $row, $rs["Description"])
 		->setCellValue('D' . $row, $rs["AssetDepartment"])
-		->setCellValue('E' . $row, $rs["ProcurementDate"])
+		->setCellValue('E' . $row, date_format(date_create($rs["ProcurementDate"]), "d-m-Y"))
 		->setCellValue('F' . $row, $rs["ProcurementCurrentCost"])
+		->setCellValue('G' . $row, $rD["DepreciationAmount"])
+		->setCellValue('H' . $row, $rD["DepreciationYtd"])
+		->setCellValue('I' . $row, $rD["NetBookValue"])
 		
 		;
 	$i++;

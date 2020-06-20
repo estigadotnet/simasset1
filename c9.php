@@ -44,6 +44,10 @@ Page_Rendering();
 //	"group_id" => 3,
 //	"ProcurementDate" => "2013-12-05"
 //	));
+
+$r = fCariDepreciationAmountYtd(20, 2014);
+var_dump($r);
+
 ?>
 
 <?php if (Config("DEBUG")) echo GetDebugMessage(); ?>
