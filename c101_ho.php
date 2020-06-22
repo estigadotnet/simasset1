@@ -39,9 +39,10 @@ $reader = IOFactory::createReader('Xlsx');
 // ambil data
 $q = "select * from v101_ho where id = ".Get("id")."";
 $r = ExecuteRows($q);
+$namaFile = $r[0]["TemplateFile"];
 
 // ambil template file excel
-$spreadsheet = $reader->load(__DIR__ . '/' . $r[0]["TemplateFile"]);
+$spreadsheet = $reader->load(__DIR__ . '/' . $namaFile.".xlsx");
 
 // cetak handover data head
 $baserow = 8;
@@ -82,8 +83,8 @@ foreach ($r as $rs) {
 }
 $spreadsheet->getActiveSheet()->removeRow($baseRow, 1);
 $writer = \PhpOffice\PhpSpreadsheet\IOFactory::createWriter($spreadsheet, 'Xlsx');
-$writer->save('write.xlsx');
-header("location: write.xlsx");
+$writer->save($namaFile." Result.xlsx");
+header("location: ".$namaFile." Result.xlsx");
 ?>
 
 <?php if (Config("DEBUG")) echo GetDebugMessage(); ?>
