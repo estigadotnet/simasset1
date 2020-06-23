@@ -2,9 +2,9 @@
 <?php
 
 /**
- * Table class for t101_ho_head
+ * Table class for t103_ho1_head
  */
-class t101_ho_head extends DbTable
+class t103_ho1_head extends DbTable
 {
 	protected $SqlFrom = "";
 	protected $SqlSelect = "";
@@ -34,16 +34,13 @@ class t101_ho_head extends DbTable
 
 	// Fields
 	public $id;
-	public $property_id;
+	public $ho_head;
 	public $TransactionNo;
 	public $TransactionDate;
 	public $TransactionType;
 	public $HandedOverTo;
 	public $CodeNoTo;
 	public $DepartmentTo;
-	public $HandedOverBy;
-	public $CodeNoBy;
-	public $DepartmentBy;
 	public $Sign1;
 	public $Sign2;
 	public $Sign3;
@@ -58,12 +55,12 @@ class t101_ho_head extends DbTable
 		// Language object
 		if (!isset($Language))
 			$Language = new Language();
-		$this->TableVar = 't101_ho_head';
-		$this->TableName = 't101_ho_head';
+		$this->TableVar = 't103_ho1_head';
+		$this->TableName = 't103_ho1_head';
 		$this->TableType = 'TABLE';
 
 		// Update Table
-		$this->UpdateTable = "`t101_ho_head`";
+		$this->UpdateTable = "`t103_ho1_head`";
 		$this->Dbid = 'DB';
 		$this->ExportAll = TRUE;
 		$this->ExportPageBreakCount = 0; // Page break per every n record (PDF only)
@@ -83,7 +80,7 @@ class t101_ho_head extends DbTable
 		$this->BasicSearch = new BasicSearch($this->TableVar);
 
 		// id
-		$this->id = new DbField('t101_ho_head', 't101_ho_head', 'x_id', 'id', '`id`', '`id`', 3, 11, -1, FALSE, '`id`', FALSE, FALSE, FALSE, 'FORMATTED TEXT', 'NO');
+		$this->id = new DbField('t103_ho1_head', 't103_ho1_head', 'x_id', 'id', '`id`', '`id`', 3, 11, -1, FALSE, '`id`', FALSE, FALSE, FALSE, 'FORMATTED TEXT', 'NO');
 		$this->id->IsAutoIncrement = TRUE; // Autoincrement field
 		$this->id->IsPrimaryKey = TRUE; // Primary key field
 		$this->id->IsForeignKey = TRUE; // Foreign key field
@@ -91,46 +88,46 @@ class t101_ho_head extends DbTable
 		$this->id->DefaultErrorMessage = $Language->phrase("IncorrectInteger");
 		$this->fields['id'] = &$this->id;
 
-		// property_id
-		$this->property_id = new DbField('t101_ho_head', 't101_ho_head', 'x_property_id', 'property_id', '`property_id`', '`property_id`', 3, 11, -1, FALSE, '`property_id`', FALSE, FALSE, FALSE, 'FORMATTED TEXT', 'SELECT');
-		$this->property_id->Nullable = FALSE; // NOT NULL field
-		$this->property_id->Required = TRUE; // Required field
-		$this->property_id->Sortable = TRUE; // Allow sort
-		$this->property_id->UsePleaseSelect = TRUE; // Use PleaseSelect by default
-		$this->property_id->PleaseSelectText = $Language->phrase("PleaseSelect"); // "PleaseSelect" text
-		$this->property_id->Lookup = new Lookup('property_id', 't001_property', FALSE, 'id', ["Property","","",""], [], [], [], [], [], [], '', '');
-		$this->property_id->DefaultErrorMessage = $Language->phrase("IncorrectInteger");
-		$this->fields['property_id'] = &$this->property_id;
+		// ho_head
+		$this->ho_head = new DbField('t103_ho1_head', 't103_ho1_head', 'x_ho_head', 'ho_head', '`ho_head`', '`ho_head`', 3, 11, -1, FALSE, '`ho_head`', FALSE, FALSE, FALSE, 'FORMATTED TEXT', 'SELECT');
+		$this->ho_head->Nullable = FALSE; // NOT NULL field
+		$this->ho_head->Required = TRUE; // Required field
+		$this->ho_head->Sortable = TRUE; // Allow sort
+		$this->ho_head->UsePleaseSelect = TRUE; // Use PleaseSelect by default
+		$this->ho_head->PleaseSelectText = $Language->phrase("PleaseSelect"); // "PleaseSelect" text
+		$this->ho_head->Lookup = new Lookup('ho_head', 't101_ho_head', FALSE, 'id', ["TransactionNo","","",""], [], [], [], [], [], [], '', '');
+		$this->ho_head->DefaultErrorMessage = $Language->phrase("IncorrectInteger");
+		$this->fields['ho_head'] = &$this->ho_head;
 
 		// TransactionNo
-		$this->TransactionNo = new DbField('t101_ho_head', 't101_ho_head', 'x_TransactionNo', 'TransactionNo', '`TransactionNo`', '`TransactionNo`', 200, 25, -1, FALSE, '`TransactionNo`', FALSE, FALSE, FALSE, 'FORMATTED TEXT', 'TEXT');
+		$this->TransactionNo = new DbField('t103_ho1_head', 't103_ho1_head', 'x_TransactionNo', 'TransactionNo', '`TransactionNo`', '`TransactionNo`', 200, 25, -1, FALSE, '`TransactionNo`', FALSE, FALSE, FALSE, 'FORMATTED TEXT', 'TEXT');
 		$this->TransactionNo->Nullable = FALSE; // NOT NULL field
 		$this->TransactionNo->Required = TRUE; // Required field
 		$this->TransactionNo->Sortable = TRUE; // Allow sort
 		$this->fields['TransactionNo'] = &$this->TransactionNo;
 
 		// TransactionDate
-		$this->TransactionDate = new DbField('t101_ho_head', 't101_ho_head', 'x_TransactionDate', 'TransactionDate', '`TransactionDate`', CastDateFieldForLike("`TransactionDate`", 7, "DB"), 133, 10, 7, FALSE, '`TransactionDate`', FALSE, FALSE, FALSE, 'FORMATTED TEXT', 'TEXT');
+		$this->TransactionDate = new DbField('t103_ho1_head', 't103_ho1_head', 'x_TransactionDate', 'TransactionDate', '`TransactionDate`', CastDateFieldForLike("`TransactionDate`", 0, "DB"), 133, 10, 0, FALSE, '`TransactionDate`', FALSE, FALSE, FALSE, 'FORMATTED TEXT', 'TEXT');
 		$this->TransactionDate->Nullable = FALSE; // NOT NULL field
 		$this->TransactionDate->Required = TRUE; // Required field
 		$this->TransactionDate->Sortable = TRUE; // Allow sort
-		$this->TransactionDate->DefaultErrorMessage = str_replace("%s", $GLOBALS["DATE_SEPARATOR"], $Language->phrase("IncorrectDateDMY"));
+		$this->TransactionDate->DefaultErrorMessage = str_replace("%s", $GLOBALS["DATE_FORMAT"], $Language->phrase("IncorrectDate"));
 		$this->fields['TransactionDate'] = &$this->TransactionDate;
 
 		// TransactionType
-		$this->TransactionType = new DbField('t101_ho_head', 't101_ho_head', 'x_TransactionType', 'TransactionType', '`TransactionType`', '`TransactionType`', 16, 4, -1, FALSE, '`TransactionType`', FALSE, FALSE, FALSE, 'FORMATTED TEXT', 'SELECT');
+		$this->TransactionType = new DbField('t103_ho1_head', 't103_ho1_head', 'x_TransactionType', 'TransactionType', '`TransactionType`', '`TransactionType`', 16, 4, -1, FALSE, '`TransactionType`', FALSE, FALSE, FALSE, 'FORMATTED TEXT', 'SELECT');
 		$this->TransactionType->Nullable = FALSE; // NOT NULL field
 		$this->TransactionType->Required = TRUE; // Required field
 		$this->TransactionType->Sortable = TRUE; // Allow sort
 		$this->TransactionType->UsePleaseSelect = TRUE; // Use PleaseSelect by default
 		$this->TransactionType->PleaseSelectText = $Language->phrase("PleaseSelect"); // "PleaseSelect" text
-		$this->TransactionType->Lookup = new Lookup('TransactionType', 't101_ho_head', FALSE, '', ["","","",""], [], [], [], [], [], [], '', '');
+		$this->TransactionType->Lookup = new Lookup('TransactionType', 't103_ho1_head', FALSE, '', ["","","",""], [], [], [], [], [], [], '', '');
 		$this->TransactionType->OptionCount = 1;
 		$this->TransactionType->DefaultErrorMessage = $Language->phrase("IncorrectInteger");
 		$this->fields['TransactionType'] = &$this->TransactionType;
 
 		// HandedOverTo
-		$this->HandedOverTo = new DbField('t101_ho_head', 't101_ho_head', 'x_HandedOverTo', 'HandedOverTo', '`HandedOverTo`', '`HandedOverTo`', 3, 11, -1, FALSE, '`HandedOverTo`', FALSE, FALSE, FALSE, 'FORMATTED TEXT', 'SELECT');
+		$this->HandedOverTo = new DbField('t103_ho1_head', 't103_ho1_head', 'x_HandedOverTo', 'HandedOverTo', '`HandedOverTo`', '`HandedOverTo`', 3, 11, -1, FALSE, '`HandedOverTo`', FALSE, FALSE, FALSE, 'FORMATTED TEXT', 'SELECT');
 		$this->HandedOverTo->Nullable = FALSE; // NOT NULL field
 		$this->HandedOverTo->Required = TRUE; // Required field
 		$this->HandedOverTo->Sortable = TRUE; // Allow sort
@@ -141,14 +138,14 @@ class t101_ho_head extends DbTable
 		$this->fields['HandedOverTo'] = &$this->HandedOverTo;
 
 		// CodeNoTo
-		$this->CodeNoTo = new DbField('t101_ho_head', 't101_ho_head', 'x_CodeNoTo', 'CodeNoTo', '`CodeNoTo`', '`CodeNoTo`', 200, 25, -1, FALSE, '`CodeNoTo`', FALSE, FALSE, FALSE, 'FORMATTED TEXT', 'TEXT');
+		$this->CodeNoTo = new DbField('t103_ho1_head', 't103_ho1_head', 'x_CodeNoTo', 'CodeNoTo', '`CodeNoTo`', '`CodeNoTo`', 200, 25, -1, FALSE, '`CodeNoTo`', FALSE, FALSE, FALSE, 'FORMATTED TEXT', 'TEXT');
 		$this->CodeNoTo->Nullable = FALSE; // NOT NULL field
 		$this->CodeNoTo->Required = TRUE; // Required field
 		$this->CodeNoTo->Sortable = TRUE; // Allow sort
 		$this->fields['CodeNoTo'] = &$this->CodeNoTo;
 
 		// DepartmentTo
-		$this->DepartmentTo = new DbField('t101_ho_head', 't101_ho_head', 'x_DepartmentTo', 'DepartmentTo', '`DepartmentTo`', '`DepartmentTo`', 3, 11, -1, FALSE, '`DepartmentTo`', FALSE, FALSE, FALSE, 'FORMATTED TEXT', 'SELECT');
+		$this->DepartmentTo = new DbField('t103_ho1_head', 't103_ho1_head', 'x_DepartmentTo', 'DepartmentTo', '`DepartmentTo`', '`DepartmentTo`', 3, 11, -1, FALSE, '`DepartmentTo`', FALSE, FALSE, FALSE, 'FORMATTED TEXT', 'SELECT');
 		$this->DepartmentTo->Nullable = FALSE; // NOT NULL field
 		$this->DepartmentTo->Required = TRUE; // Required field
 		$this->DepartmentTo->Sortable = TRUE; // Allow sort
@@ -158,37 +155,8 @@ class t101_ho_head extends DbTable
 		$this->DepartmentTo->DefaultErrorMessage = $Language->phrase("IncorrectInteger");
 		$this->fields['DepartmentTo'] = &$this->DepartmentTo;
 
-		// HandedOverBy
-		$this->HandedOverBy = new DbField('t101_ho_head', 't101_ho_head', 'x_HandedOverBy', 'HandedOverBy', '`HandedOverBy`', '`HandedOverBy`', 3, 11, -1, FALSE, '`EV__HandedOverBy`', TRUE, TRUE, FALSE, 'FORMATTED TEXT', 'SELECT');
-		$this->HandedOverBy->Nullable = FALSE; // NOT NULL field
-		$this->HandedOverBy->Required = TRUE; // Required field
-		$this->HandedOverBy->Sortable = TRUE; // Allow sort
-		$this->HandedOverBy->UsePleaseSelect = TRUE; // Use PleaseSelect by default
-		$this->HandedOverBy->PleaseSelectText = $Language->phrase("PleaseSelect"); // "PleaseSelect" text
-		$this->HandedOverBy->Lookup = new Lookup('HandedOverBy', 't003_signature', FALSE, 'id', ["Signature","","",""], [], [], [], [], [], [], '', '');
-		$this->HandedOverBy->DefaultErrorMessage = $Language->phrase("IncorrectInteger");
-		$this->fields['HandedOverBy'] = &$this->HandedOverBy;
-
-		// CodeNoBy
-		$this->CodeNoBy = new DbField('t101_ho_head', 't101_ho_head', 'x_CodeNoBy', 'CodeNoBy', '`CodeNoBy`', '`CodeNoBy`', 200, 25, -1, FALSE, '`CodeNoBy`', FALSE, FALSE, FALSE, 'FORMATTED TEXT', 'TEXT');
-		$this->CodeNoBy->Nullable = FALSE; // NOT NULL field
-		$this->CodeNoBy->Required = TRUE; // Required field
-		$this->CodeNoBy->Sortable = TRUE; // Allow sort
-		$this->fields['CodeNoBy'] = &$this->CodeNoBy;
-
-		// DepartmentBy
-		$this->DepartmentBy = new DbField('t101_ho_head', 't101_ho_head', 'x_DepartmentBy', 'DepartmentBy', '`DepartmentBy`', '`DepartmentBy`', 3, 11, -1, FALSE, '`DepartmentBy`', FALSE, FALSE, FALSE, 'FORMATTED TEXT', 'SELECT');
-		$this->DepartmentBy->Nullable = FALSE; // NOT NULL field
-		$this->DepartmentBy->Required = TRUE; // Required field
-		$this->DepartmentBy->Sortable = TRUE; // Allow sort
-		$this->DepartmentBy->UsePleaseSelect = TRUE; // Use PleaseSelect by default
-		$this->DepartmentBy->PleaseSelectText = $Language->phrase("PleaseSelect"); // "PleaseSelect" text
-		$this->DepartmentBy->Lookup = new Lookup('DepartmentBy', 't002_department', FALSE, 'id', ["Department","","",""], [], [], [], [], [], [], '', '');
-		$this->DepartmentBy->DefaultErrorMessage = $Language->phrase("IncorrectInteger");
-		$this->fields['DepartmentBy'] = &$this->DepartmentBy;
-
 		// Sign1
-		$this->Sign1 = new DbField('t101_ho_head', 't101_ho_head', 'x_Sign1', 'Sign1', '`Sign1`', '`Sign1`', 3, 11, -1, FALSE, '`Sign1`', FALSE, FALSE, FALSE, 'FORMATTED TEXT', 'SELECT');
+		$this->Sign1 = new DbField('t103_ho1_head', 't103_ho1_head', 'x_Sign1', 'Sign1', '`Sign1`', '`Sign1`', 3, 11, -1, FALSE, '`Sign1`', FALSE, FALSE, FALSE, 'FORMATTED TEXT', 'SELECT');
 		$this->Sign1->Nullable = FALSE; // NOT NULL field
 		$this->Sign1->Required = TRUE; // Required field
 		$this->Sign1->Sortable = TRUE; // Allow sort
@@ -199,7 +167,7 @@ class t101_ho_head extends DbTable
 		$this->fields['Sign1'] = &$this->Sign1;
 
 		// Sign2
-		$this->Sign2 = new DbField('t101_ho_head', 't101_ho_head', 'x_Sign2', 'Sign2', '`Sign2`', '`Sign2`', 3, 11, -1, FALSE, '`Sign2`', FALSE, FALSE, FALSE, 'FORMATTED TEXT', 'SELECT');
+		$this->Sign2 = new DbField('t103_ho1_head', 't103_ho1_head', 'x_Sign2', 'Sign2', '`Sign2`', '`Sign2`', 3, 11, -1, FALSE, '`Sign2`', FALSE, FALSE, FALSE, 'FORMATTED TEXT', 'SELECT');
 		$this->Sign2->Nullable = FALSE; // NOT NULL field
 		$this->Sign2->Required = TRUE; // Required field
 		$this->Sign2->Sortable = TRUE; // Allow sort
@@ -210,7 +178,7 @@ class t101_ho_head extends DbTable
 		$this->fields['Sign2'] = &$this->Sign2;
 
 		// Sign3
-		$this->Sign3 = new DbField('t101_ho_head', 't101_ho_head', 'x_Sign3', 'Sign3', '`Sign3`', '`Sign3`', 3, 11, -1, FALSE, '`Sign3`', FALSE, FALSE, FALSE, 'FORMATTED TEXT', 'SELECT');
+		$this->Sign3 = new DbField('t103_ho1_head', 't103_ho1_head', 'x_Sign3', 'Sign3', '`Sign3`', '`Sign3`', 3, 11, -1, FALSE, '`Sign3`', FALSE, FALSE, FALSE, 'FORMATTED TEXT', 'SELECT');
 		$this->Sign3->Nullable = FALSE; // NOT NULL field
 		$this->Sign3->Required = TRUE; // Required field
 		$this->Sign3->Sortable = TRUE; // Allow sort
@@ -221,7 +189,7 @@ class t101_ho_head extends DbTable
 		$this->fields['Sign3'] = &$this->Sign3;
 
 		// Sign4
-		$this->Sign4 = new DbField('t101_ho_head', 't101_ho_head', 'x_Sign4', 'Sign4', '`Sign4`', '`Sign4`', 3, 11, -1, FALSE, '`Sign4`', FALSE, FALSE, FALSE, 'FORMATTED TEXT', 'SELECT');
+		$this->Sign4 = new DbField('t103_ho1_head', 't103_ho1_head', 'x_Sign4', 'Sign4', '`Sign4`', '`Sign4`', 3, 11, -1, FALSE, '`Sign4`', FALSE, FALSE, FALSE, 'FORMATTED TEXT', 'SELECT');
 		$this->Sign4->Nullable = FALSE; // NOT NULL field
 		$this->Sign4->Required = TRUE; // Required field
 		$this->Sign4->Sortable = TRUE; // Allow sort
@@ -275,33 +243,10 @@ class t101_ho_head extends DbTable
 			} else {
 				$this->setSessionOrderBy($sortField . " " . $thisSort); // Save to Session
 			}
-			$sortFieldList = ($fld->VirtualExpression != "") ? $fld->VirtualExpression : $sortField;
-			if ($ctrl) {
-				$orderByList = $this->getSessionOrderByList();
-				if (ContainsString($orderByList, $sortFieldList . " " . $lastSort)) {
-					$orderByList = str_replace($sortFieldList . " " . $lastSort, $sortFieldList . " " . $thisSort, $orderByList);
-				} else {
-					if ($orderByList != "") $orderByList .= ", ";
-					$orderByList .= $sortFieldList . " " . $thisSort;
-				}
-				$this->setSessionOrderByList($orderByList); // Save to Session
-			} else {
-				$this->setSessionOrderByList($sortFieldList . " " . $thisSort); // Save to Session
-			}
 		} else {
 			if (!$ctrl)
 				$fld->setSort("");
 		}
-	}
-
-	// Session ORDER BY for List page
-	public function getSessionOrderByList()
-	{
-		return @$_SESSION[PROJECT_NAME . "_" . $this->TableVar . "_" . Config("TABLE_ORDER_BY_LIST")];
-	}
-	public function setSessionOrderByList($v)
-	{
-		$_SESSION[PROJECT_NAME . "_" . $this->TableVar . "_" . Config("TABLE_ORDER_BY_LIST")] = $v;
 	}
 
 	// Current detail table name
@@ -320,19 +265,19 @@ class t101_ho_head extends DbTable
 
 		// Detail url
 		$detailUrl = "";
-		if ($this->getCurrentDetailTable() == "t102_ho_detail") {
-			$detailUrl = $GLOBALS["t102_ho_detail"]->getListUrl() . "?" . Config("TABLE_SHOW_MASTER") . "=" . $this->TableVar;
+		if ($this->getCurrentDetailTable() == "t104_ho1_detail") {
+			$detailUrl = $GLOBALS["t104_ho1_detail"]->getListUrl() . "?" . Config("TABLE_SHOW_MASTER") . "=" . $this->TableVar;
 			$detailUrl .= "&fk_id=" . urlencode($this->id->CurrentValue);
 		}
 		if ($detailUrl == "")
-			$detailUrl = "t101_ho_headlist.php";
+			$detailUrl = "t103_ho1_headlist.php";
 		return $detailUrl;
 	}
 
 	// Table level SQL
 	public function getSqlFrom() // From
 	{
-		return ($this->SqlFrom != "") ? $this->SqlFrom : "`t101_ho_head`";
+		return ($this->SqlFrom != "") ? $this->SqlFrom : "`t103_ho1_head`";
 	}
 	public function sqlFrom() // For backward compatibility
 	{
@@ -353,22 +298,6 @@ class t101_ho_head extends DbTable
 	public function setSqlSelect($v)
 	{
 		$this->SqlSelect = $v;
-	}
-	public function getSqlSelectList() // Select for List page
-	{
-		$select = "";
-		$select = "SELECT * FROM (" .
-			"SELECT *, (SELECT `Signature` FROM `t003_signature` `TMP_LOOKUPTABLE` WHERE `TMP_LOOKUPTABLE`.`id` = `t101_ho_head`.`HandedOverBy` LIMIT 1) AS `EV__HandedOverBy` FROM `t101_ho_head`" .
-			") `TMP_TABLE`";
-		return ($this->SqlSelectList != "") ? $this->SqlSelectList : $select;
-	}
-	public function sqlSelectList() // For backward compatibility
-	{
-		return $this->getSqlSelectList();
-	}
-	public function setSqlSelectList($v)
-	{
-		$this->SqlSelectList = $v;
 	}
 	public function getSqlWhere() // Where
 	{
@@ -526,13 +455,8 @@ class t101_ho_head extends DbTable
 		AddFilter($filter, $this->CurrentFilter);
 		$filter = $this->applyUserIDFilters($filter);
 		$this->Recordset_Selecting($filter);
-		if ($this->useVirtualFields()) {
-			$select = $this->getSqlSelectList();
-			$sort = $this->UseSessionForListSql ? $this->getSessionOrderByList() : "";
-		} else {
-			$select = $this->getSqlSelect();
-			$sort = $this->UseSessionForListSql ? $this->getSessionOrderBy() : "";
-		}
+		$select = $this->getSqlSelect();
+		$sort = $this->UseSessionForListSql ? $this->getSessionOrderBy() : "";
 		return BuildSelectSql($select, $this->getSqlWhere(), $this->getSqlGroupBy(),
 			$this->getSqlHaving(), $this->getSqlOrderBy(), $filter, $sort);
 	}
@@ -540,22 +464,8 @@ class t101_ho_head extends DbTable
 	// Get ORDER BY clause
 	public function getOrderBy()
 	{
-		$sort = ($this->useVirtualFields()) ? $this->getSessionOrderByList() : $this->getSessionOrderBy();
+		$sort = $this->getSessionOrderBy();
 		return BuildSelectSql("", "", "", "", $this->getSqlOrderBy(), "", $sort);
-	}
-
-	// Check if virtual fields is used in SQL
-	protected function useVirtualFields()
-	{
-		$where = $this->UseSessionForListSql ? $this->getSessionWhere() : $this->CurrentFilter;
-		$orderBy = $this->UseSessionForListSql ? $this->getSessionOrderByList() : "";
-		if ($where != "")
-			$where = " " . str_replace(["(", ")"], ["", ""], $where) . " ";
-		if ($orderBy != "")
-			$orderBy = " " . str_replace(["(", ")"], ["", ""], $orderBy) . " ";
-		if (ContainsString($orderBy, " " . $this->HandedOverBy->VirtualExpression . " "))
-			return TRUE;
-		return FALSE;
 	}
 
 	// Get record count based on filter (for detail record count in master table pages)
@@ -583,10 +493,7 @@ class t101_ho_head extends DbTable
 		$select = $this->TableType == 'CUSTOMVIEW' ? $this->getSqlSelect() : "SELECT * FROM " . $this->getSqlFrom();
 		$groupBy = $this->TableType == 'CUSTOMVIEW' ? $this->getSqlGroupBy() : "";
 		$having = $this->TableType == 'CUSTOMVIEW' ? $this->getSqlHaving() : "";
-		if ($this->useVirtualFields())
-			$sql = BuildSelectSql($this->getSqlSelectList(), $this->getSqlWhere(), $groupBy, $having, "", $filter, "");
-		else
-			$sql = BuildSelectSql($select, $this->getSqlWhere(), $groupBy, $having, "", $filter, "");
+		$sql = BuildSelectSql($select, $this->getSqlWhere(), $groupBy, $having, "", $filter, "");
 		$cnt = $this->getRecordCount($sql);
 		return $cnt;
 	}
@@ -648,7 +555,7 @@ class t101_ho_head extends DbTable
 	{
 		$conn = $this->getConnection();
 
-		// Cascade Update detail table 't102_ho_detail'
+		// Cascade Update detail table 't104_ho1_detail'
 		$cascadeUpdate = FALSE;
 		$rscascade = [];
 		if ($rsold && (isset($rs['id']) && $rsold['id'] != $rs['id'])) { // Update detail field 'hohead_id'
@@ -656,9 +563,9 @@ class t101_ho_head extends DbTable
 			$rscascade['hohead_id'] = $rs['id'];
 		}
 		if ($cascadeUpdate) {
-			if (!isset($GLOBALS["t102_ho_detail"]))
-				$GLOBALS["t102_ho_detail"] = new t102_ho_detail();
-			$rswrk = $GLOBALS["t102_ho_detail"]->loadRs("`hohead_id` = " . QuotedValue($rsold['id'], DATATYPE_NUMBER, 'DB'));
+			if (!isset($GLOBALS["t104_ho1_detail"]))
+				$GLOBALS["t104_ho1_detail"] = new t104_ho1_detail();
+			$rswrk = $GLOBALS["t104_ho1_detail"]->loadRs("`hohead_id` = " . QuotedValue($rsold['id'], DATATYPE_NUMBER, 'DB'));
 			while ($rswrk && !$rswrk->EOF) {
 				$rskey = [];
 				$fldname = 'id';
@@ -667,14 +574,14 @@ class t101_ho_head extends DbTable
 				$rsdtlnew = array_merge($rsdtlold, $rscascade);
 
 				// Call Row_Updating event
-				$success = $GLOBALS["t102_ho_detail"]->Row_Updating($rsdtlold, $rsdtlnew);
+				$success = $GLOBALS["t104_ho1_detail"]->Row_Updating($rsdtlold, $rsdtlnew);
 				if ($success)
-					$success = $GLOBALS["t102_ho_detail"]->update($rscascade, $rskey, $rswrk->fields);
+					$success = $GLOBALS["t104_ho1_detail"]->update($rscascade, $rskey, $rswrk->fields);
 				if (!$success)
 					return FALSE;
 
 				// Call Row_Updated event
-				$GLOBALS["t102_ho_detail"]->Row_Updated($rsdtlold, $rsdtlnew);
+				$GLOBALS["t104_ho1_detail"]->Row_Updated($rsdtlold, $rsdtlnew);
 				$rswrk->moveNext();
 			}
 		}
@@ -714,21 +621,21 @@ class t101_ho_head extends DbTable
 		$success = TRUE;
 		$conn = $this->getConnection();
 
-		// Cascade delete detail table 't102_ho_detail'
-		if (!isset($GLOBALS["t102_ho_detail"]))
-			$GLOBALS["t102_ho_detail"] = new t102_ho_detail();
-		$rscascade = $GLOBALS["t102_ho_detail"]->loadRs("`hohead_id` = " . QuotedValue($rs['id'], DATATYPE_NUMBER, "DB"));
+		// Cascade delete detail table 't104_ho1_detail'
+		if (!isset($GLOBALS["t104_ho1_detail"]))
+			$GLOBALS["t104_ho1_detail"] = new t104_ho1_detail();
+		$rscascade = $GLOBALS["t104_ho1_detail"]->loadRs("`hohead_id` = " . QuotedValue($rs['id'], DATATYPE_NUMBER, "DB"));
 		$dtlrows = ($rscascade) ? $rscascade->getRows() : [];
 
 		// Call Row Deleting event
 		foreach ($dtlrows as $dtlrow) {
-			$success = $GLOBALS["t102_ho_detail"]->Row_Deleting($dtlrow);
+			$success = $GLOBALS["t104_ho1_detail"]->Row_Deleting($dtlrow);
 			if (!$success)
 				break;
 		}
 		if ($success) {
 			foreach ($dtlrows as $dtlrow) {
-				$success = $GLOBALS["t102_ho_detail"]->delete($dtlrow); // Delete
+				$success = $GLOBALS["t104_ho1_detail"]->delete($dtlrow); // Delete
 				if (!$success)
 					break;
 			}
@@ -737,7 +644,7 @@ class t101_ho_head extends DbTable
 		// Call Row Deleted event
 		if ($success) {
 			foreach ($dtlrows as $dtlrow)
-				$GLOBALS["t102_ho_detail"]->Row_Deleted($dtlrow);
+				$GLOBALS["t104_ho1_detail"]->Row_Deleted($dtlrow);
 		}
 		if ($success)
 			$success = $conn->execute($this->deleteSql($rs, $where, $curfilter));
@@ -753,16 +660,13 @@ class t101_ho_head extends DbTable
 			return;
 		$row = is_array($rs) ? $rs : $rs->fields;
 		$this->id->DbValue = $row['id'];
-		$this->property_id->DbValue = $row['property_id'];
+		$this->ho_head->DbValue = $row['ho_head'];
 		$this->TransactionNo->DbValue = $row['TransactionNo'];
 		$this->TransactionDate->DbValue = $row['TransactionDate'];
 		$this->TransactionType->DbValue = $row['TransactionType'];
 		$this->HandedOverTo->DbValue = $row['HandedOverTo'];
 		$this->CodeNoTo->DbValue = $row['CodeNoTo'];
 		$this->DepartmentTo->DbValue = $row['DepartmentTo'];
-		$this->HandedOverBy->DbValue = $row['HandedOverBy'];
-		$this->CodeNoBy->DbValue = $row['CodeNoBy'];
-		$this->DepartmentBy->DbValue = $row['DepartmentBy'];
 		$this->Sign1->DbValue = $row['Sign1'];
 		$this->Sign2->DbValue = $row['Sign2'];
 		$this->Sign3->DbValue = $row['Sign3'];
@@ -809,7 +713,7 @@ class t101_ho_head extends DbTable
 		if (@$_SESSION[$name] != "") {
 			return $_SESSION[$name];
 		} else {
-			return "t101_ho_headlist.php";
+			return "t103_ho1_headlist.php";
 		}
 	}
 	public function setReturnUrl($v)
@@ -821,11 +725,11 @@ class t101_ho_head extends DbTable
 	public function getModalCaption($pageName)
 	{
 		global $Language;
-		if ($pageName == "t101_ho_headview.php")
+		if ($pageName == "t103_ho1_headview.php")
 			return $Language->phrase("View");
-		elseif ($pageName == "t101_ho_headedit.php")
+		elseif ($pageName == "t103_ho1_headedit.php")
 			return $Language->phrase("Edit");
-		elseif ($pageName == "t101_ho_headadd.php")
+		elseif ($pageName == "t103_ho1_headadd.php")
 			return $Language->phrase("Add");
 		else
 			return "";
@@ -834,16 +738,16 @@ class t101_ho_head extends DbTable
 	// List URL
 	public function getListUrl()
 	{
-		return "t101_ho_headlist.php";
+		return "t103_ho1_headlist.php";
 	}
 
 	// View URL
 	public function getViewUrl($parm = "")
 	{
 		if ($parm != "")
-			$url = $this->keyUrl("t101_ho_headview.php", $this->getUrlParm($parm));
+			$url = $this->keyUrl("t103_ho1_headview.php", $this->getUrlParm($parm));
 		else
-			$url = $this->keyUrl("t101_ho_headview.php", $this->getUrlParm(Config("TABLE_SHOW_DETAIL") . "="));
+			$url = $this->keyUrl("t103_ho1_headview.php", $this->getUrlParm(Config("TABLE_SHOW_DETAIL") . "="));
 		return $this->addMasterUrl($url);
 	}
 
@@ -851,9 +755,9 @@ class t101_ho_head extends DbTable
 	public function getAddUrl($parm = "")
 	{
 		if ($parm != "")
-			$url = "t101_ho_headadd.php?" . $this->getUrlParm($parm);
+			$url = "t103_ho1_headadd.php?" . $this->getUrlParm($parm);
 		else
-			$url = "t101_ho_headadd.php";
+			$url = "t103_ho1_headadd.php";
 		return $this->addMasterUrl($url);
 	}
 
@@ -861,9 +765,9 @@ class t101_ho_head extends DbTable
 	public function getEditUrl($parm = "")
 	{
 		if ($parm != "")
-			$url = $this->keyUrl("t101_ho_headedit.php", $this->getUrlParm($parm));
+			$url = $this->keyUrl("t103_ho1_headedit.php", $this->getUrlParm($parm));
 		else
-			$url = $this->keyUrl("t101_ho_headedit.php", $this->getUrlParm(Config("TABLE_SHOW_DETAIL") . "="));
+			$url = $this->keyUrl("t103_ho1_headedit.php", $this->getUrlParm(Config("TABLE_SHOW_DETAIL") . "="));
 		return $this->addMasterUrl($url);
 	}
 
@@ -878,9 +782,9 @@ class t101_ho_head extends DbTable
 	public function getCopyUrl($parm = "")
 	{
 		if ($parm != "")
-			$url = $this->keyUrl("t101_ho_headadd.php", $this->getUrlParm($parm));
+			$url = $this->keyUrl("t103_ho1_headadd.php", $this->getUrlParm($parm));
 		else
-			$url = $this->keyUrl("t101_ho_headadd.php", $this->getUrlParm(Config("TABLE_SHOW_DETAIL") . "="));
+			$url = $this->keyUrl("t103_ho1_headadd.php", $this->getUrlParm(Config("TABLE_SHOW_DETAIL") . "="));
 		return $this->addMasterUrl($url);
 	}
 
@@ -894,7 +798,7 @@ class t101_ho_head extends DbTable
 	// Delete URL
 	public function getDeleteUrl()
 	{
-		return $this->keyUrl("t101_ho_headdelete.php", $this->getUrlParm());
+		return $this->keyUrl("t103_ho1_headdelete.php", $this->getUrlParm());
 	}
 
 	// Add master url
@@ -1004,16 +908,13 @@ class t101_ho_head extends DbTable
 	public function loadListRowValues(&$rs)
 	{
 		$this->id->setDbValue($rs->fields('id'));
-		$this->property_id->setDbValue($rs->fields('property_id'));
+		$this->ho_head->setDbValue($rs->fields('ho_head'));
 		$this->TransactionNo->setDbValue($rs->fields('TransactionNo'));
 		$this->TransactionDate->setDbValue($rs->fields('TransactionDate'));
 		$this->TransactionType->setDbValue($rs->fields('TransactionType'));
 		$this->HandedOverTo->setDbValue($rs->fields('HandedOverTo'));
 		$this->CodeNoTo->setDbValue($rs->fields('CodeNoTo'));
 		$this->DepartmentTo->setDbValue($rs->fields('DepartmentTo'));
-		$this->HandedOverBy->setDbValue($rs->fields('HandedOverBy'));
-		$this->CodeNoBy->setDbValue($rs->fields('CodeNoBy'));
-		$this->DepartmentBy->setDbValue($rs->fields('DepartmentBy'));
 		$this->Sign1->setDbValue($rs->fields('Sign1'));
 		$this->Sign2->setDbValue($rs->fields('Sign2'));
 		$this->Sign3->setDbValue($rs->fields('Sign3'));
@@ -1030,16 +931,13 @@ class t101_ho_head extends DbTable
 
 		// Common render codes
 		// id
-		// property_id
+		// ho_head
 		// TransactionNo
 		// TransactionDate
 		// TransactionType
 		// HandedOverTo
 		// CodeNoTo
 		// DepartmentTo
-		// HandedOverBy
-		// CodeNoBy
-		// DepartmentBy
 		// Sign1
 		// Sign2
 		// Sign3
@@ -1049,27 +947,27 @@ class t101_ho_head extends DbTable
 		$this->id->ViewValue = $this->id->CurrentValue;
 		$this->id->ViewCustomAttributes = "";
 
-		// property_id
-		$curVal = strval($this->property_id->CurrentValue);
+		// ho_head
+		$curVal = strval($this->ho_head->CurrentValue);
 		if ($curVal != "") {
-			$this->property_id->ViewValue = $this->property_id->lookupCacheOption($curVal);
-			if ($this->property_id->ViewValue === NULL) { // Lookup from database
+			$this->ho_head->ViewValue = $this->ho_head->lookupCacheOption($curVal);
+			if ($this->ho_head->ViewValue === NULL) { // Lookup from database
 				$filterWrk = "`id`" . SearchString("=", $curVal, DATATYPE_NUMBER, "");
-				$sqlWrk = $this->property_id->Lookup->getSql(FALSE, $filterWrk, '', $this);
+				$sqlWrk = $this->ho_head->Lookup->getSql(FALSE, $filterWrk, '', $this);
 				$rswrk = Conn()->execute($sqlWrk);
 				if ($rswrk && !$rswrk->EOF) { // Lookup values found
 					$arwrk = [];
 					$arwrk[1] = $rswrk->fields('df');
-					$this->property_id->ViewValue = $this->property_id->displayValue($arwrk);
+					$this->ho_head->ViewValue = $this->ho_head->displayValue($arwrk);
 					$rswrk->Close();
 				} else {
-					$this->property_id->ViewValue = $this->property_id->CurrentValue;
+					$this->ho_head->ViewValue = $this->ho_head->CurrentValue;
 				}
 			}
 		} else {
-			$this->property_id->ViewValue = NULL;
+			$this->ho_head->ViewValue = NULL;
 		}
-		$this->property_id->ViewCustomAttributes = "";
+		$this->ho_head->ViewCustomAttributes = "";
 
 		// TransactionNo
 		$this->TransactionNo->ViewValue = $this->TransactionNo->CurrentValue;
@@ -1077,7 +975,7 @@ class t101_ho_head extends DbTable
 
 		// TransactionDate
 		$this->TransactionDate->ViewValue = $this->TransactionDate->CurrentValue;
-		$this->TransactionDate->ViewValue = FormatDateTime($this->TransactionDate->ViewValue, 7);
+		$this->TransactionDate->ViewValue = FormatDateTime($this->TransactionDate->ViewValue, 0);
 		$this->TransactionDate->ViewCustomAttributes = "";
 
 		// TransactionType
@@ -1135,58 +1033,6 @@ class t101_ho_head extends DbTable
 			$this->DepartmentTo->ViewValue = NULL;
 		}
 		$this->DepartmentTo->ViewCustomAttributes = "";
-
-		// HandedOverBy
-		if ($this->HandedOverBy->VirtualValue != "") {
-			$this->HandedOverBy->ViewValue = $this->HandedOverBy->VirtualValue;
-		} else {
-			$curVal = strval($this->HandedOverBy->CurrentValue);
-			if ($curVal != "") {
-				$this->HandedOverBy->ViewValue = $this->HandedOverBy->lookupCacheOption($curVal);
-				if ($this->HandedOverBy->ViewValue === NULL) { // Lookup from database
-					$filterWrk = "`id`" . SearchString("=", $curVal, DATATYPE_NUMBER, "");
-					$sqlWrk = $this->HandedOverBy->Lookup->getSql(FALSE, $filterWrk, '', $this);
-					$rswrk = Conn()->execute($sqlWrk);
-					if ($rswrk && !$rswrk->EOF) { // Lookup values found
-						$arwrk = [];
-						$arwrk[1] = $rswrk->fields('df');
-						$this->HandedOverBy->ViewValue = $this->HandedOverBy->displayValue($arwrk);
-						$rswrk->Close();
-					} else {
-						$this->HandedOverBy->ViewValue = $this->HandedOverBy->CurrentValue;
-					}
-				}
-			} else {
-				$this->HandedOverBy->ViewValue = NULL;
-			}
-		}
-		$this->HandedOverBy->ViewCustomAttributes = "";
-
-		// CodeNoBy
-		$this->CodeNoBy->ViewValue = $this->CodeNoBy->CurrentValue;
-		$this->CodeNoBy->ViewCustomAttributes = "";
-
-		// DepartmentBy
-		$curVal = strval($this->DepartmentBy->CurrentValue);
-		if ($curVal != "") {
-			$this->DepartmentBy->ViewValue = $this->DepartmentBy->lookupCacheOption($curVal);
-			if ($this->DepartmentBy->ViewValue === NULL) { // Lookup from database
-				$filterWrk = "`id`" . SearchString("=", $curVal, DATATYPE_NUMBER, "");
-				$sqlWrk = $this->DepartmentBy->Lookup->getSql(FALSE, $filterWrk, '', $this);
-				$rswrk = Conn()->execute($sqlWrk);
-				if ($rswrk && !$rswrk->EOF) { // Lookup values found
-					$arwrk = [];
-					$arwrk[1] = $rswrk->fields('df');
-					$this->DepartmentBy->ViewValue = $this->DepartmentBy->displayValue($arwrk);
-					$rswrk->Close();
-				} else {
-					$this->DepartmentBy->ViewValue = $this->DepartmentBy->CurrentValue;
-				}
-			}
-		} else {
-			$this->DepartmentBy->ViewValue = NULL;
-		}
-		$this->DepartmentBy->ViewCustomAttributes = "";
 
 		// Sign1
 		$curVal = strval($this->Sign1->CurrentValue);
@@ -1281,10 +1127,10 @@ class t101_ho_head extends DbTable
 		$this->id->HrefValue = "";
 		$this->id->TooltipValue = "";
 
-		// property_id
-		$this->property_id->LinkCustomAttributes = "";
-		$this->property_id->HrefValue = "";
-		$this->property_id->TooltipValue = "";
+		// ho_head
+		$this->ho_head->LinkCustomAttributes = "";
+		$this->ho_head->HrefValue = "";
+		$this->ho_head->TooltipValue = "";
 
 		// TransactionNo
 		$this->TransactionNo->LinkCustomAttributes = "";
@@ -1315,21 +1161,6 @@ class t101_ho_head extends DbTable
 		$this->DepartmentTo->LinkCustomAttributes = "";
 		$this->DepartmentTo->HrefValue = "";
 		$this->DepartmentTo->TooltipValue = "";
-
-		// HandedOverBy
-		$this->HandedOverBy->LinkCustomAttributes = "";
-		$this->HandedOverBy->HrefValue = "";
-		$this->HandedOverBy->TooltipValue = "";
-
-		// CodeNoBy
-		$this->CodeNoBy->LinkCustomAttributes = "";
-		$this->CodeNoBy->HrefValue = "";
-		$this->CodeNoBy->TooltipValue = "";
-
-		// DepartmentBy
-		$this->DepartmentBy->LinkCustomAttributes = "";
-		$this->DepartmentBy->HrefValue = "";
-		$this->DepartmentBy->TooltipValue = "";
 
 		// Sign1
 		$this->Sign1->LinkCustomAttributes = "";
@@ -1372,9 +1203,9 @@ class t101_ho_head extends DbTable
 		$this->id->EditValue = $this->id->CurrentValue;
 		$this->id->ViewCustomAttributes = "";
 
-		// property_id
-		$this->property_id->EditAttrs["class"] = "form-control";
-		$this->property_id->EditCustomAttributes = "";
+		// ho_head
+		$this->ho_head->EditAttrs["class"] = "form-control";
+		$this->ho_head->EditCustomAttributes = "";
 
 		// TransactionNo
 		$this->TransactionNo->EditAttrs["class"] = "form-control";
@@ -1387,7 +1218,7 @@ class t101_ho_head extends DbTable
 		// TransactionDate
 		$this->TransactionDate->EditAttrs["class"] = "form-control";
 		$this->TransactionDate->EditCustomAttributes = "";
-		$this->TransactionDate->EditValue = FormatDateTime($this->TransactionDate->CurrentValue, 7);
+		$this->TransactionDate->EditValue = FormatDateTime($this->TransactionDate->CurrentValue, 8);
 		$this->TransactionDate->PlaceHolder = RemoveHtml($this->TransactionDate->caption());
 
 		// TransactionType
@@ -1415,22 +1246,6 @@ class t101_ho_head extends DbTable
 		// DepartmentTo
 		$this->DepartmentTo->EditAttrs["class"] = "form-control";
 		$this->DepartmentTo->EditCustomAttributes = "";
-
-		// HandedOverBy
-		$this->HandedOverBy->EditAttrs["class"] = "form-control";
-		$this->HandedOverBy->EditCustomAttributes = "";
-
-		// CodeNoBy
-		$this->CodeNoBy->EditAttrs["class"] = "form-control";
-		$this->CodeNoBy->EditCustomAttributes = "";
-		if (!$this->CodeNoBy->Raw)
-			$this->CodeNoBy->CurrentValue = HtmlDecode($this->CodeNoBy->CurrentValue);
-		$this->CodeNoBy->EditValue = $this->CodeNoBy->CurrentValue;
-		$this->CodeNoBy->PlaceHolder = RemoveHtml($this->CodeNoBy->caption());
-
-		// DepartmentBy
-		$this->DepartmentBy->EditAttrs["class"] = "form-control";
-		$this->DepartmentBy->EditCustomAttributes = "";
 
 		// Sign1
 		$this->Sign1->EditAttrs["class"] = "form-control";
@@ -1477,32 +1292,26 @@ class t101_ho_head extends DbTable
 			if ($doc->Horizontal) { // Horizontal format, write header
 				$doc->beginExportRow();
 				if ($exportPageType == "view") {
-					$doc->exportCaption($this->property_id);
+					$doc->exportCaption($this->ho_head);
 					$doc->exportCaption($this->TransactionNo);
 					$doc->exportCaption($this->TransactionDate);
 					$doc->exportCaption($this->TransactionType);
 					$doc->exportCaption($this->HandedOverTo);
 					$doc->exportCaption($this->CodeNoTo);
 					$doc->exportCaption($this->DepartmentTo);
-					$doc->exportCaption($this->HandedOverBy);
-					$doc->exportCaption($this->CodeNoBy);
-					$doc->exportCaption($this->DepartmentBy);
 					$doc->exportCaption($this->Sign1);
 					$doc->exportCaption($this->Sign2);
 					$doc->exportCaption($this->Sign3);
 					$doc->exportCaption($this->Sign4);
 				} else {
 					$doc->exportCaption($this->id);
-					$doc->exportCaption($this->property_id);
+					$doc->exportCaption($this->ho_head);
 					$doc->exportCaption($this->TransactionNo);
 					$doc->exportCaption($this->TransactionDate);
 					$doc->exportCaption($this->TransactionType);
 					$doc->exportCaption($this->HandedOverTo);
 					$doc->exportCaption($this->CodeNoTo);
 					$doc->exportCaption($this->DepartmentTo);
-					$doc->exportCaption($this->HandedOverBy);
-					$doc->exportCaption($this->CodeNoBy);
-					$doc->exportCaption($this->DepartmentBy);
 					$doc->exportCaption($this->Sign1);
 					$doc->exportCaption($this->Sign2);
 					$doc->exportCaption($this->Sign3);
@@ -1538,32 +1347,26 @@ class t101_ho_head extends DbTable
 				if (!$doc->ExportCustom) {
 					$doc->beginExportRow($rowCnt); // Allow CSS styles if enabled
 					if ($exportPageType == "view") {
-						$doc->exportField($this->property_id);
+						$doc->exportField($this->ho_head);
 						$doc->exportField($this->TransactionNo);
 						$doc->exportField($this->TransactionDate);
 						$doc->exportField($this->TransactionType);
 						$doc->exportField($this->HandedOverTo);
 						$doc->exportField($this->CodeNoTo);
 						$doc->exportField($this->DepartmentTo);
-						$doc->exportField($this->HandedOverBy);
-						$doc->exportField($this->CodeNoBy);
-						$doc->exportField($this->DepartmentBy);
 						$doc->exportField($this->Sign1);
 						$doc->exportField($this->Sign2);
 						$doc->exportField($this->Sign3);
 						$doc->exportField($this->Sign4);
 					} else {
 						$doc->exportField($this->id);
-						$doc->exportField($this->property_id);
+						$doc->exportField($this->ho_head);
 						$doc->exportField($this->TransactionNo);
 						$doc->exportField($this->TransactionDate);
 						$doc->exportField($this->TransactionType);
 						$doc->exportField($this->HandedOverTo);
 						$doc->exportField($this->CodeNoTo);
 						$doc->exportField($this->DepartmentTo);
-						$doc->exportField($this->HandedOverBy);
-						$doc->exportField($this->CodeNoBy);
-						$doc->exportField($this->DepartmentBy);
 						$doc->exportField($this->Sign1);
 						$doc->exportField($this->Sign2);
 						$doc->exportField($this->Sign3);
@@ -1594,7 +1397,7 @@ class t101_ho_head extends DbTable
 	// Write Audit Trail start/end for grid update
 	public function writeAuditTrailDummy($typ)
 	{
-		$table = 't101_ho_head';
+		$table = 't103_ho1_head';
 		$usr = CurrentUserID();
 		WriteAuditTrail("log", DbCurrentDateTime(), ScriptName(), $usr, $typ, $table, "", "", "", "");
 	}
@@ -1605,7 +1408,7 @@ class t101_ho_head extends DbTable
 		global $Language;
 		if (!$this->AuditTrailOnAdd)
 			return;
-		$table = 't101_ho_head';
+		$table = 't103_ho1_head';
 
 		// Get key value
 		$key = "";
@@ -1642,7 +1445,7 @@ class t101_ho_head extends DbTable
 		global $Language;
 		if (!$this->AuditTrailOnEdit)
 			return;
-		$table = 't101_ho_head';
+		$table = 't103_ho1_head';
 
 		// Get key value
 		$key = "";
@@ -1692,7 +1495,7 @@ class t101_ho_head extends DbTable
 		global $Language;
 		if (!$this->AuditTrailOnDelete)
 			return;
-		$table = 't101_ho_head';
+		$table = 't103_ho1_head';
 
 		// Get key value
 		$key = "";

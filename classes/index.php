@@ -287,6 +287,8 @@ class index
 			$this->terminate("d301_homedsb.php"); // Exit and go to default page
 		if ($Security->allowList(CurrentProjectID() . 'c101_ho.php'))
 			$this->terminate("c101_ho.php");
+		if ($Security->allowList(CurrentProjectID() . 'c9.php'))
+			$this->terminate("c9.php");
 		if ($Security->allowList(CurrentProjectID() . 'r001_asset'))
 			$this->terminate("r001_assetsmry.php");
 		if ($Security->allowList(CurrentProjectID() . 't001_property'))
@@ -305,8 +307,10 @@ class index
 			$this->terminate("t101_ho_headlist.php");
 		if ($Security->allowList(CurrentProjectID() . 't102_ho_detail'))
 			$this->terminate("t102_ho_detaillist.php");
-		if ($Security->allowList(CurrentProjectID() . 't103_opname'))
-			$this->terminate("t103_opnamelist.php");
+		if ($Security->allowList(CurrentProjectID() . 't103_ho1_head'))
+			$this->terminate("t103_ho1_headlist.php");
+		if ($Security->allowList(CurrentProjectID() . 't104_ho1_detail'))
+			$this->terminate("t104_ho1_detaillist.php");
 		if ($Security->allowList(CurrentProjectID() . 't201_users'))
 			$this->terminate("t201_userslist.php");
 		if ($Security->allowList(CurrentProjectID() . 't202_userlevels'))
@@ -319,8 +323,6 @@ class index
 			$this->terminate("t205_parameterlist.php");
 		if ($Security->allowList(CurrentProjectID() . 'v101_ho'))
 			$this->terminate("v101_holist.php");
-		if ($Security->allowList(CurrentProjectID() . 'c9.php'))
-			$this->terminate("c9.php");
 		if ($Security->isLoggedIn()) {
 			$this->setFailureMessage(DeniedMessage() . "<br><br><a href=\"logout.php\">" . $Language->phrase("BackToLogin") . "</a>");
 		} else {

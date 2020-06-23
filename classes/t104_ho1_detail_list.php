@@ -4,7 +4,7 @@ namespace PHPMaker2020\p_simasset1;
 /**
  * Page class
  */
-class t101_ho_head_list extends t101_ho_head
+class t104_ho1_detail_list extends t104_ho1_detail
 {
 
 	// Page ID
@@ -14,13 +14,13 @@ class t101_ho_head_list extends t101_ho_head
 	public $ProjectID = "{E1C6E322-15B9-474C-85CF-A99378A9BC2B}";
 
 	// Table name
-	public $TableName = 't101_ho_head';
+	public $TableName = 't104_ho1_detail';
 
 	// Page object name
-	public $PageObjName = "t101_ho_head_list";
+	public $PageObjName = "t104_ho1_detail_list";
 
 	// Grid form hidden field names
-	public $FormName = "ft101_ho_headlist";
+	public $FormName = "ft104_ho1_detaillist";
 	public $FormActionName = "k_action";
 	public $FormKeyName = "k_key";
 	public $FormOldKeyName = "k_oldkey";
@@ -58,14 +58,6 @@ class t101_ho_head_list extends t101_ho_head
 	public $GridEditUrl;
 	public $MultiDeleteUrl;
 	public $MultiUpdateUrl;
-
-	// Audit Trail
-	public $AuditTrailOnAdd = TRUE;
-	public $AuditTrailOnEdit = TRUE;
-	public $AuditTrailOnDelete = TRUE;
-	public $AuditTrailOnView = FALSE;
-	public $AuditTrailOnViewData = FALSE;
-	public $AuditTrailOnSearch = FALSE;
 
 	// Page headings
 	public $Heading = "";
@@ -389,10 +381,10 @@ class t101_ho_head_list extends t101_ho_head
 		// Parent constuctor
 		parent::__construct();
 
-		// Table object (t101_ho_head)
-		if (!isset($GLOBALS["t101_ho_head"]) || get_class($GLOBALS["t101_ho_head"]) == PROJECT_NAMESPACE . "t101_ho_head") {
-			$GLOBALS["t101_ho_head"] = &$this;
-			$GLOBALS["Table"] = &$GLOBALS["t101_ho_head"];
+		// Table object (t104_ho1_detail)
+		if (!isset($GLOBALS["t104_ho1_detail"]) || get_class($GLOBALS["t104_ho1_detail"]) == PROJECT_NAMESPACE . "t104_ho1_detail") {
+			$GLOBALS["t104_ho1_detail"] = &$this;
+			$GLOBALS["Table"] = &$GLOBALS["t104_ho1_detail"];
 		}
 
 		// Initialize URLs
@@ -403,12 +395,16 @@ class t101_ho_head_list extends t101_ho_head
 		$this->ExportHtmlUrl = $this->pageUrl() . "export=html";
 		$this->ExportXmlUrl = $this->pageUrl() . "export=xml";
 		$this->ExportCsvUrl = $this->pageUrl() . "export=csv";
-		$this->AddUrl = "t101_ho_headadd.php?" . Config("TABLE_SHOW_DETAIL") . "=";
+		$this->AddUrl = "t104_ho1_detailadd.php";
 		$this->InlineAddUrl = $this->pageUrl() . "action=add";
 		$this->GridAddUrl = $this->pageUrl() . "action=gridadd";
 		$this->GridEditUrl = $this->pageUrl() . "action=gridedit";
-		$this->MultiDeleteUrl = "t101_ho_headdelete.php";
-		$this->MultiUpdateUrl = "t101_ho_headupdate.php";
+		$this->MultiDeleteUrl = "t104_ho1_detaildelete.php";
+		$this->MultiUpdateUrl = "t104_ho1_detailupdate.php";
+
+		// Table object (t103_ho1_head)
+		if (!isset($GLOBALS['t103_ho1_head']))
+			$GLOBALS['t103_ho1_head'] = new t103_ho1_head();
 
 		// Table object (t201_users)
 		if (!isset($GLOBALS['t201_users']))
@@ -420,7 +416,7 @@ class t101_ho_head_list extends t101_ho_head
 
 		// Table name (for backward compatibility only)
 		if (!defined(PROJECT_NAMESPACE . "TABLE_NAME"))
-			define(PROJECT_NAMESPACE . "TABLE_NAME", 't101_ho_head');
+			define(PROJECT_NAMESPACE . "TABLE_NAME", 't104_ho1_detail');
 
 		// Start timer
 		if (!isset($GLOBALS["DebugTimer"]))
@@ -460,7 +456,7 @@ class t101_ho_head_list extends t101_ho_head
 
 		// Filter options
 		$this->FilterOptions = new ListOptions("div");
-		$this->FilterOptions->TagClassName = "ew-filter-option ft101_ho_headlistsrch";
+		$this->FilterOptions->TagClassName = "ew-filter-option ft104_ho1_detaillistsrch";
 
 		// List actions
 		$this->ListActions = new ListActions();
@@ -478,14 +474,14 @@ class t101_ho_head_list extends t101_ho_head
 		Page_Unloaded();
 
 		// Export
-		global $t101_ho_head;
+		global $t104_ho1_detail;
 		if ($this->CustomExport && $this->CustomExport == $this->Export && array_key_exists($this->CustomExport, Config("EXPORT_CLASSES"))) {
 				$content = ob_get_contents();
 			if ($ExportFileName == "")
 				$ExportFileName = $this->TableVar;
 			$class = PROJECT_NAMESPACE . Config("EXPORT_CLASSES." . $this->CustomExport);
 			if (class_exists($class)) {
-				$doc = new $class($t101_ho_head);
+				$doc = new $class($t104_ho1_detail);
 				$doc->Text = @$content;
 				if ($this->isExport("email"))
 					echo $this->exportEmail($doc->Text);
@@ -740,7 +736,6 @@ class t101_ho_head_list extends t101_ho_head
 	public $MultiSelectKey;
 	public $Command;
 	public $RestoreSearch = FALSE;
-	public $t102_ho_detail_Count;
 	public $DetailPages;
 	public $OldRecordset;
 
@@ -832,21 +827,9 @@ class t101_ho_head_list extends t101_ho_head
 
 		// Setup export options
 		$this->setupExportOptions();
-		$this->id->Visible = FALSE;
-		$this->property_id->setVisibility();
-		$this->TransactionNo->setVisibility();
-		$this->TransactionDate->setVisibility();
-		$this->TransactionType->setVisibility();
-		$this->HandedOverTo->setVisibility();
-		$this->CodeNoTo->setVisibility();
-		$this->DepartmentTo->setVisibility();
-		$this->HandedOverBy->setVisibility();
-		$this->CodeNoBy->setVisibility();
-		$this->DepartmentBy->setVisibility();
-		$this->Sign1->setVisibility();
-		$this->Sign2->setVisibility();
-		$this->Sign3->setVisibility();
-		$this->Sign4->setVisibility();
+		$this->id->setVisibility();
+		$this->hohead_id->setVisibility();
+		$this->asset_id->setVisibility();
 		$this->hideFieldsForAddEdit();
 
 		// Global Page Loading event (in userfn*.php)
@@ -864,6 +847,9 @@ class t101_ho_head_list extends t101_ho_head
 		// Create Token
 		$this->createToken();
 
+		// Set up master detail parameters
+		$this->setupMasterParms();
+
 		// Setup other options
 		$this->setupOtherOptions();
 
@@ -880,17 +866,8 @@ class t101_ho_head_list extends t101_ho_head
 		}
 
 		// Set up lookup cache
-		$this->setupLookupOptions($this->property_id);
-		$this->setupLookupOptions($this->HandedOverTo);
-		$this->setupLookupOptions($this->DepartmentTo);
-		$this->setupLookupOptions($this->HandedOverBy);
-		$this->setupLookupOptions($this->DepartmentBy);
-		$this->setupLookupOptions($this->Sign1);
-		$this->setupLookupOptions($this->Sign2);
-		$this->setupLookupOptions($this->Sign3);
-		$this->setupLookupOptions($this->Sign4);
-
 		// Search filters
+
 		$srchAdvanced = ""; // Advanced search filter
 		$srchBasic = ""; // Basic search filter
 		$filter = "";
@@ -935,31 +912,8 @@ class t101_ho_head_list extends t101_ho_head
 			if ($this->isExport())
 				$this->OtherOptions->hideAllOptions();
 
-			// Get default search criteria
-			AddFilter($this->DefaultSearchWhere, $this->advancedSearchWhere(TRUE));
-
-			// Get and validate search values for advanced search
-			$this->loadSearchValues(); // Get search values
-
-			// Process filter list
-			if ($this->processFilterList())
-				$this->terminate();
-			if (!$this->validateSearch())
-				$this->setFailureMessage($SearchError);
-
-			// Restore search parms from Session if not searching / reset / export
-			if (($this->isExport() || $this->Command != "search" && $this->Command != "reset" && $this->Command != "resetall") && $this->Command != "json" && $this->checkSearchParms())
-				$this->restoreSearchParms();
-
-			// Call Recordset SearchValidated event
-			$this->Recordset_SearchValidated();
-
 			// Set up sorting order
 			$this->setupSortOrder();
-
-			// Get search criteria for advanced search
-			if ($SearchError == "")
-				$srchAdvanced = $this->advancedSearchWhere();
 		}
 
 		// Restore display records
@@ -974,41 +928,32 @@ class t101_ho_head_list extends t101_ho_head
 		if ($this->Command != "json")
 			$this->loadSortOrder();
 
-		// Load search default if no existing search criteria
-		if (!$this->checkSearchParms()) {
-
-			// Load advanced search from default
-			if ($this->loadAdvancedSearchDefault()) {
-				$srchAdvanced = $this->advancedSearchWhere();
-			}
-		}
-
-		// Restore search settings from Session
-		if ($SearchError == "")
-			$this->loadAdvancedSearch();
-
-		// Build search criteria
-		AddFilter($this->SearchWhere, $srchAdvanced);
-		AddFilter($this->SearchWhere, $srchBasic);
-
-		// Call Recordset_Searching event
-		$this->Recordset_Searching($this->SearchWhere);
-
-		// Save search criteria
-		if ($this->Command == "search" && !$this->RestoreSearch) {
-			$this->setSearchWhere($this->SearchWhere); // Save to Session
-			$this->StartRecord = 1; // Reset start record counter
-			$this->setStartRecordNumber($this->StartRecord);
-		} elseif ($this->Command != "json") {
-			$this->SearchWhere = $this->getSearchWhere();
-		}
-
 		// Build filter
 		$filter = "";
 		if (!$Security->canList())
 			$filter = "(0=1)"; // Filter all records
+
+		// Restore master/detail filter
+		$this->DbMasterFilter = $this->getMasterFilter(); // Restore master filter
+		$this->DbDetailFilter = $this->getDetailFilter(); // Restore detail filter
 		AddFilter($filter, $this->DbDetailFilter);
 		AddFilter($filter, $this->SearchWhere);
+
+		// Load master record
+		if ($this->CurrentMode != "add" && $this->getMasterFilter() != "" && $this->getCurrentMasterTable() == "t103_ho1_head") {
+			global $t103_ho1_head;
+			$rsmaster = $t103_ho1_head->loadRs($this->DbMasterFilter);
+			$this->MasterRecordExists = ($rsmaster && !$rsmaster->EOF);
+			if (!$this->MasterRecordExists) {
+				$this->setFailureMessage($Language->phrase("NoRecord")); // Set no record found
+				$this->terminate("t103_ho1_headlist.php"); // Return to master page
+			} else {
+				$t103_ho1_head->loadListRowValues($rsmaster);
+				$t103_ho1_head->RowType = ROWTYPE_MASTER; // Master row
+				$t103_ho1_head->renderListRow();
+				$rsmaster->close();
+			}
+		}
 
 		// Set up filter
 		if ($this->Command == "json") {
@@ -1054,13 +999,6 @@ class t101_ho_head_list extends t101_ho_head
 					$this->setWarningMessage($Language->phrase("EnterSearchCriteria"));
 				else
 					$this->setWarningMessage($Language->phrase("NoRecord"));
-			}
-
-			// Audit trail on search
-			if ($this->AuditTrailOnSearch && $this->Command == "search" && !$this->RestoreSearch) {
-				$searchParm = ServerVar("QUERY_STRING");
-				$searchSql = $this->getSessionWhere();
-				$this->writeAuditTrailOnSearch($searchParm, $searchSql);
 			}
 		}
 
@@ -1146,365 +1084,6 @@ class t101_ho_head_list extends t101_ho_head
 		return TRUE;
 	}
 
-	// Get list of filters
-	public function getFilterList()
-	{
-		global $UserProfile;
-
-		// Initialize
-		$filterList = "";
-		$savedFilterList = "";
-		$filterList = Concat($filterList, $this->property_id->AdvancedSearch->toJson(), ","); // Field property_id
-		$filterList = Concat($filterList, $this->TransactionNo->AdvancedSearch->toJson(), ","); // Field TransactionNo
-		$filterList = Concat($filterList, $this->TransactionDate->AdvancedSearch->toJson(), ","); // Field TransactionDate
-		$filterList = Concat($filterList, $this->TransactionType->AdvancedSearch->toJson(), ","); // Field TransactionType
-		$filterList = Concat($filterList, $this->HandedOverTo->AdvancedSearch->toJson(), ","); // Field HandedOverTo
-		$filterList = Concat($filterList, $this->CodeNoTo->AdvancedSearch->toJson(), ","); // Field CodeNoTo
-		$filterList = Concat($filterList, $this->DepartmentTo->AdvancedSearch->toJson(), ","); // Field DepartmentTo
-		$filterList = Concat($filterList, $this->HandedOverBy->AdvancedSearch->toJson(), ","); // Field HandedOverBy
-		$filterList = Concat($filterList, $this->CodeNoBy->AdvancedSearch->toJson(), ","); // Field CodeNoBy
-		$filterList = Concat($filterList, $this->DepartmentBy->AdvancedSearch->toJson(), ","); // Field DepartmentBy
-		$filterList = Concat($filterList, $this->Sign1->AdvancedSearch->toJson(), ","); // Field Sign1
-		$filterList = Concat($filterList, $this->Sign2->AdvancedSearch->toJson(), ","); // Field Sign2
-		$filterList = Concat($filterList, $this->Sign3->AdvancedSearch->toJson(), ","); // Field Sign3
-		$filterList = Concat($filterList, $this->Sign4->AdvancedSearch->toJson(), ","); // Field Sign4
-
-		// Return filter list in JSON
-		if ($filterList != "")
-			$filterList = "\"data\":{" . $filterList . "}";
-		if ($savedFilterList != "")
-			$filterList = Concat($filterList, "\"filters\":" . $savedFilterList, ",");
-		return ($filterList != "") ? "{" . $filterList . "}" : "null";
-	}
-
-	// Process filter list
-	protected function processFilterList()
-	{
-		global $UserProfile;
-		if (Post("ajax") == "savefilters") { // Save filter request (Ajax)
-			$filters = Post("filters");
-			$UserProfile->setSearchFilters(CurrentUserName(), "ft101_ho_headlistsrch", $filters);
-			WriteJson([["success" => TRUE]]); // Success
-			return TRUE;
-		} elseif (Post("cmd") == "resetfilter") {
-			$this->restoreFilterList();
-		}
-		return FALSE;
-	}
-
-	// Restore list of filters
-	protected function restoreFilterList()
-	{
-
-		// Return if not reset filter
-		if (Post("cmd") !== "resetfilter")
-			return FALSE;
-		$filter = json_decode(Post("filter"), TRUE);
-		$this->Command = "search";
-
-		// Field property_id
-		$this->property_id->AdvancedSearch->SearchValue = @$filter["x_property_id"];
-		$this->property_id->AdvancedSearch->SearchOperator = @$filter["z_property_id"];
-		$this->property_id->AdvancedSearch->SearchCondition = @$filter["v_property_id"];
-		$this->property_id->AdvancedSearch->SearchValue2 = @$filter["y_property_id"];
-		$this->property_id->AdvancedSearch->SearchOperator2 = @$filter["w_property_id"];
-		$this->property_id->AdvancedSearch->save();
-
-		// Field TransactionNo
-		$this->TransactionNo->AdvancedSearch->SearchValue = @$filter["x_TransactionNo"];
-		$this->TransactionNo->AdvancedSearch->SearchOperator = @$filter["z_TransactionNo"];
-		$this->TransactionNo->AdvancedSearch->SearchCondition = @$filter["v_TransactionNo"];
-		$this->TransactionNo->AdvancedSearch->SearchValue2 = @$filter["y_TransactionNo"];
-		$this->TransactionNo->AdvancedSearch->SearchOperator2 = @$filter["w_TransactionNo"];
-		$this->TransactionNo->AdvancedSearch->save();
-
-		// Field TransactionDate
-		$this->TransactionDate->AdvancedSearch->SearchValue = @$filter["x_TransactionDate"];
-		$this->TransactionDate->AdvancedSearch->SearchOperator = @$filter["z_TransactionDate"];
-		$this->TransactionDate->AdvancedSearch->SearchCondition = @$filter["v_TransactionDate"];
-		$this->TransactionDate->AdvancedSearch->SearchValue2 = @$filter["y_TransactionDate"];
-		$this->TransactionDate->AdvancedSearch->SearchOperator2 = @$filter["w_TransactionDate"];
-		$this->TransactionDate->AdvancedSearch->save();
-
-		// Field TransactionType
-		$this->TransactionType->AdvancedSearch->SearchValue = @$filter["x_TransactionType"];
-		$this->TransactionType->AdvancedSearch->SearchOperator = @$filter["z_TransactionType"];
-		$this->TransactionType->AdvancedSearch->SearchCondition = @$filter["v_TransactionType"];
-		$this->TransactionType->AdvancedSearch->SearchValue2 = @$filter["y_TransactionType"];
-		$this->TransactionType->AdvancedSearch->SearchOperator2 = @$filter["w_TransactionType"];
-		$this->TransactionType->AdvancedSearch->save();
-
-		// Field HandedOverTo
-		$this->HandedOverTo->AdvancedSearch->SearchValue = @$filter["x_HandedOverTo"];
-		$this->HandedOverTo->AdvancedSearch->SearchOperator = @$filter["z_HandedOverTo"];
-		$this->HandedOverTo->AdvancedSearch->SearchCondition = @$filter["v_HandedOverTo"];
-		$this->HandedOverTo->AdvancedSearch->SearchValue2 = @$filter["y_HandedOverTo"];
-		$this->HandedOverTo->AdvancedSearch->SearchOperator2 = @$filter["w_HandedOverTo"];
-		$this->HandedOverTo->AdvancedSearch->save();
-
-		// Field CodeNoTo
-		$this->CodeNoTo->AdvancedSearch->SearchValue = @$filter["x_CodeNoTo"];
-		$this->CodeNoTo->AdvancedSearch->SearchOperator = @$filter["z_CodeNoTo"];
-		$this->CodeNoTo->AdvancedSearch->SearchCondition = @$filter["v_CodeNoTo"];
-		$this->CodeNoTo->AdvancedSearch->SearchValue2 = @$filter["y_CodeNoTo"];
-		$this->CodeNoTo->AdvancedSearch->SearchOperator2 = @$filter["w_CodeNoTo"];
-		$this->CodeNoTo->AdvancedSearch->save();
-
-		// Field DepartmentTo
-		$this->DepartmentTo->AdvancedSearch->SearchValue = @$filter["x_DepartmentTo"];
-		$this->DepartmentTo->AdvancedSearch->SearchOperator = @$filter["z_DepartmentTo"];
-		$this->DepartmentTo->AdvancedSearch->SearchCondition = @$filter["v_DepartmentTo"];
-		$this->DepartmentTo->AdvancedSearch->SearchValue2 = @$filter["y_DepartmentTo"];
-		$this->DepartmentTo->AdvancedSearch->SearchOperator2 = @$filter["w_DepartmentTo"];
-		$this->DepartmentTo->AdvancedSearch->save();
-
-		// Field HandedOverBy
-		$this->HandedOverBy->AdvancedSearch->SearchValue = @$filter["x_HandedOverBy"];
-		$this->HandedOverBy->AdvancedSearch->SearchOperator = @$filter["z_HandedOverBy"];
-		$this->HandedOverBy->AdvancedSearch->SearchCondition = @$filter["v_HandedOverBy"];
-		$this->HandedOverBy->AdvancedSearch->SearchValue2 = @$filter["y_HandedOverBy"];
-		$this->HandedOverBy->AdvancedSearch->SearchOperator2 = @$filter["w_HandedOverBy"];
-		$this->HandedOverBy->AdvancedSearch->save();
-
-		// Field CodeNoBy
-		$this->CodeNoBy->AdvancedSearch->SearchValue = @$filter["x_CodeNoBy"];
-		$this->CodeNoBy->AdvancedSearch->SearchOperator = @$filter["z_CodeNoBy"];
-		$this->CodeNoBy->AdvancedSearch->SearchCondition = @$filter["v_CodeNoBy"];
-		$this->CodeNoBy->AdvancedSearch->SearchValue2 = @$filter["y_CodeNoBy"];
-		$this->CodeNoBy->AdvancedSearch->SearchOperator2 = @$filter["w_CodeNoBy"];
-		$this->CodeNoBy->AdvancedSearch->save();
-
-		// Field DepartmentBy
-		$this->DepartmentBy->AdvancedSearch->SearchValue = @$filter["x_DepartmentBy"];
-		$this->DepartmentBy->AdvancedSearch->SearchOperator = @$filter["z_DepartmentBy"];
-		$this->DepartmentBy->AdvancedSearch->SearchCondition = @$filter["v_DepartmentBy"];
-		$this->DepartmentBy->AdvancedSearch->SearchValue2 = @$filter["y_DepartmentBy"];
-		$this->DepartmentBy->AdvancedSearch->SearchOperator2 = @$filter["w_DepartmentBy"];
-		$this->DepartmentBy->AdvancedSearch->save();
-
-		// Field Sign1
-		$this->Sign1->AdvancedSearch->SearchValue = @$filter["x_Sign1"];
-		$this->Sign1->AdvancedSearch->SearchOperator = @$filter["z_Sign1"];
-		$this->Sign1->AdvancedSearch->SearchCondition = @$filter["v_Sign1"];
-		$this->Sign1->AdvancedSearch->SearchValue2 = @$filter["y_Sign1"];
-		$this->Sign1->AdvancedSearch->SearchOperator2 = @$filter["w_Sign1"];
-		$this->Sign1->AdvancedSearch->save();
-
-		// Field Sign2
-		$this->Sign2->AdvancedSearch->SearchValue = @$filter["x_Sign2"];
-		$this->Sign2->AdvancedSearch->SearchOperator = @$filter["z_Sign2"];
-		$this->Sign2->AdvancedSearch->SearchCondition = @$filter["v_Sign2"];
-		$this->Sign2->AdvancedSearch->SearchValue2 = @$filter["y_Sign2"];
-		$this->Sign2->AdvancedSearch->SearchOperator2 = @$filter["w_Sign2"];
-		$this->Sign2->AdvancedSearch->save();
-
-		// Field Sign3
-		$this->Sign3->AdvancedSearch->SearchValue = @$filter["x_Sign3"];
-		$this->Sign3->AdvancedSearch->SearchOperator = @$filter["z_Sign3"];
-		$this->Sign3->AdvancedSearch->SearchCondition = @$filter["v_Sign3"];
-		$this->Sign3->AdvancedSearch->SearchValue2 = @$filter["y_Sign3"];
-		$this->Sign3->AdvancedSearch->SearchOperator2 = @$filter["w_Sign3"];
-		$this->Sign3->AdvancedSearch->save();
-
-		// Field Sign4
-		$this->Sign4->AdvancedSearch->SearchValue = @$filter["x_Sign4"];
-		$this->Sign4->AdvancedSearch->SearchOperator = @$filter["z_Sign4"];
-		$this->Sign4->AdvancedSearch->SearchCondition = @$filter["v_Sign4"];
-		$this->Sign4->AdvancedSearch->SearchValue2 = @$filter["y_Sign4"];
-		$this->Sign4->AdvancedSearch->SearchOperator2 = @$filter["w_Sign4"];
-		$this->Sign4->AdvancedSearch->save();
-	}
-
-	// Advanced search WHERE clause based on QueryString
-	protected function advancedSearchWhere($default = FALSE)
-	{
-		global $Security;
-		$where = "";
-		if (!$Security->canSearch())
-			return "";
-		$this->buildSearchSql($where, $this->property_id, $default, FALSE); // property_id
-		$this->buildSearchSql($where, $this->TransactionNo, $default, FALSE); // TransactionNo
-		$this->buildSearchSql($where, $this->TransactionDate, $default, FALSE); // TransactionDate
-		$this->buildSearchSql($where, $this->TransactionType, $default, FALSE); // TransactionType
-		$this->buildSearchSql($where, $this->HandedOverTo, $default, FALSE); // HandedOverTo
-		$this->buildSearchSql($where, $this->CodeNoTo, $default, FALSE); // CodeNoTo
-		$this->buildSearchSql($where, $this->DepartmentTo, $default, FALSE); // DepartmentTo
-		$this->buildSearchSql($where, $this->HandedOverBy, $default, FALSE); // HandedOverBy
-		$this->buildSearchSql($where, $this->CodeNoBy, $default, FALSE); // CodeNoBy
-		$this->buildSearchSql($where, $this->DepartmentBy, $default, FALSE); // DepartmentBy
-		$this->buildSearchSql($where, $this->Sign1, $default, FALSE); // Sign1
-		$this->buildSearchSql($where, $this->Sign2, $default, FALSE); // Sign2
-		$this->buildSearchSql($where, $this->Sign3, $default, FALSE); // Sign3
-		$this->buildSearchSql($where, $this->Sign4, $default, FALSE); // Sign4
-
-		// Set up search parm
-		if (!$default && $where != "" && in_array($this->Command, ["", "reset", "resetall"])) {
-			$this->Command = "search";
-		}
-		if (!$default && $this->Command == "search") {
-			$this->property_id->AdvancedSearch->save(); // property_id
-			$this->TransactionNo->AdvancedSearch->save(); // TransactionNo
-			$this->TransactionDate->AdvancedSearch->save(); // TransactionDate
-			$this->TransactionType->AdvancedSearch->save(); // TransactionType
-			$this->HandedOverTo->AdvancedSearch->save(); // HandedOverTo
-			$this->CodeNoTo->AdvancedSearch->save(); // CodeNoTo
-			$this->DepartmentTo->AdvancedSearch->save(); // DepartmentTo
-			$this->HandedOverBy->AdvancedSearch->save(); // HandedOverBy
-			$this->CodeNoBy->AdvancedSearch->save(); // CodeNoBy
-			$this->DepartmentBy->AdvancedSearch->save(); // DepartmentBy
-			$this->Sign1->AdvancedSearch->save(); // Sign1
-			$this->Sign2->AdvancedSearch->save(); // Sign2
-			$this->Sign3->AdvancedSearch->save(); // Sign3
-			$this->Sign4->AdvancedSearch->save(); // Sign4
-		}
-		return $where;
-	}
-
-	// Build search SQL
-	protected function buildSearchSql(&$where, &$fld, $default, $multiValue)
-	{
-		$fldParm = $fld->Param;
-		$fldVal = ($default) ? $fld->AdvancedSearch->SearchValueDefault : $fld->AdvancedSearch->SearchValue;
-		$fldOpr = ($default) ? $fld->AdvancedSearch->SearchOperatorDefault : $fld->AdvancedSearch->SearchOperator;
-		$fldCond = ($default) ? $fld->AdvancedSearch->SearchConditionDefault : $fld->AdvancedSearch->SearchCondition;
-		$fldVal2 = ($default) ? $fld->AdvancedSearch->SearchValue2Default : $fld->AdvancedSearch->SearchValue2;
-		$fldOpr2 = ($default) ? $fld->AdvancedSearch->SearchOperator2Default : $fld->AdvancedSearch->SearchOperator2;
-		$wrk = "";
-		if (is_array($fldVal))
-			$fldVal = implode(Config("MULTIPLE_OPTION_SEPARATOR"), $fldVal);
-		if (is_array($fldVal2))
-			$fldVal2 = implode(Config("MULTIPLE_OPTION_SEPARATOR"), $fldVal2);
-		$fldOpr = strtoupper(trim($fldOpr));
-		if ($fldOpr == "")
-			$fldOpr = "=";
-		$fldOpr2 = strtoupper(trim($fldOpr2));
-		if ($fldOpr2 == "")
-			$fldOpr2 = "=";
-		if (Config("SEARCH_MULTI_VALUE_OPTION") == 1 || !IsMultiSearchOperator($fldOpr))
-			$multiValue = FALSE;
-		if ($multiValue) {
-			$wrk1 = ($fldVal != "") ? GetMultiSearchSql($fld, $fldOpr, $fldVal, $this->Dbid) : ""; // Field value 1
-			$wrk2 = ($fldVal2 != "") ? GetMultiSearchSql($fld, $fldOpr2, $fldVal2, $this->Dbid) : ""; // Field value 2
-			$wrk = $wrk1; // Build final SQL
-			if ($wrk2 != "")
-				$wrk = ($wrk != "") ? "($wrk) $fldCond ($wrk2)" : $wrk2;
-		} else {
-			$fldVal = $this->convertSearchValue($fld, $fldVal);
-			$fldVal2 = $this->convertSearchValue($fld, $fldVal2);
-			$wrk = GetSearchSql($fld, $fldVal, $fldOpr, $fldCond, $fldVal2, $fldOpr2, $this->Dbid);
-		}
-		AddFilter($where, $wrk);
-	}
-
-	// Convert search value
-	protected function convertSearchValue(&$fld, $fldVal)
-	{
-		if ($fldVal == Config("NULL_VALUE") || $fldVal == Config("NOT_NULL_VALUE"))
-			return $fldVal;
-		$value = $fldVal;
-		if ($fld->isBoolean()) {
-			if ($fldVal != "")
-				$value = (SameText($fldVal, "1") || SameText($fldVal, "y") || SameText($fldVal, "t")) ? $fld->TrueValue : $fld->FalseValue;
-		} elseif ($fld->DataType == DATATYPE_DATE || $fld->DataType == DATATYPE_TIME) {
-			if ($fldVal != "")
-				$value = UnFormatDateTime($fldVal, $fld->DateTimeFormat);
-		}
-		return $value;
-	}
-
-	// Check if search parm exists
-	protected function checkSearchParms()
-	{
-		if ($this->property_id->AdvancedSearch->issetSession())
-			return TRUE;
-		if ($this->TransactionNo->AdvancedSearch->issetSession())
-			return TRUE;
-		if ($this->TransactionDate->AdvancedSearch->issetSession())
-			return TRUE;
-		if ($this->TransactionType->AdvancedSearch->issetSession())
-			return TRUE;
-		if ($this->HandedOverTo->AdvancedSearch->issetSession())
-			return TRUE;
-		if ($this->CodeNoTo->AdvancedSearch->issetSession())
-			return TRUE;
-		if ($this->DepartmentTo->AdvancedSearch->issetSession())
-			return TRUE;
-		if ($this->HandedOverBy->AdvancedSearch->issetSession())
-			return TRUE;
-		if ($this->CodeNoBy->AdvancedSearch->issetSession())
-			return TRUE;
-		if ($this->DepartmentBy->AdvancedSearch->issetSession())
-			return TRUE;
-		if ($this->Sign1->AdvancedSearch->issetSession())
-			return TRUE;
-		if ($this->Sign2->AdvancedSearch->issetSession())
-			return TRUE;
-		if ($this->Sign3->AdvancedSearch->issetSession())
-			return TRUE;
-		if ($this->Sign4->AdvancedSearch->issetSession())
-			return TRUE;
-		return FALSE;
-	}
-
-	// Clear all search parameters
-	protected function resetSearchParms()
-	{
-
-		// Clear search WHERE clause
-		$this->SearchWhere = "";
-		$this->setSearchWhere($this->SearchWhere);
-
-		// Clear advanced search parameters
-		$this->resetAdvancedSearchParms();
-	}
-
-	// Load advanced search default values
-	protected function loadAdvancedSearchDefault()
-	{
-		return FALSE;
-	}
-
-	// Clear all advanced search parameters
-	protected function resetAdvancedSearchParms()
-	{
-		$this->property_id->AdvancedSearch->unsetSession();
-		$this->TransactionNo->AdvancedSearch->unsetSession();
-		$this->TransactionDate->AdvancedSearch->unsetSession();
-		$this->TransactionType->AdvancedSearch->unsetSession();
-		$this->HandedOverTo->AdvancedSearch->unsetSession();
-		$this->CodeNoTo->AdvancedSearch->unsetSession();
-		$this->DepartmentTo->AdvancedSearch->unsetSession();
-		$this->HandedOverBy->AdvancedSearch->unsetSession();
-		$this->CodeNoBy->AdvancedSearch->unsetSession();
-		$this->DepartmentBy->AdvancedSearch->unsetSession();
-		$this->Sign1->AdvancedSearch->unsetSession();
-		$this->Sign2->AdvancedSearch->unsetSession();
-		$this->Sign3->AdvancedSearch->unsetSession();
-		$this->Sign4->AdvancedSearch->unsetSession();
-	}
-
-	// Restore all search parameters
-	protected function restoreSearchParms()
-	{
-		$this->RestoreSearch = TRUE;
-
-		// Restore advanced search values
-		$this->property_id->AdvancedSearch->load();
-		$this->TransactionNo->AdvancedSearch->load();
-		$this->TransactionDate->AdvancedSearch->load();
-		$this->TransactionType->AdvancedSearch->load();
-		$this->HandedOverTo->AdvancedSearch->load();
-		$this->CodeNoTo->AdvancedSearch->load();
-		$this->DepartmentTo->AdvancedSearch->load();
-		$this->HandedOverBy->AdvancedSearch->load();
-		$this->CodeNoBy->AdvancedSearch->load();
-		$this->DepartmentBy->AdvancedSearch->load();
-		$this->Sign1->AdvancedSearch->load();
-		$this->Sign2->AdvancedSearch->load();
-		$this->Sign3->AdvancedSearch->load();
-		$this->Sign4->AdvancedSearch->load();
-	}
-
 	// Set up sort parameters
 	protected function setupSortOrder()
 	{
@@ -1516,20 +1095,9 @@ class t101_ho_head_list extends t101_ho_head
 		if (Get("order") !== NULL) {
 			$this->CurrentOrder = Get("order");
 			$this->CurrentOrderType = Get("ordertype", "");
-			$this->updateSort($this->property_id, $ctrl); // property_id
-			$this->updateSort($this->TransactionNo, $ctrl); // TransactionNo
-			$this->updateSort($this->TransactionDate, $ctrl); // TransactionDate
-			$this->updateSort($this->TransactionType, $ctrl); // TransactionType
-			$this->updateSort($this->HandedOverTo, $ctrl); // HandedOverTo
-			$this->updateSort($this->CodeNoTo, $ctrl); // CodeNoTo
-			$this->updateSort($this->DepartmentTo, $ctrl); // DepartmentTo
-			$this->updateSort($this->HandedOverBy, $ctrl); // HandedOverBy
-			$this->updateSort($this->CodeNoBy, $ctrl); // CodeNoBy
-			$this->updateSort($this->DepartmentBy, $ctrl); // DepartmentBy
-			$this->updateSort($this->Sign1, $ctrl); // Sign1
-			$this->updateSort($this->Sign2, $ctrl); // Sign2
-			$this->updateSort($this->Sign3, $ctrl); // Sign3
-			$this->updateSort($this->Sign4, $ctrl); // Sign4
+			$this->updateSort($this->id, $ctrl); // id
+			$this->updateSort($this->hohead_id, $ctrl); // hohead_id
+			$this->updateSort($this->asset_id, $ctrl); // asset_id
 			$this->setStartRecordNumber(1); // Reset start position
 		}
 	}
@@ -1557,29 +1125,21 @@ class t101_ho_head_list extends t101_ho_head
 		// Check if reset command
 		if (StartsString("reset", $this->Command)) {
 
-			// Reset search criteria
-			if ($this->Command == "reset" || $this->Command == "resetall")
-				$this->resetSearchParms();
+			// Reset master/detail keys
+			if ($this->Command == "resetall") {
+				$this->setCurrentMasterTable(""); // Clear master table
+				$this->DbMasterFilter = "";
+				$this->DbDetailFilter = "";
+				$this->hohead_id->setSessionValue("");
+			}
 
 			// Reset sorting order
 			if ($this->Command == "resetsort") {
 				$orderBy = "";
 				$this->setSessionOrderBy($orderBy);
-				$this->setSessionOrderByList($orderBy);
-				$this->property_id->setSort("");
-				$this->TransactionNo->setSort("");
-				$this->TransactionDate->setSort("");
-				$this->TransactionType->setSort("");
-				$this->HandedOverTo->setSort("");
-				$this->CodeNoTo->setSort("");
-				$this->DepartmentTo->setSort("");
-				$this->HandedOverBy->setSort("");
-				$this->CodeNoBy->setSort("");
-				$this->DepartmentBy->setSort("");
-				$this->Sign1->setSort("");
-				$this->Sign2->setSort("");
-				$this->Sign3->setSort("");
-				$this->Sign4->setSort("");
+				$this->id->setSort("");
+				$this->hohead_id->setSort("");
+				$this->asset_id->setSort("");
 			}
 
 			// Reset start position
@@ -1611,34 +1171,17 @@ class t101_ho_head_list extends t101_ho_head
 		$item->Visible = $Security->canEdit();
 		$item->OnLeft = TRUE;
 
+		// "copy"
+		$item = &$this->ListOptions->add("copy");
+		$item->CssClass = "text-nowrap";
+		$item->Visible = $Security->canAdd();
+		$item->OnLeft = TRUE;
+
 		// "delete"
 		$item = &$this->ListOptions->add("delete");
 		$item->CssClass = "text-nowrap";
 		$item->Visible = $Security->canDelete();
 		$item->OnLeft = TRUE;
-
-		// "detail_t102_ho_detail"
-		$item = &$this->ListOptions->add("detail_t102_ho_detail");
-		$item->CssClass = "text-nowrap";
-		$item->Visible = $Security->allowList(CurrentProjectID() . 't102_ho_detail') && !$this->ShowMultipleDetails;
-		$item->OnLeft = TRUE;
-		$item->ShowInButtonGroup = FALSE;
-		if (!isset($GLOBALS["t102_ho_detail_grid"]))
-			$GLOBALS["t102_ho_detail_grid"] = new t102_ho_detail_grid();
-
-		// Multiple details
-		if ($this->ShowMultipleDetails) {
-			$item = &$this->ListOptions->add("details");
-			$item->CssClass = "text-nowrap";
-			$item->Visible = $this->ShowMultipleDetails;
-			$item->OnLeft = TRUE;
-			$item->ShowInButtonGroup = FALSE;
-		}
-
-		// Set up detail pages
-		$pages = new SubPages();
-		$pages->add("t102_ho_detail");
-		$this->DetailPages = $pages;
 
 		// List actions
 		$item = &$this->ListOptions->add("listactions");
@@ -1654,14 +1197,6 @@ class t101_ho_head_list extends t101_ho_head
 		$item->OnLeft = TRUE;
 		$item->Header = "<div class=\"custom-control custom-checkbox d-inline-block\"><input type=\"checkbox\" name=\"key\" id=\"key\" class=\"custom-control-input\" onclick=\"ew.selectAllKey(this);\"><label class=\"custom-control-label\" for=\"key\"></label></div>";
 		$item->moveTo(0);
-		$item->ShowInDropDown = FALSE;
-		$item->ShowInButtonGroup = FALSE;
-
-		// "sequence"
-		$item = &$this->ListOptions->add("sequence");
-		$item->CssClass = "text-nowrap";
-		$item->Visible = TRUE;
-		$item->OnLeft = TRUE; // Always on left
 		$item->ShowInDropDown = FALSE;
 		$item->ShowInButtonGroup = FALSE;
 
@@ -1690,18 +1225,11 @@ class t101_ho_head_list extends t101_ho_head
 		// Call ListOptions_Rendering event
 		$this->ListOptions_Rendering();
 
-		// "sequence"
-		$opt = $this->ListOptions["sequence"];
-		$opt->Body = FormatSequenceNumber($this->RecordCount);
-
 		// "view"
 		$opt = $this->ListOptions["view"];
 		$viewcaption = HtmlTitle($Language->phrase("ViewLink"));
 		if ($Security->canView()) {
-			if (IsMobile())
-				$opt->Body = "<a class=\"ew-row-link ew-view\" title=\"" . $viewcaption . "\" data-caption=\"" . $viewcaption . "\" href=\"" . HtmlEncode($this->ViewUrl) . "\">" . $Language->phrase("ViewLink") . "</a>";
-			else
-				$opt->Body = "<a class=\"ew-row-link ew-view\" title=\"" . $viewcaption . "\" data-table=\"t101_ho_head\" data-caption=\"" . $viewcaption . "\" href=\"#\" onclick=\"return ew.modalDialogShow({lnk:this,url:'" . HtmlEncode($this->ViewUrl) . "',btn:null});\">" . $Language->phrase("ViewLink") . "</a>";
+			$opt->Body = "<a class=\"ew-row-link ew-view\" title=\"" . $viewcaption . "\" data-caption=\"" . $viewcaption . "\" href=\"" . HtmlEncode($this->ViewUrl) . "\">" . $Language->phrase("ViewLink") . "</a>";
 		} else {
 			$opt->Body = "";
 		}
@@ -1710,10 +1238,16 @@ class t101_ho_head_list extends t101_ho_head
 		$opt = $this->ListOptions["edit"];
 		$editcaption = HtmlTitle($Language->phrase("EditLink"));
 		if ($Security->canEdit()) {
-			if (IsMobile())
-				$opt->Body = "<a class=\"ew-row-link ew-edit\" title=\"" . $editcaption . "\" data-caption=\"" . $editcaption . "\" href=\"" . HtmlEncode($this->EditUrl) . "\">" . $Language->phrase("EditLink") . "</a>";
-			else
-				$opt->Body = "<a class=\"ew-row-link ew-edit\" title=\"" . $editcaption . "\" data-table=\"t101_ho_head\" data-caption=\"" . $editcaption . "\" href=\"#\" onclick=\"return ew.modalDialogShow({lnk:this,btn:'SaveBtn',url:'" . HtmlEncode($this->EditUrl) . "'});\">" . $Language->phrase("EditLink") . "</a>";
+			$opt->Body = "<a class=\"ew-row-link ew-edit\" title=\"" . HtmlTitle($Language->phrase("EditLink")) . "\" data-caption=\"" . HtmlTitle($Language->phrase("EditLink")) . "\" href=\"" . HtmlEncode($this->EditUrl) . "\">" . $Language->phrase("EditLink") . "</a>";
+		} else {
+			$opt->Body = "";
+		}
+
+		// "copy"
+		$opt = $this->ListOptions["copy"];
+		$copycaption = HtmlTitle($Language->phrase("CopyLink"));
+		if ($Security->canAdd()) {
+			$opt->Body = "<a class=\"ew-row-link ew-copy\" title=\"" . $copycaption . "\" data-caption=\"" . $copycaption . "\" href=\"" . HtmlEncode($this->CopyUrl) . "\">" . $Language->phrase("CopyLink") . "</a>";
 		} else {
 			$opt->Body = "";
 		}
@@ -1721,7 +1255,7 @@ class t101_ho_head_list extends t101_ho_head
 		// "delete"
 		$opt = $this->ListOptions["delete"];
 		if ($Security->canDelete())
-			$opt->Body = "<a class=\"ew-row-link ew-delete\"" . " onclick=\"return ew.confirmDelete(this);\"" . " title=\"" . HtmlTitle($Language->phrase("DeleteLink")) . "\" data-caption=\"" . HtmlTitle($Language->phrase("DeleteLink")) . "\" href=\"" . HtmlEncode($this->DeleteUrl) . "\">" . $Language->phrase("DeleteLink") . "</a>";
+			$opt->Body = "<a class=\"ew-row-link ew-delete\"" . "" . " title=\"" . HtmlTitle($Language->phrase("DeleteLink")) . "\" data-caption=\"" . HtmlTitle($Language->phrase("DeleteLink")) . "\" href=\"" . HtmlEncode($this->DeleteUrl) . "\">" . $Language->phrase("DeleteLink") . "</a>";
 		else
 			$opt->Body = "";
 
@@ -1753,64 +1287,6 @@ class t101_ho_head_list extends t101_ho_head
 				$opt->Visible = TRUE;
 			}
 		}
-		$detailViewTblVar = "";
-		$detailCopyTblVar = "";
-		$detailEditTblVar = "";
-
-		// "detail_t102_ho_detail"
-		$opt = $this->ListOptions["detail_t102_ho_detail"];
-		if ($Security->allowList(CurrentProjectID() . 't102_ho_detail')) {
-			$body = $Language->phrase("DetailLink") . $Language->TablePhrase("t102_ho_detail", "TblCaption");
-			$body .= "&nbsp;" . str_replace("%c", $this->t102_ho_detail_Count, $Language->phrase("DetailCount"));
-			$body = "<a class=\"btn btn-default ew-row-link ew-detail\" data-action=\"list\" href=\"" . HtmlEncode("t102_ho_detaillist.php?" . Config("TABLE_SHOW_MASTER") . "=t101_ho_head&fk_id=" . urlencode(strval($this->id->CurrentValue)) . "") . "\">" . $body . "</a>";
-			$links = "";
-			if ($GLOBALS["t102_ho_detail_grid"]->DetailView && $Security->canView() && $Security->allowView(CurrentProjectID() . 't101_ho_head')) {
-				$caption = $Language->phrase("MasterDetailViewLink");
-				$url = $this->getViewUrl(Config("TABLE_SHOW_DETAIL") . "=t102_ho_detail");
-				$links .= "<li><a class=\"dropdown-item ew-row-link ew-detail-view\" data-action=\"view\" data-caption=\"" . HtmlTitle($caption) . "\" href=\"" . HtmlEncode($url) . "\">" . HtmlImageAndText($caption) . "</a></li>";
-				if ($detailViewTblVar != "")
-					$detailViewTblVar .= ",";
-				$detailViewTblVar .= "t102_ho_detail";
-			}
-			if ($GLOBALS["t102_ho_detail_grid"]->DetailEdit && $Security->canEdit() && $Security->allowEdit(CurrentProjectID() . 't101_ho_head')) {
-				$caption = $Language->phrase("MasterDetailEditLink");
-				$url = $this->getEditUrl(Config("TABLE_SHOW_DETAIL") . "=t102_ho_detail");
-				$links .= "<li><a class=\"dropdown-item ew-row-link ew-detail-edit\" data-action=\"edit\" data-caption=\"" . HtmlTitle($caption) . "\" href=\"" . HtmlEncode($url) . "\">" . HtmlImageAndText($caption) . "</a></li>";
-				if ($detailEditTblVar != "")
-					$detailEditTblVar .= ",";
-				$detailEditTblVar .= "t102_ho_detail";
-			}
-			if ($links != "") {
-				$body .= "<button class=\"dropdown-toggle btn btn-default ew-detail\" data-toggle=\"dropdown\"></button>";
-				$body .= "<ul class=\"dropdown-menu\">". $links . "</ul>";
-			}
-			$body = "<div class=\"btn-group btn-group-sm ew-btn-group\">" . $body . "</div>";
-			$opt->Body = $body;
-			if ($this->ShowMultipleDetails)
-				$opt->Visible = FALSE;
-		}
-		if ($this->ShowMultipleDetails) {
-			$body = "<div class=\"btn-group btn-group-sm ew-btn-group\">";
-			$links = "";
-			if ($detailViewTblVar != "") {
-				$links .= "<li><a class=\"dropdown-item ew-row-link ew-detail-view\" data-action=\"view\" data-caption=\"" . HtmlTitle($Language->phrase("MasterDetailViewLink")) . "\" href=\"" . HtmlEncode($this->getViewUrl(Config("TABLE_SHOW_DETAIL") . "=" . $detailViewTblVar)) . "\">" . HtmlImageAndText($Language->phrase("MasterDetailViewLink")) . "</a></li>";
-			}
-			if ($detailEditTblVar != "") {
-				$links .= "<li><a class=\"dropdown-item ew-row-link ew-detail-edit\" data-action=\"edit\" data-caption=\"" . HtmlTitle($Language->phrase("MasterDetailEditLink")) . "\" href=\"" . HtmlEncode($this->getEditUrl(Config("TABLE_SHOW_DETAIL") . "=" . $detailEditTblVar)) . "\">" . HtmlImageAndText($Language->phrase("MasterDetailEditLink")) . "</a></li>";
-			}
-			if ($detailCopyTblVar != "") {
-				$links .= "<li><a class=\"dropdown-item ew-row-link ew-detail-copy\" data-action=\"add\" data-caption=\"" . HtmlTitle($Language->phrase("MasterDetailCopyLink")) . "\" href=\"" . HtmlEncode($this->GetCopyUrl(Config("TABLE_SHOW_DETAIL") . "=" . $detailCopyTblVar)) . "\">" . HtmlImageAndText($Language->phrase("MasterDetailCopyLink")) . "</a></li>";
-			}
-			if ($links != "") {
-				$body .= "<button class=\"dropdown-toggle btn btn-default ew-master-detail\" title=\"" . HtmlTitle($Language->phrase("MultipleMasterDetails")) . "\" data-toggle=\"dropdown\">" . $Language->phrase("MultipleMasterDetails") . "</button>";
-				$body .= "<ul class=\"dropdown-menu ew-menu\">". $links . "</ul>";
-			}
-			$body .= "</div>";
-
-			// Multiple details
-			$opt = $this->ListOptions["details"];
-			$opt->Body = $body;
-		}
 
 		// "checkbox"
 		$opt = $this->ListOptions["checkbox"];
@@ -1831,42 +1307,8 @@ class t101_ho_head_list extends t101_ho_head
 		// Add
 		$item = &$option->add("add");
 		$addcaption = HtmlTitle($Language->phrase("AddLink"));
-		if (IsMobile())
-			$item->Body = "<a class=\"ew-add-edit ew-add\" title=\"" . $addcaption . "\" data-caption=\"" . $addcaption . "\" href=\"" . HtmlEncode($this->AddUrl) . "\">" . $Language->phrase("AddLink") . "</a>";
-		else
-			$item->Body = "<a class=\"ew-add-edit ew-add\" title=\"" . $addcaption . "\" data-table=\"t101_ho_head\" data-caption=\"" . $addcaption . "\" href=\"#\" onclick=\"return ew.modalDialogShow({lnk:this,btn:'AddBtn',url:'" . HtmlEncode($this->AddUrl) . "'});\">" . $Language->phrase("AddLink") . "</a>";
+		$item->Body = "<a class=\"ew-add-edit ew-add\" title=\"" . $addcaption . "\" data-caption=\"" . $addcaption . "\" href=\"" . HtmlEncode($this->AddUrl) . "\">" . $Language->phrase("AddLink") . "</a>";
 		$item->Visible = $this->AddUrl != "" && $Security->canAdd();
-		$option = $options["detail"];
-		$detailTableLink = "";
-		$item = &$option->add("detailadd_t102_ho_detail");
-		$url = $this->getAddUrl(Config("TABLE_SHOW_DETAIL") . "=t102_ho_detail");
-		if (!isset($GLOBALS["t102_ho_detail"]))
-			$GLOBALS["t102_ho_detail"] = new t102_ho_detail();
-		$caption = $Language->phrase("Add") . "&nbsp;" . $this->tableCaption() . "/" . $GLOBALS["t102_ho_detail"]->tableCaption();
-		$item->Body = "<a class=\"ew-detail-add-group ew-detail-add\" title=\"" . HtmlTitle($caption) . "\" data-caption=\"" . HtmlTitle($caption) . "\" href=\"" . HtmlEncode($url) . "\">" . $caption . "</a>";
-		$item->Visible = ($GLOBALS["t102_ho_detail"]->DetailAdd && $Security->allowAdd(CurrentProjectID() . 't101_ho_head') && $Security->canAdd());
-		if ($item->Visible) {
-			if ($detailTableLink != "")
-				$detailTableLink .= ",";
-			$detailTableLink .= "t102_ho_detail";
-		}
-
-		// Add multiple details
-		if ($this->ShowMultipleDetails) {
-			$item = &$option->add("detailsadd");
-			$url = $this->getAddUrl(Config("TABLE_SHOW_DETAIL") . "=" . $detailTableLink);
-			$caption = $Language->phrase("AddMasterDetailLink");
-			$item->Body = "<a class=\"ew-detail-add-group ew-detail-add\" title=\"" . HtmlTitle($caption) . "\" data-caption=\"" . HtmlTitle($caption) . "\" href=\"" . HtmlEncode($url) . "\">" . $caption . "</a>";
-			$item->Visible = $detailTableLink != "" && $Security->canAdd();
-
-			// Hide single master/detail items
-			$ar = explode(",", $detailTableLink);
-			$cnt = count($ar);
-			for ($i = 0; $i < $cnt; $i++) {
-				if ($item = $option["detailadd_" . $ar[$i]])
-					$item->Visible = FALSE;
-			}
-		}
 		$option = $options["action"];
 
 		// Set up options default
@@ -1885,11 +1327,11 @@ class t101_ho_head_list extends t101_ho_head
 
 		// Filter button
 		$item = &$this->FilterOptions->add("savecurrentfilter");
-		$item->Body = "<a class=\"ew-save-filter\" data-form=\"ft101_ho_headlistsrch\" href=\"#\" onclick=\"return false;\">" . $Language->phrase("SaveCurrentFilter") . "</a>";
-		$item->Visible = TRUE;
+		$item->Body = "<a class=\"ew-save-filter\" data-form=\"ft104_ho1_detaillistsrch\" href=\"#\" onclick=\"return false;\">" . $Language->phrase("SaveCurrentFilter") . "</a>";
+		$item->Visible = FALSE;
 		$item = &$this->FilterOptions->add("deletefilter");
-		$item->Body = "<a class=\"ew-delete-filter\" data-form=\"ft101_ho_headlistsrch\" href=\"#\" onclick=\"return false;\">" . $Language->phrase("DeleteFilter") . "</a>";
-		$item->Visible = TRUE;
+		$item->Body = "<a class=\"ew-delete-filter\" data-form=\"ft104_ho1_detaillistsrch\" href=\"#\" onclick=\"return false;\">" . $Language->phrase("DeleteFilter") . "</a>";
+		$item->Visible = FALSE;
 		$this->FilterOptions->UseDropDownButton = TRUE;
 		$this->FilterOptions->UseButtonGroup = !$this->FilterOptions->UseDropDownButton;
 		$this->FilterOptions->DropDownButtonPhrase = $Language->phrase("Filters");
@@ -1913,7 +1355,7 @@ class t101_ho_head_list extends t101_ho_head
 					$item = &$option->add("custom_" . $listaction->Action);
 					$caption = $listaction->Caption;
 					$icon = ($listaction->Icon != "") ? "<i class=\"" . HtmlEncode($listaction->Icon) . "\" data-caption=\"" . HtmlEncode($caption) . "\"></i> " . $caption : $caption;
-					$item->Body = "<a class=\"ew-action ew-list-action\" title=\"" . HtmlEncode($caption) . "\" data-caption=\"" . HtmlEncode($caption) . "\" href=\"#\" onclick=\"return ew.submitAction(event,jQuery.extend({f:document.ft101_ho_headlist}," . $listaction->toJson(TRUE) . "));\">" . $icon . "</a>";
+					$item->Body = "<a class=\"ew-action ew-list-action\" title=\"" . HtmlEncode($caption) . "\" data-caption=\"" . HtmlEncode($caption) . "\" href=\"#\" onclick=\"return ew.submitAction(event,jQuery.extend({f:document.ft104_ho1_detaillist}," . $listaction->toJson(TRUE) . "));\">" . $icon . "</a>";
 					$item->Visible = $listaction->Allow;
 				}
 			}
@@ -2020,113 +1462,6 @@ class t101_ho_head_list extends t101_ho_head
 	{
 	}
 
-	// Load search values for validation
-	protected function loadSearchValues()
-	{
-
-		// Load search values
-		$got = FALSE;
-
-		// property_id
-		if (!$this->isAddOrEdit() && $this->property_id->AdvancedSearch->get()) {
-			$got = TRUE;
-			if (($this->property_id->AdvancedSearch->SearchValue != "" || $this->property_id->AdvancedSearch->SearchValue2 != "") && $this->Command == "")
-				$this->Command = "search";
-		}
-
-		// TransactionNo
-		if (!$this->isAddOrEdit() && $this->TransactionNo->AdvancedSearch->get()) {
-			$got = TRUE;
-			if (($this->TransactionNo->AdvancedSearch->SearchValue != "" || $this->TransactionNo->AdvancedSearch->SearchValue2 != "") && $this->Command == "")
-				$this->Command = "search";
-		}
-
-		// TransactionDate
-		if (!$this->isAddOrEdit() && $this->TransactionDate->AdvancedSearch->get()) {
-			$got = TRUE;
-			if (($this->TransactionDate->AdvancedSearch->SearchValue != "" || $this->TransactionDate->AdvancedSearch->SearchValue2 != "") && $this->Command == "")
-				$this->Command = "search";
-		}
-
-		// TransactionType
-		if (!$this->isAddOrEdit() && $this->TransactionType->AdvancedSearch->get()) {
-			$got = TRUE;
-			if (($this->TransactionType->AdvancedSearch->SearchValue != "" || $this->TransactionType->AdvancedSearch->SearchValue2 != "") && $this->Command == "")
-				$this->Command = "search";
-		}
-
-		// HandedOverTo
-		if (!$this->isAddOrEdit() && $this->HandedOverTo->AdvancedSearch->get()) {
-			$got = TRUE;
-			if (($this->HandedOverTo->AdvancedSearch->SearchValue != "" || $this->HandedOverTo->AdvancedSearch->SearchValue2 != "") && $this->Command == "")
-				$this->Command = "search";
-		}
-
-		// CodeNoTo
-		if (!$this->isAddOrEdit() && $this->CodeNoTo->AdvancedSearch->get()) {
-			$got = TRUE;
-			if (($this->CodeNoTo->AdvancedSearch->SearchValue != "" || $this->CodeNoTo->AdvancedSearch->SearchValue2 != "") && $this->Command == "")
-				$this->Command = "search";
-		}
-
-		// DepartmentTo
-		if (!$this->isAddOrEdit() && $this->DepartmentTo->AdvancedSearch->get()) {
-			$got = TRUE;
-			if (($this->DepartmentTo->AdvancedSearch->SearchValue != "" || $this->DepartmentTo->AdvancedSearch->SearchValue2 != "") && $this->Command == "")
-				$this->Command = "search";
-		}
-
-		// HandedOverBy
-		if (!$this->isAddOrEdit() && $this->HandedOverBy->AdvancedSearch->get()) {
-			$got = TRUE;
-			if (($this->HandedOverBy->AdvancedSearch->SearchValue != "" || $this->HandedOverBy->AdvancedSearch->SearchValue2 != "") && $this->Command == "")
-				$this->Command = "search";
-		}
-
-		// CodeNoBy
-		if (!$this->isAddOrEdit() && $this->CodeNoBy->AdvancedSearch->get()) {
-			$got = TRUE;
-			if (($this->CodeNoBy->AdvancedSearch->SearchValue != "" || $this->CodeNoBy->AdvancedSearch->SearchValue2 != "") && $this->Command == "")
-				$this->Command = "search";
-		}
-
-		// DepartmentBy
-		if (!$this->isAddOrEdit() && $this->DepartmentBy->AdvancedSearch->get()) {
-			$got = TRUE;
-			if (($this->DepartmentBy->AdvancedSearch->SearchValue != "" || $this->DepartmentBy->AdvancedSearch->SearchValue2 != "") && $this->Command == "")
-				$this->Command = "search";
-		}
-
-		// Sign1
-		if (!$this->isAddOrEdit() && $this->Sign1->AdvancedSearch->get()) {
-			$got = TRUE;
-			if (($this->Sign1->AdvancedSearch->SearchValue != "" || $this->Sign1->AdvancedSearch->SearchValue2 != "") && $this->Command == "")
-				$this->Command = "search";
-		}
-
-		// Sign2
-		if (!$this->isAddOrEdit() && $this->Sign2->AdvancedSearch->get()) {
-			$got = TRUE;
-			if (($this->Sign2->AdvancedSearch->SearchValue != "" || $this->Sign2->AdvancedSearch->SearchValue2 != "") && $this->Command == "")
-				$this->Command = "search";
-		}
-
-		// Sign3
-		if (!$this->isAddOrEdit() && $this->Sign3->AdvancedSearch->get()) {
-			$got = TRUE;
-			if (($this->Sign3->AdvancedSearch->SearchValue != "" || $this->Sign3->AdvancedSearch->SearchValue2 != "") && $this->Command == "")
-				$this->Command = "search";
-		}
-
-		// Sign4
-		if (!$this->isAddOrEdit() && $this->Sign4->AdvancedSearch->get()) {
-			$got = TRUE;
-			if (($this->Sign4->AdvancedSearch->SearchValue != "" || $this->Sign4->AdvancedSearch->SearchValue2 != "") && $this->Command == "")
-				$this->Command = "search";
-		}
-		return $got;
-	}
-
 	// Load recordset
 	public function loadRecordset($offset = -1, $rowcnt = -1)
 	{
@@ -2140,7 +1475,7 @@ class t101_ho_head_list extends t101_ho_head
 		if ($this->UseSelectLimit) {
 			$conn->raiseErrorFn = Config("ERROR_FUNC");
 			if ($dbtype == "MSSQL") {
-				$rs = $conn->selectLimit($sql, $rowcnt, $offset, ["_hasOrderBy" => trim($this->getOrderBy()) || trim($this->getSessionOrderByList())]);
+				$rs = $conn->selectLimit($sql, $rowcnt, $offset, ["_hasOrderBy" => trim($this->getOrderBy()) || trim($this->getSessionOrderBy())]);
 			} else {
 				$rs = $conn->selectLimit($sql, $rowcnt, $offset);
 			}
@@ -2190,32 +1525,8 @@ class t101_ho_head_list extends t101_ho_head
 		if (!$rs || $rs->EOF)
 			return;
 		$this->id->setDbValue($row['id']);
-		$this->property_id->setDbValue($row['property_id']);
-		$this->TransactionNo->setDbValue($row['TransactionNo']);
-		$this->TransactionDate->setDbValue($row['TransactionDate']);
-		$this->TransactionType->setDbValue($row['TransactionType']);
-		$this->HandedOverTo->setDbValue($row['HandedOverTo']);
-		$this->CodeNoTo->setDbValue($row['CodeNoTo']);
-		$this->DepartmentTo->setDbValue($row['DepartmentTo']);
-		$this->HandedOverBy->setDbValue($row['HandedOverBy']);
-		if (array_key_exists('EV__HandedOverBy', $rs->fields)) {
-			$this->HandedOverBy->VirtualValue = $rs->fields('EV__HandedOverBy'); // Set up virtual field value
-		} else {
-			$this->HandedOverBy->VirtualValue = ""; // Clear value
-		}
-		$this->CodeNoBy->setDbValue($row['CodeNoBy']);
-		$this->DepartmentBy->setDbValue($row['DepartmentBy']);
-		$this->Sign1->setDbValue($row['Sign1']);
-		$this->Sign2->setDbValue($row['Sign2']);
-		$this->Sign3->setDbValue($row['Sign3']);
-		$this->Sign4->setDbValue($row['Sign4']);
-		if (!isset($GLOBALS["t102_ho_detail_grid"]))
-			$GLOBALS["t102_ho_detail_grid"] = new t102_ho_detail_grid();
-		$detailFilter = $GLOBALS["t102_ho_detail"]->sqlDetailFilter_t101_ho_head();
-		$detailFilter = str_replace("@hohead_id@", AdjustSql($this->id->DbValue, "DB"), $detailFilter);
-		$GLOBALS["t102_ho_detail"]->setCurrentMasterTable("t101_ho_head");
-		$detailFilter = $GLOBALS["t102_ho_detail"]->applyUserIDFilters($detailFilter);
-		$this->t102_ho_detail_Count = $GLOBALS["t102_ho_detail"]->loadRecordCount($detailFilter);
+		$this->hohead_id->setDbValue($row['hohead_id']);
+		$this->asset_id->setDbValue($row['asset_id']);
 	}
 
 	// Return a row with default values
@@ -2223,20 +1534,8 @@ class t101_ho_head_list extends t101_ho_head
 	{
 		$row = [];
 		$row['id'] = NULL;
-		$row['property_id'] = NULL;
-		$row['TransactionNo'] = NULL;
-		$row['TransactionDate'] = NULL;
-		$row['TransactionType'] = NULL;
-		$row['HandedOverTo'] = NULL;
-		$row['CodeNoTo'] = NULL;
-		$row['DepartmentTo'] = NULL;
-		$row['HandedOverBy'] = NULL;
-		$row['CodeNoBy'] = NULL;
-		$row['DepartmentBy'] = NULL;
-		$row['Sign1'] = NULL;
-		$row['Sign2'] = NULL;
-		$row['Sign3'] = NULL;
-		$row['Sign4'] = NULL;
+		$row['hohead_id'] = NULL;
+		$row['asset_id'] = NULL;
 		return $row;
 	}
 
@@ -2281,20 +1580,8 @@ class t101_ho_head_list extends t101_ho_head
 
 		// Common render codes for all row types
 		// id
-		// property_id
-		// TransactionNo
-		// TransactionDate
-		// TransactionType
-		// HandedOverTo
-		// CodeNoTo
-		// DepartmentTo
-		// HandedOverBy
-		// CodeNoBy
-		// DepartmentBy
-		// Sign1
-		// Sign2
-		// Sign3
-		// Sign4
+		// hohead_id
+		// asset_id
 
 		if ($this->RowType == ROWTYPE_VIEW) { // View row
 
@@ -2302,350 +1589,35 @@ class t101_ho_head_list extends t101_ho_head
 			$this->id->ViewValue = $this->id->CurrentValue;
 			$this->id->ViewCustomAttributes = "";
 
-			// property_id
-			$curVal = strval($this->property_id->CurrentValue);
-			if ($curVal != "") {
-				$this->property_id->ViewValue = $this->property_id->lookupCacheOption($curVal);
-				if ($this->property_id->ViewValue === NULL) { // Lookup from database
-					$filterWrk = "`id`" . SearchString("=", $curVal, DATATYPE_NUMBER, "");
-					$sqlWrk = $this->property_id->Lookup->getSql(FALSE, $filterWrk, '', $this);
-					$rswrk = Conn()->execute($sqlWrk);
-					if ($rswrk && !$rswrk->EOF) { // Lookup values found
-						$arwrk = [];
-						$arwrk[1] = $rswrk->fields('df');
-						$this->property_id->ViewValue = $this->property_id->displayValue($arwrk);
-						$rswrk->Close();
-					} else {
-						$this->property_id->ViewValue = $this->property_id->CurrentValue;
-					}
-				}
-			} else {
-				$this->property_id->ViewValue = NULL;
-			}
-			$this->property_id->ViewCustomAttributes = "";
+			// hohead_id
+			$this->hohead_id->ViewValue = $this->hohead_id->CurrentValue;
+			$this->hohead_id->ViewValue = FormatNumber($this->hohead_id->ViewValue, 0, -2, -2, -2);
+			$this->hohead_id->ViewCustomAttributes = "";
 
-			// TransactionNo
-			$this->TransactionNo->ViewValue = $this->TransactionNo->CurrentValue;
-			$this->TransactionNo->ViewCustomAttributes = "";
+			// asset_id
+			$this->asset_id->ViewValue = $this->asset_id->CurrentValue;
+			$this->asset_id->ViewValue = FormatNumber($this->asset_id->ViewValue, 0, -2, -2, -2);
+			$this->asset_id->ViewCustomAttributes = "";
 
-			// TransactionDate
-			$this->TransactionDate->ViewValue = $this->TransactionDate->CurrentValue;
-			$this->TransactionDate->ViewValue = FormatDateTime($this->TransactionDate->ViewValue, 7);
-			$this->TransactionDate->ViewCustomAttributes = "";
+			// id
+			$this->id->LinkCustomAttributes = "";
+			$this->id->HrefValue = "";
+			$this->id->TooltipValue = "";
 
-			// TransactionType
-			if (strval($this->TransactionType->CurrentValue) != "") {
-				$this->TransactionType->ViewValue = $this->TransactionType->optionCaption($this->TransactionType->CurrentValue);
-			} else {
-				$this->TransactionType->ViewValue = NULL;
-			}
-			$this->TransactionType->ViewCustomAttributes = "";
+			// hohead_id
+			$this->hohead_id->LinkCustomAttributes = "";
+			$this->hohead_id->HrefValue = "";
+			$this->hohead_id->TooltipValue = "";
 
-			// HandedOverTo
-			$curVal = strval($this->HandedOverTo->CurrentValue);
-			if ($curVal != "") {
-				$this->HandedOverTo->ViewValue = $this->HandedOverTo->lookupCacheOption($curVal);
-				if ($this->HandedOverTo->ViewValue === NULL) { // Lookup from database
-					$filterWrk = "`id`" . SearchString("=", $curVal, DATATYPE_NUMBER, "");
-					$sqlWrk = $this->HandedOverTo->Lookup->getSql(FALSE, $filterWrk, '', $this);
-					$rswrk = Conn()->execute($sqlWrk);
-					if ($rswrk && !$rswrk->EOF) { // Lookup values found
-						$arwrk = [];
-						$arwrk[1] = $rswrk->fields('df');
-						$this->HandedOverTo->ViewValue = $this->HandedOverTo->displayValue($arwrk);
-						$rswrk->Close();
-					} else {
-						$this->HandedOverTo->ViewValue = $this->HandedOverTo->CurrentValue;
-					}
-				}
-			} else {
-				$this->HandedOverTo->ViewValue = NULL;
-			}
-			$this->HandedOverTo->ViewCustomAttributes = "";
-
-			// CodeNoTo
-			$this->CodeNoTo->ViewValue = $this->CodeNoTo->CurrentValue;
-			$this->CodeNoTo->ViewCustomAttributes = "";
-
-			// DepartmentTo
-			$curVal = strval($this->DepartmentTo->CurrentValue);
-			if ($curVal != "") {
-				$this->DepartmentTo->ViewValue = $this->DepartmentTo->lookupCacheOption($curVal);
-				if ($this->DepartmentTo->ViewValue === NULL) { // Lookup from database
-					$filterWrk = "`id`" . SearchString("=", $curVal, DATATYPE_NUMBER, "");
-					$sqlWrk = $this->DepartmentTo->Lookup->getSql(FALSE, $filterWrk, '', $this);
-					$rswrk = Conn()->execute($sqlWrk);
-					if ($rswrk && !$rswrk->EOF) { // Lookup values found
-						$arwrk = [];
-						$arwrk[1] = $rswrk->fields('df');
-						$this->DepartmentTo->ViewValue = $this->DepartmentTo->displayValue($arwrk);
-						$rswrk->Close();
-					} else {
-						$this->DepartmentTo->ViewValue = $this->DepartmentTo->CurrentValue;
-					}
-				}
-			} else {
-				$this->DepartmentTo->ViewValue = NULL;
-			}
-			$this->DepartmentTo->ViewCustomAttributes = "";
-
-			// HandedOverBy
-			if ($this->HandedOverBy->VirtualValue != "") {
-				$this->HandedOverBy->ViewValue = $this->HandedOverBy->VirtualValue;
-			} else {
-				$curVal = strval($this->HandedOverBy->CurrentValue);
-				if ($curVal != "") {
-					$this->HandedOverBy->ViewValue = $this->HandedOverBy->lookupCacheOption($curVal);
-					if ($this->HandedOverBy->ViewValue === NULL) { // Lookup from database
-						$filterWrk = "`id`" . SearchString("=", $curVal, DATATYPE_NUMBER, "");
-						$sqlWrk = $this->HandedOverBy->Lookup->getSql(FALSE, $filterWrk, '', $this);
-						$rswrk = Conn()->execute($sqlWrk);
-						if ($rswrk && !$rswrk->EOF) { // Lookup values found
-							$arwrk = [];
-							$arwrk[1] = $rswrk->fields('df');
-							$this->HandedOverBy->ViewValue = $this->HandedOverBy->displayValue($arwrk);
-							$rswrk->Close();
-						} else {
-							$this->HandedOverBy->ViewValue = $this->HandedOverBy->CurrentValue;
-						}
-					}
-				} else {
-					$this->HandedOverBy->ViewValue = NULL;
-				}
-			}
-			$this->HandedOverBy->ViewCustomAttributes = "";
-
-			// CodeNoBy
-			$this->CodeNoBy->ViewValue = $this->CodeNoBy->CurrentValue;
-			$this->CodeNoBy->ViewCustomAttributes = "";
-
-			// DepartmentBy
-			$curVal = strval($this->DepartmentBy->CurrentValue);
-			if ($curVal != "") {
-				$this->DepartmentBy->ViewValue = $this->DepartmentBy->lookupCacheOption($curVal);
-				if ($this->DepartmentBy->ViewValue === NULL) { // Lookup from database
-					$filterWrk = "`id`" . SearchString("=", $curVal, DATATYPE_NUMBER, "");
-					$sqlWrk = $this->DepartmentBy->Lookup->getSql(FALSE, $filterWrk, '', $this);
-					$rswrk = Conn()->execute($sqlWrk);
-					if ($rswrk && !$rswrk->EOF) { // Lookup values found
-						$arwrk = [];
-						$arwrk[1] = $rswrk->fields('df');
-						$this->DepartmentBy->ViewValue = $this->DepartmentBy->displayValue($arwrk);
-						$rswrk->Close();
-					} else {
-						$this->DepartmentBy->ViewValue = $this->DepartmentBy->CurrentValue;
-					}
-				}
-			} else {
-				$this->DepartmentBy->ViewValue = NULL;
-			}
-			$this->DepartmentBy->ViewCustomAttributes = "";
-
-			// Sign1
-			$curVal = strval($this->Sign1->CurrentValue);
-			if ($curVal != "") {
-				$this->Sign1->ViewValue = $this->Sign1->lookupCacheOption($curVal);
-				if ($this->Sign1->ViewValue === NULL) { // Lookup from database
-					$filterWrk = "`id`" . SearchString("=", $curVal, DATATYPE_NUMBER, "");
-					$sqlWrk = $this->Sign1->Lookup->getSql(FALSE, $filterWrk, '', $this);
-					$rswrk = Conn()->execute($sqlWrk);
-					if ($rswrk && !$rswrk->EOF) { // Lookup values found
-						$arwrk = [];
-						$arwrk[1] = $rswrk->fields('df');
-						$this->Sign1->ViewValue = $this->Sign1->displayValue($arwrk);
-						$rswrk->Close();
-					} else {
-						$this->Sign1->ViewValue = $this->Sign1->CurrentValue;
-					}
-				}
-			} else {
-				$this->Sign1->ViewValue = NULL;
-			}
-			$this->Sign1->ViewCustomAttributes = "";
-
-			// Sign2
-			$curVal = strval($this->Sign2->CurrentValue);
-			if ($curVal != "") {
-				$this->Sign2->ViewValue = $this->Sign2->lookupCacheOption($curVal);
-				if ($this->Sign2->ViewValue === NULL) { // Lookup from database
-					$filterWrk = "`id`" . SearchString("=", $curVal, DATATYPE_NUMBER, "");
-					$sqlWrk = $this->Sign2->Lookup->getSql(FALSE, $filterWrk, '', $this);
-					$rswrk = Conn()->execute($sqlWrk);
-					if ($rswrk && !$rswrk->EOF) { // Lookup values found
-						$arwrk = [];
-						$arwrk[1] = $rswrk->fields('df');
-						$this->Sign2->ViewValue = $this->Sign2->displayValue($arwrk);
-						$rswrk->Close();
-					} else {
-						$this->Sign2->ViewValue = $this->Sign2->CurrentValue;
-					}
-				}
-			} else {
-				$this->Sign2->ViewValue = NULL;
-			}
-			$this->Sign2->ViewCustomAttributes = "";
-
-			// Sign3
-			$curVal = strval($this->Sign3->CurrentValue);
-			if ($curVal != "") {
-				$this->Sign3->ViewValue = $this->Sign3->lookupCacheOption($curVal);
-				if ($this->Sign3->ViewValue === NULL) { // Lookup from database
-					$filterWrk = "`id`" . SearchString("=", $curVal, DATATYPE_NUMBER, "");
-					$sqlWrk = $this->Sign3->Lookup->getSql(FALSE, $filterWrk, '', $this);
-					$rswrk = Conn()->execute($sqlWrk);
-					if ($rswrk && !$rswrk->EOF) { // Lookup values found
-						$arwrk = [];
-						$arwrk[1] = $rswrk->fields('df');
-						$this->Sign3->ViewValue = $this->Sign3->displayValue($arwrk);
-						$rswrk->Close();
-					} else {
-						$this->Sign3->ViewValue = $this->Sign3->CurrentValue;
-					}
-				}
-			} else {
-				$this->Sign3->ViewValue = NULL;
-			}
-			$this->Sign3->ViewCustomAttributes = "";
-
-			// Sign4
-			$curVal = strval($this->Sign4->CurrentValue);
-			if ($curVal != "") {
-				$this->Sign4->ViewValue = $this->Sign4->lookupCacheOption($curVal);
-				if ($this->Sign4->ViewValue === NULL) { // Lookup from database
-					$filterWrk = "`id`" . SearchString("=", $curVal, DATATYPE_NUMBER, "");
-					$sqlWrk = $this->Sign4->Lookup->getSql(FALSE, $filterWrk, '', $this);
-					$rswrk = Conn()->execute($sqlWrk);
-					if ($rswrk && !$rswrk->EOF) { // Lookup values found
-						$arwrk = [];
-						$arwrk[1] = $rswrk->fields('df');
-						$this->Sign4->ViewValue = $this->Sign4->displayValue($arwrk);
-						$rswrk->Close();
-					} else {
-						$this->Sign4->ViewValue = $this->Sign4->CurrentValue;
-					}
-				}
-			} else {
-				$this->Sign4->ViewValue = NULL;
-			}
-			$this->Sign4->ViewCustomAttributes = "";
-
-			// property_id
-			$this->property_id->LinkCustomAttributes = "";
-			$this->property_id->HrefValue = "";
-			$this->property_id->TooltipValue = "";
-
-			// TransactionNo
-			$this->TransactionNo->LinkCustomAttributes = "";
-			$this->TransactionNo->HrefValue = "";
-			$this->TransactionNo->TooltipValue = "";
-
-			// TransactionDate
-			$this->TransactionDate->LinkCustomAttributes = "";
-			$this->TransactionDate->HrefValue = "";
-			$this->TransactionDate->TooltipValue = "";
-
-			// TransactionType
-			$this->TransactionType->LinkCustomAttributes = "";
-			$this->TransactionType->HrefValue = "";
-			$this->TransactionType->TooltipValue = "";
-
-			// HandedOverTo
-			$this->HandedOverTo->LinkCustomAttributes = "";
-			$this->HandedOverTo->HrefValue = "";
-			$this->HandedOverTo->TooltipValue = "";
-
-			// CodeNoTo
-			$this->CodeNoTo->LinkCustomAttributes = "";
-			$this->CodeNoTo->HrefValue = "";
-			$this->CodeNoTo->TooltipValue = "";
-
-			// DepartmentTo
-			$this->DepartmentTo->LinkCustomAttributes = "";
-			$this->DepartmentTo->HrefValue = "";
-			$this->DepartmentTo->TooltipValue = "";
-
-			// HandedOverBy
-			$this->HandedOverBy->LinkCustomAttributes = "";
-			$this->HandedOverBy->HrefValue = "";
-			$this->HandedOverBy->TooltipValue = "";
-
-			// CodeNoBy
-			$this->CodeNoBy->LinkCustomAttributes = "";
-			$this->CodeNoBy->HrefValue = "";
-			$this->CodeNoBy->TooltipValue = "";
-
-			// DepartmentBy
-			$this->DepartmentBy->LinkCustomAttributes = "";
-			$this->DepartmentBy->HrefValue = "";
-			$this->DepartmentBy->TooltipValue = "";
-
-			// Sign1
-			$this->Sign1->LinkCustomAttributes = "";
-			$this->Sign1->HrefValue = "";
-			$this->Sign1->TooltipValue = "";
-
-			// Sign2
-			$this->Sign2->LinkCustomAttributes = "";
-			$this->Sign2->HrefValue = "";
-			$this->Sign2->TooltipValue = "";
-
-			// Sign3
-			$this->Sign3->LinkCustomAttributes = "";
-			$this->Sign3->HrefValue = "";
-			$this->Sign3->TooltipValue = "";
-
-			// Sign4
-			$this->Sign4->LinkCustomAttributes = "";
-			$this->Sign4->HrefValue = "";
-			$this->Sign4->TooltipValue = "";
+			// asset_id
+			$this->asset_id->LinkCustomAttributes = "";
+			$this->asset_id->HrefValue = "";
+			$this->asset_id->TooltipValue = "";
 		}
 
 		// Call Row Rendered event
 		if ($this->RowType != ROWTYPE_AGGREGATEINIT)
 			$this->Row_Rendered();
-	}
-
-	// Validate search
-	protected function validateSearch()
-	{
-		global $SearchError;
-
-		// Initialize
-		$SearchError = "";
-
-		// Check if validation required
-		if (!Config("SERVER_VALIDATE"))
-			return TRUE;
-
-		// Return validate result
-		$validateSearch = ($SearchError == "");
-
-		// Call Form_CustomValidate event
-		$formCustomError = "";
-		$validateSearch = $validateSearch && $this->Form_CustomValidate($formCustomError);
-		if ($formCustomError != "") {
-			AddMessage($SearchError, $formCustomError);
-		}
-		return $validateSearch;
-	}
-
-	// Load advanced search
-	public function loadAdvancedSearch()
-	{
-		$this->property_id->AdvancedSearch->load();
-		$this->TransactionNo->AdvancedSearch->load();
-		$this->TransactionDate->AdvancedSearch->load();
-		$this->TransactionType->AdvancedSearch->load();
-		$this->HandedOverTo->AdvancedSearch->load();
-		$this->CodeNoTo->AdvancedSearch->load();
-		$this->DepartmentTo->AdvancedSearch->load();
-		$this->HandedOverBy->AdvancedSearch->load();
-		$this->CodeNoBy->AdvancedSearch->load();
-		$this->DepartmentBy->AdvancedSearch->load();
-		$this->Sign1->AdvancedSearch->load();
-		$this->Sign2->AdvancedSearch->load();
-		$this->Sign3->AdvancedSearch->load();
-		$this->Sign4->AdvancedSearch->load();
 	}
 
 	// Get export HTML tag
@@ -2654,17 +1626,17 @@ class t101_ho_head_list extends t101_ho_head
 		global $Language;
 		if (SameText($type, "excel")) {
 			if ($custom)
-				return "<a href=\"#\" class=\"ew-export-link ew-excel\" title=\"" . HtmlEncode($Language->phrase("ExportToExcelText")) . "\" data-caption=\"" . HtmlEncode($Language->phrase("ExportToExcelText")) . "\" onclick=\"return ew.export(document.ft101_ho_headlist, '" . $this->ExportExcelUrl . "', 'excel', true);\">" . $Language->phrase("ExportToExcel") . "</a>";
+				return "<a href=\"#\" class=\"ew-export-link ew-excel\" title=\"" . HtmlEncode($Language->phrase("ExportToExcelText")) . "\" data-caption=\"" . HtmlEncode($Language->phrase("ExportToExcelText")) . "\" onclick=\"return ew.export(document.ft104_ho1_detaillist, '" . $this->ExportExcelUrl . "', 'excel', true);\">" . $Language->phrase("ExportToExcel") . "</a>";
 			else
 				return "<a href=\"" . $this->ExportExcelUrl . "\" class=\"ew-export-link ew-excel\" title=\"" . HtmlEncode($Language->phrase("ExportToExcelText")) . "\" data-caption=\"" . HtmlEncode($Language->phrase("ExportToExcelText")) . "\">" . $Language->phrase("ExportToExcel") . "</a>";
 		} elseif (SameText($type, "word")) {
 			if ($custom)
-				return "<a href=\"#\" class=\"ew-export-link ew-word\" title=\"" . HtmlEncode($Language->phrase("ExportToWordText")) . "\" data-caption=\"" . HtmlEncode($Language->phrase("ExportToWordText")) . "\" onclick=\"return ew.export(document.ft101_ho_headlist, '" . $this->ExportWordUrl . "', 'word', true);\">" . $Language->phrase("ExportToWord") . "</a>";
+				return "<a href=\"#\" class=\"ew-export-link ew-word\" title=\"" . HtmlEncode($Language->phrase("ExportToWordText")) . "\" data-caption=\"" . HtmlEncode($Language->phrase("ExportToWordText")) . "\" onclick=\"return ew.export(document.ft104_ho1_detaillist, '" . $this->ExportWordUrl . "', 'word', true);\">" . $Language->phrase("ExportToWord") . "</a>";
 			else
 				return "<a href=\"" . $this->ExportWordUrl . "\" class=\"ew-export-link ew-word\" title=\"" . HtmlEncode($Language->phrase("ExportToWordText")) . "\" data-caption=\"" . HtmlEncode($Language->phrase("ExportToWordText")) . "\">" . $Language->phrase("ExportToWord") . "</a>";
 		} elseif (SameText($type, "pdf")) {
 			if ($custom)
-				return "<a href=\"#\" class=\"ew-export-link ew-pdf\" title=\"" . HtmlEncode($Language->phrase("ExportToPDFText")) . "\" data-caption=\"" . HtmlEncode($Language->phrase("ExportToPDFText")) . "\" onclick=\"return ew.export(document.ft101_ho_headlist, '" . $this->ExportPdfUrl . "', 'pdf', true);\">" . $Language->phrase("ExportToPDF") . "</a>";
+				return "<a href=\"#\" class=\"ew-export-link ew-pdf\" title=\"" . HtmlEncode($Language->phrase("ExportToPDFText")) . "\" data-caption=\"" . HtmlEncode($Language->phrase("ExportToPDFText")) . "\" onclick=\"return ew.export(document.ft104_ho1_detaillist, '" . $this->ExportPdfUrl . "', 'pdf', true);\">" . $Language->phrase("ExportToPDF") . "</a>";
 			else
 				return "<a href=\"" . $this->ExportPdfUrl . "\" class=\"ew-export-link ew-pdf\" title=\"" . HtmlEncode($Language->phrase("ExportToPDFText")) . "\" data-caption=\"" . HtmlEncode($Language->phrase("ExportToPDFText")) . "\">" . $Language->phrase("ExportToPDF") . "</a>";
 		} elseif (SameText($type, "html")) {
@@ -2675,7 +1647,7 @@ class t101_ho_head_list extends t101_ho_head
 			return "<a href=\"" . $this->ExportCsvUrl . "\" class=\"ew-export-link ew-csv\" title=\"" . HtmlEncode($Language->phrase("ExportToCsvText")) . "\" data-caption=\"" . HtmlEncode($Language->phrase("ExportToCsvText")) . "\">" . $Language->phrase("ExportToCsv") . "</a>";
 		} elseif (SameText($type, "email")) {
 			$url = $custom ? ",url:'" . $this->pageUrl() . "export=email&amp;custom=1'" : "";
-			return '<button id="emf_t101_ho_head" class="ew-export-link ew-email" title="' . $Language->phrase("ExportToEmailText") . '" data-caption="' . $Language->phrase("ExportToEmailText") . '" onclick="ew.emailDialogShow({lnk:\'emf_t101_ho_head\', hdr:ew.language.phrase(\'ExportToEmailText\'), f:document.ft101_ho_headlist, sel:false' . $url . '});">' . $Language->phrase("ExportToEmail") . '</button>';
+			return '<button id="emf_t104_ho1_detail" class="ew-export-link ew-email" title="' . $Language->phrase("ExportToEmailText") . '" data-caption="' . $Language->phrase("ExportToEmailText") . '" onclick="ew.emailDialogShow({lnk:\'emf_t104_ho1_detail\', hdr:ew.language.phrase(\'ExportToEmailText\'), f:document.ft104_ho1_detaillist, sel:false' . $url . '});">' . $Language->phrase("ExportToEmail") . '</button>';
 		} elseif (SameText($type, "print")) {
 			return "<a href=\"" . $this->ExportPrintUrl . "\" class=\"ew-export-link ew-print\" title=\"" . HtmlEncode($Language->phrase("PrinterFriendlyText")) . "\" data-caption=\"" . HtmlEncode($Language->phrase("PrinterFriendlyText")) . "\">" . $Language->phrase("PrinterFriendly") . "</a>";
 		}
@@ -2745,19 +1717,6 @@ class t101_ho_head_list extends t101_ho_head
 		global $Language;
 		$this->SearchOptions = new ListOptions("div");
 		$this->SearchOptions->TagClassName = "ew-search-option";
-
-		// Show all button
-		$item = &$this->SearchOptions->add("showall");
-		$item->Body = "<a class=\"btn btn-default ew-show-all\" title=\"" . $Language->phrase("ShowAll") . "\" data-caption=\"" . $Language->phrase("ShowAll") . "\" href=\"" . $this->pageUrl() . "cmd=reset\">" . $Language->phrase("ShowAllBtn") . "</a>";
-		$item->Visible = ($this->SearchWhere != $this->DefaultSearchWhere && $this->SearchWhere != "0=101");
-
-		// Advanced search button
-		$item = &$this->SearchOptions->add("advancedsearch");
-		if (IsMobile())
-			$item->Body = "<a class=\"btn btn-default ew-advanced-search\" title=\"" . $Language->phrase("AdvancedSearch") . "\" data-caption=\"" . $Language->phrase("AdvancedSearch") . "\" href=\"t101_ho_headsrch.php\">" . $Language->phrase("AdvancedSearchBtn") . "</a>";
-		else
-			$item->Body = "<a class=\"btn btn-default ew-advanced-search\" title=\"" . $Language->phrase("AdvancedSearch") . "\" data-table=\"t101_ho_head\" data-caption=\"" . $Language->phrase("AdvancedSearch") . "\" href=\"#\" onclick=\"return ew.modalDialogShow({lnk:this,btn:'SearchBtn',url:'t101_ho_headsrch.php'});\">" . $Language->phrase("AdvancedSearchBtn") . "</a>";
-		$item->Visible = TRUE;
 
 		// Button group for search
 		$this->SearchOptions->UseDropDownButton = FALSE;
@@ -2837,6 +1796,26 @@ class t101_ho_head_list extends t101_ho_head
 
 		// Call Page Exporting server event
 		$this->ExportDoc->ExportCustom = !$this->Page_Exporting();
+
+		// Export master record
+		if (Config("EXPORT_MASTER_RECORD") && $this->getMasterFilter() != "" && $this->getCurrentMasterTable() == "t103_ho1_head") {
+			global $t103_ho1_head;
+			if (!isset($t103_ho1_head))
+				$t103_ho1_head = new t103_ho1_head();
+			$rsmaster = $t103_ho1_head->loadRs($this->DbMasterFilter); // Load master record
+			if ($rsmaster && !$rsmaster->EOF) {
+				$exportStyle = $doc->Style;
+				$doc->setStyle("v"); // Change to vertical
+				if (!$this->isExport("csv") || Config("EXPORT_MASTER_RECORD_FOR_CSV")) {
+					$doc->Table = &$t103_ho1_head;
+					$t103_ho1_head->exportDocument($doc, $rsmaster);
+					$doc->exportEmptyRow();
+					$doc->Table = &$this;
+				}
+				$doc->setStyle($exportStyle); // Restore
+				$rsmaster->close();
+			}
+		}
 		$header = $this->PageHeader;
 		$this->Page_DataRendering($header);
 		$doc->Text .= $header;
@@ -2882,6 +1861,78 @@ class t101_ho_head_list extends t101_ho_head
 		}
 	}
 
+	// Set up master/detail based on QueryString
+	protected function setupMasterParms()
+	{
+		$validMaster = FALSE;
+
+		// Get the keys for master table
+		if (($master = Get(Config("TABLE_SHOW_MASTER"), Get(Config("TABLE_MASTER")))) !== NULL) {
+			$masterTblVar = $master;
+			if ($masterTblVar == "") {
+				$validMaster = TRUE;
+				$this->DbMasterFilter = "";
+				$this->DbDetailFilter = "";
+			}
+			if ($masterTblVar == "t103_ho1_head") {
+				$validMaster = TRUE;
+				if (($parm = Get("fk_id", Get("hohead_id"))) !== NULL) {
+					$GLOBALS["t103_ho1_head"]->id->setQueryStringValue($parm);
+					$this->hohead_id->setQueryStringValue($GLOBALS["t103_ho1_head"]->id->QueryStringValue);
+					$this->hohead_id->setSessionValue($this->hohead_id->QueryStringValue);
+					if (!is_numeric($GLOBALS["t103_ho1_head"]->id->QueryStringValue))
+						$validMaster = FALSE;
+				} else {
+					$validMaster = FALSE;
+				}
+			}
+		} elseif (($master = Post(Config("TABLE_SHOW_MASTER"), Post(Config("TABLE_MASTER")))) !== NULL) {
+			$masterTblVar = $master;
+			if ($masterTblVar == "") {
+				$validMaster = TRUE;
+				$this->DbMasterFilter = "";
+				$this->DbDetailFilter = "";
+			}
+			if ($masterTblVar == "t103_ho1_head") {
+				$validMaster = TRUE;
+				if (($parm = Post("fk_id", Post("hohead_id"))) !== NULL) {
+					$GLOBALS["t103_ho1_head"]->id->setFormValue($parm);
+					$this->hohead_id->setFormValue($GLOBALS["t103_ho1_head"]->id->FormValue);
+					$this->hohead_id->setSessionValue($this->hohead_id->FormValue);
+					if (!is_numeric($GLOBALS["t103_ho1_head"]->id->FormValue))
+						$validMaster = FALSE;
+				} else {
+					$validMaster = FALSE;
+				}
+			}
+		}
+		if ($validMaster) {
+
+			// Update URL
+			$this->AddUrl = $this->addMasterUrl($this->AddUrl);
+			$this->InlineAddUrl = $this->addMasterUrl($this->InlineAddUrl);
+			$this->GridAddUrl = $this->addMasterUrl($this->GridAddUrl);
+			$this->GridEditUrl = $this->addMasterUrl($this->GridEditUrl);
+
+			// Save current master table
+			$this->setCurrentMasterTable($masterTblVar);
+
+			// Reset start record counter (new master key)
+			if (!$this->isAddOrEdit()) {
+				$this->StartRecord = 1;
+				$this->setStartRecordNumber($this->StartRecord);
+			}
+
+			// Clear previous master key from Session
+			if ($masterTblVar != "t103_ho1_head") {
+				if ($this->hohead_id->CurrentValue == "")
+					$this->hohead_id->setSessionValue("");
+			}
+		}
+		$this->DbMasterFilter = $this->getMasterFilter(); // Get master filter
+		$this->DbDetailFilter = $this->getDetailFilter(); // Get detail filter
+	}
+
 	// Set up Breadcrumb
 	protected function setupBreadcrumb()
 	{
@@ -2906,26 +1957,6 @@ class t101_ho_head_list extends t101_ho_head
 
 			// Set up lookup SQL and connection
 			switch ($fld->FieldVar) {
-				case "x_property_id":
-					break;
-				case "x_TransactionType":
-					break;
-				case "x_HandedOverTo":
-					break;
-				case "x_DepartmentTo":
-					break;
-				case "x_HandedOverBy":
-					break;
-				case "x_DepartmentBy":
-					break;
-				case "x_Sign1":
-					break;
-				case "x_Sign2":
-					break;
-				case "x_Sign3":
-					break;
-				case "x_Sign4":
-					break;
 				default:
 					$lookupFilter = "";
 					break;
@@ -2946,24 +1977,6 @@ class t101_ho_head_list extends t101_ho_head
 
 					// Format the field values
 					switch ($fld->FieldVar) {
-						case "x_property_id":
-							break;
-						case "x_HandedOverTo":
-							break;
-						case "x_DepartmentTo":
-							break;
-						case "x_HandedOverBy":
-							break;
-						case "x_DepartmentBy":
-							break;
-						case "x_Sign1":
-							break;
-						case "x_Sign2":
-							break;
-						case "x_Sign3":
-							break;
-						case "x_Sign4":
-							break;
 					}
 					$ar[strval($row[0])] = $row;
 					$rs->moveNext();
@@ -3088,12 +2101,7 @@ class t101_ho_head_list extends t101_ho_head
 		//$opt->Header = "xxx";
 		//$opt->OnLeft = TRUE; // Link on left
 		//$opt->MoveTo(0); // Move to first column
-		// Cetak Form
 
-		$opt = &$this->ListOptions->Add("cetakForm");
-		$opt->Header = "";
-		$opt->OnLeft = TRUE; // Link on left
-		$opt->MoveTo(0); // Move to first column
 	}
 
 	// ListOptions Rendering event
@@ -3110,16 +2118,7 @@ class t101_ho_head_list extends t101_ho_head
 
 		// Example:
 		//$this->ListOptions["new"]->Body = "xxx";
-		// Cetak Form
 
-		$this->ListOptions->Items["cetakForm"]->Body = "
-			<a
-				title=\"Cetak Form\"
-				data-caption=\"Cetak Form\"
-				href=\"c101_ho.php?id=".$this->id->CurrentValue."\"
-			>
-				Cetak Form
-			</a>"; // definisikan link, style, dan caption tombol //"xxx";
 	}
 
 	// Row Custom Action event

@@ -82,6 +82,19 @@ foreach ($r as $rs) {
 	$i++;
 }
 $spreadsheet->getActiveSheet()->removeRow($baseRow, 1);
+
+// ambil data untuk footer
+$q = "select * from v101_ho where id = ".Get("id")."";
+$r = ExecuteRows($q);
+$baseRow = $row + 1;
+$row = $baseRow   ; $spreadsheet->getActiveSheet()->setCellValue('B'.$row, "Approved by: ".$r[0]["Sign1JobTitle"].", ".$r[0]["Sign2JobTitle"].", ".$r[0]["Sign3JobTitle"]);
+$row = $baseRow+ 4; $spreadsheet->getActiveSheet()
+						->setCellValue('B'.$row, $r[0]["Sign1Signature"])
+						->setCellValue('F'.$row, $r[0]["Sign2Signature"])
+						->setCellValue('I'.$row, $r[0]["Sign3Signature"])
+						;
+$row = $baseRow+14; $spreadsheet->getActiveSheet()->setCellValue('I'.$row, $r[0]["Sign4Signature"]);
+
 $writer = \PhpOffice\PhpSpreadsheet\IOFactory::createWriter($spreadsheet, 'Xlsx');
 $writer->save($namaFile." Result.xlsx");
 header("location: ".$namaFile." Result.xlsx");

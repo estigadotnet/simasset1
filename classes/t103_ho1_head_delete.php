@@ -4,52 +4,20 @@ namespace PHPMaker2020\p_simasset1;
 /**
  * Page class
  */
-class t101_ho_head_view extends t101_ho_head
+class t103_ho1_head_delete extends t103_ho1_head
 {
 
 	// Page ID
-	public $PageID = "view";
+	public $PageID = "delete";
 
 	// Project ID
 	public $ProjectID = "{E1C6E322-15B9-474C-85CF-A99378A9BC2B}";
 
 	// Table name
-	public $TableName = 't101_ho_head';
+	public $TableName = 't103_ho1_head';
 
 	// Page object name
-	public $PageObjName = "t101_ho_head_view";
-
-	// Page URLs
-	public $AddUrl;
-	public $EditUrl;
-	public $CopyUrl;
-	public $DeleteUrl;
-	public $ViewUrl;
-	public $ListUrl;
-
-	// Export URLs
-	public $ExportPrintUrl;
-	public $ExportHtmlUrl;
-	public $ExportExcelUrl;
-	public $ExportWordUrl;
-	public $ExportXmlUrl;
-	public $ExportCsvUrl;
-	public $ExportPdfUrl;
-
-	// Custom export
-	public $ExportExcelCustom = FALSE;
-	public $ExportWordCustom = FALSE;
-	public $ExportPdfCustom = FALSE;
-	public $ExportEmailCustom = FALSE;
-
-	// Update URLs
-	public $InlineAddUrl;
-	public $InlineCopyUrl;
-	public $InlineEditUrl;
-	public $GridAddUrl;
-	public $GridEditUrl;
-	public $MultiDeleteUrl;
-	public $MultiUpdateUrl;
+	public $PageObjName = "t103_ho1_head_delete";
 
 	// Audit Trail
 	public $AuditTrailOnAdd = TRUE;
@@ -381,23 +349,11 @@ class t101_ho_head_view extends t101_ho_head
 		// Parent constuctor
 		parent::__construct();
 
-		// Table object (t101_ho_head)
-		if (!isset($GLOBALS["t101_ho_head"]) || get_class($GLOBALS["t101_ho_head"]) == PROJECT_NAMESPACE . "t101_ho_head") {
-			$GLOBALS["t101_ho_head"] = &$this;
-			$GLOBALS["Table"] = &$GLOBALS["t101_ho_head"];
+		// Table object (t103_ho1_head)
+		if (!isset($GLOBALS["t103_ho1_head"]) || get_class($GLOBALS["t103_ho1_head"]) == PROJECT_NAMESPACE . "t103_ho1_head") {
+			$GLOBALS["t103_ho1_head"] = &$this;
+			$GLOBALS["Table"] = &$GLOBALS["t103_ho1_head"];
 		}
-		$keyUrl = "";
-		if (Get("id") !== NULL) {
-			$this->RecKey["id"] = Get("id");
-			$keyUrl .= "&amp;id=" . urlencode($this->RecKey["id"]);
-		}
-		$this->ExportPrintUrl = $this->pageUrl() . "export=print" . $keyUrl;
-		$this->ExportHtmlUrl = $this->pageUrl() . "export=html" . $keyUrl;
-		$this->ExportExcelUrl = $this->pageUrl() . "export=excel" . $keyUrl;
-		$this->ExportWordUrl = $this->pageUrl() . "export=word" . $keyUrl;
-		$this->ExportXmlUrl = $this->pageUrl() . "export=xml" . $keyUrl;
-		$this->ExportCsvUrl = $this->pageUrl() . "export=csv" . $keyUrl;
-		$this->ExportPdfUrl = $this->pageUrl() . "export=pdf" . $keyUrl;
 
 		// Table object (t201_users)
 		if (!isset($GLOBALS['t201_users']))
@@ -405,11 +361,11 @@ class t101_ho_head_view extends t101_ho_head
 
 		// Page ID (for backward compatibility only)
 		if (!defined(PROJECT_NAMESPACE . "PAGE_ID"))
-			define(PROJECT_NAMESPACE . "PAGE_ID", 'view');
+			define(PROJECT_NAMESPACE . "PAGE_ID", 'delete');
 
 		// Table name (for backward compatibility only)
 		if (!defined(PROJECT_NAMESPACE . "TABLE_NAME"))
-			define(PROJECT_NAMESPACE . "TABLE_NAME", 't101_ho_head');
+			define(PROJECT_NAMESPACE . "TABLE_NAME", 't103_ho1_head');
 
 		// Start timer
 		if (!isset($GLOBALS["DebugTimer"]))
@@ -424,18 +380,6 @@ class t101_ho_head_view extends t101_ho_head
 
 		// User table object (t201_users)
 		$UserTable = $UserTable ?: new t201_users();
-
-		// Export options
-		$this->ExportOptions = new ListOptions("div");
-		$this->ExportOptions->TagClassName = "ew-export-option";
-
-		// Other options
-		if (!$this->OtherOptions)
-			$this->OtherOptions = new ListOptionsArray();
-		$this->OtherOptions["action"] = new ListOptions("div");
-		$this->OtherOptions["action"]->TagClassName = "ew-action-option";
-		$this->OtherOptions["detail"] = new ListOptions("div");
-		$this->OtherOptions["detail"]->TagClassName = "ew-detail-option";
 	}
 
 	// Terminate page
@@ -450,14 +394,14 @@ class t101_ho_head_view extends t101_ho_head
 		Page_Unloaded();
 
 		// Export
-		global $t101_ho_head;
+		global $t103_ho1_head;
 		if ($this->CustomExport && $this->CustomExport == $this->Export && array_key_exists($this->CustomExport, Config("EXPORT_CLASSES"))) {
 				$content = ob_get_contents();
 			if ($ExportFileName == "")
 				$ExportFileName = $this->TableVar;
 			$class = PROJECT_NAMESPACE . Config("EXPORT_CLASSES." . $this->CustomExport);
 			if (class_exists($class)) {
-				$doc = new $class($t101_ho_head);
+				$doc = new $class($t103_ho1_head);
 				$doc->Text = @$content;
 				if ($this->isExport("email"))
 					echo $this->exportEmail($doc->Text);
@@ -485,24 +429,8 @@ class t101_ho_head_view extends t101_ho_head
 		if ($url != "") {
 			if (!Config("DEBUG") && ob_get_length())
 				ob_end_clean();
-
-			// Handle modal response
-			if ($this->IsModal) { // Show as modal
-				$row = ["url" => $url, "modal" => "1"];
-				$pageName = GetPageName($url);
-				if ($pageName != $this->getListUrl()) { // Not List page
-					$row["caption"] = $this->getModalCaption($pageName);
-					if ($pageName == "t101_ho_headview.php")
-						$row["view"] = "1";
-				} else { // List page should not be shown as modal => error
-					$row["error"] = $this->getFailureMessage();
-					$this->clearFailureMessage();
-				}
-				WriteJson($row);
-			} else {
-				SaveDebugMessage();
-				AddHeader("Location", $url);
-			}
+			SaveDebugMessage();
+			AddHeader("Location", $url);
 		}
 		exit();
 	}
@@ -599,80 +527,6 @@ class t101_ho_head_view extends t101_ho_head
 			$this->id->Visible = FALSE;
 	}
 
-	// Lookup data
-	public function lookup()
-	{
-		global $Language, $Security;
-		if (!isset($Language))
-			$Language = new Language(Config("LANGUAGE_FOLDER"), Post("language", ""));
-
-		// Set up API request
-		if (!ValidApiRequest())
-			return FALSE;
-		$this->setupApiSecurity();
-
-		// Get lookup object
-		$fieldName = Post("field");
-		if (!array_key_exists($fieldName, $this->fields))
-			return FALSE;
-		$lookupField = $this->fields[$fieldName];
-		$lookup = $lookupField->Lookup;
-		if ($lookup === NULL)
-			return FALSE;
-		$tbl = $lookup->getTable();
-		if (!$Security->allowLookup(Config("PROJECT_ID") . $tbl->TableName)) // Lookup permission
-			return FALSE;
-
-		// Get lookup parameters
-		$lookupType = Post("ajax", "unknown");
-		$pageSize = -1;
-		$offset = -1;
-		$searchValue = "";
-		if (SameText($lookupType, "modal")) {
-			$searchValue = Post("sv", "");
-			$pageSize = Post("recperpage", 10);
-			$offset = Post("start", 0);
-		} elseif (SameText($lookupType, "autosuggest")) {
-			$searchValue = Param("q", "");
-			$pageSize = Param("n", -1);
-			$pageSize = is_numeric($pageSize) ? (int)$pageSize : -1;
-			if ($pageSize <= 0)
-				$pageSize = Config("AUTO_SUGGEST_MAX_ENTRIES");
-			$start = Param("start", -1);
-			$start = is_numeric($start) ? (int)$start : -1;
-			$page = Param("page", -1);
-			$page = is_numeric($page) ? (int)$page : -1;
-			$offset = $start >= 0 ? $start : ($page > 0 && $pageSize > 0 ? ($page - 1) * $pageSize : 0);
-		}
-		$userSelect = Decrypt(Post("s", ""));
-		$userFilter = Decrypt(Post("f", ""));
-		$userOrderBy = Decrypt(Post("o", ""));
-		$keys = Post("keys");
-		$lookup->LookupType = $lookupType; // Lookup type
-		if ($keys !== NULL) { // Selected records from modal
-			if (is_array($keys))
-				$keys = implode(Config("MULTIPLE_OPTION_SEPARATOR"), $keys);
-			$lookup->FilterFields = []; // Skip parent fields if any
-			$lookup->FilterValues[] = $keys; // Lookup values
-			$pageSize = -1; // Show all records
-		} else { // Lookup values
-			$lookup->FilterValues[] = Post("v0", Post("lookupValue", ""));
-		}
-		$cnt = is_array($lookup->FilterFields) ? count($lookup->FilterFields) : 0;
-		for ($i = 1; $i <= $cnt; $i++)
-			$lookup->FilterValues[] = Post("v" . $i, "");
-		$lookup->SearchValue = $searchValue;
-		$lookup->PageSize = $pageSize;
-		$lookup->Offset = $offset;
-		if ($userSelect != "")
-			$lookup->UserSelect = $userSelect;
-		if ($userFilter != "")
-			$lookup->UserFilter = $userFilter;
-		if ($userOrderBy != "")
-			$lookup->UserOrderBy = $userOrderBy;
-		$lookup->toJson($this); // Use settings from current page
-	}
-
 	// Set up API security
 	public function setupApiSecurity()
 	{
@@ -686,18 +540,14 @@ class t101_ho_head_view extends t101_ho_head
 		$Security->loadUserID();
 		$Security->UserID_Loaded();
 	}
-	public $ExportOptions; // Export options
-	public $OtherOptions; // Other options
-	public $DisplayRecords = 1;
-	public $DbMasterFilter;
-	public $DbDetailFilter;
+	public $DbMasterFilter = "";
+	public $DbDetailFilter = "";
 	public $StartRecord;
-	public $StopRecord;
 	public $TotalRecords = 0;
-	public $RecordRange = 10;
-	public $RecKey = [];
-	public $IsModal = FALSE;
-	public $t102_ho_detail_Count;
+	public $RecordCount;
+	public $RecKeys = [];
+	public $StartRowCount = 1;
+	public $RowCount = 0;
 
 	//
 	// Page run
@@ -705,11 +555,7 @@ class t101_ho_head_view extends t101_ho_head
 
 	public function run()
 	{
-		global $ExportType, $CustomExportType, $ExportFileName, $UserProfile, $Language, $Security, $CurrentForm,
-			$SkipHeaderFooter;
-
-		// Is modal
-		$this->IsModal = (Param("modal") == "1");
+		global $ExportType, $CustomExportType, $ExportFileName, $UserProfile, $Language, $Security, $CurrentForm;
 
 		// User profile
 		$UserProfile = new UserProfile();
@@ -717,7 +563,7 @@ class t101_ho_head_view extends t101_ho_head
 		// Security
 		if (ValidApiRequest()) { // API request
 			$this->setupApiSecurity(); // Set up API Security
-			if (!$Security->canView()) {
+			if (!$Security->canDelete()) {
 				SetStatus(401); // Unauthorized
 				return;
 			}
@@ -730,11 +576,11 @@ class t101_ho_head_view extends t101_ho_head
 			$Security->loadCurrentUserLevel($this->ProjectID . $this->TableName);
 			if ($Security->isLoggedIn())
 				$Security->TablePermission_Loaded();
-			if (!$Security->canView()) {
+			if (!$Security->canDelete()) {
 				$Security->saveLastUrl();
 				$this->setFailureMessage(DeniedMessage()); // Set no permission
 				if ($Security->canList())
-					$this->terminate(GetUrl("t101_ho_headlist.php"));
+					$this->terminate(GetUrl("t103_ho1_headlist.php"));
 				else
 					$this->terminate(GetUrl("login.php"));
 				return;
@@ -746,17 +592,14 @@ class t101_ho_head_view extends t101_ho_head
 			}
 		}
 		$this->CurrentAction = Param("action"); // Set up current action
-		$this->id->setVisibility();
-		$this->property_id->setVisibility();
+		$this->id->Visible = FALSE;
+		$this->ho_head->setVisibility();
 		$this->TransactionNo->setVisibility();
 		$this->TransactionDate->setVisibility();
 		$this->TransactionType->setVisibility();
 		$this->HandedOverTo->setVisibility();
 		$this->CodeNoTo->setVisibility();
 		$this->DepartmentTo->setVisibility();
-		$this->HandedOverBy->setVisibility();
-		$this->CodeNoBy->setVisibility();
-		$this->DepartmentBy->setVisibility();
 		$this->Sign1->setVisibility();
 		$this->Sign2->setVisibility();
 		$this->Sign3->setVisibility();
@@ -782,232 +625,73 @@ class t101_ho_head_view extends t101_ho_head
 		$this->createToken();
 
 		// Set up lookup cache
-		$this->setupLookupOptions($this->property_id);
+		$this->setupLookupOptions($this->ho_head);
 		$this->setupLookupOptions($this->HandedOverTo);
 		$this->setupLookupOptions($this->DepartmentTo);
-		$this->setupLookupOptions($this->HandedOverBy);
-		$this->setupLookupOptions($this->DepartmentBy);
 		$this->setupLookupOptions($this->Sign1);
 		$this->setupLookupOptions($this->Sign2);
 		$this->setupLookupOptions($this->Sign3);
 		$this->setupLookupOptions($this->Sign4);
 
 		// Check permission
-		if (!$Security->canView()) {
+		if (!$Security->canDelete()) {
 			$this->setFailureMessage(DeniedMessage()); // No permission
-			$this->terminate("t101_ho_headlist.php");
-			return;
-		}
-
-		// Check modal
-		if ($this->IsModal)
-			$SkipHeaderFooter = TRUE;
-
-		// Load current record
-		$loadCurrentRecord = FALSE;
-		$returnUrl = "";
-		$matchRecord = FALSE;
-		if ($this->isPageRequest()) { // Validate request
-			if (Get("id") !== NULL) {
-				$this->id->setQueryStringValue(Get("id"));
-				$this->RecKey["id"] = $this->id->QueryStringValue;
-			} elseif (IsApi() && Key(0) !== NULL) {
-				$this->id->setQueryStringValue(Key(0));
-				$this->RecKey["id"] = $this->id->QueryStringValue;
-			} elseif (Post("id") !== NULL) {
-				$this->id->setFormValue(Post("id"));
-				$this->RecKey["id"] = $this->id->FormValue;
-			} elseif (IsApi() && Route(2) !== NULL) {
-				$this->id->setFormValue(Route(2));
-				$this->RecKey["id"] = $this->id->FormValue;
-			} else {
-				$loadCurrentRecord = TRUE;
-			}
-
-			// Get action
-			$this->CurrentAction = "show"; // Display
-			switch ($this->CurrentAction) {
-				case "show": // Get a record to display
-					$this->StartRecord = 1; // Initialize start position
-					if ($this->Recordset = $this->loadRecordset()) // Load records
-						$this->TotalRecords = $this->Recordset->RecordCount(); // Get record count
-					if ($this->TotalRecords <= 0) { // No record found
-						if ($this->getSuccessMessage() == "" && $this->getFailureMessage() == "")
-							$this->setFailureMessage($Language->phrase("NoRecord")); // Set no record message
-						$this->terminate("t101_ho_headlist.php"); // Return to list page
-					} elseif ($loadCurrentRecord) { // Load current record position
-						$this->setupStartRecord(); // Set up start record position
-
-						// Point to current record
-						if ($this->StartRecord <= $this->TotalRecords) {
-							$matchRecord = TRUE;
-							$this->Recordset->move($this->StartRecord - 1);
-						}
-					} else { // Match key values
-						while (!$this->Recordset->EOF) {
-							if (SameString($this->id->CurrentValue, $this->Recordset->fields('id'))) {
-								$this->setStartRecordNumber($this->StartRecord); // Save record position
-								$matchRecord = TRUE;
-								break;
-							} else {
-								$this->StartRecord++;
-								$this->Recordset->moveNext();
-							}
-						}
-					}
-					if (!$matchRecord) {
-						if ($this->getSuccessMessage() == "" && $this->getFailureMessage() == "")
-							$this->setFailureMessage($Language->phrase("NoRecord")); // Set no record message
-						$returnUrl = "t101_ho_headlist.php"; // No matching record, return to list
-					} else {
-						$this->loadRowValues($this->Recordset); // Load row values
-					}
-			}
-		} else {
-			$returnUrl = "t101_ho_headlist.php"; // Not page request, return to list
-		}
-		if ($returnUrl != "") {
-			$this->terminate($returnUrl);
+			$this->terminate("t103_ho1_headlist.php");
 			return;
 		}
 
 		// Set up Breadcrumb
-		if (!$this->isExport())
-			$this->setupBreadcrumb();
+		$this->setupBreadcrumb();
 
-		// Render row
-		$this->RowType = ROWTYPE_VIEW;
-		$this->resetAttributes();
-		$this->renderRow();
+		// Load key parameters
+		$this->RecKeys = $this->getRecordKeys(); // Load record keys
+		$filter = $this->getFilterFromRecordKeys();
+		if ($filter == "") {
+			$this->terminate("t103_ho1_headlist.php"); // Prevent SQL injection, return to list
+			return;
+		}
 
-		// Set up detail parameters
-		$this->setupDetailParms();
+		// Set up filter (WHERE Clause)
+		$this->CurrentFilter = $filter;
 
-		// Normal return
+		// Get action
 		if (IsApi()) {
-			$rows = $this->getRecordsFromRecordset($this->Recordset, TRUE); // Get current record only
-			$this->Recordset->close();
-			WriteJson(["success" => TRUE, $this->TableVar => $rows]);
-			$this->terminate(TRUE);
+			$this->CurrentAction = "delete"; // Delete record directly
+		} elseif (Post("action") !== NULL) {
+			$this->CurrentAction = Post("action");
+		} elseif (Get("action") == "1") {
+			$this->CurrentAction = "delete"; // Delete record directly
+		} else {
+			$this->CurrentAction = "delete"; // Delete record directly
 		}
-
-		// Set up pager
-		$this->Pager = new PrevNextPager($this->StartRecord, $this->DisplayRecords, $this->TotalRecords, "", $this->RecordRange, $this->AutoHidePager);
-	}
-
-	// Set up other options
-	protected function setupOtherOptions()
-	{
-		global $Language, $Security;
-		$options = &$this->OtherOptions;
-		$option = $options["action"];
-
-		// Add
-		$item = &$option->add("add");
-		$addcaption = HtmlTitle($Language->phrase("ViewPageAddLink"));
-		if ($this->IsModal) // Modal
-			$item->Body = "<a class=\"ew-action ew-add\" title=\"" . $addcaption . "\" data-caption=\"" . $addcaption . "\" href=\"#\" onclick=\"return ew.modalDialogShow({lnk:this,url:'" . HtmlEncode($this->AddUrl) . "'});\">" . $Language->phrase("ViewPageAddLink") . "</a>";
-		else
-			$item->Body = "<a class=\"ew-action ew-add\" title=\"" . $addcaption . "\" data-caption=\"" . $addcaption . "\" href=\"" . HtmlEncode($this->AddUrl) . "\">" . $Language->phrase("ViewPageAddLink") . "</a>";
-		$item->Visible = ($this->AddUrl != "" && $Security->canAdd());
-
-		// Edit
-		$item = &$option->add("edit");
-		$editcaption = HtmlTitle($Language->phrase("ViewPageEditLink"));
-		if ($this->IsModal) // Modal
-			$item->Body = "<a class=\"ew-action ew-edit\" title=\"" . $editcaption . "\" data-caption=\"" . $editcaption . "\" href=\"#\" onclick=\"return ew.modalDialogShow({lnk:this,url:'" . HtmlEncode($this->EditUrl) . "'});\">" . $Language->phrase("ViewPageEditLink") . "</a>";
-		else
-			$item->Body = "<a class=\"ew-action ew-edit\" title=\"" . $editcaption . "\" data-caption=\"" . $editcaption . "\" href=\"" . HtmlEncode($this->EditUrl) . "\">" . $Language->phrase("ViewPageEditLink") . "</a>";
-		$item->Visible = ($this->EditUrl != "" && $Security->canEdit());
-
-		// Delete
-		$item = &$option->add("delete");
-		$item->Body = "<a onclick=\"return ew.confirmDelete(this);\" class=\"ew-action ew-delete\" title=\"" . HtmlTitle($Language->phrase("ViewPageDeleteLink")) . "\" data-caption=\"" . HtmlTitle($Language->phrase("ViewPageDeleteLink")) . "\" href=\"" . HtmlEncode($this->DeleteUrl) . "\">" . $Language->phrase("ViewPageDeleteLink") . "</a>";
-		$item->Visible = ($this->DeleteUrl != "" && $Security->canDelete());
-		$option = $options["detail"];
-		$detailTableLink = "";
-		$detailViewTblVar = "";
-		$detailCopyTblVar = "";
-		$detailEditTblVar = "";
-
-		// "detail_t102_ho_detail"
-		$item = &$option->add("detail_t102_ho_detail");
-		$body = $Language->phrase("ViewPageDetailLink") . $Language->TablePhrase("t102_ho_detail", "TblCaption");
-		$body .= "&nbsp;" . str_replace("%c", $this->t102_ho_detail_Count, $Language->phrase("DetailCount"));
-		$body = "<a class=\"btn btn-default ew-row-link ew-detail\" data-action=\"list\" href=\"" . HtmlEncode("t102_ho_detaillist.php?" . Config("TABLE_SHOW_MASTER") . "=t101_ho_head&fk_id=" . urlencode(strval($this->id->CurrentValue)) . "") . "\">" . $body . "</a>";
-		$links = "";
-		if (!isset($GLOBALS["t102_ho_detail_grid"]))
-			$GLOBALS["t102_ho_detail_grid"] = new t102_ho_detail_grid();
-		if ($GLOBALS["t102_ho_detail_grid"]->DetailView && $Security->canView() && $Security->allowView(CurrentProjectID() . 't101_ho_head')) {
-			$links .= "<li><a class=\"ew-row-link ew-detail-view\" data-action=\"view\" data-caption=\"" . HtmlTitle($Language->phrase("MasterDetailViewLink")) . "\" href=\"" . HtmlEncode($this->getViewUrl(Config("TABLE_SHOW_DETAIL") . "=t102_ho_detail")) . "\">" . HtmlImageAndText($Language->phrase("MasterDetailViewLink")) . "</a></li>";
-			if ($detailViewTblVar != "")
-				$detailViewTblVar .= ",";
-			$detailViewTblVar .= "t102_ho_detail";
-		}
-		if ($GLOBALS["t102_ho_detail_grid"]->DetailEdit && $Security->canEdit() && $Security->allowEdit(CurrentProjectID() . 't101_ho_head')) {
-			$links .= "<li><a class=\"ew-row-link ew-detail-edit\" data-action=\"edit\" data-caption=\"" . HtmlTitle($Language->phrase("MasterDetailEditLink")) . "\" href=\"" . HtmlEncode($this->getEditUrl(Config("TABLE_SHOW_DETAIL") . "=t102_ho_detail")) . "\">" . HtmlImageAndText($Language->phrase("MasterDetailEditLink")) . "</a></li>";
-			if ($detailEditTblVar != "")
-				$detailEditTblVar .= ",";
-			$detailEditTblVar .= "t102_ho_detail";
-		}
-		if ($links != "") {
-			$body .= "<button class=\"dropdown-toggle btn btn-default ew-detail\" data-toggle=\"dropdown\"></button>";
-			$body .= "<ul class=\"dropdown-menu\">". $links . "</ul>";
-		}
-		$body = "<div class=\"btn-group btn-group-sm ew-btn-group\">" . $body . "</div>";
-		$item->Body = $body;
-		$item->Visible = $Security->allowList(CurrentProjectID() . 't102_ho_detail');
-		if ($item->Visible) {
-			if ($detailTableLink != "")
-				$detailTableLink .= ",";
-			$detailTableLink .= "t102_ho_detail";
-		}
-		if ($this->ShowMultipleDetails)
-			$item->Visible = FALSE;
-
-		// Multiple details
-		if ($this->ShowMultipleDetails) {
-			$body = "<div class=\"btn-group btn-group-sm ew-btn-group\">";
-			$links = "";
-			if ($detailViewTblVar != "") {
-				$links .= "<li><a class=\"ew-row-link ew-detail-view\" data-action=\"view\" data-caption=\"" . HtmlTitle($Language->phrase("MasterDetailViewLink")) . "\" href=\"" . HtmlEncode($this->getViewUrl(Config("TABLE_SHOW_DETAIL") . "=" . $detailViewTblVar)) . "\">" . HtmlImageAndText($Language->phrase("MasterDetailViewLink")) . "</a></li>";
+		if ($this->isDelete()) {
+			$this->SendEmail = TRUE; // Send email on delete success
+			if ($this->deleteRows()) { // Delete rows
+				if ($this->getSuccessMessage() == "")
+					$this->setSuccessMessage($Language->phrase("DeleteSuccess")); // Set up success message
+				if (IsApi()) {
+					$this->terminate(TRUE);
+					return;
+				} else {
+					$this->terminate($this->getReturnUrl()); // Return to caller
+				}
+			} else { // Delete failed
+				if (IsApi()) {
+					$this->terminate();
+					return;
+				}
+				$this->terminate($this->getReturnUrl()); // Return to caller
 			}
-			if ($detailEditTblVar != "") {
-				$links .= "<li><a class=\"ew-row-link ew-detail-edit\" data-action=\"edit\" data-caption=\"" . HtmlTitle($Language->phrase("MasterDetailEditLink")) . "\" href=\"" . HtmlEncode($this->getEditUrl(Config("TABLE_SHOW_DETAIL") . "=" . $detailEditTblVar)) . "\">" . HtmlImageAndText($Language->phrase("MasterDetailEditLink")) . "</a></li>";
-			}
-			if ($detailCopyTblVar != "") {
-				$links .= "<li><a class=\"ew-row-link ew-detail-copy\" data-action=\"add\" data-caption=\"" . HtmlTitle($Language->phrase("MasterDetailCopyLink")) . "\" href=\"" . HtmlEncode($this->getCopyUrl(Config("TABLE_SHOW_DETAIL") . "=" . $detailCopyTblVar)) . "\">" . HtmlImageAndText($Language->phrase("MasterDetailCopyLink")) . "</a></li>";
-			}
-			if ($links != "") {
-				$body .= "<button class=\"dropdown-toggle btn btn-default ew-master-detail\" title=\"" . HtmlTitle($Language->phrase("MultipleMasterDetails")) . "\" data-toggle=\"dropdown\">" . $Language->phrase("MultipleMasterDetails") . "</button>";
-				$body .= "<ul class=\"dropdown-menu ew-menu\">". $links . "</ul>";
-			}
-			$body .= "</div>";
-
-			// Multiple details
-			$item = &$option->add("details");
-			$item->Body = $body;
 		}
-
-		// Set up detail default
-		$option = $options["detail"];
-		$options["detail"]->DropDownButtonPhrase = $Language->phrase("ButtonDetails");
-		$ar = explode(",", $detailTableLink);
-		$cnt = count($ar);
-		$option->UseDropDownButton = ($cnt > 1);
-		$option->UseButtonGroup = TRUE;
-		$item = &$option->add($option->GroupOptionName);
-		$item->Body = "";
-		$item->Visible = FALSE;
-
-		// Set up action default
-		$option = $options["action"];
-		$option->DropDownButtonPhrase = $Language->phrase("ButtonActions");
-		$option->UseDropDownButton = FALSE;
-		$option->UseButtonGroup = TRUE;
-		$item = &$option->add($option->GroupOptionName);
-		$item->Body = "";
-		$item->Visible = FALSE;
+		if ($this->isShow()) { // Load records for display
+			if ($this->Recordset = $this->loadRecordset())
+				$this->TotalRecords = $this->Recordset->RecordCount(); // Get record count
+			if ($this->TotalRecords <= 0) { // No record found, exit
+				if ($this->Recordset)
+					$this->Recordset->close();
+				$this->terminate("t103_ho1_headlist.php"); // Return to list
+			}
+		}
 	}
 
 	// Load recordset
@@ -1023,7 +707,7 @@ class t101_ho_head_view extends t101_ho_head
 		if ($this->UseSelectLimit) {
 			$conn->raiseErrorFn = Config("ERROR_FUNC");
 			if ($dbtype == "MSSQL") {
-				$rs = $conn->selectLimit($sql, $rowcnt, $offset, ["_hasOrderBy" => trim($this->getOrderBy()) || trim($this->getSessionOrderByList())]);
+				$rs = $conn->selectLimit($sql, $rowcnt, $offset, ["_hasOrderBy" => trim($this->getOrderBy()) || trim($this->getSessionOrderBy())]);
 			} else {
 				$rs = $conn->selectLimit($sql, $rowcnt, $offset);
 			}
@@ -1072,35 +756,18 @@ class t101_ho_head_view extends t101_ho_head
 		$this->Row_Selected($row);
 		if (!$rs || $rs->EOF)
 			return;
-		if ($this->AuditTrailOnView)
-			$this->writeAuditTrailOnView($row);
 		$this->id->setDbValue($row['id']);
-		$this->property_id->setDbValue($row['property_id']);
+		$this->ho_head->setDbValue($row['ho_head']);
 		$this->TransactionNo->setDbValue($row['TransactionNo']);
 		$this->TransactionDate->setDbValue($row['TransactionDate']);
 		$this->TransactionType->setDbValue($row['TransactionType']);
 		$this->HandedOverTo->setDbValue($row['HandedOverTo']);
 		$this->CodeNoTo->setDbValue($row['CodeNoTo']);
 		$this->DepartmentTo->setDbValue($row['DepartmentTo']);
-		$this->HandedOverBy->setDbValue($row['HandedOverBy']);
-		if (array_key_exists('EV__HandedOverBy', $rs->fields)) {
-			$this->HandedOverBy->VirtualValue = $rs->fields('EV__HandedOverBy'); // Set up virtual field value
-		} else {
-			$this->HandedOverBy->VirtualValue = ""; // Clear value
-		}
-		$this->CodeNoBy->setDbValue($row['CodeNoBy']);
-		$this->DepartmentBy->setDbValue($row['DepartmentBy']);
 		$this->Sign1->setDbValue($row['Sign1']);
 		$this->Sign2->setDbValue($row['Sign2']);
 		$this->Sign3->setDbValue($row['Sign3']);
 		$this->Sign4->setDbValue($row['Sign4']);
-		if (!isset($GLOBALS["t102_ho_detail_grid"]))
-			$GLOBALS["t102_ho_detail_grid"] = new t102_ho_detail_grid();
-		$detailFilter = $GLOBALS["t102_ho_detail"]->sqlDetailFilter_t101_ho_head();
-		$detailFilter = str_replace("@hohead_id@", AdjustSql($this->id->DbValue, "DB"), $detailFilter);
-		$GLOBALS["t102_ho_detail"]->setCurrentMasterTable("t101_ho_head");
-		$detailFilter = $GLOBALS["t102_ho_detail"]->applyUserIDFilters($detailFilter);
-		$this->t102_ho_detail_Count = $GLOBALS["t102_ho_detail"]->loadRecordCount($detailFilter);
 	}
 
 	// Return a row with default values
@@ -1108,16 +775,13 @@ class t101_ho_head_view extends t101_ho_head
 	{
 		$row = [];
 		$row['id'] = NULL;
-		$row['property_id'] = NULL;
+		$row['ho_head'] = NULL;
 		$row['TransactionNo'] = NULL;
 		$row['TransactionDate'] = NULL;
 		$row['TransactionType'] = NULL;
 		$row['HandedOverTo'] = NULL;
 		$row['CodeNoTo'] = NULL;
 		$row['DepartmentTo'] = NULL;
-		$row['HandedOverBy'] = NULL;
-		$row['CodeNoBy'] = NULL;
-		$row['DepartmentBy'] = NULL;
 		$row['Sign1'] = NULL;
 		$row['Sign2'] = NULL;
 		$row['Sign3'] = NULL;
@@ -1131,28 +795,19 @@ class t101_ho_head_view extends t101_ho_head
 		global $Security, $Language, $CurrentLanguage;
 
 		// Initialize URLs
-		$this->AddUrl = $this->getAddUrl();
-		$this->EditUrl = $this->getEditUrl();
-		$this->CopyUrl = $this->getCopyUrl();
-		$this->DeleteUrl = $this->getDeleteUrl();
-		$this->ListUrl = $this->getListUrl();
-		$this->setupOtherOptions();
-
 		// Call Row_Rendering event
+
 		$this->Row_Rendering();
 
 		// Common render codes for all row types
 		// id
-		// property_id
+		// ho_head
 		// TransactionNo
 		// TransactionDate
 		// TransactionType
 		// HandedOverTo
 		// CodeNoTo
 		// DepartmentTo
-		// HandedOverBy
-		// CodeNoBy
-		// DepartmentBy
 		// Sign1
 		// Sign2
 		// Sign3
@@ -1164,27 +819,27 @@ class t101_ho_head_view extends t101_ho_head
 			$this->id->ViewValue = $this->id->CurrentValue;
 			$this->id->ViewCustomAttributes = "";
 
-			// property_id
-			$curVal = strval($this->property_id->CurrentValue);
+			// ho_head
+			$curVal = strval($this->ho_head->CurrentValue);
 			if ($curVal != "") {
-				$this->property_id->ViewValue = $this->property_id->lookupCacheOption($curVal);
-				if ($this->property_id->ViewValue === NULL) { // Lookup from database
+				$this->ho_head->ViewValue = $this->ho_head->lookupCacheOption($curVal);
+				if ($this->ho_head->ViewValue === NULL) { // Lookup from database
 					$filterWrk = "`id`" . SearchString("=", $curVal, DATATYPE_NUMBER, "");
-					$sqlWrk = $this->property_id->Lookup->getSql(FALSE, $filterWrk, '', $this);
+					$sqlWrk = $this->ho_head->Lookup->getSql(FALSE, $filterWrk, '', $this);
 					$rswrk = Conn()->execute($sqlWrk);
 					if ($rswrk && !$rswrk->EOF) { // Lookup values found
 						$arwrk = [];
 						$arwrk[1] = $rswrk->fields('df');
-						$this->property_id->ViewValue = $this->property_id->displayValue($arwrk);
+						$this->ho_head->ViewValue = $this->ho_head->displayValue($arwrk);
 						$rswrk->Close();
 					} else {
-						$this->property_id->ViewValue = $this->property_id->CurrentValue;
+						$this->ho_head->ViewValue = $this->ho_head->CurrentValue;
 					}
 				}
 			} else {
-				$this->property_id->ViewValue = NULL;
+				$this->ho_head->ViewValue = NULL;
 			}
-			$this->property_id->ViewCustomAttributes = "";
+			$this->ho_head->ViewCustomAttributes = "";
 
 			// TransactionNo
 			$this->TransactionNo->ViewValue = $this->TransactionNo->CurrentValue;
@@ -1192,7 +847,7 @@ class t101_ho_head_view extends t101_ho_head
 
 			// TransactionDate
 			$this->TransactionDate->ViewValue = $this->TransactionDate->CurrentValue;
-			$this->TransactionDate->ViewValue = FormatDateTime($this->TransactionDate->ViewValue, 7);
+			$this->TransactionDate->ViewValue = FormatDateTime($this->TransactionDate->ViewValue, 0);
 			$this->TransactionDate->ViewCustomAttributes = "";
 
 			// TransactionType
@@ -1250,58 +905,6 @@ class t101_ho_head_view extends t101_ho_head
 				$this->DepartmentTo->ViewValue = NULL;
 			}
 			$this->DepartmentTo->ViewCustomAttributes = "";
-
-			// HandedOverBy
-			if ($this->HandedOverBy->VirtualValue != "") {
-				$this->HandedOverBy->ViewValue = $this->HandedOverBy->VirtualValue;
-			} else {
-				$curVal = strval($this->HandedOverBy->CurrentValue);
-				if ($curVal != "") {
-					$this->HandedOverBy->ViewValue = $this->HandedOverBy->lookupCacheOption($curVal);
-					if ($this->HandedOverBy->ViewValue === NULL) { // Lookup from database
-						$filterWrk = "`id`" . SearchString("=", $curVal, DATATYPE_NUMBER, "");
-						$sqlWrk = $this->HandedOverBy->Lookup->getSql(FALSE, $filterWrk, '', $this);
-						$rswrk = Conn()->execute($sqlWrk);
-						if ($rswrk && !$rswrk->EOF) { // Lookup values found
-							$arwrk = [];
-							$arwrk[1] = $rswrk->fields('df');
-							$this->HandedOverBy->ViewValue = $this->HandedOverBy->displayValue($arwrk);
-							$rswrk->Close();
-						} else {
-							$this->HandedOverBy->ViewValue = $this->HandedOverBy->CurrentValue;
-						}
-					}
-				} else {
-					$this->HandedOverBy->ViewValue = NULL;
-				}
-			}
-			$this->HandedOverBy->ViewCustomAttributes = "";
-
-			// CodeNoBy
-			$this->CodeNoBy->ViewValue = $this->CodeNoBy->CurrentValue;
-			$this->CodeNoBy->ViewCustomAttributes = "";
-
-			// DepartmentBy
-			$curVal = strval($this->DepartmentBy->CurrentValue);
-			if ($curVal != "") {
-				$this->DepartmentBy->ViewValue = $this->DepartmentBy->lookupCacheOption($curVal);
-				if ($this->DepartmentBy->ViewValue === NULL) { // Lookup from database
-					$filterWrk = "`id`" . SearchString("=", $curVal, DATATYPE_NUMBER, "");
-					$sqlWrk = $this->DepartmentBy->Lookup->getSql(FALSE, $filterWrk, '', $this);
-					$rswrk = Conn()->execute($sqlWrk);
-					if ($rswrk && !$rswrk->EOF) { // Lookup values found
-						$arwrk = [];
-						$arwrk[1] = $rswrk->fields('df');
-						$this->DepartmentBy->ViewValue = $this->DepartmentBy->displayValue($arwrk);
-						$rswrk->Close();
-					} else {
-						$this->DepartmentBy->ViewValue = $this->DepartmentBy->CurrentValue;
-					}
-				}
-			} else {
-				$this->DepartmentBy->ViewValue = NULL;
-			}
-			$this->DepartmentBy->ViewCustomAttributes = "";
 
 			// Sign1
 			$curVal = strval($this->Sign1->CurrentValue);
@@ -1391,10 +994,10 @@ class t101_ho_head_view extends t101_ho_head
 			}
 			$this->Sign4->ViewCustomAttributes = "";
 
-			// property_id
-			$this->property_id->LinkCustomAttributes = "";
-			$this->property_id->HrefValue = "";
-			$this->property_id->TooltipValue = "";
+			// ho_head
+			$this->ho_head->LinkCustomAttributes = "";
+			$this->ho_head->HrefValue = "";
+			$this->ho_head->TooltipValue = "";
 
 			// TransactionNo
 			$this->TransactionNo->LinkCustomAttributes = "";
@@ -1426,21 +1029,6 @@ class t101_ho_head_view extends t101_ho_head
 			$this->DepartmentTo->HrefValue = "";
 			$this->DepartmentTo->TooltipValue = "";
 
-			// HandedOverBy
-			$this->HandedOverBy->LinkCustomAttributes = "";
-			$this->HandedOverBy->HrefValue = "";
-			$this->HandedOverBy->TooltipValue = "";
-
-			// CodeNoBy
-			$this->CodeNoBy->LinkCustomAttributes = "";
-			$this->CodeNoBy->HrefValue = "";
-			$this->CodeNoBy->TooltipValue = "";
-
-			// DepartmentBy
-			$this->DepartmentBy->LinkCustomAttributes = "";
-			$this->DepartmentBy->HrefValue = "";
-			$this->DepartmentBy->TooltipValue = "";
-
 			// Sign1
 			$this->Sign1->LinkCustomAttributes = "";
 			$this->Sign1->HrefValue = "";
@@ -1467,34 +1055,100 @@ class t101_ho_head_view extends t101_ho_head
 			$this->Row_Rendered();
 	}
 
-	// Set up detail parms based on QueryString
-	protected function setupDetailParms()
+	// Delete records based on current filter
+	protected function deleteRows()
 	{
-
-		// Get the keys for master table
-		$detailTblVar = Get(Config("TABLE_SHOW_DETAIL"));
-		if ($detailTblVar !== NULL) {
-			$this->setCurrentDetailTable($detailTblVar);
-		} else {
-			$detailTblVar = $this->getCurrentDetailTable();
+		global $Language, $Security;
+		if (!$Security->canDelete()) {
+			$this->setFailureMessage($Language->phrase("NoDeletePermission")); // No delete permission
+			return FALSE;
 		}
-		if ($detailTblVar != "") {
-			$detailTblVar = explode(",", $detailTblVar);
-			if (in_array("t102_ho_detail", $detailTblVar)) {
-				if (!isset($GLOBALS["t102_ho_detail_grid"]))
-					$GLOBALS["t102_ho_detail_grid"] = new t102_ho_detail_grid();
-				if ($GLOBALS["t102_ho_detail_grid"]->DetailView) {
-					$GLOBALS["t102_ho_detail_grid"]->CurrentMode = "view";
+		$deleteRows = TRUE;
+		$sql = $this->getCurrentSql();
+		$conn = $this->getConnection();
+		$conn->raiseErrorFn = Config("ERROR_FUNC");
+		$rs = $conn->execute($sql);
+		$conn->raiseErrorFn = "";
+		if ($rs === FALSE) {
+			return FALSE;
+		} elseif ($rs->EOF) {
+			$this->setFailureMessage($Language->phrase("NoRecord")); // No record found
+			$rs->close();
+			return FALSE;
+		}
+		$rows = ($rs) ? $rs->getRows() : [];
+		$conn->beginTrans();
+		if ($this->AuditTrailOnDelete)
+			$this->writeAuditTrailDummy($Language->phrase("BatchDeleteBegin")); // Batch delete begin
 
-					// Save current master table to detail table
-					$GLOBALS["t102_ho_detail_grid"]->setCurrentMasterTable($this->TableVar);
-					$GLOBALS["t102_ho_detail_grid"]->setStartRecordNumber(1);
-					$GLOBALS["t102_ho_detail_grid"]->hohead_id->IsDetailKey = TRUE;
-					$GLOBALS["t102_ho_detail_grid"]->hohead_id->CurrentValue = $this->id->CurrentValue;
-					$GLOBALS["t102_ho_detail_grid"]->hohead_id->setSessionValue($GLOBALS["t102_ho_detail_grid"]->hohead_id->CurrentValue);
-				}
+		// Clone old rows
+		$rsold = $rows;
+		if ($rs)
+			$rs->close();
+
+		// Call row deleting event
+		if ($deleteRows) {
+			foreach ($rsold as $row) {
+				$deleteRows = $this->Row_Deleting($row);
+				if (!$deleteRows)
+					break;
 			}
 		}
+		if ($deleteRows) {
+			$key = "";
+			foreach ($rsold as $row) {
+				$thisKey = "";
+				if ($thisKey != "")
+					$thisKey .= Config("COMPOSITE_KEY_SEPARATOR");
+				$thisKey .= $row['id'];
+				if (Config("DELETE_UPLOADED_FILES")) // Delete old files
+					$this->deleteUploadedFiles($row);
+				$conn->raiseErrorFn = Config("ERROR_FUNC");
+				$deleteRows = $this->delete($row); // Delete
+				$conn->raiseErrorFn = "";
+				if ($deleteRows === FALSE)
+					break;
+				if ($key != "")
+					$key .= ", ";
+				$key .= $thisKey;
+			}
+		}
+		if (!$deleteRows) {
+
+			// Set up error message
+			if ($this->getSuccessMessage() != "" || $this->getFailureMessage() != "") {
+
+				// Use the message, do nothing
+			} elseif ($this->CancelMessage != "") {
+				$this->setFailureMessage($this->CancelMessage);
+				$this->CancelMessage = "";
+			} else {
+				$this->setFailureMessage($Language->phrase("DeleteCancelled"));
+			}
+		}
+		if ($deleteRows) {
+			$conn->commitTrans(); // Commit the changes
+			if ($this->AuditTrailOnDelete)
+				$this->writeAuditTrailDummy($Language->phrase("BatchDeleteSuccess")); // Batch delete success
+		} else {
+			$conn->rollbackTrans(); // Rollback changes
+			if ($this->AuditTrailOnDelete)
+				$this->writeAuditTrailDummy($Language->phrase("BatchDeleteRollback")); // Batch delete rollback
+		}
+
+		// Call Row Deleted event
+		if ($deleteRows) {
+			foreach ($rsold as $row) {
+				$this->Row_Deleted($row);
+			}
+		}
+
+		// Write JSON for API request (Support single row only)
+		if (IsApi() && $deleteRows) {
+			$row = $this->getRecordsFromRecordset($rsold, TRUE);
+			WriteJson(["success" => TRUE, $this->TableVar => $row]);
+		}
+		return $deleteRows;
 	}
 
 	// Set up Breadcrumb
@@ -1503,9 +1157,9 @@ class t101_ho_head_view extends t101_ho_head
 		global $Breadcrumb, $Language;
 		$Breadcrumb = new Breadcrumb();
 		$url = substr(CurrentUrl(), strrpos(CurrentUrl(), "/")+1);
-		$Breadcrumb->add("list", $this->TableVar, $this->addMasterUrl("t101_ho_headlist.php"), "", $this->TableVar, TRUE);
-		$pageId = "view";
-		$Breadcrumb->add("view", $pageId, $url);
+		$Breadcrumb->add("list", $this->TableVar, $this->addMasterUrl("t103_ho1_headlist.php"), "", $this->TableVar, TRUE);
+		$pageId = "delete";
+		$Breadcrumb->add("delete", $pageId, $url);
 	}
 
 	// Setup lookup options
@@ -1522,17 +1176,13 @@ class t101_ho_head_view extends t101_ho_head
 
 			// Set up lookup SQL and connection
 			switch ($fld->FieldVar) {
-				case "x_property_id":
+				case "x_ho_head":
 					break;
 				case "x_TransactionType":
 					break;
 				case "x_HandedOverTo":
 					break;
 				case "x_DepartmentTo":
-					break;
-				case "x_HandedOverBy":
-					break;
-				case "x_DepartmentBy":
 					break;
 				case "x_Sign1":
 					break;
@@ -1562,15 +1212,11 @@ class t101_ho_head_view extends t101_ho_head
 
 					// Format the field values
 					switch ($fld->FieldVar) {
-						case "x_property_id":
+						case "x_ho_head":
 							break;
 						case "x_HandedOverTo":
 							break;
 						case "x_DepartmentTo":
-							break;
-						case "x_HandedOverBy":
-							break;
-						case "x_DepartmentBy":
 							break;
 						case "x_Sign1":
 							break;
@@ -1588,44 +1234,6 @@ class t101_ho_head_view extends t101_ho_head
 					$rs->close();
 				$fld->Lookup->Options = $ar;
 			}
-		}
-	}
-
-	// Set up starting record parameters
-	public function setupStartRecord()
-	{
-		if ($this->DisplayRecords == 0)
-			return;
-		if ($this->isPageRequest()) { // Validate request
-			$startRec = Get(Config("TABLE_START_REC"));
-			$pageNo = Get(Config("TABLE_PAGE_NO"));
-			if ($pageNo !== NULL) { // Check for "pageno" parameter first
-				if (is_numeric($pageNo)) {
-					$this->StartRecord = ($pageNo - 1) * $this->DisplayRecords + 1;
-					if ($this->StartRecord <= 0) {
-						$this->StartRecord = 1;
-					} elseif ($this->StartRecord >= (int)(($this->TotalRecords - 1)/$this->DisplayRecords) * $this->DisplayRecords + 1) {
-						$this->StartRecord = (int)(($this->TotalRecords - 1)/$this->DisplayRecords) * $this->DisplayRecords + 1;
-					}
-					$this->setStartRecordNumber($this->StartRecord);
-				}
-			} elseif ($startRec !== NULL) { // Check for "start" parameter
-				$this->StartRecord = $startRec;
-				$this->setStartRecordNumber($this->StartRecord);
-			}
-		}
-		$this->StartRecord = $this->getStartRecordNumber();
-
-		// Check if correct start record counter
-		if (!is_numeric($this->StartRecord) || $this->StartRecord == "") { // Avoid invalid start record counter
-			$this->StartRecord = 1; // Reset start record counter
-			$this->setStartRecordNumber($this->StartRecord);
-		} elseif ($this->StartRecord > $this->TotalRecords) { // Avoid starting record > total records
-			$this->StartRecord = (int)(($this->TotalRecords - 1)/$this->DisplayRecords) * $this->DisplayRecords + 1; // Point to last page first record
-			$this->setStartRecordNumber($this->StartRecord);
-		} elseif (($this->StartRecord - 1) % $this->DisplayRecords != 0) {
-			$this->StartRecord = (int)(($this->StartRecord - 1)/$this->DisplayRecords) * $this->DisplayRecords + 1; // Point to page boundary
-			$this->setStartRecordNumber($this->StartRecord);
 		}
 	}
 
@@ -1686,32 +1294,6 @@ class t101_ho_head_view extends t101_ho_head
 
 		// Example:
 		//$footer = "your footer";
-
-	}
-
-	// Page Exporting event
-	// $this->ExportDoc = export document object
-	function Page_Exporting() {
-
-		//$this->ExportDoc->Text = "my header"; // Export header
-		//return FALSE; // Return FALSE to skip default export and use Row_Export event
-
-		return TRUE; // Return TRUE to use default export and skip Row_Export event
-	}
-
-	// Row Export event
-	// $this->ExportDoc = export document object
-	function Row_Export($rs) {
-
-		//$this->ExportDoc->Text .= "my content"; // Build HTML with field value: $rs["MyField"] or $this->MyField->ViewValue
-	}
-
-	// Page Exported event
-	// $this->ExportDoc = export document object
-	function Page_Exported() {
-
-		//$this->ExportDoc->Text .= "my footer"; // Export footer
-		//echo $this->ExportDoc->Text;
 
 	}
 } // End class

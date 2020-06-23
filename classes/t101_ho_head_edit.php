@@ -702,6 +702,7 @@ class t101_ho_head_edit extends t101_ho_head
 		$this->Sign3->setVisibility();
 		$this->Sign4->setVisibility();
 		$this->hideFieldsForAddEdit();
+		$this->TransactionType->Required = FALSE;
 
 		// Do not use lookup cache
 		$this->setUseLookupCache(FALSE);
@@ -1533,7 +1534,12 @@ class t101_ho_head_edit extends t101_ho_head
 			// TransactionType
 			$this->TransactionType->EditAttrs["class"] = "form-control";
 			$this->TransactionType->EditCustomAttributes = "";
-			$this->TransactionType->EditValue = $this->TransactionType->options(TRUE);
+			if (strval($this->TransactionType->CurrentValue) != "") {
+				$this->TransactionType->EditValue = $this->TransactionType->optionCaption($this->TransactionType->CurrentValue);
+			} else {
+				$this->TransactionType->EditValue = NULL;
+			}
+			$this->TransactionType->ViewCustomAttributes = "";
 
 			// HandedOverTo
 			$this->HandedOverTo->EditCustomAttributes = "";
@@ -1824,6 +1830,7 @@ class t101_ho_head_edit extends t101_ho_head
 			// TransactionType
 			$this->TransactionType->LinkCustomAttributes = "";
 			$this->TransactionType->HrefValue = "";
+			$this->TransactionType->TooltipValue = "";
 
 			// HandedOverTo
 			$this->HandedOverTo->LinkCustomAttributes = "";
@@ -2014,9 +2021,6 @@ class t101_ho_head_edit extends t101_ho_head
 
 			// TransactionDate
 			$this->TransactionDate->setDbValueDef($rsnew, UnFormatDateTime($this->TransactionDate->CurrentValue, 7), CurrentDate(), $this->TransactionDate->ReadOnly);
-
-			// TransactionType
-			$this->TransactionType->setDbValueDef($rsnew, $this->TransactionType->CurrentValue, 0, $this->TransactionType->ReadOnly);
 
 			// HandedOverTo
 			$this->HandedOverTo->setDbValueDef($rsnew, $this->HandedOverTo->CurrentValue, 0, $this->HandedOverTo->ReadOnly);

@@ -4,52 +4,20 @@ namespace PHPMaker2020\p_simasset1;
 /**
  * Page class
  */
-class t101_ho_head_view extends t101_ho_head
+class t103_ho1_head_search extends t103_ho1_head
 {
 
 	// Page ID
-	public $PageID = "view";
+	public $PageID = "search";
 
 	// Project ID
 	public $ProjectID = "{E1C6E322-15B9-474C-85CF-A99378A9BC2B}";
 
 	// Table name
-	public $TableName = 't101_ho_head';
+	public $TableName = 't103_ho1_head';
 
 	// Page object name
-	public $PageObjName = "t101_ho_head_view";
-
-	// Page URLs
-	public $AddUrl;
-	public $EditUrl;
-	public $CopyUrl;
-	public $DeleteUrl;
-	public $ViewUrl;
-	public $ListUrl;
-
-	// Export URLs
-	public $ExportPrintUrl;
-	public $ExportHtmlUrl;
-	public $ExportExcelUrl;
-	public $ExportWordUrl;
-	public $ExportXmlUrl;
-	public $ExportCsvUrl;
-	public $ExportPdfUrl;
-
-	// Custom export
-	public $ExportExcelCustom = FALSE;
-	public $ExportWordCustom = FALSE;
-	public $ExportPdfCustom = FALSE;
-	public $ExportEmailCustom = FALSE;
-
-	// Update URLs
-	public $InlineAddUrl;
-	public $InlineCopyUrl;
-	public $InlineEditUrl;
-	public $GridAddUrl;
-	public $GridEditUrl;
-	public $MultiDeleteUrl;
-	public $MultiUpdateUrl;
+	public $PageObjName = "t103_ho1_head_search";
 
 	// Audit Trail
 	public $AuditTrailOnAdd = TRUE;
@@ -381,23 +349,11 @@ class t101_ho_head_view extends t101_ho_head
 		// Parent constuctor
 		parent::__construct();
 
-		// Table object (t101_ho_head)
-		if (!isset($GLOBALS["t101_ho_head"]) || get_class($GLOBALS["t101_ho_head"]) == PROJECT_NAMESPACE . "t101_ho_head") {
-			$GLOBALS["t101_ho_head"] = &$this;
-			$GLOBALS["Table"] = &$GLOBALS["t101_ho_head"];
+		// Table object (t103_ho1_head)
+		if (!isset($GLOBALS["t103_ho1_head"]) || get_class($GLOBALS["t103_ho1_head"]) == PROJECT_NAMESPACE . "t103_ho1_head") {
+			$GLOBALS["t103_ho1_head"] = &$this;
+			$GLOBALS["Table"] = &$GLOBALS["t103_ho1_head"];
 		}
-		$keyUrl = "";
-		if (Get("id") !== NULL) {
-			$this->RecKey["id"] = Get("id");
-			$keyUrl .= "&amp;id=" . urlencode($this->RecKey["id"]);
-		}
-		$this->ExportPrintUrl = $this->pageUrl() . "export=print" . $keyUrl;
-		$this->ExportHtmlUrl = $this->pageUrl() . "export=html" . $keyUrl;
-		$this->ExportExcelUrl = $this->pageUrl() . "export=excel" . $keyUrl;
-		$this->ExportWordUrl = $this->pageUrl() . "export=word" . $keyUrl;
-		$this->ExportXmlUrl = $this->pageUrl() . "export=xml" . $keyUrl;
-		$this->ExportCsvUrl = $this->pageUrl() . "export=csv" . $keyUrl;
-		$this->ExportPdfUrl = $this->pageUrl() . "export=pdf" . $keyUrl;
 
 		// Table object (t201_users)
 		if (!isset($GLOBALS['t201_users']))
@@ -405,11 +361,11 @@ class t101_ho_head_view extends t101_ho_head
 
 		// Page ID (for backward compatibility only)
 		if (!defined(PROJECT_NAMESPACE . "PAGE_ID"))
-			define(PROJECT_NAMESPACE . "PAGE_ID", 'view');
+			define(PROJECT_NAMESPACE . "PAGE_ID", 'search');
 
 		// Table name (for backward compatibility only)
 		if (!defined(PROJECT_NAMESPACE . "TABLE_NAME"))
-			define(PROJECT_NAMESPACE . "TABLE_NAME", 't101_ho_head');
+			define(PROJECT_NAMESPACE . "TABLE_NAME", 't103_ho1_head');
 
 		// Start timer
 		if (!isset($GLOBALS["DebugTimer"]))
@@ -424,18 +380,6 @@ class t101_ho_head_view extends t101_ho_head
 
 		// User table object (t201_users)
 		$UserTable = $UserTable ?: new t201_users();
-
-		// Export options
-		$this->ExportOptions = new ListOptions("div");
-		$this->ExportOptions->TagClassName = "ew-export-option";
-
-		// Other options
-		if (!$this->OtherOptions)
-			$this->OtherOptions = new ListOptionsArray();
-		$this->OtherOptions["action"] = new ListOptions("div");
-		$this->OtherOptions["action"]->TagClassName = "ew-action-option";
-		$this->OtherOptions["detail"] = new ListOptions("div");
-		$this->OtherOptions["detail"]->TagClassName = "ew-detail-option";
 	}
 
 	// Terminate page
@@ -450,14 +394,14 @@ class t101_ho_head_view extends t101_ho_head
 		Page_Unloaded();
 
 		// Export
-		global $t101_ho_head;
+		global $t103_ho1_head;
 		if ($this->CustomExport && $this->CustomExport == $this->Export && array_key_exists($this->CustomExport, Config("EXPORT_CLASSES"))) {
 				$content = ob_get_contents();
 			if ($ExportFileName == "")
 				$ExportFileName = $this->TableVar;
 			$class = PROJECT_NAMESPACE . Config("EXPORT_CLASSES." . $this->CustomExport);
 			if (class_exists($class)) {
-				$doc = new $class($t101_ho_head);
+				$doc = new $class($t103_ho1_head);
 				$doc->Text = @$content;
 				if ($this->isExport("email"))
 					echo $this->exportEmail($doc->Text);
@@ -492,7 +436,7 @@ class t101_ho_head_view extends t101_ho_head
 				$pageName = GetPageName($url);
 				if ($pageName != $this->getListUrl()) { // Not List page
 					$row["caption"] = $this->getModalCaption($pageName);
-					if ($pageName == "t101_ho_headview.php")
+					if ($pageName == "t103_ho1_headview.php")
 						$row["view"] = "1";
 				} else { // List page should not be shown as modal => error
 					$row["error"] = $this->getFailureMessage();
@@ -686,18 +630,9 @@ class t101_ho_head_view extends t101_ho_head
 		$Security->loadUserID();
 		$Security->UserID_Loaded();
 	}
-	public $ExportOptions; // Export options
-	public $OtherOptions; // Other options
-	public $DisplayRecords = 1;
-	public $DbMasterFilter;
-	public $DbDetailFilter;
-	public $StartRecord;
-	public $StopRecord;
-	public $TotalRecords = 0;
-	public $RecordRange = 10;
-	public $RecKey = [];
+	public $FormClassName = "ew-horizontal ew-form ew-search-form";
 	public $IsModal = FALSE;
-	public $t102_ho_detail_Count;
+	public $IsMobileOrModal = FALSE;
 
 	//
 	// Page run
@@ -706,7 +641,7 @@ class t101_ho_head_view extends t101_ho_head
 	public function run()
 	{
 		global $ExportType, $CustomExportType, $ExportFileName, $UserProfile, $Language, $Security, $CurrentForm,
-			$SkipHeaderFooter;
+			$SearchError, $SkipHeaderFooter;
 
 		// Is modal
 		$this->IsModal = (Param("modal") == "1");
@@ -717,10 +652,6 @@ class t101_ho_head_view extends t101_ho_head
 		// Security
 		if (ValidApiRequest()) { // API request
 			$this->setupApiSecurity(); // Set up API Security
-			if (!$Security->canView()) {
-				SetStatus(401); // Unauthorized
-				return;
-			}
 		} else {
 			$Security = new AdvancedSecurity();
 			if (!$Security->isLoggedIn())
@@ -730,11 +661,11 @@ class t101_ho_head_view extends t101_ho_head
 			$Security->loadCurrentUserLevel($this->ProjectID . $this->TableName);
 			if ($Security->isLoggedIn())
 				$Security->TablePermission_Loaded();
-			if (!$Security->canView()) {
+			if (!$Security->canSearch()) {
 				$Security->saveLastUrl();
 				$this->setFailureMessage(DeniedMessage()); // Set no permission
 				if ($Security->canList())
-					$this->terminate(GetUrl("t101_ho_headlist.php"));
+					$this->terminate(GetUrl("t103_ho1_headlist.php"));
 				else
 					$this->terminate(GetUrl("login.php"));
 				return;
@@ -745,18 +676,18 @@ class t101_ho_head_view extends t101_ho_head
 				$Security->UserID_Loaded();
 			}
 		}
+
+		// Create form object
+		$CurrentForm = new HttpForm();
 		$this->CurrentAction = Param("action"); // Set up current action
 		$this->id->setVisibility();
-		$this->property_id->setVisibility();
+		$this->ho_head->setVisibility();
 		$this->TransactionNo->setVisibility();
 		$this->TransactionDate->setVisibility();
 		$this->TransactionType->setVisibility();
 		$this->HandedOverTo->setVisibility();
 		$this->CodeNoTo->setVisibility();
 		$this->DepartmentTo->setVisibility();
-		$this->HandedOverBy->setVisibility();
-		$this->CodeNoBy->setVisibility();
-		$this->DepartmentBy->setVisibility();
 		$this->Sign1->setVisibility();
 		$this->Sign2->setVisibility();
 		$this->Sign3->setVisibility();
@@ -782,347 +713,166 @@ class t101_ho_head_view extends t101_ho_head
 		$this->createToken();
 
 		// Set up lookup cache
-		$this->setupLookupOptions($this->property_id);
+		$this->setupLookupOptions($this->ho_head);
 		$this->setupLookupOptions($this->HandedOverTo);
 		$this->setupLookupOptions($this->DepartmentTo);
-		$this->setupLookupOptions($this->HandedOverBy);
-		$this->setupLookupOptions($this->DepartmentBy);
 		$this->setupLookupOptions($this->Sign1);
 		$this->setupLookupOptions($this->Sign2);
 		$this->setupLookupOptions($this->Sign3);
 		$this->setupLookupOptions($this->Sign4);
 
-		// Check permission
-		if (!$Security->canView()) {
-			$this->setFailureMessage(DeniedMessage()); // No permission
-			$this->terminate("t101_ho_headlist.php");
-			return;
-		}
+		// Set up Breadcrumb
+		$this->setupBreadcrumb();
 
 		// Check modal
 		if ($this->IsModal)
 			$SkipHeaderFooter = TRUE;
-
-		// Load current record
-		$loadCurrentRecord = FALSE;
-		$returnUrl = "";
-		$matchRecord = FALSE;
+		$this->IsMobileOrModal = IsMobile() || $this->IsModal;
 		if ($this->isPageRequest()) { // Validate request
-			if (Get("id") !== NULL) {
-				$this->id->setQueryStringValue(Get("id"));
-				$this->RecKey["id"] = $this->id->QueryStringValue;
-			} elseif (IsApi() && Key(0) !== NULL) {
-				$this->id->setQueryStringValue(Key(0));
-				$this->RecKey["id"] = $this->id->QueryStringValue;
-			} elseif (Post("id") !== NULL) {
-				$this->id->setFormValue(Post("id"));
-				$this->RecKey["id"] = $this->id->FormValue;
-			} elseif (IsApi() && Route(2) !== NULL) {
-				$this->id->setFormValue(Route(2));
-				$this->RecKey["id"] = $this->id->FormValue;
-			} else {
-				$loadCurrentRecord = TRUE;
-			}
 
 			// Get action
-			$this->CurrentAction = "show"; // Display
-			switch ($this->CurrentAction) {
-				case "show": // Get a record to display
-					$this->StartRecord = 1; // Initialize start position
-					if ($this->Recordset = $this->loadRecordset()) // Load records
-						$this->TotalRecords = $this->Recordset->RecordCount(); // Get record count
-					if ($this->TotalRecords <= 0) { // No record found
-						if ($this->getSuccessMessage() == "" && $this->getFailureMessage() == "")
-							$this->setFailureMessage($Language->phrase("NoRecord")); // Set no record message
-						$this->terminate("t101_ho_headlist.php"); // Return to list page
-					} elseif ($loadCurrentRecord) { // Load current record position
-						$this->setupStartRecord(); // Set up start record position
+			$this->CurrentAction = Post("action");
+			if ($this->isSearch()) {
 
-						// Point to current record
-						if ($this->StartRecord <= $this->TotalRecords) {
-							$matchRecord = TRUE;
-							$this->Recordset->move($this->StartRecord - 1);
-						}
-					} else { // Match key values
-						while (!$this->Recordset->EOF) {
-							if (SameString($this->id->CurrentValue, $this->Recordset->fields('id'))) {
-								$this->setStartRecordNumber($this->StartRecord); // Save record position
-								$matchRecord = TRUE;
-								break;
-							} else {
-								$this->StartRecord++;
-								$this->Recordset->moveNext();
-							}
-						}
-					}
-					if (!$matchRecord) {
-						if ($this->getSuccessMessage() == "" && $this->getFailureMessage() == "")
-							$this->setFailureMessage($Language->phrase("NoRecord")); // Set no record message
-						$returnUrl = "t101_ho_headlist.php"; // No matching record, return to list
-					} else {
-						$this->loadRowValues($this->Recordset); // Load row values
-					}
+				// Build search string for advanced search, remove blank field
+				$this->loadSearchValues(); // Get search values
+				if ($this->validateSearch()) {
+					$srchStr = $this->buildAdvancedSearch();
+				} else {
+					$srchStr = "";
+					$this->setFailureMessage($SearchError);
+				}
+				if ($srchStr != "") {
+					$srchStr = $this->getUrlParm($srchStr);
+					$srchStr = "t103_ho1_headlist.php" . "?" . $srchStr;
+					$this->terminate($srchStr); // Go to list page
+				}
 			}
-		} else {
-			$returnUrl = "t101_ho_headlist.php"; // Not page request, return to list
-		}
-		if ($returnUrl != "") {
-			$this->terminate($returnUrl);
-			return;
 		}
 
-		// Set up Breadcrumb
-		if (!$this->isExport())
-			$this->setupBreadcrumb();
+		// Restore search settings from Session
+		if ($SearchError == "")
+			$this->loadAdvancedSearch();
 
-		// Render row
-		$this->RowType = ROWTYPE_VIEW;
+		// Render row for search
+		$this->RowType = ROWTYPE_SEARCH;
 		$this->resetAttributes();
 		$this->renderRow();
-
-		// Set up detail parameters
-		$this->setupDetailParms();
-
-		// Normal return
-		if (IsApi()) {
-			$rows = $this->getRecordsFromRecordset($this->Recordset, TRUE); // Get current record only
-			$this->Recordset->close();
-			WriteJson(["success" => TRUE, $this->TableVar => $rows]);
-			$this->terminate(TRUE);
-		}
-
-		// Set up pager
-		$this->Pager = new PrevNextPager($this->StartRecord, $this->DisplayRecords, $this->TotalRecords, "", $this->RecordRange, $this->AutoHidePager);
 	}
 
-	// Set up other options
-	protected function setupOtherOptions()
+	// Build advanced search
+	protected function buildAdvancedSearch()
 	{
-		global $Language, $Security;
-		$options = &$this->OtherOptions;
-		$option = $options["action"];
-
-		// Add
-		$item = &$option->add("add");
-		$addcaption = HtmlTitle($Language->phrase("ViewPageAddLink"));
-		if ($this->IsModal) // Modal
-			$item->Body = "<a class=\"ew-action ew-add\" title=\"" . $addcaption . "\" data-caption=\"" . $addcaption . "\" href=\"#\" onclick=\"return ew.modalDialogShow({lnk:this,url:'" . HtmlEncode($this->AddUrl) . "'});\">" . $Language->phrase("ViewPageAddLink") . "</a>";
-		else
-			$item->Body = "<a class=\"ew-action ew-add\" title=\"" . $addcaption . "\" data-caption=\"" . $addcaption . "\" href=\"" . HtmlEncode($this->AddUrl) . "\">" . $Language->phrase("ViewPageAddLink") . "</a>";
-		$item->Visible = ($this->AddUrl != "" && $Security->canAdd());
-
-		// Edit
-		$item = &$option->add("edit");
-		$editcaption = HtmlTitle($Language->phrase("ViewPageEditLink"));
-		if ($this->IsModal) // Modal
-			$item->Body = "<a class=\"ew-action ew-edit\" title=\"" . $editcaption . "\" data-caption=\"" . $editcaption . "\" href=\"#\" onclick=\"return ew.modalDialogShow({lnk:this,url:'" . HtmlEncode($this->EditUrl) . "'});\">" . $Language->phrase("ViewPageEditLink") . "</a>";
-		else
-			$item->Body = "<a class=\"ew-action ew-edit\" title=\"" . $editcaption . "\" data-caption=\"" . $editcaption . "\" href=\"" . HtmlEncode($this->EditUrl) . "\">" . $Language->phrase("ViewPageEditLink") . "</a>";
-		$item->Visible = ($this->EditUrl != "" && $Security->canEdit());
-
-		// Delete
-		$item = &$option->add("delete");
-		$item->Body = "<a onclick=\"return ew.confirmDelete(this);\" class=\"ew-action ew-delete\" title=\"" . HtmlTitle($Language->phrase("ViewPageDeleteLink")) . "\" data-caption=\"" . HtmlTitle($Language->phrase("ViewPageDeleteLink")) . "\" href=\"" . HtmlEncode($this->DeleteUrl) . "\">" . $Language->phrase("ViewPageDeleteLink") . "</a>";
-		$item->Visible = ($this->DeleteUrl != "" && $Security->canDelete());
-		$option = $options["detail"];
-		$detailTableLink = "";
-		$detailViewTblVar = "";
-		$detailCopyTblVar = "";
-		$detailEditTblVar = "";
-
-		// "detail_t102_ho_detail"
-		$item = &$option->add("detail_t102_ho_detail");
-		$body = $Language->phrase("ViewPageDetailLink") . $Language->TablePhrase("t102_ho_detail", "TblCaption");
-		$body .= "&nbsp;" . str_replace("%c", $this->t102_ho_detail_Count, $Language->phrase("DetailCount"));
-		$body = "<a class=\"btn btn-default ew-row-link ew-detail\" data-action=\"list\" href=\"" . HtmlEncode("t102_ho_detaillist.php?" . Config("TABLE_SHOW_MASTER") . "=t101_ho_head&fk_id=" . urlencode(strval($this->id->CurrentValue)) . "") . "\">" . $body . "</a>";
-		$links = "";
-		if (!isset($GLOBALS["t102_ho_detail_grid"]))
-			$GLOBALS["t102_ho_detail_grid"] = new t102_ho_detail_grid();
-		if ($GLOBALS["t102_ho_detail_grid"]->DetailView && $Security->canView() && $Security->allowView(CurrentProjectID() . 't101_ho_head')) {
-			$links .= "<li><a class=\"ew-row-link ew-detail-view\" data-action=\"view\" data-caption=\"" . HtmlTitle($Language->phrase("MasterDetailViewLink")) . "\" href=\"" . HtmlEncode($this->getViewUrl(Config("TABLE_SHOW_DETAIL") . "=t102_ho_detail")) . "\">" . HtmlImageAndText($Language->phrase("MasterDetailViewLink")) . "</a></li>";
-			if ($detailViewTblVar != "")
-				$detailViewTblVar .= ",";
-			$detailViewTblVar .= "t102_ho_detail";
-		}
-		if ($GLOBALS["t102_ho_detail_grid"]->DetailEdit && $Security->canEdit() && $Security->allowEdit(CurrentProjectID() . 't101_ho_head')) {
-			$links .= "<li><a class=\"ew-row-link ew-detail-edit\" data-action=\"edit\" data-caption=\"" . HtmlTitle($Language->phrase("MasterDetailEditLink")) . "\" href=\"" . HtmlEncode($this->getEditUrl(Config("TABLE_SHOW_DETAIL") . "=t102_ho_detail")) . "\">" . HtmlImageAndText($Language->phrase("MasterDetailEditLink")) . "</a></li>";
-			if ($detailEditTblVar != "")
-				$detailEditTblVar .= ",";
-			$detailEditTblVar .= "t102_ho_detail";
-		}
-		if ($links != "") {
-			$body .= "<button class=\"dropdown-toggle btn btn-default ew-detail\" data-toggle=\"dropdown\"></button>";
-			$body .= "<ul class=\"dropdown-menu\">". $links . "</ul>";
-		}
-		$body = "<div class=\"btn-group btn-group-sm ew-btn-group\">" . $body . "</div>";
-		$item->Body = $body;
-		$item->Visible = $Security->allowList(CurrentProjectID() . 't102_ho_detail');
-		if ($item->Visible) {
-			if ($detailTableLink != "")
-				$detailTableLink .= ",";
-			$detailTableLink .= "t102_ho_detail";
-		}
-		if ($this->ShowMultipleDetails)
-			$item->Visible = FALSE;
-
-		// Multiple details
-		if ($this->ShowMultipleDetails) {
-			$body = "<div class=\"btn-group btn-group-sm ew-btn-group\">";
-			$links = "";
-			if ($detailViewTblVar != "") {
-				$links .= "<li><a class=\"ew-row-link ew-detail-view\" data-action=\"view\" data-caption=\"" . HtmlTitle($Language->phrase("MasterDetailViewLink")) . "\" href=\"" . HtmlEncode($this->getViewUrl(Config("TABLE_SHOW_DETAIL") . "=" . $detailViewTblVar)) . "\">" . HtmlImageAndText($Language->phrase("MasterDetailViewLink")) . "</a></li>";
-			}
-			if ($detailEditTblVar != "") {
-				$links .= "<li><a class=\"ew-row-link ew-detail-edit\" data-action=\"edit\" data-caption=\"" . HtmlTitle($Language->phrase("MasterDetailEditLink")) . "\" href=\"" . HtmlEncode($this->getEditUrl(Config("TABLE_SHOW_DETAIL") . "=" . $detailEditTblVar)) . "\">" . HtmlImageAndText($Language->phrase("MasterDetailEditLink")) . "</a></li>";
-			}
-			if ($detailCopyTblVar != "") {
-				$links .= "<li><a class=\"ew-row-link ew-detail-copy\" data-action=\"add\" data-caption=\"" . HtmlTitle($Language->phrase("MasterDetailCopyLink")) . "\" href=\"" . HtmlEncode($this->getCopyUrl(Config("TABLE_SHOW_DETAIL") . "=" . $detailCopyTblVar)) . "\">" . HtmlImageAndText($Language->phrase("MasterDetailCopyLink")) . "</a></li>";
-			}
-			if ($links != "") {
-				$body .= "<button class=\"dropdown-toggle btn btn-default ew-master-detail\" title=\"" . HtmlTitle($Language->phrase("MultipleMasterDetails")) . "\" data-toggle=\"dropdown\">" . $Language->phrase("MultipleMasterDetails") . "</button>";
-				$body .= "<ul class=\"dropdown-menu ew-menu\">". $links . "</ul>";
-			}
-			$body .= "</div>";
-
-			// Multiple details
-			$item = &$option->add("details");
-			$item->Body = $body;
-		}
-
-		// Set up detail default
-		$option = $options["detail"];
-		$options["detail"]->DropDownButtonPhrase = $Language->phrase("ButtonDetails");
-		$ar = explode(",", $detailTableLink);
-		$cnt = count($ar);
-		$option->UseDropDownButton = ($cnt > 1);
-		$option->UseButtonGroup = TRUE;
-		$item = &$option->add($option->GroupOptionName);
-		$item->Body = "";
-		$item->Visible = FALSE;
-
-		// Set up action default
-		$option = $options["action"];
-		$option->DropDownButtonPhrase = $Language->phrase("ButtonActions");
-		$option->UseDropDownButton = FALSE;
-		$option->UseButtonGroup = TRUE;
-		$item = &$option->add($option->GroupOptionName);
-		$item->Body = "";
-		$item->Visible = FALSE;
+		$srchUrl = "";
+		$this->buildSearchUrl($srchUrl, $this->id); // id
+		$this->buildSearchUrl($srchUrl, $this->ho_head); // ho_head
+		$this->buildSearchUrl($srchUrl, $this->TransactionNo); // TransactionNo
+		$this->buildSearchUrl($srchUrl, $this->TransactionDate); // TransactionDate
+		$this->buildSearchUrl($srchUrl, $this->TransactionType); // TransactionType
+		$this->buildSearchUrl($srchUrl, $this->HandedOverTo); // HandedOverTo
+		$this->buildSearchUrl($srchUrl, $this->CodeNoTo); // CodeNoTo
+		$this->buildSearchUrl($srchUrl, $this->DepartmentTo); // DepartmentTo
+		$this->buildSearchUrl($srchUrl, $this->Sign1); // Sign1
+		$this->buildSearchUrl($srchUrl, $this->Sign2); // Sign2
+		$this->buildSearchUrl($srchUrl, $this->Sign3); // Sign3
+		$this->buildSearchUrl($srchUrl, $this->Sign4); // Sign4
+		if ($srchUrl != "")
+			$srchUrl .= "&";
+		$srchUrl .= "cmd=search";
+		return $srchUrl;
 	}
 
-	// Load recordset
-	public function loadRecordset($offset = -1, $rowcnt = -1)
+	// Build search URL
+	protected function buildSearchUrl(&$url, &$fld, $oprOnly = FALSE)
 	{
-
-		// Load List page SQL
-		$sql = $this->getListSql();
-		$conn = $this->getConnection();
-
-		// Load recordset
-		$dbtype = GetConnectionType($this->Dbid);
-		if ($this->UseSelectLimit) {
-			$conn->raiseErrorFn = Config("ERROR_FUNC");
-			if ($dbtype == "MSSQL") {
-				$rs = $conn->selectLimit($sql, $rowcnt, $offset, ["_hasOrderBy" => trim($this->getOrderBy()) || trim($this->getSessionOrderByList())]);
-			} else {
-				$rs = $conn->selectLimit($sql, $rowcnt, $offset);
+		global $CurrentForm;
+		$wrk = "";
+		$fldParm = $fld->Param;
+		$fldVal = $CurrentForm->getValue("x_$fldParm");
+		$fldOpr = $CurrentForm->getValue("z_$fldParm");
+		$fldCond = $CurrentForm->getValue("v_$fldParm");
+		$fldVal2 = $CurrentForm->getValue("y_$fldParm");
+		$fldOpr2 = $CurrentForm->getValue("w_$fldParm");
+		if (is_array($fldVal))
+			$fldVal = implode(Config("MULTIPLE_OPTION_SEPARATOR"), $fldVal);
+		if (is_array($fldVal2))
+			$fldVal2 = implode(Config("MULTIPLE_OPTION_SEPARATOR"), $fldVal2);
+		$fldOpr = strtoupper(trim($fldOpr));
+		$fldDataType = ($fld->IsVirtual) ? DATATYPE_STRING : $fld->DataType;
+		if ($fldOpr == "BETWEEN") {
+			$isValidValue = ($fldDataType != DATATYPE_NUMBER) ||
+				($fldDataType == DATATYPE_NUMBER && $this->searchValueIsNumeric($fld, $fldVal) && $this->searchValueIsNumeric($fld, $fldVal2));
+			if ($fldVal != "" && $fldVal2 != "" && $isValidValue) {
+				$wrk = "x_" . $fldParm . "=" . urlencode($fldVal) .
+					"&y_" . $fldParm . "=" . urlencode($fldVal2) .
+					"&z_" . $fldParm . "=" . urlencode($fldOpr);
 			}
-			$conn->raiseErrorFn = "";
 		} else {
-			$rs = LoadRecordset($sql, $conn);
+			$isValidValue = ($fldDataType != DATATYPE_NUMBER) ||
+				($fldDataType == DATATYPE_NUMBER && $this->searchValueIsNumeric($fld, $fldVal));
+			if ($fldVal != "" && $isValidValue && IsValidOperator($fldOpr, $fldDataType)) {
+				$wrk = "x_" . $fldParm . "=" . urlencode($fldVal) .
+					"&z_" . $fldParm . "=" . urlencode($fldOpr);
+			} elseif ($fldOpr == "IS NULL" || $fldOpr == "IS NOT NULL" || ($fldOpr != "" && $oprOnly && IsValidOperator($fldOpr, $fldDataType))) {
+				$wrk = "z_" . $fldParm . "=" . urlencode($fldOpr);
+			}
+			$isValidValue = ($fldDataType != DATATYPE_NUMBER) ||
+				($fldDataType == DATATYPE_NUMBER && $this->searchValueIsNumeric($fld, $fldVal2));
+			if ($fldVal2 != "" && $isValidValue && IsValidOperator($fldOpr2, $fldDataType)) {
+				if ($wrk != "")
+					$wrk .= "&v_" . $fldParm . "=" . urlencode($fldCond) . "&";
+				$wrk .= "y_" . $fldParm . "=" . urlencode($fldVal2) .
+					"&w_" . $fldParm . "=" . urlencode($fldOpr2);
+			} elseif ($fldOpr2 == "IS NULL" || $fldOpr2 == "IS NOT NULL" || ($fldOpr2 != "" && $oprOnly && IsValidOperator($fldOpr2, $fldDataType))) {
+				if ($wrk != "")
+					$wrk .= "&v_" . $fldParm . "=" . urlencode($fldCond) . "&";
+				$wrk .= "w_" . $fldParm . "=" . urlencode($fldOpr2);
+			}
 		}
-
-		// Call Recordset Selected event
-		$this->Recordset_Selected($rs);
-		return $rs;
+		if ($wrk != "") {
+			if ($url != "")
+				$url .= "&";
+			$url .= $wrk;
+		}
+	}
+	protected function searchValueIsNumeric($fld, $value)
+	{
+		if (IsFloatFormat($fld->Type))
+			$value = ConvertToFloatString($value);
+		return is_numeric($value);
 	}
 
-	// Load row based on key values
-	public function loadRow()
+	// Load search values for validation
+	protected function loadSearchValues()
 	{
-		global $Security, $Language;
-		$filter = $this->getRecordFilter();
 
-		// Call Row Selecting event
-		$this->Row_Selecting($filter);
-
-		// Load SQL based on filter
-		$this->CurrentFilter = $filter;
-		$sql = $this->getCurrentSql();
-		$conn = $this->getConnection();
-		$res = FALSE;
-		$rs = LoadRecordset($sql, $conn);
-		if ($rs && !$rs->EOF) {
-			$res = TRUE;
-			$this->loadRowValues($rs); // Load row values
-			$rs->close();
-		}
-		return $res;
-	}
-
-	// Load row values from recordset
-	public function loadRowValues($rs = NULL)
-	{
-		if ($rs && !$rs->EOF)
-			$row = $rs->fields;
-		else
-			$row = $this->newRow();
-
-		// Call Row Selected event
-		$this->Row_Selected($row);
-		if (!$rs || $rs->EOF)
-			return;
-		if ($this->AuditTrailOnView)
-			$this->writeAuditTrailOnView($row);
-		$this->id->setDbValue($row['id']);
-		$this->property_id->setDbValue($row['property_id']);
-		$this->TransactionNo->setDbValue($row['TransactionNo']);
-		$this->TransactionDate->setDbValue($row['TransactionDate']);
-		$this->TransactionType->setDbValue($row['TransactionType']);
-		$this->HandedOverTo->setDbValue($row['HandedOverTo']);
-		$this->CodeNoTo->setDbValue($row['CodeNoTo']);
-		$this->DepartmentTo->setDbValue($row['DepartmentTo']);
-		$this->HandedOverBy->setDbValue($row['HandedOverBy']);
-		if (array_key_exists('EV__HandedOverBy', $rs->fields)) {
-			$this->HandedOverBy->VirtualValue = $rs->fields('EV__HandedOverBy'); // Set up virtual field value
-		} else {
-			$this->HandedOverBy->VirtualValue = ""; // Clear value
-		}
-		$this->CodeNoBy->setDbValue($row['CodeNoBy']);
-		$this->DepartmentBy->setDbValue($row['DepartmentBy']);
-		$this->Sign1->setDbValue($row['Sign1']);
-		$this->Sign2->setDbValue($row['Sign2']);
-		$this->Sign3->setDbValue($row['Sign3']);
-		$this->Sign4->setDbValue($row['Sign4']);
-		if (!isset($GLOBALS["t102_ho_detail_grid"]))
-			$GLOBALS["t102_ho_detail_grid"] = new t102_ho_detail_grid();
-		$detailFilter = $GLOBALS["t102_ho_detail"]->sqlDetailFilter_t101_ho_head();
-		$detailFilter = str_replace("@hohead_id@", AdjustSql($this->id->DbValue, "DB"), $detailFilter);
-		$GLOBALS["t102_ho_detail"]->setCurrentMasterTable("t101_ho_head");
-		$detailFilter = $GLOBALS["t102_ho_detail"]->applyUserIDFilters($detailFilter);
-		$this->t102_ho_detail_Count = $GLOBALS["t102_ho_detail"]->loadRecordCount($detailFilter);
-	}
-
-	// Return a row with default values
-	protected function newRow()
-	{
-		$row = [];
-		$row['id'] = NULL;
-		$row['property_id'] = NULL;
-		$row['TransactionNo'] = NULL;
-		$row['TransactionDate'] = NULL;
-		$row['TransactionType'] = NULL;
-		$row['HandedOverTo'] = NULL;
-		$row['CodeNoTo'] = NULL;
-		$row['DepartmentTo'] = NULL;
-		$row['HandedOverBy'] = NULL;
-		$row['CodeNoBy'] = NULL;
-		$row['DepartmentBy'] = NULL;
-		$row['Sign1'] = NULL;
-		$row['Sign2'] = NULL;
-		$row['Sign3'] = NULL;
-		$row['Sign4'] = NULL;
-		return $row;
+		// Load search values
+		$got = FALSE;
+		if ($this->id->AdvancedSearch->post())
+			$got = TRUE;
+		if ($this->ho_head->AdvancedSearch->post())
+			$got = TRUE;
+		if ($this->TransactionNo->AdvancedSearch->post())
+			$got = TRUE;
+		if ($this->TransactionDate->AdvancedSearch->post())
+			$got = TRUE;
+		if ($this->TransactionType->AdvancedSearch->post())
+			$got = TRUE;
+		if ($this->HandedOverTo->AdvancedSearch->post())
+			$got = TRUE;
+		if ($this->CodeNoTo->AdvancedSearch->post())
+			$got = TRUE;
+		if ($this->DepartmentTo->AdvancedSearch->post())
+			$got = TRUE;
+		if ($this->Sign1->AdvancedSearch->post())
+			$got = TRUE;
+		if ($this->Sign2->AdvancedSearch->post())
+			$got = TRUE;
+		if ($this->Sign3->AdvancedSearch->post())
+			$got = TRUE;
+		if ($this->Sign4->AdvancedSearch->post())
+			$got = TRUE;
+		return $got;
 	}
 
 	// Render row values based on field settings
@@ -1131,28 +881,19 @@ class t101_ho_head_view extends t101_ho_head
 		global $Security, $Language, $CurrentLanguage;
 
 		// Initialize URLs
-		$this->AddUrl = $this->getAddUrl();
-		$this->EditUrl = $this->getEditUrl();
-		$this->CopyUrl = $this->getCopyUrl();
-		$this->DeleteUrl = $this->getDeleteUrl();
-		$this->ListUrl = $this->getListUrl();
-		$this->setupOtherOptions();
-
 		// Call Row_Rendering event
+
 		$this->Row_Rendering();
 
 		// Common render codes for all row types
 		// id
-		// property_id
+		// ho_head
 		// TransactionNo
 		// TransactionDate
 		// TransactionType
 		// HandedOverTo
 		// CodeNoTo
 		// DepartmentTo
-		// HandedOverBy
-		// CodeNoBy
-		// DepartmentBy
 		// Sign1
 		// Sign2
 		// Sign3
@@ -1164,27 +905,27 @@ class t101_ho_head_view extends t101_ho_head
 			$this->id->ViewValue = $this->id->CurrentValue;
 			$this->id->ViewCustomAttributes = "";
 
-			// property_id
-			$curVal = strval($this->property_id->CurrentValue);
+			// ho_head
+			$curVal = strval($this->ho_head->CurrentValue);
 			if ($curVal != "") {
-				$this->property_id->ViewValue = $this->property_id->lookupCacheOption($curVal);
-				if ($this->property_id->ViewValue === NULL) { // Lookup from database
+				$this->ho_head->ViewValue = $this->ho_head->lookupCacheOption($curVal);
+				if ($this->ho_head->ViewValue === NULL) { // Lookup from database
 					$filterWrk = "`id`" . SearchString("=", $curVal, DATATYPE_NUMBER, "");
-					$sqlWrk = $this->property_id->Lookup->getSql(FALSE, $filterWrk, '', $this);
+					$sqlWrk = $this->ho_head->Lookup->getSql(FALSE, $filterWrk, '', $this);
 					$rswrk = Conn()->execute($sqlWrk);
 					if ($rswrk && !$rswrk->EOF) { // Lookup values found
 						$arwrk = [];
 						$arwrk[1] = $rswrk->fields('df');
-						$this->property_id->ViewValue = $this->property_id->displayValue($arwrk);
+						$this->ho_head->ViewValue = $this->ho_head->displayValue($arwrk);
 						$rswrk->Close();
 					} else {
-						$this->property_id->ViewValue = $this->property_id->CurrentValue;
+						$this->ho_head->ViewValue = $this->ho_head->CurrentValue;
 					}
 				}
 			} else {
-				$this->property_id->ViewValue = NULL;
+				$this->ho_head->ViewValue = NULL;
 			}
-			$this->property_id->ViewCustomAttributes = "";
+			$this->ho_head->ViewCustomAttributes = "";
 
 			// TransactionNo
 			$this->TransactionNo->ViewValue = $this->TransactionNo->CurrentValue;
@@ -1192,7 +933,7 @@ class t101_ho_head_view extends t101_ho_head
 
 			// TransactionDate
 			$this->TransactionDate->ViewValue = $this->TransactionDate->CurrentValue;
-			$this->TransactionDate->ViewValue = FormatDateTime($this->TransactionDate->ViewValue, 7);
+			$this->TransactionDate->ViewValue = FormatDateTime($this->TransactionDate->ViewValue, 0);
 			$this->TransactionDate->ViewCustomAttributes = "";
 
 			// TransactionType
@@ -1250,58 +991,6 @@ class t101_ho_head_view extends t101_ho_head
 				$this->DepartmentTo->ViewValue = NULL;
 			}
 			$this->DepartmentTo->ViewCustomAttributes = "";
-
-			// HandedOverBy
-			if ($this->HandedOverBy->VirtualValue != "") {
-				$this->HandedOverBy->ViewValue = $this->HandedOverBy->VirtualValue;
-			} else {
-				$curVal = strval($this->HandedOverBy->CurrentValue);
-				if ($curVal != "") {
-					$this->HandedOverBy->ViewValue = $this->HandedOverBy->lookupCacheOption($curVal);
-					if ($this->HandedOverBy->ViewValue === NULL) { // Lookup from database
-						$filterWrk = "`id`" . SearchString("=", $curVal, DATATYPE_NUMBER, "");
-						$sqlWrk = $this->HandedOverBy->Lookup->getSql(FALSE, $filterWrk, '', $this);
-						$rswrk = Conn()->execute($sqlWrk);
-						if ($rswrk && !$rswrk->EOF) { // Lookup values found
-							$arwrk = [];
-							$arwrk[1] = $rswrk->fields('df');
-							$this->HandedOverBy->ViewValue = $this->HandedOverBy->displayValue($arwrk);
-							$rswrk->Close();
-						} else {
-							$this->HandedOverBy->ViewValue = $this->HandedOverBy->CurrentValue;
-						}
-					}
-				} else {
-					$this->HandedOverBy->ViewValue = NULL;
-				}
-			}
-			$this->HandedOverBy->ViewCustomAttributes = "";
-
-			// CodeNoBy
-			$this->CodeNoBy->ViewValue = $this->CodeNoBy->CurrentValue;
-			$this->CodeNoBy->ViewCustomAttributes = "";
-
-			// DepartmentBy
-			$curVal = strval($this->DepartmentBy->CurrentValue);
-			if ($curVal != "") {
-				$this->DepartmentBy->ViewValue = $this->DepartmentBy->lookupCacheOption($curVal);
-				if ($this->DepartmentBy->ViewValue === NULL) { // Lookup from database
-					$filterWrk = "`id`" . SearchString("=", $curVal, DATATYPE_NUMBER, "");
-					$sqlWrk = $this->DepartmentBy->Lookup->getSql(FALSE, $filterWrk, '', $this);
-					$rswrk = Conn()->execute($sqlWrk);
-					if ($rswrk && !$rswrk->EOF) { // Lookup values found
-						$arwrk = [];
-						$arwrk[1] = $rswrk->fields('df');
-						$this->DepartmentBy->ViewValue = $this->DepartmentBy->displayValue($arwrk);
-						$rswrk->Close();
-					} else {
-						$this->DepartmentBy->ViewValue = $this->DepartmentBy->CurrentValue;
-					}
-				}
-			} else {
-				$this->DepartmentBy->ViewValue = NULL;
-			}
-			$this->DepartmentBy->ViewCustomAttributes = "";
 
 			// Sign1
 			$curVal = strval($this->Sign1->CurrentValue);
@@ -1391,10 +1080,15 @@ class t101_ho_head_view extends t101_ho_head
 			}
 			$this->Sign4->ViewCustomAttributes = "";
 
-			// property_id
-			$this->property_id->LinkCustomAttributes = "";
-			$this->property_id->HrefValue = "";
-			$this->property_id->TooltipValue = "";
+			// id
+			$this->id->LinkCustomAttributes = "";
+			$this->id->HrefValue = "";
+			$this->id->TooltipValue = "";
+
+			// ho_head
+			$this->ho_head->LinkCustomAttributes = "";
+			$this->ho_head->HrefValue = "";
+			$this->ho_head->TooltipValue = "";
 
 			// TransactionNo
 			$this->TransactionNo->LinkCustomAttributes = "";
@@ -1426,21 +1120,6 @@ class t101_ho_head_view extends t101_ho_head
 			$this->DepartmentTo->HrefValue = "";
 			$this->DepartmentTo->TooltipValue = "";
 
-			// HandedOverBy
-			$this->HandedOverBy->LinkCustomAttributes = "";
-			$this->HandedOverBy->HrefValue = "";
-			$this->HandedOverBy->TooltipValue = "";
-
-			// CodeNoBy
-			$this->CodeNoBy->LinkCustomAttributes = "";
-			$this->CodeNoBy->HrefValue = "";
-			$this->CodeNoBy->TooltipValue = "";
-
-			// DepartmentBy
-			$this->DepartmentBy->LinkCustomAttributes = "";
-			$this->DepartmentBy->HrefValue = "";
-			$this->DepartmentBy->TooltipValue = "";
-
 			// Sign1
 			$this->Sign1->LinkCustomAttributes = "";
 			$this->Sign1->HrefValue = "";
@@ -1460,41 +1139,318 @@ class t101_ho_head_view extends t101_ho_head
 			$this->Sign4->LinkCustomAttributes = "";
 			$this->Sign4->HrefValue = "";
 			$this->Sign4->TooltipValue = "";
+		} elseif ($this->RowType == ROWTYPE_SEARCH) { // Search row
+
+			// id
+			$this->id->EditAttrs["class"] = "form-control";
+			$this->id->EditCustomAttributes = "";
+			$this->id->EditValue = HtmlEncode($this->id->AdvancedSearch->SearchValue);
+			$this->id->PlaceHolder = RemoveHtml($this->id->caption());
+
+			// ho_head
+			$this->ho_head->EditCustomAttributes = "";
+			$curVal = trim(strval($this->ho_head->AdvancedSearch->SearchValue));
+			if ($curVal != "")
+				$this->ho_head->AdvancedSearch->ViewValue = $this->ho_head->lookupCacheOption($curVal);
+			else
+				$this->ho_head->AdvancedSearch->ViewValue = $this->ho_head->Lookup !== NULL && is_array($this->ho_head->Lookup->Options) ? $curVal : NULL;
+			if ($this->ho_head->AdvancedSearch->ViewValue !== NULL) { // Load from cache
+				$this->ho_head->EditValue = array_values($this->ho_head->Lookup->Options);
+				if ($this->ho_head->AdvancedSearch->ViewValue == "")
+					$this->ho_head->AdvancedSearch->ViewValue = $Language->phrase("PleaseSelect");
+			} else { // Lookup from database
+				if ($curVal == "") {
+					$filterWrk = "0=1";
+				} else {
+					$filterWrk = "`id`" . SearchString("=", $this->ho_head->AdvancedSearch->SearchValue, DATATYPE_NUMBER, "");
+				}
+				$sqlWrk = $this->ho_head->Lookup->getSql(TRUE, $filterWrk, '', $this);
+				$rswrk = Conn()->execute($sqlWrk);
+				if ($rswrk && !$rswrk->EOF) { // Lookup values found
+					$arwrk = [];
+					$arwrk[1] = HtmlEncode($rswrk->fields('df'));
+					$this->ho_head->AdvancedSearch->ViewValue = $this->ho_head->displayValue($arwrk);
+				} else {
+					$this->ho_head->AdvancedSearch->ViewValue = $Language->phrase("PleaseSelect");
+				}
+				$arwrk = $rswrk ? $rswrk->getRows() : [];
+				if ($rswrk)
+					$rswrk->close();
+				$this->ho_head->EditValue = $arwrk;
+			}
+
+			// TransactionNo
+			$this->TransactionNo->EditAttrs["class"] = "form-control";
+			$this->TransactionNo->EditCustomAttributes = "";
+			if (!$this->TransactionNo->Raw)
+				$this->TransactionNo->AdvancedSearch->SearchValue = HtmlDecode($this->TransactionNo->AdvancedSearch->SearchValue);
+			$this->TransactionNo->EditValue = HtmlEncode($this->TransactionNo->AdvancedSearch->SearchValue);
+			$this->TransactionNo->PlaceHolder = RemoveHtml($this->TransactionNo->caption());
+
+			// TransactionDate
+			$this->TransactionDate->EditAttrs["class"] = "form-control";
+			$this->TransactionDate->EditCustomAttributes = "";
+			$this->TransactionDate->EditValue = HtmlEncode(FormatDateTime(UnFormatDateTime($this->TransactionDate->AdvancedSearch->SearchValue, 0), 8));
+			$this->TransactionDate->PlaceHolder = RemoveHtml($this->TransactionDate->caption());
+
+			// TransactionType
+			$this->TransactionType->EditAttrs["class"] = "form-control";
+			$this->TransactionType->EditCustomAttributes = "";
+			$this->TransactionType->EditValue = $this->TransactionType->options(TRUE);
+
+			// HandedOverTo
+			$this->HandedOverTo->EditCustomAttributes = "";
+			$curVal = trim(strval($this->HandedOverTo->AdvancedSearch->SearchValue));
+			if ($curVal != "")
+				$this->HandedOverTo->AdvancedSearch->ViewValue = $this->HandedOverTo->lookupCacheOption($curVal);
+			else
+				$this->HandedOverTo->AdvancedSearch->ViewValue = $this->HandedOverTo->Lookup !== NULL && is_array($this->HandedOverTo->Lookup->Options) ? $curVal : NULL;
+			if ($this->HandedOverTo->AdvancedSearch->ViewValue !== NULL) { // Load from cache
+				$this->HandedOverTo->EditValue = array_values($this->HandedOverTo->Lookup->Options);
+				if ($this->HandedOverTo->AdvancedSearch->ViewValue == "")
+					$this->HandedOverTo->AdvancedSearch->ViewValue = $Language->phrase("PleaseSelect");
+			} else { // Lookup from database
+				if ($curVal == "") {
+					$filterWrk = "0=1";
+				} else {
+					$filterWrk = "`id`" . SearchString("=", $this->HandedOverTo->AdvancedSearch->SearchValue, DATATYPE_NUMBER, "");
+				}
+				$sqlWrk = $this->HandedOverTo->Lookup->getSql(TRUE, $filterWrk, '', $this);
+				$rswrk = Conn()->execute($sqlWrk);
+				if ($rswrk && !$rswrk->EOF) { // Lookup values found
+					$arwrk = [];
+					$arwrk[1] = HtmlEncode($rswrk->fields('df'));
+					$this->HandedOverTo->AdvancedSearch->ViewValue = $this->HandedOverTo->displayValue($arwrk);
+				} else {
+					$this->HandedOverTo->AdvancedSearch->ViewValue = $Language->phrase("PleaseSelect");
+				}
+				$arwrk = $rswrk ? $rswrk->getRows() : [];
+				if ($rswrk)
+					$rswrk->close();
+				$this->HandedOverTo->EditValue = $arwrk;
+			}
+
+			// CodeNoTo
+			$this->CodeNoTo->EditAttrs["class"] = "form-control";
+			$this->CodeNoTo->EditCustomAttributes = "";
+			if (!$this->CodeNoTo->Raw)
+				$this->CodeNoTo->AdvancedSearch->SearchValue = HtmlDecode($this->CodeNoTo->AdvancedSearch->SearchValue);
+			$this->CodeNoTo->EditValue = HtmlEncode($this->CodeNoTo->AdvancedSearch->SearchValue);
+			$this->CodeNoTo->PlaceHolder = RemoveHtml($this->CodeNoTo->caption());
+
+			// DepartmentTo
+			$this->DepartmentTo->EditCustomAttributes = "";
+			$curVal = trim(strval($this->DepartmentTo->AdvancedSearch->SearchValue));
+			if ($curVal != "")
+				$this->DepartmentTo->AdvancedSearch->ViewValue = $this->DepartmentTo->lookupCacheOption($curVal);
+			else
+				$this->DepartmentTo->AdvancedSearch->ViewValue = $this->DepartmentTo->Lookup !== NULL && is_array($this->DepartmentTo->Lookup->Options) ? $curVal : NULL;
+			if ($this->DepartmentTo->AdvancedSearch->ViewValue !== NULL) { // Load from cache
+				$this->DepartmentTo->EditValue = array_values($this->DepartmentTo->Lookup->Options);
+				if ($this->DepartmentTo->AdvancedSearch->ViewValue == "")
+					$this->DepartmentTo->AdvancedSearch->ViewValue = $Language->phrase("PleaseSelect");
+			} else { // Lookup from database
+				if ($curVal == "") {
+					$filterWrk = "0=1";
+				} else {
+					$filterWrk = "`id`" . SearchString("=", $this->DepartmentTo->AdvancedSearch->SearchValue, DATATYPE_NUMBER, "");
+				}
+				$sqlWrk = $this->DepartmentTo->Lookup->getSql(TRUE, $filterWrk, '', $this);
+				$rswrk = Conn()->execute($sqlWrk);
+				if ($rswrk && !$rswrk->EOF) { // Lookup values found
+					$arwrk = [];
+					$arwrk[1] = HtmlEncode($rswrk->fields('df'));
+					$this->DepartmentTo->AdvancedSearch->ViewValue = $this->DepartmentTo->displayValue($arwrk);
+				} else {
+					$this->DepartmentTo->AdvancedSearch->ViewValue = $Language->phrase("PleaseSelect");
+				}
+				$arwrk = $rswrk ? $rswrk->getRows() : [];
+				if ($rswrk)
+					$rswrk->close();
+				$this->DepartmentTo->EditValue = $arwrk;
+			}
+
+			// Sign1
+			$this->Sign1->EditCustomAttributes = "";
+			$curVal = trim(strval($this->Sign1->AdvancedSearch->SearchValue));
+			if ($curVal != "")
+				$this->Sign1->AdvancedSearch->ViewValue = $this->Sign1->lookupCacheOption($curVal);
+			else
+				$this->Sign1->AdvancedSearch->ViewValue = $this->Sign1->Lookup !== NULL && is_array($this->Sign1->Lookup->Options) ? $curVal : NULL;
+			if ($this->Sign1->AdvancedSearch->ViewValue !== NULL) { // Load from cache
+				$this->Sign1->EditValue = array_values($this->Sign1->Lookup->Options);
+				if ($this->Sign1->AdvancedSearch->ViewValue == "")
+					$this->Sign1->AdvancedSearch->ViewValue = $Language->phrase("PleaseSelect");
+			} else { // Lookup from database
+				if ($curVal == "") {
+					$filterWrk = "0=1";
+				} else {
+					$filterWrk = "`id`" . SearchString("=", $this->Sign1->AdvancedSearch->SearchValue, DATATYPE_NUMBER, "");
+				}
+				$sqlWrk = $this->Sign1->Lookup->getSql(TRUE, $filterWrk, '', $this);
+				$rswrk = Conn()->execute($sqlWrk);
+				if ($rswrk && !$rswrk->EOF) { // Lookup values found
+					$arwrk = [];
+					$arwrk[1] = HtmlEncode($rswrk->fields('df'));
+					$this->Sign1->AdvancedSearch->ViewValue = $this->Sign1->displayValue($arwrk);
+				} else {
+					$this->Sign1->AdvancedSearch->ViewValue = $Language->phrase("PleaseSelect");
+				}
+				$arwrk = $rswrk ? $rswrk->getRows() : [];
+				if ($rswrk)
+					$rswrk->close();
+				$this->Sign1->EditValue = $arwrk;
+			}
+
+			// Sign2
+			$this->Sign2->EditCustomAttributes = "";
+			$curVal = trim(strval($this->Sign2->AdvancedSearch->SearchValue));
+			if ($curVal != "")
+				$this->Sign2->AdvancedSearch->ViewValue = $this->Sign2->lookupCacheOption($curVal);
+			else
+				$this->Sign2->AdvancedSearch->ViewValue = $this->Sign2->Lookup !== NULL && is_array($this->Sign2->Lookup->Options) ? $curVal : NULL;
+			if ($this->Sign2->AdvancedSearch->ViewValue !== NULL) { // Load from cache
+				$this->Sign2->EditValue = array_values($this->Sign2->Lookup->Options);
+				if ($this->Sign2->AdvancedSearch->ViewValue == "")
+					$this->Sign2->AdvancedSearch->ViewValue = $Language->phrase("PleaseSelect");
+			} else { // Lookup from database
+				if ($curVal == "") {
+					$filterWrk = "0=1";
+				} else {
+					$filterWrk = "`id`" . SearchString("=", $this->Sign2->AdvancedSearch->SearchValue, DATATYPE_NUMBER, "");
+				}
+				$sqlWrk = $this->Sign2->Lookup->getSql(TRUE, $filterWrk, '', $this);
+				$rswrk = Conn()->execute($sqlWrk);
+				if ($rswrk && !$rswrk->EOF) { // Lookup values found
+					$arwrk = [];
+					$arwrk[1] = HtmlEncode($rswrk->fields('df'));
+					$this->Sign2->AdvancedSearch->ViewValue = $this->Sign2->displayValue($arwrk);
+				} else {
+					$this->Sign2->AdvancedSearch->ViewValue = $Language->phrase("PleaseSelect");
+				}
+				$arwrk = $rswrk ? $rswrk->getRows() : [];
+				if ($rswrk)
+					$rswrk->close();
+				$this->Sign2->EditValue = $arwrk;
+			}
+
+			// Sign3
+			$this->Sign3->EditCustomAttributes = "";
+			$curVal = trim(strval($this->Sign3->AdvancedSearch->SearchValue));
+			if ($curVal != "")
+				$this->Sign3->AdvancedSearch->ViewValue = $this->Sign3->lookupCacheOption($curVal);
+			else
+				$this->Sign3->AdvancedSearch->ViewValue = $this->Sign3->Lookup !== NULL && is_array($this->Sign3->Lookup->Options) ? $curVal : NULL;
+			if ($this->Sign3->AdvancedSearch->ViewValue !== NULL) { // Load from cache
+				$this->Sign3->EditValue = array_values($this->Sign3->Lookup->Options);
+				if ($this->Sign3->AdvancedSearch->ViewValue == "")
+					$this->Sign3->AdvancedSearch->ViewValue = $Language->phrase("PleaseSelect");
+			} else { // Lookup from database
+				if ($curVal == "") {
+					$filterWrk = "0=1";
+				} else {
+					$filterWrk = "`id`" . SearchString("=", $this->Sign3->AdvancedSearch->SearchValue, DATATYPE_NUMBER, "");
+				}
+				$sqlWrk = $this->Sign3->Lookup->getSql(TRUE, $filterWrk, '', $this);
+				$rswrk = Conn()->execute($sqlWrk);
+				if ($rswrk && !$rswrk->EOF) { // Lookup values found
+					$arwrk = [];
+					$arwrk[1] = HtmlEncode($rswrk->fields('df'));
+					$this->Sign3->AdvancedSearch->ViewValue = $this->Sign3->displayValue($arwrk);
+				} else {
+					$this->Sign3->AdvancedSearch->ViewValue = $Language->phrase("PleaseSelect");
+				}
+				$arwrk = $rswrk ? $rswrk->getRows() : [];
+				if ($rswrk)
+					$rswrk->close();
+				$this->Sign3->EditValue = $arwrk;
+			}
+
+			// Sign4
+			$this->Sign4->EditCustomAttributes = "";
+			$curVal = trim(strval($this->Sign4->AdvancedSearch->SearchValue));
+			if ($curVal != "")
+				$this->Sign4->AdvancedSearch->ViewValue = $this->Sign4->lookupCacheOption($curVal);
+			else
+				$this->Sign4->AdvancedSearch->ViewValue = $this->Sign4->Lookup !== NULL && is_array($this->Sign4->Lookup->Options) ? $curVal : NULL;
+			if ($this->Sign4->AdvancedSearch->ViewValue !== NULL) { // Load from cache
+				$this->Sign4->EditValue = array_values($this->Sign4->Lookup->Options);
+				if ($this->Sign4->AdvancedSearch->ViewValue == "")
+					$this->Sign4->AdvancedSearch->ViewValue = $Language->phrase("PleaseSelect");
+			} else { // Lookup from database
+				if ($curVal == "") {
+					$filterWrk = "0=1";
+				} else {
+					$filterWrk = "`id`" . SearchString("=", $this->Sign4->AdvancedSearch->SearchValue, DATATYPE_NUMBER, "");
+				}
+				$sqlWrk = $this->Sign4->Lookup->getSql(TRUE, $filterWrk, '', $this);
+				$rswrk = Conn()->execute($sqlWrk);
+				if ($rswrk && !$rswrk->EOF) { // Lookup values found
+					$arwrk = [];
+					$arwrk[1] = HtmlEncode($rswrk->fields('df'));
+					$this->Sign4->AdvancedSearch->ViewValue = $this->Sign4->displayValue($arwrk);
+				} else {
+					$this->Sign4->AdvancedSearch->ViewValue = $Language->phrase("PleaseSelect");
+				}
+				$arwrk = $rswrk ? $rswrk->getRows() : [];
+				if ($rswrk)
+					$rswrk->close();
+				$this->Sign4->EditValue = $arwrk;
+			}
 		}
+		if ($this->RowType == ROWTYPE_ADD || $this->RowType == ROWTYPE_EDIT || $this->RowType == ROWTYPE_SEARCH) // Add/Edit/Search row
+			$this->setupFieldTitles();
 
 		// Call Row Rendered event
 		if ($this->RowType != ROWTYPE_AGGREGATEINIT)
 			$this->Row_Rendered();
 	}
 
-	// Set up detail parms based on QueryString
-	protected function setupDetailParms()
+	// Validate search
+	protected function validateSearch()
 	{
+		global $SearchError;
 
-		// Get the keys for master table
-		$detailTblVar = Get(Config("TABLE_SHOW_DETAIL"));
-		if ($detailTblVar !== NULL) {
-			$this->setCurrentDetailTable($detailTblVar);
-		} else {
-			$detailTblVar = $this->getCurrentDetailTable();
-		}
-		if ($detailTblVar != "") {
-			$detailTblVar = explode(",", $detailTblVar);
-			if (in_array("t102_ho_detail", $detailTblVar)) {
-				if (!isset($GLOBALS["t102_ho_detail_grid"]))
-					$GLOBALS["t102_ho_detail_grid"] = new t102_ho_detail_grid();
-				if ($GLOBALS["t102_ho_detail_grid"]->DetailView) {
-					$GLOBALS["t102_ho_detail_grid"]->CurrentMode = "view";
+		// Initialize
+		$SearchError = "";
 
-					// Save current master table to detail table
-					$GLOBALS["t102_ho_detail_grid"]->setCurrentMasterTable($this->TableVar);
-					$GLOBALS["t102_ho_detail_grid"]->setStartRecordNumber(1);
-					$GLOBALS["t102_ho_detail_grid"]->hohead_id->IsDetailKey = TRUE;
-					$GLOBALS["t102_ho_detail_grid"]->hohead_id->CurrentValue = $this->id->CurrentValue;
-					$GLOBALS["t102_ho_detail_grid"]->hohead_id->setSessionValue($GLOBALS["t102_ho_detail_grid"]->hohead_id->CurrentValue);
-				}
-			}
+		// Check if validation required
+		if (!Config("SERVER_VALIDATE"))
+			return TRUE;
+		if (!CheckInteger($this->id->AdvancedSearch->SearchValue)) {
+			AddMessage($SearchError, $this->id->errorMessage());
 		}
+		if (!CheckDate($this->TransactionDate->AdvancedSearch->SearchValue)) {
+			AddMessage($SearchError, $this->TransactionDate->errorMessage());
+		}
+
+		// Return validate result
+		$validateSearch = ($SearchError == "");
+
+		// Call Form_CustomValidate event
+		$formCustomError = "";
+		$validateSearch = $validateSearch && $this->Form_CustomValidate($formCustomError);
+		if ($formCustomError != "") {
+			AddMessage($SearchError, $formCustomError);
+		}
+		return $validateSearch;
+	}
+
+	// Load advanced search
+	public function loadAdvancedSearch()
+	{
+		$this->id->AdvancedSearch->load();
+		$this->ho_head->AdvancedSearch->load();
+		$this->TransactionNo->AdvancedSearch->load();
+		$this->TransactionDate->AdvancedSearch->load();
+		$this->TransactionType->AdvancedSearch->load();
+		$this->HandedOverTo->AdvancedSearch->load();
+		$this->CodeNoTo->AdvancedSearch->load();
+		$this->DepartmentTo->AdvancedSearch->load();
+		$this->Sign1->AdvancedSearch->load();
+		$this->Sign2->AdvancedSearch->load();
+		$this->Sign3->AdvancedSearch->load();
+		$this->Sign4->AdvancedSearch->load();
 	}
 
 	// Set up Breadcrumb
@@ -1503,9 +1459,9 @@ class t101_ho_head_view extends t101_ho_head
 		global $Breadcrumb, $Language;
 		$Breadcrumb = new Breadcrumb();
 		$url = substr(CurrentUrl(), strrpos(CurrentUrl(), "/")+1);
-		$Breadcrumb->add("list", $this->TableVar, $this->addMasterUrl("t101_ho_headlist.php"), "", $this->TableVar, TRUE);
-		$pageId = "view";
-		$Breadcrumb->add("view", $pageId, $url);
+		$Breadcrumb->add("list", $this->TableVar, $this->addMasterUrl("t103_ho1_headlist.php"), "", $this->TableVar, TRUE);
+		$pageId = "search";
+		$Breadcrumb->add("search", $pageId, $url);
 	}
 
 	// Setup lookup options
@@ -1522,17 +1478,13 @@ class t101_ho_head_view extends t101_ho_head
 
 			// Set up lookup SQL and connection
 			switch ($fld->FieldVar) {
-				case "x_property_id":
+				case "x_ho_head":
 					break;
 				case "x_TransactionType":
 					break;
 				case "x_HandedOverTo":
 					break;
 				case "x_DepartmentTo":
-					break;
-				case "x_HandedOverBy":
-					break;
-				case "x_DepartmentBy":
 					break;
 				case "x_Sign1":
 					break;
@@ -1562,15 +1514,11 @@ class t101_ho_head_view extends t101_ho_head
 
 					// Format the field values
 					switch ($fld->FieldVar) {
-						case "x_property_id":
+						case "x_ho_head":
 							break;
 						case "x_HandedOverTo":
 							break;
 						case "x_DepartmentTo":
-							break;
-						case "x_HandedOverBy":
-							break;
-						case "x_DepartmentBy":
 							break;
 						case "x_Sign1":
 							break;
@@ -1588,44 +1536,6 @@ class t101_ho_head_view extends t101_ho_head
 					$rs->close();
 				$fld->Lookup->Options = $ar;
 			}
-		}
-	}
-
-	// Set up starting record parameters
-	public function setupStartRecord()
-	{
-		if ($this->DisplayRecords == 0)
-			return;
-		if ($this->isPageRequest()) { // Validate request
-			$startRec = Get(Config("TABLE_START_REC"));
-			$pageNo = Get(Config("TABLE_PAGE_NO"));
-			if ($pageNo !== NULL) { // Check for "pageno" parameter first
-				if (is_numeric($pageNo)) {
-					$this->StartRecord = ($pageNo - 1) * $this->DisplayRecords + 1;
-					if ($this->StartRecord <= 0) {
-						$this->StartRecord = 1;
-					} elseif ($this->StartRecord >= (int)(($this->TotalRecords - 1)/$this->DisplayRecords) * $this->DisplayRecords + 1) {
-						$this->StartRecord = (int)(($this->TotalRecords - 1)/$this->DisplayRecords) * $this->DisplayRecords + 1;
-					}
-					$this->setStartRecordNumber($this->StartRecord);
-				}
-			} elseif ($startRec !== NULL) { // Check for "start" parameter
-				$this->StartRecord = $startRec;
-				$this->setStartRecordNumber($this->StartRecord);
-			}
-		}
-		$this->StartRecord = $this->getStartRecordNumber();
-
-		// Check if correct start record counter
-		if (!is_numeric($this->StartRecord) || $this->StartRecord == "") { // Avoid invalid start record counter
-			$this->StartRecord = 1; // Reset start record counter
-			$this->setStartRecordNumber($this->StartRecord);
-		} elseif ($this->StartRecord > $this->TotalRecords) { // Avoid starting record > total records
-			$this->StartRecord = (int)(($this->TotalRecords - 1)/$this->DisplayRecords) * $this->DisplayRecords + 1; // Point to last page first record
-			$this->setStartRecordNumber($this->StartRecord);
-		} elseif (($this->StartRecord - 1) % $this->DisplayRecords != 0) {
-			$this->StartRecord = (int)(($this->StartRecord - 1)/$this->DisplayRecords) * $this->DisplayRecords + 1; // Point to page boundary
-			$this->setStartRecordNumber($this->StartRecord);
 		}
 	}
 
@@ -1689,30 +1599,11 @@ class t101_ho_head_view extends t101_ho_head
 
 	}
 
-	// Page Exporting event
-	// $this->ExportDoc = export document object
-	function Page_Exporting() {
+	// Form Custom Validate event
+	function Form_CustomValidate(&$customError) {
 
-		//$this->ExportDoc->Text = "my header"; // Export header
-		//return FALSE; // Return FALSE to skip default export and use Row_Export event
-
-		return TRUE; // Return TRUE to use default export and skip Row_Export event
-	}
-
-	// Row Export event
-	// $this->ExportDoc = export document object
-	function Row_Export($rs) {
-
-		//$this->ExportDoc->Text .= "my content"; // Build HTML with field value: $rs["MyField"] or $this->MyField->ViewValue
-	}
-
-	// Page Exported event
-	// $this->ExportDoc = export document object
-	function Page_Exported() {
-
-		//$this->ExportDoc->Text .= "my footer"; // Export footer
-		//echo $this->ExportDoc->Text;
-
+		// Return error message in CustomError
+		return TRUE;
 	}
 } // End class
 ?>

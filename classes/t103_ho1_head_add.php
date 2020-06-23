@@ -4,7 +4,7 @@ namespace PHPMaker2020\p_simasset1;
 /**
  * Page class
  */
-class t101_ho_head_add extends t101_ho_head
+class t103_ho1_head_add extends t103_ho1_head
 {
 
 	// Page ID
@@ -14,10 +14,10 @@ class t101_ho_head_add extends t101_ho_head
 	public $ProjectID = "{E1C6E322-15B9-474C-85CF-A99378A9BC2B}";
 
 	// Table name
-	public $TableName = 't101_ho_head';
+	public $TableName = 't103_ho1_head';
 
 	// Page object name
-	public $PageObjName = "t101_ho_head_add";
+	public $PageObjName = "t103_ho1_head_add";
 
 	// Audit Trail
 	public $AuditTrailOnAdd = TRUE;
@@ -349,10 +349,10 @@ class t101_ho_head_add extends t101_ho_head
 		// Parent constuctor
 		parent::__construct();
 
-		// Table object (t101_ho_head)
-		if (!isset($GLOBALS["t101_ho_head"]) || get_class($GLOBALS["t101_ho_head"]) == PROJECT_NAMESPACE . "t101_ho_head") {
-			$GLOBALS["t101_ho_head"] = &$this;
-			$GLOBALS["Table"] = &$GLOBALS["t101_ho_head"];
+		// Table object (t103_ho1_head)
+		if (!isset($GLOBALS["t103_ho1_head"]) || get_class($GLOBALS["t103_ho1_head"]) == PROJECT_NAMESPACE . "t103_ho1_head") {
+			$GLOBALS["t103_ho1_head"] = &$this;
+			$GLOBALS["Table"] = &$GLOBALS["t103_ho1_head"];
 		}
 
 		// Table object (t201_users)
@@ -365,7 +365,7 @@ class t101_ho_head_add extends t101_ho_head
 
 		// Table name (for backward compatibility only)
 		if (!defined(PROJECT_NAMESPACE . "TABLE_NAME"))
-			define(PROJECT_NAMESPACE . "TABLE_NAME", 't101_ho_head');
+			define(PROJECT_NAMESPACE . "TABLE_NAME", 't103_ho1_head');
 
 		// Start timer
 		if (!isset($GLOBALS["DebugTimer"]))
@@ -394,14 +394,14 @@ class t101_ho_head_add extends t101_ho_head
 		Page_Unloaded();
 
 		// Export
-		global $t101_ho_head;
+		global $t103_ho1_head;
 		if ($this->CustomExport && $this->CustomExport == $this->Export && array_key_exists($this->CustomExport, Config("EXPORT_CLASSES"))) {
 				$content = ob_get_contents();
 			if ($ExportFileName == "")
 				$ExportFileName = $this->TableVar;
 			$class = PROJECT_NAMESPACE . Config("EXPORT_CLASSES." . $this->CustomExport);
 			if (class_exists($class)) {
-				$doc = new $class($t101_ho_head);
+				$doc = new $class($t103_ho1_head);
 				$doc->Text = @$content;
 				if ($this->isExport("email"))
 					echo $this->exportEmail($doc->Text);
@@ -436,7 +436,7 @@ class t101_ho_head_add extends t101_ho_head
 				$pageName = GetPageName($url);
 				if ($pageName != $this->getListUrl()) { // Not List page
 					$row["caption"] = $this->getModalCaption($pageName);
-					if ($pageName == "t101_ho_headview.php")
+					if ($pageName == "t103_ho1_headview.php")
 						$row["view"] = "1";
 				} else { // List page should not be shown as modal => error
 					$row["error"] = $this->getFailureMessage();
@@ -675,7 +675,7 @@ class t101_ho_head_add extends t101_ho_head
 				$Security->saveLastUrl();
 				$this->setFailureMessage(DeniedMessage()); // Set no permission
 				if ($Security->canList())
-					$this->terminate(GetUrl("t101_ho_headlist.php"));
+					$this->terminate(GetUrl("t103_ho1_headlist.php"));
 				else
 					$this->terminate(GetUrl("login.php"));
 				return;
@@ -691,16 +691,13 @@ class t101_ho_head_add extends t101_ho_head
 		$CurrentForm = new HttpForm();
 		$this->CurrentAction = Param("action"); // Set up current action
 		$this->id->Visible = FALSE;
-		$this->property_id->setVisibility();
+		$this->ho_head->setVisibility();
 		$this->TransactionNo->setVisibility();
 		$this->TransactionDate->setVisibility();
 		$this->TransactionType->setVisibility();
 		$this->HandedOverTo->setVisibility();
 		$this->CodeNoTo->setVisibility();
 		$this->DepartmentTo->setVisibility();
-		$this->HandedOverBy->setVisibility();
-		$this->CodeNoBy->setVisibility();
-		$this->DepartmentBy->setVisibility();
 		$this->Sign1->setVisibility();
 		$this->Sign2->setVisibility();
 		$this->Sign3->setVisibility();
@@ -726,11 +723,9 @@ class t101_ho_head_add extends t101_ho_head
 		$this->createToken();
 
 		// Set up lookup cache
-		$this->setupLookupOptions($this->property_id);
+		$this->setupLookupOptions($this->ho_head);
 		$this->setupLookupOptions($this->HandedOverTo);
 		$this->setupLookupOptions($this->DepartmentTo);
-		$this->setupLookupOptions($this->HandedOverBy);
-		$this->setupLookupOptions($this->DepartmentBy);
 		$this->setupLookupOptions($this->Sign1);
 		$this->setupLookupOptions($this->Sign2);
 		$this->setupLookupOptions($this->Sign3);
@@ -739,7 +734,7 @@ class t101_ho_head_add extends t101_ho_head
 		// Check permission
 		if (!$Security->canAdd()) {
 			$this->setFailureMessage(DeniedMessage()); // No permission
-			$this->terminate("t101_ho_headlist.php");
+			$this->terminate("t103_ho1_headlist.php");
 			return;
 		}
 
@@ -807,7 +802,7 @@ class t101_ho_head_add extends t101_ho_head
 				if (!$loaded) { // Record not loaded
 					if ($this->getFailureMessage() == "")
 						$this->setFailureMessage($Language->phrase("NoRecord")); // No record found
-					$this->terminate("t101_ho_headlist.php"); // No matching record, return to list
+					$this->terminate("t103_ho1_headlist.php"); // No matching record, return to list
 				}
 
 				// Set up detail parameters
@@ -822,9 +817,9 @@ class t101_ho_head_add extends t101_ho_head
 						$returnUrl = $this->getDetailUrl();
 					else
 						$returnUrl = $this->getReturnUrl();
-					if (GetPageName($returnUrl) == "t101_ho_headlist.php")
+					if (GetPageName($returnUrl) == "t103_ho1_headlist.php")
 						$returnUrl = $this->addMasterUrl($returnUrl); // List page, return to List page with correct master key if necessary
-					elseif (GetPageName($returnUrl) == "t101_ho_headview.php")
+					elseif (GetPageName($returnUrl) == "t103_ho1_headview.php")
 						$returnUrl = $this->getViewUrl(); // View page, return to View page with keyurl directly
 					if (IsApi()) { // Return to caller
 						$this->terminate(TRUE);
@@ -866,25 +861,19 @@ class t101_ho_head_add extends t101_ho_head
 	{
 		$this->id->CurrentValue = NULL;
 		$this->id->OldValue = $this->id->CurrentValue;
-		$this->property_id->CurrentValue = NULL;
-		$this->property_id->OldValue = $this->property_id->CurrentValue;
+		$this->ho_head->CurrentValue = NULL;
+		$this->ho_head->OldValue = $this->ho_head->CurrentValue;
 		$this->TransactionNo->CurrentValue = NULL;
 		$this->TransactionNo->OldValue = $this->TransactionNo->CurrentValue;
 		$this->TransactionDate->CurrentValue = NULL;
 		$this->TransactionDate->OldValue = $this->TransactionDate->CurrentValue;
-		$this->TransactionType->CurrentValue = 0;
+		$this->TransactionType->CurrentValue = 1;
 		$this->HandedOverTo->CurrentValue = NULL;
 		$this->HandedOverTo->OldValue = $this->HandedOverTo->CurrentValue;
 		$this->CodeNoTo->CurrentValue = NULL;
 		$this->CodeNoTo->OldValue = $this->CodeNoTo->CurrentValue;
 		$this->DepartmentTo->CurrentValue = NULL;
 		$this->DepartmentTo->OldValue = $this->DepartmentTo->CurrentValue;
-		$this->HandedOverBy->CurrentValue = NULL;
-		$this->HandedOverBy->OldValue = $this->HandedOverBy->CurrentValue;
-		$this->CodeNoBy->CurrentValue = NULL;
-		$this->CodeNoBy->OldValue = $this->CodeNoBy->CurrentValue;
-		$this->DepartmentBy->CurrentValue = NULL;
-		$this->DepartmentBy->OldValue = $this->DepartmentBy->CurrentValue;
 		$this->Sign1->CurrentValue = NULL;
 		$this->Sign1->OldValue = $this->Sign1->CurrentValue;
 		$this->Sign2->CurrentValue = NULL;
@@ -902,13 +891,13 @@ class t101_ho_head_add extends t101_ho_head
 		// Load from form
 		global $CurrentForm;
 
-		// Check field name 'property_id' first before field var 'x_property_id'
-		$val = $CurrentForm->hasValue("property_id") ? $CurrentForm->getValue("property_id") : $CurrentForm->getValue("x_property_id");
-		if (!$this->property_id->IsDetailKey) {
+		// Check field name 'ho_head' first before field var 'x_ho_head'
+		$val = $CurrentForm->hasValue("ho_head") ? $CurrentForm->getValue("ho_head") : $CurrentForm->getValue("x_ho_head");
+		if (!$this->ho_head->IsDetailKey) {
 			if (IsApi() && $val == NULL)
-				$this->property_id->Visible = FALSE; // Disable update for API request
+				$this->ho_head->Visible = FALSE; // Disable update for API request
 			else
-				$this->property_id->setFormValue($val);
+				$this->ho_head->setFormValue($val);
 		}
 
 		// Check field name 'TransactionNo' first before field var 'x_TransactionNo'
@@ -927,7 +916,7 @@ class t101_ho_head_add extends t101_ho_head
 				$this->TransactionDate->Visible = FALSE; // Disable update for API request
 			else
 				$this->TransactionDate->setFormValue($val);
-			$this->TransactionDate->CurrentValue = UnFormatDateTime($this->TransactionDate->CurrentValue, 7);
+			$this->TransactionDate->CurrentValue = UnFormatDateTime($this->TransactionDate->CurrentValue, 0);
 		}
 
 		// Check field name 'TransactionType' first before field var 'x_TransactionType'
@@ -964,33 +953,6 @@ class t101_ho_head_add extends t101_ho_head
 				$this->DepartmentTo->Visible = FALSE; // Disable update for API request
 			else
 				$this->DepartmentTo->setFormValue($val);
-		}
-
-		// Check field name 'HandedOverBy' first before field var 'x_HandedOverBy'
-		$val = $CurrentForm->hasValue("HandedOverBy") ? $CurrentForm->getValue("HandedOverBy") : $CurrentForm->getValue("x_HandedOverBy");
-		if (!$this->HandedOverBy->IsDetailKey) {
-			if (IsApi() && $val == NULL)
-				$this->HandedOverBy->Visible = FALSE; // Disable update for API request
-			else
-				$this->HandedOverBy->setFormValue($val);
-		}
-
-		// Check field name 'CodeNoBy' first before field var 'x_CodeNoBy'
-		$val = $CurrentForm->hasValue("CodeNoBy") ? $CurrentForm->getValue("CodeNoBy") : $CurrentForm->getValue("x_CodeNoBy");
-		if (!$this->CodeNoBy->IsDetailKey) {
-			if (IsApi() && $val == NULL)
-				$this->CodeNoBy->Visible = FALSE; // Disable update for API request
-			else
-				$this->CodeNoBy->setFormValue($val);
-		}
-
-		// Check field name 'DepartmentBy' first before field var 'x_DepartmentBy'
-		$val = $CurrentForm->hasValue("DepartmentBy") ? $CurrentForm->getValue("DepartmentBy") : $CurrentForm->getValue("x_DepartmentBy");
-		if (!$this->DepartmentBy->IsDetailKey) {
-			if (IsApi() && $val == NULL)
-				$this->DepartmentBy->Visible = FALSE; // Disable update for API request
-			else
-				$this->DepartmentBy->setFormValue($val);
 		}
 
 		// Check field name 'Sign1' first before field var 'x_Sign1'
@@ -1037,17 +999,14 @@ class t101_ho_head_add extends t101_ho_head
 	public function restoreFormValues()
 	{
 		global $CurrentForm;
-		$this->property_id->CurrentValue = $this->property_id->FormValue;
+		$this->ho_head->CurrentValue = $this->ho_head->FormValue;
 		$this->TransactionNo->CurrentValue = $this->TransactionNo->FormValue;
 		$this->TransactionDate->CurrentValue = $this->TransactionDate->FormValue;
-		$this->TransactionDate->CurrentValue = UnFormatDateTime($this->TransactionDate->CurrentValue, 7);
+		$this->TransactionDate->CurrentValue = UnFormatDateTime($this->TransactionDate->CurrentValue, 0);
 		$this->TransactionType->CurrentValue = $this->TransactionType->FormValue;
 		$this->HandedOverTo->CurrentValue = $this->HandedOverTo->FormValue;
 		$this->CodeNoTo->CurrentValue = $this->CodeNoTo->FormValue;
 		$this->DepartmentTo->CurrentValue = $this->DepartmentTo->FormValue;
-		$this->HandedOverBy->CurrentValue = $this->HandedOverBy->FormValue;
-		$this->CodeNoBy->CurrentValue = $this->CodeNoBy->FormValue;
-		$this->DepartmentBy->CurrentValue = $this->DepartmentBy->FormValue;
 		$this->Sign1->CurrentValue = $this->Sign1->FormValue;
 		$this->Sign2->CurrentValue = $this->Sign2->FormValue;
 		$this->Sign3->CurrentValue = $this->Sign3->FormValue;
@@ -1090,21 +1049,13 @@ class t101_ho_head_add extends t101_ho_head
 		if (!$rs || $rs->EOF)
 			return;
 		$this->id->setDbValue($row['id']);
-		$this->property_id->setDbValue($row['property_id']);
+		$this->ho_head->setDbValue($row['ho_head']);
 		$this->TransactionNo->setDbValue($row['TransactionNo']);
 		$this->TransactionDate->setDbValue($row['TransactionDate']);
 		$this->TransactionType->setDbValue($row['TransactionType']);
 		$this->HandedOverTo->setDbValue($row['HandedOverTo']);
 		$this->CodeNoTo->setDbValue($row['CodeNoTo']);
 		$this->DepartmentTo->setDbValue($row['DepartmentTo']);
-		$this->HandedOverBy->setDbValue($row['HandedOverBy']);
-		if (array_key_exists('EV__HandedOverBy', $rs->fields)) {
-			$this->HandedOverBy->VirtualValue = $rs->fields('EV__HandedOverBy'); // Set up virtual field value
-		} else {
-			$this->HandedOverBy->VirtualValue = ""; // Clear value
-		}
-		$this->CodeNoBy->setDbValue($row['CodeNoBy']);
-		$this->DepartmentBy->setDbValue($row['DepartmentBy']);
 		$this->Sign1->setDbValue($row['Sign1']);
 		$this->Sign2->setDbValue($row['Sign2']);
 		$this->Sign3->setDbValue($row['Sign3']);
@@ -1117,16 +1068,13 @@ class t101_ho_head_add extends t101_ho_head
 		$this->loadDefaultValues();
 		$row = [];
 		$row['id'] = $this->id->CurrentValue;
-		$row['property_id'] = $this->property_id->CurrentValue;
+		$row['ho_head'] = $this->ho_head->CurrentValue;
 		$row['TransactionNo'] = $this->TransactionNo->CurrentValue;
 		$row['TransactionDate'] = $this->TransactionDate->CurrentValue;
 		$row['TransactionType'] = $this->TransactionType->CurrentValue;
 		$row['HandedOverTo'] = $this->HandedOverTo->CurrentValue;
 		$row['CodeNoTo'] = $this->CodeNoTo->CurrentValue;
 		$row['DepartmentTo'] = $this->DepartmentTo->CurrentValue;
-		$row['HandedOverBy'] = $this->HandedOverBy->CurrentValue;
-		$row['CodeNoBy'] = $this->CodeNoBy->CurrentValue;
-		$row['DepartmentBy'] = $this->DepartmentBy->CurrentValue;
 		$row['Sign1'] = $this->Sign1->CurrentValue;
 		$row['Sign2'] = $this->Sign2->CurrentValue;
 		$row['Sign3'] = $this->Sign3->CurrentValue;
@@ -1169,16 +1117,13 @@ class t101_ho_head_add extends t101_ho_head
 
 		// Common render codes for all row types
 		// id
-		// property_id
+		// ho_head
 		// TransactionNo
 		// TransactionDate
 		// TransactionType
 		// HandedOverTo
 		// CodeNoTo
 		// DepartmentTo
-		// HandedOverBy
-		// CodeNoBy
-		// DepartmentBy
 		// Sign1
 		// Sign2
 		// Sign3
@@ -1190,27 +1135,27 @@ class t101_ho_head_add extends t101_ho_head
 			$this->id->ViewValue = $this->id->CurrentValue;
 			$this->id->ViewCustomAttributes = "";
 
-			// property_id
-			$curVal = strval($this->property_id->CurrentValue);
+			// ho_head
+			$curVal = strval($this->ho_head->CurrentValue);
 			if ($curVal != "") {
-				$this->property_id->ViewValue = $this->property_id->lookupCacheOption($curVal);
-				if ($this->property_id->ViewValue === NULL) { // Lookup from database
+				$this->ho_head->ViewValue = $this->ho_head->lookupCacheOption($curVal);
+				if ($this->ho_head->ViewValue === NULL) { // Lookup from database
 					$filterWrk = "`id`" . SearchString("=", $curVal, DATATYPE_NUMBER, "");
-					$sqlWrk = $this->property_id->Lookup->getSql(FALSE, $filterWrk, '', $this);
+					$sqlWrk = $this->ho_head->Lookup->getSql(FALSE, $filterWrk, '', $this);
 					$rswrk = Conn()->execute($sqlWrk);
 					if ($rswrk && !$rswrk->EOF) { // Lookup values found
 						$arwrk = [];
 						$arwrk[1] = $rswrk->fields('df');
-						$this->property_id->ViewValue = $this->property_id->displayValue($arwrk);
+						$this->ho_head->ViewValue = $this->ho_head->displayValue($arwrk);
 						$rswrk->Close();
 					} else {
-						$this->property_id->ViewValue = $this->property_id->CurrentValue;
+						$this->ho_head->ViewValue = $this->ho_head->CurrentValue;
 					}
 				}
 			} else {
-				$this->property_id->ViewValue = NULL;
+				$this->ho_head->ViewValue = NULL;
 			}
-			$this->property_id->ViewCustomAttributes = "";
+			$this->ho_head->ViewCustomAttributes = "";
 
 			// TransactionNo
 			$this->TransactionNo->ViewValue = $this->TransactionNo->CurrentValue;
@@ -1218,7 +1163,7 @@ class t101_ho_head_add extends t101_ho_head
 
 			// TransactionDate
 			$this->TransactionDate->ViewValue = $this->TransactionDate->CurrentValue;
-			$this->TransactionDate->ViewValue = FormatDateTime($this->TransactionDate->ViewValue, 7);
+			$this->TransactionDate->ViewValue = FormatDateTime($this->TransactionDate->ViewValue, 0);
 			$this->TransactionDate->ViewCustomAttributes = "";
 
 			// TransactionType
@@ -1276,58 +1221,6 @@ class t101_ho_head_add extends t101_ho_head
 				$this->DepartmentTo->ViewValue = NULL;
 			}
 			$this->DepartmentTo->ViewCustomAttributes = "";
-
-			// HandedOverBy
-			if ($this->HandedOverBy->VirtualValue != "") {
-				$this->HandedOverBy->ViewValue = $this->HandedOverBy->VirtualValue;
-			} else {
-				$curVal = strval($this->HandedOverBy->CurrentValue);
-				if ($curVal != "") {
-					$this->HandedOverBy->ViewValue = $this->HandedOverBy->lookupCacheOption($curVal);
-					if ($this->HandedOverBy->ViewValue === NULL) { // Lookup from database
-						$filterWrk = "`id`" . SearchString("=", $curVal, DATATYPE_NUMBER, "");
-						$sqlWrk = $this->HandedOverBy->Lookup->getSql(FALSE, $filterWrk, '', $this);
-						$rswrk = Conn()->execute($sqlWrk);
-						if ($rswrk && !$rswrk->EOF) { // Lookup values found
-							$arwrk = [];
-							$arwrk[1] = $rswrk->fields('df');
-							$this->HandedOverBy->ViewValue = $this->HandedOverBy->displayValue($arwrk);
-							$rswrk->Close();
-						} else {
-							$this->HandedOverBy->ViewValue = $this->HandedOverBy->CurrentValue;
-						}
-					}
-				} else {
-					$this->HandedOverBy->ViewValue = NULL;
-				}
-			}
-			$this->HandedOverBy->ViewCustomAttributes = "";
-
-			// CodeNoBy
-			$this->CodeNoBy->ViewValue = $this->CodeNoBy->CurrentValue;
-			$this->CodeNoBy->ViewCustomAttributes = "";
-
-			// DepartmentBy
-			$curVal = strval($this->DepartmentBy->CurrentValue);
-			if ($curVal != "") {
-				$this->DepartmentBy->ViewValue = $this->DepartmentBy->lookupCacheOption($curVal);
-				if ($this->DepartmentBy->ViewValue === NULL) { // Lookup from database
-					$filterWrk = "`id`" . SearchString("=", $curVal, DATATYPE_NUMBER, "");
-					$sqlWrk = $this->DepartmentBy->Lookup->getSql(FALSE, $filterWrk, '', $this);
-					$rswrk = Conn()->execute($sqlWrk);
-					if ($rswrk && !$rswrk->EOF) { // Lookup values found
-						$arwrk = [];
-						$arwrk[1] = $rswrk->fields('df');
-						$this->DepartmentBy->ViewValue = $this->DepartmentBy->displayValue($arwrk);
-						$rswrk->Close();
-					} else {
-						$this->DepartmentBy->ViewValue = $this->DepartmentBy->CurrentValue;
-					}
-				}
-			} else {
-				$this->DepartmentBy->ViewValue = NULL;
-			}
-			$this->DepartmentBy->ViewCustomAttributes = "";
 
 			// Sign1
 			$curVal = strval($this->Sign1->CurrentValue);
@@ -1417,10 +1310,10 @@ class t101_ho_head_add extends t101_ho_head
 			}
 			$this->Sign4->ViewCustomAttributes = "";
 
-			// property_id
-			$this->property_id->LinkCustomAttributes = "";
-			$this->property_id->HrefValue = "";
-			$this->property_id->TooltipValue = "";
+			// ho_head
+			$this->ho_head->LinkCustomAttributes = "";
+			$this->ho_head->HrefValue = "";
+			$this->ho_head->TooltipValue = "";
 
 			// TransactionNo
 			$this->TransactionNo->LinkCustomAttributes = "";
@@ -1452,21 +1345,6 @@ class t101_ho_head_add extends t101_ho_head
 			$this->DepartmentTo->HrefValue = "";
 			$this->DepartmentTo->TooltipValue = "";
 
-			// HandedOverBy
-			$this->HandedOverBy->LinkCustomAttributes = "";
-			$this->HandedOverBy->HrefValue = "";
-			$this->HandedOverBy->TooltipValue = "";
-
-			// CodeNoBy
-			$this->CodeNoBy->LinkCustomAttributes = "";
-			$this->CodeNoBy->HrefValue = "";
-			$this->CodeNoBy->TooltipValue = "";
-
-			// DepartmentBy
-			$this->DepartmentBy->LinkCustomAttributes = "";
-			$this->DepartmentBy->HrefValue = "";
-			$this->DepartmentBy->TooltipValue = "";
-
 			// Sign1
 			$this->Sign1->LinkCustomAttributes = "";
 			$this->Sign1->HrefValue = "";
@@ -1488,36 +1366,36 @@ class t101_ho_head_add extends t101_ho_head
 			$this->Sign4->TooltipValue = "";
 		} elseif ($this->RowType == ROWTYPE_ADD) { // Add row
 
-			// property_id
-			$this->property_id->EditCustomAttributes = "";
-			$curVal = trim(strval($this->property_id->CurrentValue));
+			// ho_head
+			$this->ho_head->EditCustomAttributes = "";
+			$curVal = trim(strval($this->ho_head->CurrentValue));
 			if ($curVal != "")
-				$this->property_id->ViewValue = $this->property_id->lookupCacheOption($curVal);
+				$this->ho_head->ViewValue = $this->ho_head->lookupCacheOption($curVal);
 			else
-				$this->property_id->ViewValue = $this->property_id->Lookup !== NULL && is_array($this->property_id->Lookup->Options) ? $curVal : NULL;
-			if ($this->property_id->ViewValue !== NULL) { // Load from cache
-				$this->property_id->EditValue = array_values($this->property_id->Lookup->Options);
-				if ($this->property_id->ViewValue == "")
-					$this->property_id->ViewValue = $Language->phrase("PleaseSelect");
+				$this->ho_head->ViewValue = $this->ho_head->Lookup !== NULL && is_array($this->ho_head->Lookup->Options) ? $curVal : NULL;
+			if ($this->ho_head->ViewValue !== NULL) { // Load from cache
+				$this->ho_head->EditValue = array_values($this->ho_head->Lookup->Options);
+				if ($this->ho_head->ViewValue == "")
+					$this->ho_head->ViewValue = $Language->phrase("PleaseSelect");
 			} else { // Lookup from database
 				if ($curVal == "") {
 					$filterWrk = "0=1";
 				} else {
-					$filterWrk = "`id`" . SearchString("=", $this->property_id->CurrentValue, DATATYPE_NUMBER, "");
+					$filterWrk = "`id`" . SearchString("=", $this->ho_head->CurrentValue, DATATYPE_NUMBER, "");
 				}
-				$sqlWrk = $this->property_id->Lookup->getSql(TRUE, $filterWrk, '', $this);
+				$sqlWrk = $this->ho_head->Lookup->getSql(TRUE, $filterWrk, '', $this);
 				$rswrk = Conn()->execute($sqlWrk);
 				if ($rswrk && !$rswrk->EOF) { // Lookup values found
 					$arwrk = [];
 					$arwrk[1] = HtmlEncode($rswrk->fields('df'));
-					$this->property_id->ViewValue = $this->property_id->displayValue($arwrk);
+					$this->ho_head->ViewValue = $this->ho_head->displayValue($arwrk);
 				} else {
-					$this->property_id->ViewValue = $Language->phrase("PleaseSelect");
+					$this->ho_head->ViewValue = $Language->phrase("PleaseSelect");
 				}
 				$arwrk = $rswrk ? $rswrk->getRows() : [];
 				if ($rswrk)
 					$rswrk->close();
-				$this->property_id->EditValue = $arwrk;
+				$this->ho_head->EditValue = $arwrk;
 			}
 
 			// TransactionNo
@@ -1531,7 +1409,7 @@ class t101_ho_head_add extends t101_ho_head
 			// TransactionDate
 			$this->TransactionDate->EditAttrs["class"] = "form-control";
 			$this->TransactionDate->EditCustomAttributes = "";
-			$this->TransactionDate->EditValue = HtmlEncode(FormatDateTime($this->TransactionDate->CurrentValue, 7));
+			$this->TransactionDate->EditValue = HtmlEncode(FormatDateTime($this->TransactionDate->CurrentValue, 8));
 			$this->TransactionDate->PlaceHolder = RemoveHtml($this->TransactionDate->caption());
 
 			// TransactionType
@@ -1609,78 +1487,6 @@ class t101_ho_head_add extends t101_ho_head
 				if ($rswrk)
 					$rswrk->close();
 				$this->DepartmentTo->EditValue = $arwrk;
-			}
-
-			// HandedOverBy
-			$this->HandedOverBy->EditCustomAttributes = "";
-			$curVal = trim(strval($this->HandedOverBy->CurrentValue));
-			if ($curVal != "")
-				$this->HandedOverBy->ViewValue = $this->HandedOverBy->lookupCacheOption($curVal);
-			else
-				$this->HandedOverBy->ViewValue = $this->HandedOverBy->Lookup !== NULL && is_array($this->HandedOverBy->Lookup->Options) ? $curVal : NULL;
-			if ($this->HandedOverBy->ViewValue !== NULL) { // Load from cache
-				$this->HandedOverBy->EditValue = array_values($this->HandedOverBy->Lookup->Options);
-				if ($this->HandedOverBy->ViewValue == "")
-					$this->HandedOverBy->ViewValue = $Language->phrase("PleaseSelect");
-			} else { // Lookup from database
-				if ($curVal == "") {
-					$filterWrk = "0=1";
-				} else {
-					$filterWrk = "`id`" . SearchString("=", $this->HandedOverBy->CurrentValue, DATATYPE_NUMBER, "");
-				}
-				$sqlWrk = $this->HandedOverBy->Lookup->getSql(TRUE, $filterWrk, '', $this);
-				$rswrk = Conn()->execute($sqlWrk);
-				if ($rswrk && !$rswrk->EOF) { // Lookup values found
-					$arwrk = [];
-					$arwrk[1] = HtmlEncode($rswrk->fields('df'));
-					$this->HandedOverBy->ViewValue = $this->HandedOverBy->displayValue($arwrk);
-				} else {
-					$this->HandedOverBy->ViewValue = $Language->phrase("PleaseSelect");
-				}
-				$arwrk = $rswrk ? $rswrk->getRows() : [];
-				if ($rswrk)
-					$rswrk->close();
-				$this->HandedOverBy->EditValue = $arwrk;
-			}
-
-			// CodeNoBy
-			$this->CodeNoBy->EditAttrs["class"] = "form-control";
-			$this->CodeNoBy->EditCustomAttributes = "";
-			if (!$this->CodeNoBy->Raw)
-				$this->CodeNoBy->CurrentValue = HtmlDecode($this->CodeNoBy->CurrentValue);
-			$this->CodeNoBy->EditValue = HtmlEncode($this->CodeNoBy->CurrentValue);
-			$this->CodeNoBy->PlaceHolder = RemoveHtml($this->CodeNoBy->caption());
-
-			// DepartmentBy
-			$this->DepartmentBy->EditCustomAttributes = "";
-			$curVal = trim(strval($this->DepartmentBy->CurrentValue));
-			if ($curVal != "")
-				$this->DepartmentBy->ViewValue = $this->DepartmentBy->lookupCacheOption($curVal);
-			else
-				$this->DepartmentBy->ViewValue = $this->DepartmentBy->Lookup !== NULL && is_array($this->DepartmentBy->Lookup->Options) ? $curVal : NULL;
-			if ($this->DepartmentBy->ViewValue !== NULL) { // Load from cache
-				$this->DepartmentBy->EditValue = array_values($this->DepartmentBy->Lookup->Options);
-				if ($this->DepartmentBy->ViewValue == "")
-					$this->DepartmentBy->ViewValue = $Language->phrase("PleaseSelect");
-			} else { // Lookup from database
-				if ($curVal == "") {
-					$filterWrk = "0=1";
-				} else {
-					$filterWrk = "`id`" . SearchString("=", $this->DepartmentBy->CurrentValue, DATATYPE_NUMBER, "");
-				}
-				$sqlWrk = $this->DepartmentBy->Lookup->getSql(TRUE, $filterWrk, '', $this);
-				$rswrk = Conn()->execute($sqlWrk);
-				if ($rswrk && !$rswrk->EOF) { // Lookup values found
-					$arwrk = [];
-					$arwrk[1] = HtmlEncode($rswrk->fields('df'));
-					$this->DepartmentBy->ViewValue = $this->DepartmentBy->displayValue($arwrk);
-				} else {
-					$this->DepartmentBy->ViewValue = $Language->phrase("PleaseSelect");
-				}
-				$arwrk = $rswrk ? $rswrk->getRows() : [];
-				if ($rswrk)
-					$rswrk->close();
-				$this->DepartmentBy->EditValue = $arwrk;
 			}
 
 			// Sign1
@@ -1812,10 +1618,10 @@ class t101_ho_head_add extends t101_ho_head
 			}
 
 			// Add refer script
-			// property_id
+			// ho_head
 
-			$this->property_id->LinkCustomAttributes = "";
-			$this->property_id->HrefValue = "";
+			$this->ho_head->LinkCustomAttributes = "";
+			$this->ho_head->HrefValue = "";
 
 			// TransactionNo
 			$this->TransactionNo->LinkCustomAttributes = "";
@@ -1840,18 +1646,6 @@ class t101_ho_head_add extends t101_ho_head
 			// DepartmentTo
 			$this->DepartmentTo->LinkCustomAttributes = "";
 			$this->DepartmentTo->HrefValue = "";
-
-			// HandedOverBy
-			$this->HandedOverBy->LinkCustomAttributes = "";
-			$this->HandedOverBy->HrefValue = "";
-
-			// CodeNoBy
-			$this->CodeNoBy->LinkCustomAttributes = "";
-			$this->CodeNoBy->HrefValue = "";
-
-			// DepartmentBy
-			$this->DepartmentBy->LinkCustomAttributes = "";
-			$this->DepartmentBy->HrefValue = "";
 
 			// Sign1
 			$this->Sign1->LinkCustomAttributes = "";
@@ -1888,9 +1682,9 @@ class t101_ho_head_add extends t101_ho_head
 		// Check if validation required
 		if (!Config("SERVER_VALIDATE"))
 			return ($FormError == "");
-		if ($this->property_id->Required) {
-			if (!$this->property_id->IsDetailKey && $this->property_id->FormValue != NULL && $this->property_id->FormValue == "") {
-				AddMessage($FormError, str_replace("%s", $this->property_id->caption(), $this->property_id->RequiredErrorMessage));
+		if ($this->ho_head->Required) {
+			if (!$this->ho_head->IsDetailKey && $this->ho_head->FormValue != NULL && $this->ho_head->FormValue == "") {
+				AddMessage($FormError, str_replace("%s", $this->ho_head->caption(), $this->ho_head->RequiredErrorMessage));
 			}
 		}
 		if ($this->TransactionNo->Required) {
@@ -1903,7 +1697,7 @@ class t101_ho_head_add extends t101_ho_head
 				AddMessage($FormError, str_replace("%s", $this->TransactionDate->caption(), $this->TransactionDate->RequiredErrorMessage));
 			}
 		}
-		if (!CheckEuroDate($this->TransactionDate->FormValue)) {
+		if (!CheckDate($this->TransactionDate->FormValue)) {
 			AddMessage($FormError, $this->TransactionDate->errorMessage());
 		}
 		if ($this->TransactionType->Required) {
@@ -1924,21 +1718,6 @@ class t101_ho_head_add extends t101_ho_head
 		if ($this->DepartmentTo->Required) {
 			if (!$this->DepartmentTo->IsDetailKey && $this->DepartmentTo->FormValue != NULL && $this->DepartmentTo->FormValue == "") {
 				AddMessage($FormError, str_replace("%s", $this->DepartmentTo->caption(), $this->DepartmentTo->RequiredErrorMessage));
-			}
-		}
-		if ($this->HandedOverBy->Required) {
-			if (!$this->HandedOverBy->IsDetailKey && $this->HandedOverBy->FormValue != NULL && $this->HandedOverBy->FormValue == "") {
-				AddMessage($FormError, str_replace("%s", $this->HandedOverBy->caption(), $this->HandedOverBy->RequiredErrorMessage));
-			}
-		}
-		if ($this->CodeNoBy->Required) {
-			if (!$this->CodeNoBy->IsDetailKey && $this->CodeNoBy->FormValue != NULL && $this->CodeNoBy->FormValue == "") {
-				AddMessage($FormError, str_replace("%s", $this->CodeNoBy->caption(), $this->CodeNoBy->RequiredErrorMessage));
-			}
-		}
-		if ($this->DepartmentBy->Required) {
-			if (!$this->DepartmentBy->IsDetailKey && $this->DepartmentBy->FormValue != NULL && $this->DepartmentBy->FormValue == "") {
-				AddMessage($FormError, str_replace("%s", $this->DepartmentBy->caption(), $this->DepartmentBy->RequiredErrorMessage));
 			}
 		}
 		if ($this->Sign1->Required) {
@@ -1964,10 +1743,10 @@ class t101_ho_head_add extends t101_ho_head
 
 		// Validate detail grid
 		$detailTblVar = explode(",", $this->getCurrentDetailTable());
-		if (in_array("t102_ho_detail", $detailTblVar) && $GLOBALS["t102_ho_detail"]->DetailAdd) {
-			if (!isset($GLOBALS["t102_ho_detail_grid"]))
-				$GLOBALS["t102_ho_detail_grid"] = new t102_ho_detail_grid(); // Get detail page object
-			$GLOBALS["t102_ho_detail_grid"]->validateGridForm();
+		if (in_array("t104_ho1_detail", $detailTblVar) && $GLOBALS["t104_ho1_detail"]->DetailAdd) {
+			if (!isset($GLOBALS["t104_ho1_detail_grid"]))
+				$GLOBALS["t104_ho1_detail_grid"] = new t104_ho1_detail_grid(); // Get detail page object
+			$GLOBALS["t104_ho1_detail_grid"]->validateGridForm();
 		}
 
 		// Return validate result
@@ -1998,14 +1777,14 @@ class t101_ho_head_add extends t101_ho_head
 		}
 		$rsnew = [];
 
-		// property_id
-		$this->property_id->setDbValueDef($rsnew, $this->property_id->CurrentValue, 0, FALSE);
+		// ho_head
+		$this->ho_head->setDbValueDef($rsnew, $this->ho_head->CurrentValue, 0, FALSE);
 
 		// TransactionNo
 		$this->TransactionNo->setDbValueDef($rsnew, $this->TransactionNo->CurrentValue, "", FALSE);
 
 		// TransactionDate
-		$this->TransactionDate->setDbValueDef($rsnew, UnFormatDateTime($this->TransactionDate->CurrentValue, 7), CurrentDate(), FALSE);
+		$this->TransactionDate->setDbValueDef($rsnew, UnFormatDateTime($this->TransactionDate->CurrentValue, 0), CurrentDate(), FALSE);
 
 		// TransactionType
 		$this->TransactionType->setDbValueDef($rsnew, $this->TransactionType->CurrentValue, 0, FALSE);
@@ -2018,15 +1797,6 @@ class t101_ho_head_add extends t101_ho_head
 
 		// DepartmentTo
 		$this->DepartmentTo->setDbValueDef($rsnew, $this->DepartmentTo->CurrentValue, 0, FALSE);
-
-		// HandedOverBy
-		$this->HandedOverBy->setDbValueDef($rsnew, $this->HandedOverBy->CurrentValue, 0, FALSE);
-
-		// CodeNoBy
-		$this->CodeNoBy->setDbValueDef($rsnew, $this->CodeNoBy->CurrentValue, "", FALSE);
-
-		// DepartmentBy
-		$this->DepartmentBy->setDbValueDef($rsnew, $this->DepartmentBy->CurrentValue, 0, FALSE);
 
 		// Sign1
 		$this->Sign1->setDbValueDef($rsnew, $this->Sign1->CurrentValue, 0, FALSE);
@@ -2065,15 +1835,15 @@ class t101_ho_head_add extends t101_ho_head
 		// Add detail records
 		if ($addRow) {
 			$detailTblVar = explode(",", $this->getCurrentDetailTable());
-			if (in_array("t102_ho_detail", $detailTblVar) && $GLOBALS["t102_ho_detail"]->DetailAdd) {
-				$GLOBALS["t102_ho_detail"]->hohead_id->setSessionValue($this->id->CurrentValue); // Set master key
-				if (!isset($GLOBALS["t102_ho_detail_grid"]))
-					$GLOBALS["t102_ho_detail_grid"] = new t102_ho_detail_grid(); // Get detail page object
-				$Security->loadCurrentUserLevel($this->ProjectID . "t102_ho_detail"); // Load user level of detail table
-				$addRow = $GLOBALS["t102_ho_detail_grid"]->gridInsert();
+			if (in_array("t104_ho1_detail", $detailTblVar) && $GLOBALS["t104_ho1_detail"]->DetailAdd) {
+				$GLOBALS["t104_ho1_detail"]->hohead_id->setSessionValue($this->id->CurrentValue); // Set master key
+				if (!isset($GLOBALS["t104_ho1_detail_grid"]))
+					$GLOBALS["t104_ho1_detail_grid"] = new t104_ho1_detail_grid(); // Get detail page object
+				$Security->loadCurrentUserLevel($this->ProjectID . "t104_ho1_detail"); // Load user level of detail table
+				$addRow = $GLOBALS["t104_ho1_detail_grid"]->gridInsert();
 				$Security->loadCurrentUserLevel($this->ProjectID . $this->TableName); // Restore user level of master table
 				if (!$addRow) {
-					$GLOBALS["t102_ho_detail"]->hohead_id->setSessionValue(""); // Clear master key if insert failed
+					$GLOBALS["t104_ho1_detail"]->hohead_id->setSessionValue(""); // Clear master key if insert failed
 				}
 			}
 		}
@@ -2118,22 +1888,22 @@ class t101_ho_head_add extends t101_ho_head
 		}
 		if ($detailTblVar != "") {
 			$detailTblVar = explode(",", $detailTblVar);
-			if (in_array("t102_ho_detail", $detailTblVar)) {
-				if (!isset($GLOBALS["t102_ho_detail_grid"]))
-					$GLOBALS["t102_ho_detail_grid"] = new t102_ho_detail_grid();
-				if ($GLOBALS["t102_ho_detail_grid"]->DetailAdd) {
+			if (in_array("t104_ho1_detail", $detailTblVar)) {
+				if (!isset($GLOBALS["t104_ho1_detail_grid"]))
+					$GLOBALS["t104_ho1_detail_grid"] = new t104_ho1_detail_grid();
+				if ($GLOBALS["t104_ho1_detail_grid"]->DetailAdd) {
 					if ($this->CopyRecord)
-						$GLOBALS["t102_ho_detail_grid"]->CurrentMode = "copy";
+						$GLOBALS["t104_ho1_detail_grid"]->CurrentMode = "copy";
 					else
-						$GLOBALS["t102_ho_detail_grid"]->CurrentMode = "add";
-					$GLOBALS["t102_ho_detail_grid"]->CurrentAction = "gridadd";
+						$GLOBALS["t104_ho1_detail_grid"]->CurrentMode = "add";
+					$GLOBALS["t104_ho1_detail_grid"]->CurrentAction = "gridadd";
 
 					// Save current master table to detail table
-					$GLOBALS["t102_ho_detail_grid"]->setCurrentMasterTable($this->TableVar);
-					$GLOBALS["t102_ho_detail_grid"]->setStartRecordNumber(1);
-					$GLOBALS["t102_ho_detail_grid"]->hohead_id->IsDetailKey = TRUE;
-					$GLOBALS["t102_ho_detail_grid"]->hohead_id->CurrentValue = $this->id->CurrentValue;
-					$GLOBALS["t102_ho_detail_grid"]->hohead_id->setSessionValue($GLOBALS["t102_ho_detail_grid"]->hohead_id->CurrentValue);
+					$GLOBALS["t104_ho1_detail_grid"]->setCurrentMasterTable($this->TableVar);
+					$GLOBALS["t104_ho1_detail_grid"]->setStartRecordNumber(1);
+					$GLOBALS["t104_ho1_detail_grid"]->hohead_id->IsDetailKey = TRUE;
+					$GLOBALS["t104_ho1_detail_grid"]->hohead_id->CurrentValue = $this->id->CurrentValue;
+					$GLOBALS["t104_ho1_detail_grid"]->hohead_id->setSessionValue($GLOBALS["t104_ho1_detail_grid"]->hohead_id->CurrentValue);
 				}
 			}
 		}
@@ -2145,7 +1915,7 @@ class t101_ho_head_add extends t101_ho_head
 		global $Breadcrumb, $Language;
 		$Breadcrumb = new Breadcrumb();
 		$url = substr(CurrentUrl(), strrpos(CurrentUrl(), "/")+1);
-		$Breadcrumb->add("list", $this->TableVar, $this->addMasterUrl("t101_ho_headlist.php"), "", $this->TableVar, TRUE);
+		$Breadcrumb->add("list", $this->TableVar, $this->addMasterUrl("t103_ho1_headlist.php"), "", $this->TableVar, TRUE);
 		$pageId = ($this->isCopy()) ? "Copy" : "Add";
 		$Breadcrumb->add("add", $pageId, $url);
 	}
@@ -2164,17 +1934,13 @@ class t101_ho_head_add extends t101_ho_head
 
 			// Set up lookup SQL and connection
 			switch ($fld->FieldVar) {
-				case "x_property_id":
+				case "x_ho_head":
 					break;
 				case "x_TransactionType":
 					break;
 				case "x_HandedOverTo":
 					break;
 				case "x_DepartmentTo":
-					break;
-				case "x_HandedOverBy":
-					break;
-				case "x_DepartmentBy":
 					break;
 				case "x_Sign1":
 					break;
@@ -2204,15 +1970,11 @@ class t101_ho_head_add extends t101_ho_head
 
 					// Format the field values
 					switch ($fld->FieldVar) {
-						case "x_property_id":
+						case "x_ho_head":
 							break;
 						case "x_HandedOverTo":
 							break;
 						case "x_DepartmentTo":
-							break;
-						case "x_HandedOverBy":
-							break;
-						case "x_DepartmentBy":
 							break;
 						case "x_Sign1":
 							break;

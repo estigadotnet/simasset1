@@ -159,8 +159,6 @@ loadjs.ready("head", function() {
 	// Dynamic selection lists
 	ft101_ho_headedit.lists["x_property_id"] = <?php echo $t101_ho_head_edit->property_id->Lookup->toClientList($t101_ho_head_edit) ?>;
 	ft101_ho_headedit.lists["x_property_id"].options = <?php echo JsonEncode($t101_ho_head_edit->property_id->lookupOptions()) ?>;
-	ft101_ho_headedit.lists["x_TransactionType"] = <?php echo $t101_ho_head_edit->TransactionType->Lookup->toClientList($t101_ho_head_edit) ?>;
-	ft101_ho_headedit.lists["x_TransactionType"].options = <?php echo JsonEncode($t101_ho_head_edit->TransactionType->options(FALSE, TRUE)) ?>;
 	ft101_ho_headedit.lists["x_HandedOverTo"] = <?php echo $t101_ho_head_edit->HandedOverTo->Lookup->toClientList($t101_ho_head_edit) ?>;
 	ft101_ho_headedit.lists["x_HandedOverTo"].options = <?php echo JsonEncode($t101_ho_head_edit->HandedOverTo->lookupOptions()) ?>;
 	ft101_ho_headedit.lists["x_DepartmentTo"] = <?php echo $t101_ho_head_edit->DepartmentTo->Lookup->toClientList($t101_ho_head_edit) ?>;
@@ -249,12 +247,9 @@ loadjs.ready(["ft101_ho_headedit", "datetimepicker"], function() {
 		<label id="elh_t101_ho_head_TransactionType" for="x_TransactionType" class="<?php echo $t101_ho_head_edit->LeftColumnClass ?>"><?php echo $t101_ho_head_edit->TransactionType->caption() ?><?php echo $t101_ho_head_edit->TransactionType->Required ? $Language->phrase("FieldRequiredIndicator") : "" ?></label>
 		<div class="<?php echo $t101_ho_head_edit->RightColumnClass ?>"><div <?php echo $t101_ho_head_edit->TransactionType->cellAttributes() ?>>
 <span id="el_t101_ho_head_TransactionType">
-<div class="input-group">
-	<select class="custom-select ew-custom-select" data-table="t101_ho_head" data-field="x_TransactionType" data-value-separator="<?php echo $t101_ho_head_edit->TransactionType->displayValueSeparatorAttribute() ?>" id="x_TransactionType" name="x_TransactionType"<?php echo $t101_ho_head_edit->TransactionType->editAttributes() ?>>
-			<?php echo $t101_ho_head_edit->TransactionType->selectOptionListHtml("x_TransactionType") ?>
-		</select>
-</div>
+<span<?php echo $t101_ho_head_edit->TransactionType->viewAttributes() ?>><input type="text" readonly class="form-control-plaintext" value="<?php echo HtmlEncode(RemoveHtml($t101_ho_head_edit->TransactionType->EditValue)) ?>"></span>
 </span>
+<input type="hidden" data-table="t101_ho_head" data-field="x_TransactionType" name="x_TransactionType" id="x_TransactionType" value="<?php echo HtmlEncode($t101_ho_head_edit->TransactionType->CurrentValue) ?>">
 <?php echo $t101_ho_head_edit->TransactionType->CustomMsg ?></div></div>
 	</div>
 <?php } ?>
