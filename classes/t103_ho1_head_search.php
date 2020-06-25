@@ -911,7 +911,11 @@ class t103_ho1_head_search extends t103_ho1_head
 				$this->ho_head->ViewValue = $this->ho_head->lookupCacheOption($curVal);
 				if ($this->ho_head->ViewValue === NULL) { // Lookup from database
 					$filterWrk = "`id`" . SearchString("=", $curVal, DATATYPE_NUMBER, "");
-					$sqlWrk = $this->ho_head->Lookup->getSql(FALSE, $filterWrk, '', $this);
+					$lookupFilter = function() {
+						return "`id` not in (select ho_head from t103_ho1_head)";
+					};
+					$lookupFilter = $lookupFilter->bindTo($this);
+					$sqlWrk = $this->ho_head->Lookup->getSql(FALSE, $filterWrk, $lookupFilter, $this);
 					$rswrk = Conn()->execute($sqlWrk);
 					if ($rswrk && !$rswrk->EOF) { // Lookup values found
 						$arwrk = [];
@@ -933,7 +937,7 @@ class t103_ho1_head_search extends t103_ho1_head
 
 			// TransactionDate
 			$this->TransactionDate->ViewValue = $this->TransactionDate->CurrentValue;
-			$this->TransactionDate->ViewValue = FormatDateTime($this->TransactionDate->ViewValue, 0);
+			$this->TransactionDate->ViewValue = FormatDateTime($this->TransactionDate->ViewValue, 7);
 			$this->TransactionDate->ViewCustomAttributes = "";
 
 			// TransactionType
@@ -1164,7 +1168,11 @@ class t103_ho1_head_search extends t103_ho1_head
 				} else {
 					$filterWrk = "`id`" . SearchString("=", $this->ho_head->AdvancedSearch->SearchValue, DATATYPE_NUMBER, "");
 				}
-				$sqlWrk = $this->ho_head->Lookup->getSql(TRUE, $filterWrk, '', $this);
+				$lookupFilter = function() {
+					return "`id` not in (select ho_head from t103_ho1_head)";
+				};
+				$lookupFilter = $lookupFilter->bindTo($this);
+				$sqlWrk = $this->ho_head->Lookup->getSql(TRUE, $filterWrk, $lookupFilter, $this);
 				$rswrk = Conn()->execute($sqlWrk);
 				if ($rswrk && !$rswrk->EOF) { // Lookup values found
 					$arwrk = [];
@@ -1190,7 +1198,7 @@ class t103_ho1_head_search extends t103_ho1_head
 			// TransactionDate
 			$this->TransactionDate->EditAttrs["class"] = "form-control";
 			$this->TransactionDate->EditCustomAttributes = "";
-			$this->TransactionDate->EditValue = HtmlEncode(FormatDateTime(UnFormatDateTime($this->TransactionDate->AdvancedSearch->SearchValue, 0), 8));
+			$this->TransactionDate->EditValue = HtmlEncode(FormatDateTime(UnFormatDateTime($this->TransactionDate->AdvancedSearch->SearchValue, 7), 7));
 			$this->TransactionDate->PlaceHolder = RemoveHtml($this->TransactionDate->caption());
 
 			// TransactionType
@@ -1420,7 +1428,7 @@ class t103_ho1_head_search extends t103_ho1_head
 		if (!CheckInteger($this->id->AdvancedSearch->SearchValue)) {
 			AddMessage($SearchError, $this->id->errorMessage());
 		}
-		if (!CheckDate($this->TransactionDate->AdvancedSearch->SearchValue)) {
+		if (!CheckEuroDate($this->TransactionDate->AdvancedSearch->SearchValue)) {
 			AddMessage($SearchError, $this->TransactionDate->errorMessage());
 		}
 
@@ -1479,6 +1487,10 @@ class t103_ho1_head_search extends t103_ho1_head
 			// Set up lookup SQL and connection
 			switch ($fld->FieldVar) {
 				case "x_ho_head":
+					$lookupFilter = function() {
+						return "`id` not in (select ho_head from t103_ho1_head)";
+					};
+					$lookupFilter = $lookupFilter->bindTo($this);
 					break;
 				case "x_TransactionType":
 					break;

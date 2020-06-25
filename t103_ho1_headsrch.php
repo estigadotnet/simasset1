@@ -55,7 +55,7 @@ loadjs.ready("head", function() {
 		if (elm && !ew.checkInteger(elm.value))
 			return this.onError(elm, "<?php echo JsEncode($t103_ho1_head_search->id->errorMessage()) ?>");
 		elm = this.getElements("x" + infix + "_TransactionDate");
-		if (elm && !ew.checkDateDef(elm.value))
+		if (elm && !ew.checkEuroDate(elm.value))
 			return this.onError(elm, "<?php echo JsEncode($t103_ho1_head_search->TransactionDate->errorMessage()) ?>");
 
 		// Call Form_CustomValidate event
@@ -176,11 +176,11 @@ $t103_ho1_head_search->showMessage();
 		</label>
 		<div class="<?php echo $t103_ho1_head_search->RightColumnClass ?>"><div <?php echo $t103_ho1_head_search->TransactionDate->cellAttributes() ?>>
 			<span id="el_t103_ho1_head_TransactionDate" class="ew-search-field">
-<input type="text" data-table="t103_ho1_head" data-field="x_TransactionDate" name="x_TransactionDate" id="x_TransactionDate" size="10" maxlength="10" placeholder="<?php echo HtmlEncode($t103_ho1_head_search->TransactionDate->getPlaceHolder()) ?>" value="<?php echo $t103_ho1_head_search->TransactionDate->EditValue ?>"<?php echo $t103_ho1_head_search->TransactionDate->editAttributes() ?>>
+<input type="text" data-table="t103_ho1_head" data-field="x_TransactionDate" data-format="7" name="x_TransactionDate" id="x_TransactionDate" size="10" maxlength="10" placeholder="<?php echo HtmlEncode($t103_ho1_head_search->TransactionDate->getPlaceHolder()) ?>" value="<?php echo $t103_ho1_head_search->TransactionDate->EditValue ?>"<?php echo $t103_ho1_head_search->TransactionDate->editAttributes() ?>>
 <?php if (!$t103_ho1_head_search->TransactionDate->ReadOnly && !$t103_ho1_head_search->TransactionDate->Disabled && !isset($t103_ho1_head_search->TransactionDate->EditAttrs["readonly"]) && !isset($t103_ho1_head_search->TransactionDate->EditAttrs["disabled"])) { ?>
 <script>
 loadjs.ready(["ft103_ho1_headsearch", "datetimepicker"], function() {
-	ew.createDateTimePicker("ft103_ho1_headsearch", "x_TransactionDate", {"ignoreReadonly":true,"useCurrent":false,"format":0});
+	ew.createDateTimePicker("ft103_ho1_headsearch", "x_TransactionDate", {"ignoreReadonly":true,"useCurrent":false,"format":7});
 });
 </script>
 <?php } ?>

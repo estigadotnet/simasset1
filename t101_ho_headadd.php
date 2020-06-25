@@ -367,6 +367,9 @@ loadjs.ready(["ft101_ho_headadd", "datetimepicker"], function() {
 	<div class="form-control ew-lookup-text" tabindex="-1" id="lu_x_Sign1"><?php echo EmptyValue(strval($t101_ho_head_add->Sign1->ViewValue)) ? $Language->phrase("PleaseSelect") : $t101_ho_head_add->Sign1->ViewValue ?></div>
 	<div class="input-group-append">
 		<button type="button" title="<?php echo HtmlEncode(str_replace("%s", RemoveHtml($t101_ho_head_add->Sign1->caption()), $Language->phrase("LookupLink", TRUE))) ?>" class="ew-lookup-btn btn btn-default"<?php echo ($t101_ho_head_add->Sign1->ReadOnly || $t101_ho_head_add->Sign1->Disabled) ? " disabled" : "" ?> onclick="ew.modalLookupShow({lnk:this,el:'x_Sign1',m:0,n:10});"><i class="fas fa-search ew-icon"></i></button>
+		<?php if (AllowAdd(CurrentProjectID() . "t003_signature") && !$t101_ho_head_add->Sign1->ReadOnly) { ?>
+		<button type="button" class="btn btn-default ew-add-opt-btn" id="aol_x_Sign1" title="<?php echo HtmlTitle($Language->phrase("AddLink")) . "&nbsp;" . $t101_ho_head_add->Sign1->caption() ?>" data-title="<?php echo $t101_ho_head_add->Sign1->caption() ?>" onclick="ew.addOptionDialogShow({lnk:this,el:'x_Sign1',url:'t003_signatureaddopt.php'});"><i class="fas fa-plus ew-icon"></i></button>
+		<?php } ?>
 	</div>
 </div>
 <?php echo $t101_ho_head_add->Sign1->Lookup->getParamTag($t101_ho_head_add, "p_x_Sign1") ?>
@@ -384,6 +387,9 @@ loadjs.ready(["ft101_ho_headadd", "datetimepicker"], function() {
 	<div class="form-control ew-lookup-text" tabindex="-1" id="lu_x_Sign2"><?php echo EmptyValue(strval($t101_ho_head_add->Sign2->ViewValue)) ? $Language->phrase("PleaseSelect") : $t101_ho_head_add->Sign2->ViewValue ?></div>
 	<div class="input-group-append">
 		<button type="button" title="<?php echo HtmlEncode(str_replace("%s", RemoveHtml($t101_ho_head_add->Sign2->caption()), $Language->phrase("LookupLink", TRUE))) ?>" class="ew-lookup-btn btn btn-default"<?php echo ($t101_ho_head_add->Sign2->ReadOnly || $t101_ho_head_add->Sign2->Disabled) ? " disabled" : "" ?> onclick="ew.modalLookupShow({lnk:this,el:'x_Sign2',m:0,n:10});"><i class="fas fa-search ew-icon"></i></button>
+		<?php if (AllowAdd(CurrentProjectID() . "t003_signature") && !$t101_ho_head_add->Sign2->ReadOnly) { ?>
+		<button type="button" class="btn btn-default ew-add-opt-btn" id="aol_x_Sign2" title="<?php echo HtmlTitle($Language->phrase("AddLink")) . "&nbsp;" . $t101_ho_head_add->Sign2->caption() ?>" data-title="<?php echo $t101_ho_head_add->Sign2->caption() ?>" onclick="ew.addOptionDialogShow({lnk:this,el:'x_Sign2',url:'t003_signatureaddopt.php'});"><i class="fas fa-plus ew-icon"></i></button>
+		<?php } ?>
 	</div>
 </div>
 <?php echo $t101_ho_head_add->Sign2->Lookup->getParamTag($t101_ho_head_add, "p_x_Sign2") ?>
@@ -401,6 +407,9 @@ loadjs.ready(["ft101_ho_headadd", "datetimepicker"], function() {
 	<div class="form-control ew-lookup-text" tabindex="-1" id="lu_x_Sign3"><?php echo EmptyValue(strval($t101_ho_head_add->Sign3->ViewValue)) ? $Language->phrase("PleaseSelect") : $t101_ho_head_add->Sign3->ViewValue ?></div>
 	<div class="input-group-append">
 		<button type="button" title="<?php echo HtmlEncode(str_replace("%s", RemoveHtml($t101_ho_head_add->Sign3->caption()), $Language->phrase("LookupLink", TRUE))) ?>" class="ew-lookup-btn btn btn-default"<?php echo ($t101_ho_head_add->Sign3->ReadOnly || $t101_ho_head_add->Sign3->Disabled) ? " disabled" : "" ?> onclick="ew.modalLookupShow({lnk:this,el:'x_Sign3',m:0,n:10});"><i class="fas fa-search ew-icon"></i></button>
+		<?php if (AllowAdd(CurrentProjectID() . "t003_signature") && !$t101_ho_head_add->Sign3->ReadOnly) { ?>
+		<button type="button" class="btn btn-default ew-add-opt-btn" id="aol_x_Sign3" title="<?php echo HtmlTitle($Language->phrase("AddLink")) . "&nbsp;" . $t101_ho_head_add->Sign3->caption() ?>" data-title="<?php echo $t101_ho_head_add->Sign3->caption() ?>" onclick="ew.addOptionDialogShow({lnk:this,el:'x_Sign3',url:'t003_signatureaddopt.php'});"><i class="fas fa-plus ew-icon"></i></button>
+		<?php } ?>
 	</div>
 </div>
 <?php echo $t101_ho_head_add->Sign3->Lookup->getParamTag($t101_ho_head_add, "p_x_Sign3") ?>
@@ -418,6 +427,9 @@ loadjs.ready(["ft101_ho_headadd", "datetimepicker"], function() {
 	<div class="form-control ew-lookup-text" tabindex="-1" id="lu_x_Sign4"><?php echo EmptyValue(strval($t101_ho_head_add->Sign4->ViewValue)) ? $Language->phrase("PleaseSelect") : $t101_ho_head_add->Sign4->ViewValue ?></div>
 	<div class="input-group-append">
 		<button type="button" title="<?php echo HtmlEncode(str_replace("%s", RemoveHtml($t101_ho_head_add->Sign4->caption()), $Language->phrase("LookupLink", TRUE))) ?>" class="ew-lookup-btn btn btn-default"<?php echo ($t101_ho_head_add->Sign4->ReadOnly || $t101_ho_head_add->Sign4->Disabled) ? " disabled" : "" ?> onclick="ew.modalLookupShow({lnk:this,el:'x_Sign4',m:0,n:10});"><i class="fas fa-search ew-icon"></i></button>
+		<?php if (AllowAdd(CurrentProjectID() . "t003_signature") && !$t101_ho_head_add->Sign4->ReadOnly) { ?>
+		<button type="button" class="btn btn-default ew-add-opt-btn" id="aol_x_Sign4" title="<?php echo HtmlTitle($Language->phrase("AddLink")) . "&nbsp;" . $t101_ho_head_add->Sign4->caption() ?>" data-title="<?php echo $t101_ho_head_add->Sign4->caption() ?>" onclick="ew.addOptionDialogShow({lnk:this,el:'x_Sign4',url:'t003_signatureaddopt.php'});"><i class="fas fa-plus ew-icon"></i></button>
+		<?php } ?>
 	</div>
 </div>
 <?php echo $t101_ho_head_add->Sign4->Lookup->getParamTag($t101_ho_head_add, "p_x_Sign4") ?>

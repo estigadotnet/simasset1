@@ -917,7 +917,7 @@ class t103_ho1_head_edit extends t103_ho1_head
 				$this->TransactionDate->Visible = FALSE; // Disable update for API request
 			else
 				$this->TransactionDate->setFormValue($val);
-			$this->TransactionDate->CurrentValue = UnFormatDateTime($this->TransactionDate->CurrentValue, 0);
+			$this->TransactionDate->CurrentValue = UnFormatDateTime($this->TransactionDate->CurrentValue, 7);
 		}
 
 		// Check field name 'TransactionType' first before field var 'x_TransactionType'
@@ -1006,7 +1006,7 @@ class t103_ho1_head_edit extends t103_ho1_head
 		$this->ho_head->CurrentValue = $this->ho_head->FormValue;
 		$this->TransactionNo->CurrentValue = $this->TransactionNo->FormValue;
 		$this->TransactionDate->CurrentValue = $this->TransactionDate->FormValue;
-		$this->TransactionDate->CurrentValue = UnFormatDateTime($this->TransactionDate->CurrentValue, 0);
+		$this->TransactionDate->CurrentValue = UnFormatDateTime($this->TransactionDate->CurrentValue, 7);
 		$this->TransactionType->CurrentValue = $this->TransactionType->FormValue;
 		$this->HandedOverTo->CurrentValue = $this->HandedOverTo->FormValue;
 		$this->CodeNoTo->CurrentValue = $this->CodeNoTo->FormValue;
@@ -1144,7 +1144,11 @@ class t103_ho1_head_edit extends t103_ho1_head
 				$this->ho_head->ViewValue = $this->ho_head->lookupCacheOption($curVal);
 				if ($this->ho_head->ViewValue === NULL) { // Lookup from database
 					$filterWrk = "`id`" . SearchString("=", $curVal, DATATYPE_NUMBER, "");
-					$sqlWrk = $this->ho_head->Lookup->getSql(FALSE, $filterWrk, '', $this);
+					$lookupFilter = function() {
+						return "`id` not in (select ho_head from t103_ho1_head)";
+					};
+					$lookupFilter = $lookupFilter->bindTo($this);
+					$sqlWrk = $this->ho_head->Lookup->getSql(FALSE, $filterWrk, $lookupFilter, $this);
 					$rswrk = Conn()->execute($sqlWrk);
 					if ($rswrk && !$rswrk->EOF) { // Lookup values found
 						$arwrk = [];
@@ -1166,7 +1170,7 @@ class t103_ho1_head_edit extends t103_ho1_head
 
 			// TransactionDate
 			$this->TransactionDate->ViewValue = $this->TransactionDate->CurrentValue;
-			$this->TransactionDate->ViewValue = FormatDateTime($this->TransactionDate->ViewValue, 0);
+			$this->TransactionDate->ViewValue = FormatDateTime($this->TransactionDate->ViewValue, 7);
 			$this->TransactionDate->ViewCustomAttributes = "";
 
 			// TransactionType
@@ -1386,7 +1390,11 @@ class t103_ho1_head_edit extends t103_ho1_head
 				} else {
 					$filterWrk = "`id`" . SearchString("=", $this->ho_head->CurrentValue, DATATYPE_NUMBER, "");
 				}
-				$sqlWrk = $this->ho_head->Lookup->getSql(TRUE, $filterWrk, '', $this);
+				$lookupFilter = function() {
+					return "`id` not in (select ho_head from t103_ho1_head)";
+				};
+				$lookupFilter = $lookupFilter->bindTo($this);
+				$sqlWrk = $this->ho_head->Lookup->getSql(TRUE, $filterWrk, $lookupFilter, $this);
 				$rswrk = Conn()->execute($sqlWrk);
 				if ($rswrk && !$rswrk->EOF) { // Lookup values found
 					$arwrk = [];
@@ -1412,7 +1420,7 @@ class t103_ho1_head_edit extends t103_ho1_head
 			// TransactionDate
 			$this->TransactionDate->EditAttrs["class"] = "form-control";
 			$this->TransactionDate->EditCustomAttributes = "";
-			$this->TransactionDate->EditValue = HtmlEncode(FormatDateTime($this->TransactionDate->CurrentValue, 8));
+			$this->TransactionDate->EditValue = HtmlEncode(FormatDateTime($this->TransactionDate->CurrentValue, 7));
 			$this->TransactionDate->PlaceHolder = RemoveHtml($this->TransactionDate->caption());
 
 			// TransactionType
@@ -1706,7 +1714,7 @@ class t103_ho1_head_edit extends t103_ho1_head
 				AddMessage($FormError, str_replace("%s", $this->TransactionDate->caption(), $this->TransactionDate->RequiredErrorMessage));
 			}
 		}
-		if (!CheckDate($this->TransactionDate->FormValue)) {
+		if (!CheckEuroDate($this->TransactionDate->FormValue)) {
 			AddMessage($FormError, $this->TransactionDate->errorMessage());
 		}
 		if ($this->TransactionType->Required) {
@@ -1805,7 +1813,7 @@ class t103_ho1_head_edit extends t103_ho1_head
 			$this->TransactionNo->setDbValueDef($rsnew, $this->TransactionNo->CurrentValue, "", $this->TransactionNo->ReadOnly);
 
 			// TransactionDate
-			$this->TransactionDate->setDbValueDef($rsnew, UnFormatDateTime($this->TransactionDate->CurrentValue, 0), CurrentDate(), $this->TransactionDate->ReadOnly);
+			$this->TransactionDate->setDbValueDef($rsnew, UnFormatDateTime($this->TransactionDate->CurrentValue, 7), CurrentDate(), $this->TransactionDate->ReadOnly);
 
 			// HandedOverTo
 			$this->HandedOverTo->setDbValueDef($rsnew, $this->HandedOverTo->CurrentValue, 0, $this->HandedOverTo->ReadOnly);
@@ -1962,6 +1970,10 @@ class t103_ho1_head_edit extends t103_ho1_head
 			// Set up lookup SQL and connection
 			switch ($fld->FieldVar) {
 				case "x_ho_head":
+					$lookupFilter = function() {
+						return "`id` not in (select ho_head from t103_ho1_head)";
+					};
+					$lookupFilter = $lookupFilter->bindTo($this);
 					break;
 				case "x_TransactionType":
 					break;

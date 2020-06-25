@@ -2238,7 +2238,11 @@ class t103_ho1_head_list extends t103_ho1_head
 				$this->ho_head->ViewValue = $this->ho_head->lookupCacheOption($curVal);
 				if ($this->ho_head->ViewValue === NULL) { // Lookup from database
 					$filterWrk = "`id`" . SearchString("=", $curVal, DATATYPE_NUMBER, "");
-					$sqlWrk = $this->ho_head->Lookup->getSql(FALSE, $filterWrk, '', $this);
+					$lookupFilter = function() {
+						return "`id` not in (select ho_head from t103_ho1_head)";
+					};
+					$lookupFilter = $lookupFilter->bindTo($this);
+					$sqlWrk = $this->ho_head->Lookup->getSql(FALSE, $filterWrk, $lookupFilter, $this);
 					$rswrk = Conn()->execute($sqlWrk);
 					if ($rswrk && !$rswrk->EOF) { // Lookup values found
 						$arwrk = [];
@@ -2260,7 +2264,7 @@ class t103_ho1_head_list extends t103_ho1_head
 
 			// TransactionDate
 			$this->TransactionDate->ViewValue = $this->TransactionDate->CurrentValue;
-			$this->TransactionDate->ViewValue = FormatDateTime($this->TransactionDate->ViewValue, 0);
+			$this->TransactionDate->ViewValue = FormatDateTime($this->TransactionDate->ViewValue, 7);
 			$this->TransactionDate->ViewCustomAttributes = "";
 
 			// TransactionType
@@ -2768,6 +2772,10 @@ class t103_ho1_head_list extends t103_ho1_head
 			// Set up lookup SQL and connection
 			switch ($fld->FieldVar) {
 				case "x_ho_head":
+					$lookupFilter = function() {
+						return "`id` not in (select ho_head from t103_ho1_head)";
+					};
+					$lookupFilter = $lookupFilter->bindTo($this);
 					break;
 				case "x_TransactionType":
 					break;

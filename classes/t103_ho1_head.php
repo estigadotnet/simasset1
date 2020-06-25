@@ -107,11 +107,11 @@ class t103_ho1_head extends DbTable
 		$this->fields['TransactionNo'] = &$this->TransactionNo;
 
 		// TransactionDate
-		$this->TransactionDate = new DbField('t103_ho1_head', 't103_ho1_head', 'x_TransactionDate', 'TransactionDate', '`TransactionDate`', CastDateFieldForLike("`TransactionDate`", 0, "DB"), 133, 10, 0, FALSE, '`TransactionDate`', FALSE, FALSE, FALSE, 'FORMATTED TEXT', 'TEXT');
+		$this->TransactionDate = new DbField('t103_ho1_head', 't103_ho1_head', 'x_TransactionDate', 'TransactionDate', '`TransactionDate`', CastDateFieldForLike("`TransactionDate`", 7, "DB"), 133, 10, 7, FALSE, '`TransactionDate`', FALSE, FALSE, FALSE, 'FORMATTED TEXT', 'TEXT');
 		$this->TransactionDate->Nullable = FALSE; // NOT NULL field
 		$this->TransactionDate->Required = TRUE; // Required field
 		$this->TransactionDate->Sortable = TRUE; // Allow sort
-		$this->TransactionDate->DefaultErrorMessage = str_replace("%s", $GLOBALS["DATE_FORMAT"], $Language->phrase("IncorrectDate"));
+		$this->TransactionDate->DefaultErrorMessage = str_replace("%s", $GLOBALS["DATE_SEPARATOR"], $Language->phrase("IncorrectDateDMY"));
 		$this->fields['TransactionDate'] = &$this->TransactionDate;
 
 		// TransactionType
@@ -953,7 +953,11 @@ class t103_ho1_head extends DbTable
 			$this->ho_head->ViewValue = $this->ho_head->lookupCacheOption($curVal);
 			if ($this->ho_head->ViewValue === NULL) { // Lookup from database
 				$filterWrk = "`id`" . SearchString("=", $curVal, DATATYPE_NUMBER, "");
-				$sqlWrk = $this->ho_head->Lookup->getSql(FALSE, $filterWrk, '', $this);
+				$lookupFilter = function() {
+					return "`id` not in (select ho_head from t103_ho1_head)";
+				};
+				$lookupFilter = $lookupFilter->bindTo($this);
+				$sqlWrk = $this->ho_head->Lookup->getSql(FALSE, $filterWrk, $lookupFilter, $this);
 				$rswrk = Conn()->execute($sqlWrk);
 				if ($rswrk && !$rswrk->EOF) { // Lookup values found
 					$arwrk = [];
@@ -975,7 +979,7 @@ class t103_ho1_head extends DbTable
 
 		// TransactionDate
 		$this->TransactionDate->ViewValue = $this->TransactionDate->CurrentValue;
-		$this->TransactionDate->ViewValue = FormatDateTime($this->TransactionDate->ViewValue, 0);
+		$this->TransactionDate->ViewValue = FormatDateTime($this->TransactionDate->ViewValue, 7);
 		$this->TransactionDate->ViewCustomAttributes = "";
 
 		// TransactionType
@@ -1218,7 +1222,7 @@ class t103_ho1_head extends DbTable
 		// TransactionDate
 		$this->TransactionDate->EditAttrs["class"] = "form-control";
 		$this->TransactionDate->EditCustomAttributes = "";
-		$this->TransactionDate->EditValue = FormatDateTime($this->TransactionDate->CurrentValue, 8);
+		$this->TransactionDate->EditValue = FormatDateTime($this->TransactionDate->CurrentValue, 7);
 		$this->TransactionDate->PlaceHolder = RemoveHtml($this->TransactionDate->caption());
 
 		// TransactionType

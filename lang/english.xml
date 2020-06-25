@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8" standalone="yes"?>
-<ew-language date="2020/6/23" version="16.0.1" id="en" name="English" desc="English" author="e.World Technology Ltd.">
+<ew-language date="2020/6/25" version="16.0.1" id="en" name="English" desc="English" author="e.World Technology Ltd.">
   <!--
 	*** Important Notes:
 	1. Language ID should follow: https://developers.google.com/recaptcha/docs/language,
@@ -898,6 +898,9 @@
     <menu id="22">
       <phrase id="menutext" value="View Handover" />
     </menu>
+    <menu id="19">
+      <phrase id="menutext" value="Handover Form" />
+    </menu>
     <menu id="39">
       <phrase id="menutext" value="Property to Personnel/Dept." />
     </menu>
@@ -910,26 +913,23 @@
     <menu id="13">
       <phrase id="menutext" value="Asset" />
     </menu>
-    <menu id="19">
-      <phrase id="menutext" value="Handover Form" />
-    </menu>
     <menu id="17">
       <phrase id="menutext" value="Utility" />
     </menu>
     <menu id="8">
-      <phrase id="menutext" value="t 201 users" />
+      <phrase id="menutext" value="Users" />
     </menu>
     <menu id="9">
-      <phrase id="menutext" value="t 202 userlevels" />
+      <phrase id="menutext" value="Hak Akses" />
     </menu>
     <menu id="10">
-      <phrase id="menutext" value="t 203 userlevelpermissions" />
+      <phrase id="menutext" value="Hak Akses Detail" />
     </menu>
     <menu id="11">
-      <phrase id="menutext" value="t 204 audittrail" />
+      <phrase id="menutext" value="Activity Log" />
     </menu>
     <menu id="12">
-      <phrase id="menutext" value="t 205 parameter" />
+      <phrase id="menutext" value="Parameter" />
     </menu>
     <table id="c101_ho">
       <phrase id="tblcaption" value="Cetak Handover Form" />
@@ -1167,10 +1167,10 @@
         <phrase id="fldcaption" value="id" />
       </field>
       <field id="ho_head">
-        <phrase id="fldcaption" value="Handover (Owner to Property)" />
+        <phrase id="fldcaption" value="Transaction No. Handover (Owner to Property)" />
       </field>
       <field id="transactionno">
-        <phrase id="fldcaption" value="Transaction No" />
+        <phrase id="fldcaption" value="Transaction No." />
       </field>
       <field id="transactiondate">
         <phrase id="fldcaption" value="Transaction Date" />
@@ -1184,22 +1184,22 @@
         <phrase id="fldcaption" value="Handed Over To" />
       </field>
       <field id="codenoto">
-        <phrase id="fldcaption" value="Code No To" />
+        <phrase id="fldcaption" value="Code No." />
       </field>
       <field id="departmentto">
         <phrase id="fldcaption" value="Department To" />
       </field>
       <field id="sign1">
-        <phrase id="fldcaption" value="Sign 1" />
+        <phrase id="fldcaption" value="Sign #1" />
       </field>
       <field id="sign2">
-        <phrase id="fldcaption" value="Sign 2" />
+        <phrase id="fldcaption" value="Sign #2" />
       </field>
       <field id="sign3">
-        <phrase id="fldcaption" value="Sign 3" />
+        <phrase id="fldcaption" value="Sign #3" />
       </field>
       <field id="sign4">
-        <phrase id="fldcaption" value="Sign 4" />
+        <phrase id="fldcaption" value="Sign #4" />
       </field>
     </table>
     <table id="t104_ho1_detail">
@@ -1215,7 +1215,7 @@
       </field>
     </table>
     <table id="t201_users">
-      <phrase id="tblcaption" value="t 201 users" />
+      <phrase id="tblcaption" value="Users" />
       <field id="employeeid">
         <phrase id="fldcaption" value="Employee ID" />
       </field>
@@ -1303,7 +1303,7 @@
       </field>
     </table>
     <table id="t202_userlevels">
-      <phrase id="tblcaption" value="t 202 userlevels" />
+      <phrase id="tblcaption" value="Hak Akses" />
       <field id="userlevelid">
         <phrase id="fldcaption" value="userlevelid" />
       </field>
@@ -1312,7 +1312,7 @@
       </field>
     </table>
     <table id="t203_userlevelpermissions">
-      <phrase id="tblcaption" value="t 203 userlevelpermissions" />
+      <phrase id="tblcaption" value="Hak Akses Detail" />
       <field id="userlevelid">
         <phrase id="fldcaption" value="userlevelid" />
       </field>
@@ -1324,7 +1324,7 @@
       </field>
     </table>
     <table id="t204_audittrail">
-      <phrase id="tblcaption" value="t 204 audittrail" />
+      <phrase id="tblcaption" value="Activity Log" />
       <field id="id">
         <phrase id="fldcaption" value="id" />
       </field>
@@ -1357,7 +1357,7 @@
       </field>
     </table>
     <table id="t205_parameter">
-      <phrase id="tblcaption" value="t 205 parameter" />
+      <phrase id="tblcaption" value="Parameter" />
       <field id="id">
         <phrase id="fldcaption" value="id" />
       </field>
