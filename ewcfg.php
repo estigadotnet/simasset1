@@ -161,7 +161,7 @@ $CONFIG = [
 
 	// General
 	"UNFORMAT_YEAR" => 50, // Unformat year
-	"RANDOM_KEY" => 'PeZlPGr9IwonwuXT', // Random key for encryption
+	"RANDOM_KEY" => 'pogbv52gjord16Xd', // Random key for encryption
 	"ENCRYPTION_KEY" => '', // Encryption key for data protection
 	"PROJECT_STYLESHEET_FILENAME" => "css/p_simasset1.css", // Project stylesheet file name
 	"PROJECT_CHARSET" => "utf-8", // Project charset
@@ -173,8 +173,8 @@ $CONFIG = [
 	"COMPOSITE_KEY_SEPARATOR" => ",", // Composite key separator
 	"LAZY_LOAD" => TRUE, // Lazy loading of images
 	"BODY_CLASS" => "hold-transition sidebar-collapse ew-layout-top-nav",
-	"SIDEBAR_CLASS" => "main-sidebar sidebar-dark-warning",
-	"NAVBAR_CLASS" => "main-header navbar navbar-expand navbar-warning navbar-light",
+	"SIDEBAR_CLASS" => "main-sidebar sidebar-dark-primary",
+	"NAVBAR_CLASS" => "main-header navbar navbar-expand navbar-primary navbar-dark",
 
 	// Check Token
 	"CHECK_TOKEN" => TRUE,
