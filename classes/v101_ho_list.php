@@ -853,11 +853,11 @@ class v101_ho_list extends v101_ho
 		$this->hoJobTitleBy->setVisibility();
 		$this->Code->setVisibility();
 		$this->Description->setVisibility();
+		$this->Type->setVisibility();
 		$this->Group->setVisibility();
 		$this->ProcurementDate->setVisibility();
 		$this->ProcurementCurrentCost->setVisibility();
-		$this->Economical_Life_Time_28in_Year29->setVisibility();
-		$this->Salvage->setVisibility();
+		$this->Estimated_Life_28in_Year29->setVisibility();
 		$this->Qty->setVisibility();
 		$this->Remarks->Visible = FALSE;
 		$this->Sign1Signature->setVisibility();
@@ -1184,11 +1184,11 @@ class v101_ho_list extends v101_ho
 		$filterList = Concat($filterList, $this->hoJobTitleBy->AdvancedSearch->toJson(), ","); // Field hoJobTitleBy
 		$filterList = Concat($filterList, $this->Code->AdvancedSearch->toJson(), ","); // Field Code
 		$filterList = Concat($filterList, $this->Description->AdvancedSearch->toJson(), ","); // Field Description
+		$filterList = Concat($filterList, $this->Type->AdvancedSearch->toJson(), ","); // Field Type
 		$filterList = Concat($filterList, $this->Group->AdvancedSearch->toJson(), ","); // Field Group
 		$filterList = Concat($filterList, $this->ProcurementDate->AdvancedSearch->toJson(), ","); // Field ProcurementDate
 		$filterList = Concat($filterList, $this->ProcurementCurrentCost->AdvancedSearch->toJson(), ","); // Field ProcurementCurrentCost
-		$filterList = Concat($filterList, $this->Economical_Life_Time_28in_Year29->AdvancedSearch->toJson(), ","); // Field Economical Life Time (in Year)
-		$filterList = Concat($filterList, $this->Salvage->AdvancedSearch->toJson(), ","); // Field Salvage
+		$filterList = Concat($filterList, $this->Estimated_Life_28in_Year29->AdvancedSearch->toJson(), ","); // Field Estimated Life (in Year)
 		$filterList = Concat($filterList, $this->Qty->AdvancedSearch->toJson(), ","); // Field Qty
 		$filterList = Concat($filterList, $this->Remarks->AdvancedSearch->toJson(), ","); // Field Remarks
 		$filterList = Concat($filterList, $this->Sign1Signature->AdvancedSearch->toJson(), ","); // Field Sign1Signature
@@ -1454,6 +1454,14 @@ class v101_ho_list extends v101_ho
 		$this->Description->AdvancedSearch->SearchOperator2 = @$filter["w_Description"];
 		$this->Description->AdvancedSearch->save();
 
+		// Field Type
+		$this->Type->AdvancedSearch->SearchValue = @$filter["x_Type"];
+		$this->Type->AdvancedSearch->SearchOperator = @$filter["z_Type"];
+		$this->Type->AdvancedSearch->SearchCondition = @$filter["v_Type"];
+		$this->Type->AdvancedSearch->SearchValue2 = @$filter["y_Type"];
+		$this->Type->AdvancedSearch->SearchOperator2 = @$filter["w_Type"];
+		$this->Type->AdvancedSearch->save();
+
 		// Field Group
 		$this->Group->AdvancedSearch->SearchValue = @$filter["x_Group"];
 		$this->Group->AdvancedSearch->SearchOperator = @$filter["z_Group"];
@@ -1478,21 +1486,13 @@ class v101_ho_list extends v101_ho
 		$this->ProcurementCurrentCost->AdvancedSearch->SearchOperator2 = @$filter["w_ProcurementCurrentCost"];
 		$this->ProcurementCurrentCost->AdvancedSearch->save();
 
-		// Field Economical Life Time (in Year)
-		$this->Economical_Life_Time_28in_Year29->AdvancedSearch->SearchValue = @$filter["x_Economical_Life_Time_28in_Year29"];
-		$this->Economical_Life_Time_28in_Year29->AdvancedSearch->SearchOperator = @$filter["z_Economical_Life_Time_28in_Year29"];
-		$this->Economical_Life_Time_28in_Year29->AdvancedSearch->SearchCondition = @$filter["v_Economical_Life_Time_28in_Year29"];
-		$this->Economical_Life_Time_28in_Year29->AdvancedSearch->SearchValue2 = @$filter["y_Economical_Life_Time_28in_Year29"];
-		$this->Economical_Life_Time_28in_Year29->AdvancedSearch->SearchOperator2 = @$filter["w_Economical_Life_Time_28in_Year29"];
-		$this->Economical_Life_Time_28in_Year29->AdvancedSearch->save();
-
-		// Field Salvage
-		$this->Salvage->AdvancedSearch->SearchValue = @$filter["x_Salvage"];
-		$this->Salvage->AdvancedSearch->SearchOperator = @$filter["z_Salvage"];
-		$this->Salvage->AdvancedSearch->SearchCondition = @$filter["v_Salvage"];
-		$this->Salvage->AdvancedSearch->SearchValue2 = @$filter["y_Salvage"];
-		$this->Salvage->AdvancedSearch->SearchOperator2 = @$filter["w_Salvage"];
-		$this->Salvage->AdvancedSearch->save();
+		// Field Estimated Life (in Year)
+		$this->Estimated_Life_28in_Year29->AdvancedSearch->SearchValue = @$filter["x_Estimated_Life_28in_Year29"];
+		$this->Estimated_Life_28in_Year29->AdvancedSearch->SearchOperator = @$filter["z_Estimated_Life_28in_Year29"];
+		$this->Estimated_Life_28in_Year29->AdvancedSearch->SearchCondition = @$filter["v_Estimated_Life_28in_Year29"];
+		$this->Estimated_Life_28in_Year29->AdvancedSearch->SearchValue2 = @$filter["y_Estimated_Life_28in_Year29"];
+		$this->Estimated_Life_28in_Year29->AdvancedSearch->SearchOperator2 = @$filter["w_Estimated_Life_28in_Year29"];
+		$this->Estimated_Life_28in_Year29->AdvancedSearch->save();
 
 		// Field Qty
 		$this->Qty->AdvancedSearch->SearchValue = @$filter["x_Qty"];
@@ -1602,6 +1602,7 @@ class v101_ho_list extends v101_ho
 		$this->buildBasicSearchSql($where, $this->hoJobTitleBy, $arKeywords, $type);
 		$this->buildBasicSearchSql($where, $this->Code, $arKeywords, $type);
 		$this->buildBasicSearchSql($where, $this->Description, $arKeywords, $type);
+		$this->buildBasicSearchSql($where, $this->Type, $arKeywords, $type);
 		$this->buildBasicSearchSql($where, $this->Group, $arKeywords, $type);
 		$this->buildBasicSearchSql($where, $this->Remarks, $arKeywords, $type);
 		$this->buildBasicSearchSql($where, $this->Sign1Signature, $arKeywords, $type);
@@ -1801,11 +1802,11 @@ class v101_ho_list extends v101_ho
 			$this->updateSort($this->hoJobTitleBy, $ctrl); // hoJobTitleBy
 			$this->updateSort($this->Code, $ctrl); // Code
 			$this->updateSort($this->Description, $ctrl); // Description
+			$this->updateSort($this->Type, $ctrl); // Type
 			$this->updateSort($this->Group, $ctrl); // Group
 			$this->updateSort($this->ProcurementDate, $ctrl); // ProcurementDate
 			$this->updateSort($this->ProcurementCurrentCost, $ctrl); // ProcurementCurrentCost
-			$this->updateSort($this->Economical_Life_Time_28in_Year29, $ctrl); // Economical Life Time (in Year)
-			$this->updateSort($this->Salvage, $ctrl); // Salvage
+			$this->updateSort($this->Estimated_Life_28in_Year29, $ctrl); // Estimated Life (in Year)
 			$this->updateSort($this->Qty, $ctrl); // Qty
 			$this->updateSort($this->Sign1Signature, $ctrl); // Sign1Signature
 			$this->updateSort($this->Sign1JobTitle, $ctrl); // Sign1JobTitle
@@ -1878,11 +1879,11 @@ class v101_ho_list extends v101_ho
 				$this->hoJobTitleBy->setSort("");
 				$this->Code->setSort("");
 				$this->Description->setSort("");
+				$this->Type->setSort("");
 				$this->Group->setSort("");
 				$this->ProcurementDate->setSort("");
 				$this->ProcurementCurrentCost->setSort("");
-				$this->Economical_Life_Time_28in_Year29->setSort("");
-				$this->Salvage->setSort("");
+				$this->Estimated_Life_28in_Year29->setSort("");
 				$this->Qty->setSort("");
 				$this->Sign1Signature->setSort("");
 				$this->Sign1JobTitle->setSort("");
@@ -2248,11 +2249,11 @@ class v101_ho_list extends v101_ho
 		$this->hoJobTitleBy->setDbValue($row['hoJobTitleBy']);
 		$this->Code->setDbValue($row['Code']);
 		$this->Description->setDbValue($row['Description']);
+		$this->Type->setDbValue($row['Type']);
 		$this->Group->setDbValue($row['Group']);
 		$this->ProcurementDate->setDbValue($row['ProcurementDate']);
 		$this->ProcurementCurrentCost->setDbValue($row['ProcurementCurrentCost']);
-		$this->Economical_Life_Time_28in_Year29->setDbValue($row['Economical Life Time (in Year)']);
-		$this->Salvage->setDbValue($row['Salvage']);
+		$this->Estimated_Life_28in_Year29->setDbValue($row['Estimated Life (in Year)']);
 		$this->Qty->setDbValue($row['Qty']);
 		$this->Remarks->setDbValue($row['Remarks']);
 		$this->Sign1Signature->setDbValue($row['Sign1Signature']);
@@ -2297,11 +2298,11 @@ class v101_ho_list extends v101_ho
 		$row['hoJobTitleBy'] = NULL;
 		$row['Code'] = NULL;
 		$row['Description'] = NULL;
+		$row['Type'] = NULL;
 		$row['Group'] = NULL;
 		$row['ProcurementDate'] = NULL;
 		$row['ProcurementCurrentCost'] = NULL;
-		$row['Economical Life Time (in Year)'] = NULL;
-		$row['Salvage'] = NULL;
+		$row['Estimated Life (in Year)'] = NULL;
 		$row['Qty'] = NULL;
 		$row['Remarks'] = NULL;
 		$row['Sign1Signature'] = NULL;
@@ -2361,10 +2362,6 @@ class v101_ho_list extends v101_ho
 			$this->ProcurementCurrentCost->CurrentValue = ConvertToFloatString($this->ProcurementCurrentCost->CurrentValue);
 
 		// Convert decimal values if posted back
-		if ($this->Salvage->FormValue == $this->Salvage->CurrentValue && is_numeric(ConvertToFloatString($this->Salvage->CurrentValue)))
-			$this->Salvage->CurrentValue = ConvertToFloatString($this->Salvage->CurrentValue);
-
-		// Convert decimal values if posted back
 		if ($this->Qty->FormValue == $this->Qty->CurrentValue && is_numeric(ConvertToFloatString($this->Qty->CurrentValue)))
 			$this->Qty->CurrentValue = ConvertToFloatString($this->Qty->CurrentValue);
 
@@ -2399,11 +2396,11 @@ class v101_ho_list extends v101_ho
 		// hoJobTitleBy
 		// Code
 		// Description
+		// Type
 		// Group
 		// ProcurementDate
 		// ProcurementCurrentCost
-		// Economical Life Time (in Year)
-		// Salvage
+		// Estimated Life (in Year)
 		// Qty
 		// Remarks
 		// Sign1Signature
@@ -2538,6 +2535,10 @@ class v101_ho_list extends v101_ho
 			$this->Description->ViewValue = $this->Description->CurrentValue;
 			$this->Description->ViewCustomAttributes = "";
 
+			// Type
+			$this->Type->ViewValue = $this->Type->CurrentValue;
+			$this->Type->ViewCustomAttributes = "";
+
 			// Group
 			$this->Group->ViewValue = $this->Group->CurrentValue;
 			$this->Group->ViewCustomAttributes = "";
@@ -2552,15 +2553,10 @@ class v101_ho_list extends v101_ho
 			$this->ProcurementCurrentCost->ViewValue = FormatNumber($this->ProcurementCurrentCost->ViewValue, 2, -2, -2, -2);
 			$this->ProcurementCurrentCost->ViewCustomAttributes = "";
 
-			// Economical Life Time (in Year)
-			$this->Economical_Life_Time_28in_Year29->ViewValue = $this->Economical_Life_Time_28in_Year29->CurrentValue;
-			$this->Economical_Life_Time_28in_Year29->ViewValue = FormatNumber($this->Economical_Life_Time_28in_Year29->ViewValue, 0, -2, -2, -2);
-			$this->Economical_Life_Time_28in_Year29->ViewCustomAttributes = "";
-
-			// Salvage
-			$this->Salvage->ViewValue = $this->Salvage->CurrentValue;
-			$this->Salvage->ViewValue = FormatNumber($this->Salvage->ViewValue, 2, -2, -2, -2);
-			$this->Salvage->ViewCustomAttributes = "";
+			// Estimated Life (in Year)
+			$this->Estimated_Life_28in_Year29->ViewValue = $this->Estimated_Life_28in_Year29->CurrentValue;
+			$this->Estimated_Life_28in_Year29->ViewValue = FormatNumber($this->Estimated_Life_28in_Year29->ViewValue, 0, -2, -2, -2);
+			$this->Estimated_Life_28in_Year29->ViewCustomAttributes = "";
 
 			// Qty
 			$this->Qty->ViewValue = $this->Qty->CurrentValue;
@@ -2738,6 +2734,11 @@ class v101_ho_list extends v101_ho
 			$this->Description->HrefValue = "";
 			$this->Description->TooltipValue = "";
 
+			// Type
+			$this->Type->LinkCustomAttributes = "";
+			$this->Type->HrefValue = "";
+			$this->Type->TooltipValue = "";
+
 			// Group
 			$this->Group->LinkCustomAttributes = "";
 			$this->Group->HrefValue = "";
@@ -2753,15 +2754,10 @@ class v101_ho_list extends v101_ho
 			$this->ProcurementCurrentCost->HrefValue = "";
 			$this->ProcurementCurrentCost->TooltipValue = "";
 
-			// Economical Life Time (in Year)
-			$this->Economical_Life_Time_28in_Year29->LinkCustomAttributes = "";
-			$this->Economical_Life_Time_28in_Year29->HrefValue = "";
-			$this->Economical_Life_Time_28in_Year29->TooltipValue = "";
-
-			// Salvage
-			$this->Salvage->LinkCustomAttributes = "";
-			$this->Salvage->HrefValue = "";
-			$this->Salvage->TooltipValue = "";
+			// Estimated Life (in Year)
+			$this->Estimated_Life_28in_Year29->LinkCustomAttributes = "";
+			$this->Estimated_Life_28in_Year29->HrefValue = "";
+			$this->Estimated_Life_28in_Year29->TooltipValue = "";
 
 			// Qty
 			$this->Qty->LinkCustomAttributes = "";

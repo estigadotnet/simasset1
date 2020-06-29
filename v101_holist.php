@@ -384,6 +384,15 @@ $v101_ho_list->ListOptions->render("header", "left");
 		</div></div></th>
 	<?php } ?>
 <?php } ?>
+<?php if ($v101_ho_list->Type->Visible) { // Type ?>
+	<?php if ($v101_ho_list->SortUrl($v101_ho_list->Type) == "") { ?>
+		<th data-name="Type" class="<?php echo $v101_ho_list->Type->headerCellClass() ?>"><div id="elh_v101_ho_Type" class="v101_ho_Type"><div class="ew-table-header-caption"><?php echo $v101_ho_list->Type->caption() ?></div></div></th>
+	<?php } else { ?>
+		<th data-name="Type" class="<?php echo $v101_ho_list->Type->headerCellClass() ?>"><div class="ew-pointer" onclick="ew.sort(event, '<?php echo $v101_ho_list->SortUrl($v101_ho_list->Type) ?>', 2);"><div id="elh_v101_ho_Type" class="v101_ho_Type">
+			<div class="ew-table-header-btn"><span class="ew-table-header-caption"><?php echo $v101_ho_list->Type->caption() ?><?php echo $Language->phrase("SrchLegend") ?></span><span class="ew-table-header-sort"><?php if ($v101_ho_list->Type->getSort() == "ASC") { ?><i class="fas fa-sort-up"></i><?php } elseif ($v101_ho_list->Type->getSort() == "DESC") { ?><i class="fas fa-sort-down"></i><?php } ?></span></div>
+		</div></div></th>
+	<?php } ?>
+<?php } ?>
 <?php if ($v101_ho_list->Group->Visible) { // Group ?>
 	<?php if ($v101_ho_list->SortUrl($v101_ho_list->Group) == "") { ?>
 		<th data-name="Group" class="<?php echo $v101_ho_list->Group->headerCellClass() ?>"><div id="elh_v101_ho_Group" class="v101_ho_Group"><div class="ew-table-header-caption"><?php echo $v101_ho_list->Group->caption() ?></div></div></th>
@@ -411,21 +420,12 @@ $v101_ho_list->ListOptions->render("header", "left");
 		</div></div></th>
 	<?php } ?>
 <?php } ?>
-<?php if ($v101_ho_list->Economical_Life_Time_28in_Year29->Visible) { // Economical Life Time (in Year) ?>
-	<?php if ($v101_ho_list->SortUrl($v101_ho_list->Economical_Life_Time_28in_Year29) == "") { ?>
-		<th data-name="Economical_Life_Time_28in_Year29" class="<?php echo $v101_ho_list->Economical_Life_Time_28in_Year29->headerCellClass() ?>"><div id="elh_v101_ho_Economical_Life_Time_28in_Year29" class="v101_ho_Economical_Life_Time_28in_Year29"><div class="ew-table-header-caption"><?php echo $v101_ho_list->Economical_Life_Time_28in_Year29->caption() ?></div></div></th>
+<?php if ($v101_ho_list->Estimated_Life_28in_Year29->Visible) { // Estimated Life (in Year) ?>
+	<?php if ($v101_ho_list->SortUrl($v101_ho_list->Estimated_Life_28in_Year29) == "") { ?>
+		<th data-name="Estimated_Life_28in_Year29" class="<?php echo $v101_ho_list->Estimated_Life_28in_Year29->headerCellClass() ?>"><div id="elh_v101_ho_Estimated_Life_28in_Year29" class="v101_ho_Estimated_Life_28in_Year29"><div class="ew-table-header-caption"><?php echo $v101_ho_list->Estimated_Life_28in_Year29->caption() ?></div></div></th>
 	<?php } else { ?>
-		<th data-name="Economical_Life_Time_28in_Year29" class="<?php echo $v101_ho_list->Economical_Life_Time_28in_Year29->headerCellClass() ?>"><div class="ew-pointer" onclick="ew.sort(event, '<?php echo $v101_ho_list->SortUrl($v101_ho_list->Economical_Life_Time_28in_Year29) ?>', 2);"><div id="elh_v101_ho_Economical_Life_Time_28in_Year29" class="v101_ho_Economical_Life_Time_28in_Year29">
-			<div class="ew-table-header-btn"><span class="ew-table-header-caption"><?php echo $v101_ho_list->Economical_Life_Time_28in_Year29->caption() ?></span><span class="ew-table-header-sort"><?php if ($v101_ho_list->Economical_Life_Time_28in_Year29->getSort() == "ASC") { ?><i class="fas fa-sort-up"></i><?php } elseif ($v101_ho_list->Economical_Life_Time_28in_Year29->getSort() == "DESC") { ?><i class="fas fa-sort-down"></i><?php } ?></span></div>
-		</div></div></th>
-	<?php } ?>
-<?php } ?>
-<?php if ($v101_ho_list->Salvage->Visible) { // Salvage ?>
-	<?php if ($v101_ho_list->SortUrl($v101_ho_list->Salvage) == "") { ?>
-		<th data-name="Salvage" class="<?php echo $v101_ho_list->Salvage->headerCellClass() ?>"><div id="elh_v101_ho_Salvage" class="v101_ho_Salvage"><div class="ew-table-header-caption"><?php echo $v101_ho_list->Salvage->caption() ?></div></div></th>
-	<?php } else { ?>
-		<th data-name="Salvage" class="<?php echo $v101_ho_list->Salvage->headerCellClass() ?>"><div class="ew-pointer" onclick="ew.sort(event, '<?php echo $v101_ho_list->SortUrl($v101_ho_list->Salvage) ?>', 2);"><div id="elh_v101_ho_Salvage" class="v101_ho_Salvage">
-			<div class="ew-table-header-btn"><span class="ew-table-header-caption"><?php echo $v101_ho_list->Salvage->caption() ?></span><span class="ew-table-header-sort"><?php if ($v101_ho_list->Salvage->getSort() == "ASC") { ?><i class="fas fa-sort-up"></i><?php } elseif ($v101_ho_list->Salvage->getSort() == "DESC") { ?><i class="fas fa-sort-down"></i><?php } ?></span></div>
+		<th data-name="Estimated_Life_28in_Year29" class="<?php echo $v101_ho_list->Estimated_Life_28in_Year29->headerCellClass() ?>"><div class="ew-pointer" onclick="ew.sort(event, '<?php echo $v101_ho_list->SortUrl($v101_ho_list->Estimated_Life_28in_Year29) ?>', 2);"><div id="elh_v101_ho_Estimated_Life_28in_Year29" class="v101_ho_Estimated_Life_28in_Year29">
+			<div class="ew-table-header-btn"><span class="ew-table-header-caption"><?php echo $v101_ho_list->Estimated_Life_28in_Year29->caption() ?></span><span class="ew-table-header-sort"><?php if ($v101_ho_list->Estimated_Life_28in_Year29->getSort() == "ASC") { ?><i class="fas fa-sort-up"></i><?php } elseif ($v101_ho_list->Estimated_Life_28in_Year29->getSort() == "DESC") { ?><i class="fas fa-sort-down"></i><?php } ?></span></div>
 		</div></div></th>
 	<?php } ?>
 <?php } ?>
@@ -773,6 +773,13 @@ $v101_ho_list->ListOptions->render("body", "left", $v101_ho_list->RowCount);
 </span>
 </td>
 	<?php } ?>
+	<?php if ($v101_ho_list->Type->Visible) { // Type ?>
+		<td data-name="Type" <?php echo $v101_ho_list->Type->cellAttributes() ?>>
+<span id="el<?php echo $v101_ho_list->RowCount ?>_v101_ho_Type">
+<span<?php echo $v101_ho_list->Type->viewAttributes() ?>><?php echo $v101_ho_list->Type->getViewValue() ?></span>
+</span>
+</td>
+	<?php } ?>
 	<?php if ($v101_ho_list->Group->Visible) { // Group ?>
 		<td data-name="Group" <?php echo $v101_ho_list->Group->cellAttributes() ?>>
 <span id="el<?php echo $v101_ho_list->RowCount ?>_v101_ho_Group">
@@ -794,17 +801,10 @@ $v101_ho_list->ListOptions->render("body", "left", $v101_ho_list->RowCount);
 </span>
 </td>
 	<?php } ?>
-	<?php if ($v101_ho_list->Economical_Life_Time_28in_Year29->Visible) { // Economical Life Time (in Year) ?>
-		<td data-name="Economical_Life_Time_28in_Year29" <?php echo $v101_ho_list->Economical_Life_Time_28in_Year29->cellAttributes() ?>>
-<span id="el<?php echo $v101_ho_list->RowCount ?>_v101_ho_Economical_Life_Time_28in_Year29">
-<span<?php echo $v101_ho_list->Economical_Life_Time_28in_Year29->viewAttributes() ?>><?php echo $v101_ho_list->Economical_Life_Time_28in_Year29->getViewValue() ?></span>
-</span>
-</td>
-	<?php } ?>
-	<?php if ($v101_ho_list->Salvage->Visible) { // Salvage ?>
-		<td data-name="Salvage" <?php echo $v101_ho_list->Salvage->cellAttributes() ?>>
-<span id="el<?php echo $v101_ho_list->RowCount ?>_v101_ho_Salvage">
-<span<?php echo $v101_ho_list->Salvage->viewAttributes() ?>><?php echo $v101_ho_list->Salvage->getViewValue() ?></span>
+	<?php if ($v101_ho_list->Estimated_Life_28in_Year29->Visible) { // Estimated Life (in Year) ?>
+		<td data-name="Estimated_Life_28in_Year29" <?php echo $v101_ho_list->Estimated_Life_28in_Year29->cellAttributes() ?>>
+<span id="el<?php echo $v101_ho_list->RowCount ?>_v101_ho_Estimated_Life_28in_Year29">
+<span<?php echo $v101_ho_list->Estimated_Life_28in_Year29->viewAttributes() ?>><?php echo $v101_ho_list->Estimated_Life_28in_Year29->getViewValue() ?></span>
 </span>
 </td>
 	<?php } ?>

@@ -688,16 +688,18 @@ class t004_asset_edit extends t004_asset
 		$this->CurrentAction = Param("action"); // Set up current action
 		$this->id->Visible = FALSE;
 		$this->property_id->setVisibility();
-		$this->department_id->setVisibility();
-		$this->signature_id->setVisibility();
-		$this->Code->setVisibility();
+		$this->group_id->Visible = FALSE;
+		$this->type_id->setVisibility();
+		$this->Code->Visible = FALSE;
 		$this->Description->setVisibility();
-		$this->group_id->setVisibility();
-		$this->ProcurementDate->setVisibility();
-		$this->ProcurementCurrentCost->setVisibility();
-		$this->Salvage->setVisibility();
+		$this->brand_id->setVisibility();
+		$this->signature_id->setVisibility();
+		$this->department_id->setVisibility();
+		$this->location_id->setVisibility();
 		$this->Qty->setVisibility();
 		$this->Remarks->setVisibility();
+		$this->ProcurementDate->setVisibility();
+		$this->ProcurementCurrentCost->setVisibility();
 		$this->PeriodBegin->setVisibility();
 		$this->PeriodEnd->setVisibility();
 		$this->hideFieldsForAddEdit();
@@ -724,9 +726,12 @@ class t004_asset_edit extends t004_asset
 
 		// Set up lookup cache
 		$this->setupLookupOptions($this->property_id);
-		$this->setupLookupOptions($this->department_id);
-		$this->setupLookupOptions($this->signature_id);
 		$this->setupLookupOptions($this->group_id);
+		$this->setupLookupOptions($this->type_id);
+		$this->setupLookupOptions($this->brand_id);
+		$this->setupLookupOptions($this->signature_id);
+		$this->setupLookupOptions($this->department_id);
+		$this->setupLookupOptions($this->location_id);
 
 		// Check permission
 		if (!$Security->canEdit()) {
@@ -901,31 +906,13 @@ class t004_asset_edit extends t004_asset
 				$this->property_id->setFormValue($val);
 		}
 
-		// Check field name 'department_id' first before field var 'x_department_id'
-		$val = $CurrentForm->hasValue("department_id") ? $CurrentForm->getValue("department_id") : $CurrentForm->getValue("x_department_id");
-		if (!$this->department_id->IsDetailKey) {
+		// Check field name 'type_id' first before field var 'x_type_id'
+		$val = $CurrentForm->hasValue("type_id") ? $CurrentForm->getValue("type_id") : $CurrentForm->getValue("x_type_id");
+		if (!$this->type_id->IsDetailKey) {
 			if (IsApi() && $val == NULL)
-				$this->department_id->Visible = FALSE; // Disable update for API request
+				$this->type_id->Visible = FALSE; // Disable update for API request
 			else
-				$this->department_id->setFormValue($val);
-		}
-
-		// Check field name 'signature_id' first before field var 'x_signature_id'
-		$val = $CurrentForm->hasValue("signature_id") ? $CurrentForm->getValue("signature_id") : $CurrentForm->getValue("x_signature_id");
-		if (!$this->signature_id->IsDetailKey) {
-			if (IsApi() && $val == NULL)
-				$this->signature_id->Visible = FALSE; // Disable update for API request
-			else
-				$this->signature_id->setFormValue($val);
-		}
-
-		// Check field name 'Code' first before field var 'x_Code'
-		$val = $CurrentForm->hasValue("Code") ? $CurrentForm->getValue("Code") : $CurrentForm->getValue("x_Code");
-		if (!$this->Code->IsDetailKey) {
-			if (IsApi() && $val == NULL)
-				$this->Code->Visible = FALSE; // Disable update for API request
-			else
-				$this->Code->setFormValue($val);
+				$this->type_id->setFormValue($val);
 		}
 
 		// Check field name 'Description' first before field var 'x_Description'
@@ -937,13 +924,58 @@ class t004_asset_edit extends t004_asset
 				$this->Description->setFormValue($val);
 		}
 
-		// Check field name 'group_id' first before field var 'x_group_id'
-		$val = $CurrentForm->hasValue("group_id") ? $CurrentForm->getValue("group_id") : $CurrentForm->getValue("x_group_id");
-		if (!$this->group_id->IsDetailKey) {
+		// Check field name 'brand_id' first before field var 'x_brand_id'
+		$val = $CurrentForm->hasValue("brand_id") ? $CurrentForm->getValue("brand_id") : $CurrentForm->getValue("x_brand_id");
+		if (!$this->brand_id->IsDetailKey) {
 			if (IsApi() && $val == NULL)
-				$this->group_id->Visible = FALSE; // Disable update for API request
+				$this->brand_id->Visible = FALSE; // Disable update for API request
 			else
-				$this->group_id->setFormValue($val);
+				$this->brand_id->setFormValue($val);
+		}
+
+		// Check field name 'signature_id' first before field var 'x_signature_id'
+		$val = $CurrentForm->hasValue("signature_id") ? $CurrentForm->getValue("signature_id") : $CurrentForm->getValue("x_signature_id");
+		if (!$this->signature_id->IsDetailKey) {
+			if (IsApi() && $val == NULL)
+				$this->signature_id->Visible = FALSE; // Disable update for API request
+			else
+				$this->signature_id->setFormValue($val);
+		}
+
+		// Check field name 'department_id' first before field var 'x_department_id'
+		$val = $CurrentForm->hasValue("department_id") ? $CurrentForm->getValue("department_id") : $CurrentForm->getValue("x_department_id");
+		if (!$this->department_id->IsDetailKey) {
+			if (IsApi() && $val == NULL)
+				$this->department_id->Visible = FALSE; // Disable update for API request
+			else
+				$this->department_id->setFormValue($val);
+		}
+
+		// Check field name 'location_id' first before field var 'x_location_id'
+		$val = $CurrentForm->hasValue("location_id") ? $CurrentForm->getValue("location_id") : $CurrentForm->getValue("x_location_id");
+		if (!$this->location_id->IsDetailKey) {
+			if (IsApi() && $val == NULL)
+				$this->location_id->Visible = FALSE; // Disable update for API request
+			else
+				$this->location_id->setFormValue($val);
+		}
+
+		// Check field name 'Qty' first before field var 'x_Qty'
+		$val = $CurrentForm->hasValue("Qty") ? $CurrentForm->getValue("Qty") : $CurrentForm->getValue("x_Qty");
+		if (!$this->Qty->IsDetailKey) {
+			if (IsApi() && $val == NULL)
+				$this->Qty->Visible = FALSE; // Disable update for API request
+			else
+				$this->Qty->setFormValue($val);
+		}
+
+		// Check field name 'Remarks' first before field var 'x_Remarks'
+		$val = $CurrentForm->hasValue("Remarks") ? $CurrentForm->getValue("Remarks") : $CurrentForm->getValue("x_Remarks");
+		if (!$this->Remarks->IsDetailKey) {
+			if (IsApi() && $val == NULL)
+				$this->Remarks->Visible = FALSE; // Disable update for API request
+			else
+				$this->Remarks->setFormValue($val);
 		}
 
 		// Check field name 'ProcurementDate' first before field var 'x_ProcurementDate'
@@ -963,33 +995,6 @@ class t004_asset_edit extends t004_asset
 				$this->ProcurementCurrentCost->Visible = FALSE; // Disable update for API request
 			else
 				$this->ProcurementCurrentCost->setFormValue($val);
-		}
-
-		// Check field name 'Salvage' first before field var 'x_Salvage'
-		$val = $CurrentForm->hasValue("Salvage") ? $CurrentForm->getValue("Salvage") : $CurrentForm->getValue("x_Salvage");
-		if (!$this->Salvage->IsDetailKey) {
-			if (IsApi() && $val == NULL)
-				$this->Salvage->Visible = FALSE; // Disable update for API request
-			else
-				$this->Salvage->setFormValue($val);
-		}
-
-		// Check field name 'Qty' first before field var 'x_Qty'
-		$val = $CurrentForm->hasValue("Qty") ? $CurrentForm->getValue("Qty") : $CurrentForm->getValue("x_Qty");
-		if (!$this->Qty->IsDetailKey) {
-			if (IsApi() && $val == NULL)
-				$this->Qty->Visible = FALSE; // Disable update for API request
-			else
-				$this->Qty->setFormValue($val);
-		}
-
-		// Check field name 'Remarks' first before field var 'x_Remarks'
-		$val = $CurrentForm->hasValue("Remarks") ? $CurrentForm->getValue("Remarks") : $CurrentForm->getValue("x_Remarks");
-		if (!$this->Remarks->IsDetailKey) {
-			if (IsApi() && $val == NULL)
-				$this->Remarks->Visible = FALSE; // Disable update for API request
-			else
-				$this->Remarks->setFormValue($val);
 		}
 
 		// Check field name 'PeriodBegin' first before field var 'x_PeriodBegin'
@@ -1024,17 +1029,17 @@ class t004_asset_edit extends t004_asset
 		global $CurrentForm;
 		$this->id->CurrentValue = $this->id->FormValue;
 		$this->property_id->CurrentValue = $this->property_id->FormValue;
-		$this->department_id->CurrentValue = $this->department_id->FormValue;
-		$this->signature_id->CurrentValue = $this->signature_id->FormValue;
-		$this->Code->CurrentValue = $this->Code->FormValue;
+		$this->type_id->CurrentValue = $this->type_id->FormValue;
 		$this->Description->CurrentValue = $this->Description->FormValue;
-		$this->group_id->CurrentValue = $this->group_id->FormValue;
+		$this->brand_id->CurrentValue = $this->brand_id->FormValue;
+		$this->signature_id->CurrentValue = $this->signature_id->FormValue;
+		$this->department_id->CurrentValue = $this->department_id->FormValue;
+		$this->location_id->CurrentValue = $this->location_id->FormValue;
+		$this->Qty->CurrentValue = $this->Qty->FormValue;
+		$this->Remarks->CurrentValue = $this->Remarks->FormValue;
 		$this->ProcurementDate->CurrentValue = $this->ProcurementDate->FormValue;
 		$this->ProcurementDate->CurrentValue = UnFormatDateTime($this->ProcurementDate->CurrentValue, 7);
 		$this->ProcurementCurrentCost->CurrentValue = $this->ProcurementCurrentCost->FormValue;
-		$this->Salvage->CurrentValue = $this->Salvage->FormValue;
-		$this->Qty->CurrentValue = $this->Qty->FormValue;
-		$this->Remarks->CurrentValue = $this->Remarks->FormValue;
 		$this->PeriodBegin->CurrentValue = $this->PeriodBegin->FormValue;
 		$this->PeriodBegin->CurrentValue = UnFormatDateTime($this->PeriodBegin->CurrentValue, 7);
 		$this->PeriodEnd->CurrentValue = $this->PeriodEnd->FormValue;
@@ -1078,16 +1083,18 @@ class t004_asset_edit extends t004_asset
 			return;
 		$this->id->setDbValue($row['id']);
 		$this->property_id->setDbValue($row['property_id']);
-		$this->department_id->setDbValue($row['department_id']);
-		$this->signature_id->setDbValue($row['signature_id']);
+		$this->group_id->setDbValue($row['group_id']);
+		$this->type_id->setDbValue($row['type_id']);
 		$this->Code->setDbValue($row['Code']);
 		$this->Description->setDbValue($row['Description']);
-		$this->group_id->setDbValue($row['group_id']);
-		$this->ProcurementDate->setDbValue($row['ProcurementDate']);
-		$this->ProcurementCurrentCost->setDbValue($row['ProcurementCurrentCost']);
-		$this->Salvage->setDbValue($row['Salvage']);
+		$this->brand_id->setDbValue($row['brand_id']);
+		$this->signature_id->setDbValue($row['signature_id']);
+		$this->department_id->setDbValue($row['department_id']);
+		$this->location_id->setDbValue($row['location_id']);
 		$this->Qty->setDbValue($row['Qty']);
 		$this->Remarks->setDbValue($row['Remarks']);
+		$this->ProcurementDate->setDbValue($row['ProcurementDate']);
+		$this->ProcurementCurrentCost->setDbValue($row['ProcurementCurrentCost']);
 		$this->PeriodBegin->setDbValue($row['PeriodBegin']);
 		$this->PeriodEnd->setDbValue($row['PeriodEnd']);
 	}
@@ -1098,16 +1105,18 @@ class t004_asset_edit extends t004_asset
 		$row = [];
 		$row['id'] = NULL;
 		$row['property_id'] = NULL;
-		$row['department_id'] = NULL;
-		$row['signature_id'] = NULL;
+		$row['group_id'] = NULL;
+		$row['type_id'] = NULL;
 		$row['Code'] = NULL;
 		$row['Description'] = NULL;
-		$row['group_id'] = NULL;
-		$row['ProcurementDate'] = NULL;
-		$row['ProcurementCurrentCost'] = NULL;
-		$row['Salvage'] = NULL;
+		$row['brand_id'] = NULL;
+		$row['signature_id'] = NULL;
+		$row['department_id'] = NULL;
+		$row['location_id'] = NULL;
 		$row['Qty'] = NULL;
 		$row['Remarks'] = NULL;
+		$row['ProcurementDate'] = NULL;
+		$row['ProcurementCurrentCost'] = NULL;
 		$row['PeriodBegin'] = NULL;
 		$row['PeriodEnd'] = NULL;
 		return $row;
@@ -1144,16 +1153,12 @@ class t004_asset_edit extends t004_asset
 		// Initialize URLs
 		// Convert decimal values if posted back
 
-		if ($this->ProcurementCurrentCost->FormValue == $this->ProcurementCurrentCost->CurrentValue && is_numeric(ConvertToFloatString($this->ProcurementCurrentCost->CurrentValue)))
-			$this->ProcurementCurrentCost->CurrentValue = ConvertToFloatString($this->ProcurementCurrentCost->CurrentValue);
-
-		// Convert decimal values if posted back
-		if ($this->Salvage->FormValue == $this->Salvage->CurrentValue && is_numeric(ConvertToFloatString($this->Salvage->CurrentValue)))
-			$this->Salvage->CurrentValue = ConvertToFloatString($this->Salvage->CurrentValue);
-
-		// Convert decimal values if posted back
 		if ($this->Qty->FormValue == $this->Qty->CurrentValue && is_numeric(ConvertToFloatString($this->Qty->CurrentValue)))
 			$this->Qty->CurrentValue = ConvertToFloatString($this->Qty->CurrentValue);
+
+		// Convert decimal values if posted back
+		if ($this->ProcurementCurrentCost->FormValue == $this->ProcurementCurrentCost->CurrentValue && is_numeric(ConvertToFloatString($this->ProcurementCurrentCost->CurrentValue)))
+			$this->ProcurementCurrentCost->CurrentValue = ConvertToFloatString($this->ProcurementCurrentCost->CurrentValue);
 
 		// Call Row_Rendering event
 		$this->Row_Rendering();
@@ -1161,16 +1166,18 @@ class t004_asset_edit extends t004_asset
 		// Common render codes for all row types
 		// id
 		// property_id
-		// department_id
-		// signature_id
+		// group_id
+		// type_id
 		// Code
 		// Description
-		// group_id
-		// ProcurementDate
-		// ProcurementCurrentCost
-		// Salvage
+		// brand_id
+		// signature_id
+		// department_id
+		// location_id
 		// Qty
 		// Remarks
+		// ProcurementDate
+		// ProcurementCurrentCost
 		// PeriodBegin
 		// PeriodEnd
 
@@ -1202,27 +1209,80 @@ class t004_asset_edit extends t004_asset
 			}
 			$this->property_id->ViewCustomAttributes = "";
 
-			// department_id
-			$curVal = strval($this->department_id->CurrentValue);
+			// group_id
+			$this->group_id->ViewValue = $this->group_id->CurrentValue;
+			$curVal = strval($this->group_id->CurrentValue);
 			if ($curVal != "") {
-				$this->department_id->ViewValue = $this->department_id->lookupCacheOption($curVal);
-				if ($this->department_id->ViewValue === NULL) { // Lookup from database
+				$this->group_id->ViewValue = $this->group_id->lookupCacheOption($curVal);
+				if ($this->group_id->ViewValue === NULL) { // Lookup from database
 					$filterWrk = "`id`" . SearchString("=", $curVal, DATATYPE_NUMBER, "");
-					$sqlWrk = $this->department_id->Lookup->getSql(FALSE, $filterWrk, '', $this);
+					$sqlWrk = $this->group_id->Lookup->getSql(FALSE, $filterWrk, '', $this);
 					$rswrk = Conn()->execute($sqlWrk);
 					if ($rswrk && !$rswrk->EOF) { // Lookup values found
 						$arwrk = [];
 						$arwrk[1] = $rswrk->fields('df');
-						$this->department_id->ViewValue = $this->department_id->displayValue($arwrk);
+						$this->group_id->ViewValue = $this->group_id->displayValue($arwrk);
 						$rswrk->Close();
 					} else {
-						$this->department_id->ViewValue = $this->department_id->CurrentValue;
+						$this->group_id->ViewValue = $this->group_id->CurrentValue;
 					}
 				}
 			} else {
-				$this->department_id->ViewValue = NULL;
+				$this->group_id->ViewValue = NULL;
 			}
-			$this->department_id->ViewCustomAttributes = "";
+			$this->group_id->ViewCustomAttributes = "";
+
+			// type_id
+			$curVal = strval($this->type_id->CurrentValue);
+			if ($curVal != "") {
+				$this->type_id->ViewValue = $this->type_id->lookupCacheOption($curVal);
+				if ($this->type_id->ViewValue === NULL) { // Lookup from database
+					$filterWrk = "`id`" . SearchString("=", $curVal, DATATYPE_NUMBER, "");
+					$sqlWrk = $this->type_id->Lookup->getSql(FALSE, $filterWrk, '', $this);
+					$rswrk = Conn()->execute($sqlWrk);
+					if ($rswrk && !$rswrk->EOF) { // Lookup values found
+						$arwrk = [];
+						$arwrk[1] = $rswrk->fields('df');
+						$this->type_id->ViewValue = $this->type_id->displayValue($arwrk);
+						$rswrk->Close();
+					} else {
+						$this->type_id->ViewValue = $this->type_id->CurrentValue;
+					}
+				}
+			} else {
+				$this->type_id->ViewValue = NULL;
+			}
+			$this->type_id->ViewCustomAttributes = "";
+
+			// Code
+			$this->Code->ViewValue = $this->Code->CurrentValue;
+			$this->Code->ViewCustomAttributes = "";
+
+			// Description
+			$this->Description->ViewValue = $this->Description->CurrentValue;
+			$this->Description->ViewCustomAttributes = "";
+
+			// brand_id
+			$curVal = strval($this->brand_id->CurrentValue);
+			if ($curVal != "") {
+				$this->brand_id->ViewValue = $this->brand_id->lookupCacheOption($curVal);
+				if ($this->brand_id->ViewValue === NULL) { // Lookup from database
+					$filterWrk = "`id`" . SearchString("=", $curVal, DATATYPE_NUMBER, "");
+					$sqlWrk = $this->brand_id->Lookup->getSql(FALSE, $filterWrk, '', $this);
+					$rswrk = Conn()->execute($sqlWrk);
+					if ($rswrk && !$rswrk->EOF) { // Lookup values found
+						$arwrk = [];
+						$arwrk[1] = $rswrk->fields('df');
+						$this->brand_id->ViewValue = $this->brand_id->displayValue($arwrk);
+						$rswrk->Close();
+					} else {
+						$this->brand_id->ViewValue = $this->brand_id->CurrentValue;
+					}
+				}
+			} else {
+				$this->brand_id->ViewValue = NULL;
+			}
+			$this->brand_id->ViewCustomAttributes = "";
 
 			// signature_id
 			$curVal = strval($this->signature_id->CurrentValue);
@@ -1246,36 +1306,59 @@ class t004_asset_edit extends t004_asset
 			}
 			$this->signature_id->ViewCustomAttributes = "";
 
-			// Code
-			$this->Code->ViewValue = $this->Code->CurrentValue;
-			$this->Code->ViewCustomAttributes = "";
-
-			// Description
-			$this->Description->ViewValue = $this->Description->CurrentValue;
-			$this->Description->ViewCustomAttributes = "";
-
-			// group_id
-			$curVal = strval($this->group_id->CurrentValue);
+			// department_id
+			$curVal = strval($this->department_id->CurrentValue);
 			if ($curVal != "") {
-				$this->group_id->ViewValue = $this->group_id->lookupCacheOption($curVal);
-				if ($this->group_id->ViewValue === NULL) { // Lookup from database
+				$this->department_id->ViewValue = $this->department_id->lookupCacheOption($curVal);
+				if ($this->department_id->ViewValue === NULL) { // Lookup from database
 					$filterWrk = "`id`" . SearchString("=", $curVal, DATATYPE_NUMBER, "");
-					$sqlWrk = $this->group_id->Lookup->getSql(FALSE, $filterWrk, '', $this);
+					$sqlWrk = $this->department_id->Lookup->getSql(FALSE, $filterWrk, '', $this);
 					$rswrk = Conn()->execute($sqlWrk);
 					if ($rswrk && !$rswrk->EOF) { // Lookup values found
 						$arwrk = [];
 						$arwrk[1] = $rswrk->fields('df');
-						$arwrk[2] = FormatNumber($rswrk->fields('df2'), 0, -2, -2, -2);
-						$this->group_id->ViewValue = $this->group_id->displayValue($arwrk);
+						$this->department_id->ViewValue = $this->department_id->displayValue($arwrk);
 						$rswrk->Close();
 					} else {
-						$this->group_id->ViewValue = $this->group_id->CurrentValue;
+						$this->department_id->ViewValue = $this->department_id->CurrentValue;
 					}
 				}
 			} else {
-				$this->group_id->ViewValue = NULL;
+				$this->department_id->ViewValue = NULL;
 			}
-			$this->group_id->ViewCustomAttributes = "";
+			$this->department_id->ViewCustomAttributes = "";
+
+			// location_id
+			$curVal = strval($this->location_id->CurrentValue);
+			if ($curVal != "") {
+				$this->location_id->ViewValue = $this->location_id->lookupCacheOption($curVal);
+				if ($this->location_id->ViewValue === NULL) { // Lookup from database
+					$filterWrk = "`id`" . SearchString("=", $curVal, DATATYPE_NUMBER, "");
+					$sqlWrk = $this->location_id->Lookup->getSql(FALSE, $filterWrk, '', $this);
+					$rswrk = Conn()->execute($sqlWrk);
+					if ($rswrk && !$rswrk->EOF) { // Lookup values found
+						$arwrk = [];
+						$arwrk[1] = $rswrk->fields('df');
+						$this->location_id->ViewValue = $this->location_id->displayValue($arwrk);
+						$rswrk->Close();
+					} else {
+						$this->location_id->ViewValue = $this->location_id->CurrentValue;
+					}
+				}
+			} else {
+				$this->location_id->ViewValue = NULL;
+			}
+			$this->location_id->ViewCustomAttributes = "";
+
+			// Qty
+			$this->Qty->ViewValue = $this->Qty->CurrentValue;
+			$this->Qty->ViewValue = FormatNumber($this->Qty->ViewValue, 2, -2, -2, -2);
+			$this->Qty->CellCssStyle .= "text-align: right;";
+			$this->Qty->ViewCustomAttributes = "";
+
+			// Remarks
+			$this->Remarks->ViewValue = $this->Remarks->CurrentValue;
+			$this->Remarks->ViewCustomAttributes = "";
 
 			// ProcurementDate
 			$this->ProcurementDate->ViewValue = $this->ProcurementDate->CurrentValue;
@@ -1287,22 +1370,6 @@ class t004_asset_edit extends t004_asset
 			$this->ProcurementCurrentCost->ViewValue = FormatNumber($this->ProcurementCurrentCost->ViewValue, 2, -2, -2, -2);
 			$this->ProcurementCurrentCost->CellCssStyle .= "text-align: right;";
 			$this->ProcurementCurrentCost->ViewCustomAttributes = "";
-
-			// Salvage
-			$this->Salvage->ViewValue = $this->Salvage->CurrentValue;
-			$this->Salvage->ViewValue = FormatNumber($this->Salvage->ViewValue, 2, -2, -2, -2);
-			$this->Salvage->CellCssStyle .= "text-align: right;";
-			$this->Salvage->ViewCustomAttributes = "";
-
-			// Qty
-			$this->Qty->ViewValue = $this->Qty->CurrentValue;
-			$this->Qty->ViewValue = FormatNumber($this->Qty->ViewValue, 2, -2, -2, -2);
-			$this->Qty->CellCssStyle .= "text-align: right;";
-			$this->Qty->ViewCustomAttributes = "";
-
-			// Remarks
-			$this->Remarks->ViewValue = $this->Remarks->CurrentValue;
-			$this->Remarks->ViewCustomAttributes = "";
 
 			// PeriodBegin
 			$this->PeriodBegin->ViewValue = $this->PeriodBegin->CurrentValue;
@@ -1319,45 +1386,35 @@ class t004_asset_edit extends t004_asset
 			$this->property_id->HrefValue = "";
 			$this->property_id->TooltipValue = "";
 
-			// department_id
-			$this->department_id->LinkCustomAttributes = "";
-			$this->department_id->HrefValue = "";
-			$this->department_id->TooltipValue = "";
-
-			// signature_id
-			$this->signature_id->LinkCustomAttributes = "";
-			$this->signature_id->HrefValue = "";
-			$this->signature_id->TooltipValue = "";
-
-			// Code
-			$this->Code->LinkCustomAttributes = "";
-			$this->Code->HrefValue = "";
-			$this->Code->TooltipValue = "";
+			// type_id
+			$this->type_id->LinkCustomAttributes = "";
+			$this->type_id->HrefValue = "";
+			$this->type_id->TooltipValue = "";
 
 			// Description
 			$this->Description->LinkCustomAttributes = "";
 			$this->Description->HrefValue = "";
 			$this->Description->TooltipValue = "";
 
-			// group_id
-			$this->group_id->LinkCustomAttributes = "";
-			$this->group_id->HrefValue = "";
-			$this->group_id->TooltipValue = "";
+			// brand_id
+			$this->brand_id->LinkCustomAttributes = "";
+			$this->brand_id->HrefValue = "";
+			$this->brand_id->TooltipValue = "";
 
-			// ProcurementDate
-			$this->ProcurementDate->LinkCustomAttributes = "";
-			$this->ProcurementDate->HrefValue = "";
-			$this->ProcurementDate->TooltipValue = "";
+			// signature_id
+			$this->signature_id->LinkCustomAttributes = "";
+			$this->signature_id->HrefValue = "";
+			$this->signature_id->TooltipValue = "";
 
-			// ProcurementCurrentCost
-			$this->ProcurementCurrentCost->LinkCustomAttributes = "";
-			$this->ProcurementCurrentCost->HrefValue = "";
-			$this->ProcurementCurrentCost->TooltipValue = "";
+			// department_id
+			$this->department_id->LinkCustomAttributes = "";
+			$this->department_id->HrefValue = "";
+			$this->department_id->TooltipValue = "";
 
-			// Salvage
-			$this->Salvage->LinkCustomAttributes = "";
-			$this->Salvage->HrefValue = "";
-			$this->Salvage->TooltipValue = "";
+			// location_id
+			$this->location_id->LinkCustomAttributes = "";
+			$this->location_id->HrefValue = "";
+			$this->location_id->TooltipValue = "";
 
 			// Qty
 			$this->Qty->LinkCustomAttributes = "";
@@ -1368,6 +1425,16 @@ class t004_asset_edit extends t004_asset
 			$this->Remarks->LinkCustomAttributes = "";
 			$this->Remarks->HrefValue = "";
 			$this->Remarks->TooltipValue = "";
+
+			// ProcurementDate
+			$this->ProcurementDate->LinkCustomAttributes = "";
+			$this->ProcurementDate->HrefValue = "";
+			$this->ProcurementDate->TooltipValue = "";
+
+			// ProcurementCurrentCost
+			$this->ProcurementCurrentCost->LinkCustomAttributes = "";
+			$this->ProcurementCurrentCost->HrefValue = "";
+			$this->ProcurementCurrentCost->TooltipValue = "";
 
 			// PeriodBegin
 			$this->PeriodBegin->LinkCustomAttributes = "";
@@ -1412,36 +1479,76 @@ class t004_asset_edit extends t004_asset
 				$this->property_id->EditValue = $arwrk;
 			}
 
-			// department_id
-			$this->department_id->EditCustomAttributes = "";
-			$curVal = trim(strval($this->department_id->CurrentValue));
+			// type_id
+			$this->type_id->EditCustomAttributes = "";
+			$curVal = trim(strval($this->type_id->CurrentValue));
 			if ($curVal != "")
-				$this->department_id->ViewValue = $this->department_id->lookupCacheOption($curVal);
+				$this->type_id->ViewValue = $this->type_id->lookupCacheOption($curVal);
 			else
-				$this->department_id->ViewValue = $this->department_id->Lookup !== NULL && is_array($this->department_id->Lookup->Options) ? $curVal : NULL;
-			if ($this->department_id->ViewValue !== NULL) { // Load from cache
-				$this->department_id->EditValue = array_values($this->department_id->Lookup->Options);
-				if ($this->department_id->ViewValue == "")
-					$this->department_id->ViewValue = $Language->phrase("PleaseSelect");
+				$this->type_id->ViewValue = $this->type_id->Lookup !== NULL && is_array($this->type_id->Lookup->Options) ? $curVal : NULL;
+			if ($this->type_id->ViewValue !== NULL) { // Load from cache
+				$this->type_id->EditValue = array_values($this->type_id->Lookup->Options);
+				if ($this->type_id->ViewValue == "")
+					$this->type_id->ViewValue = $Language->phrase("PleaseSelect");
 			} else { // Lookup from database
 				if ($curVal == "") {
 					$filterWrk = "0=1";
 				} else {
-					$filterWrk = "`id`" . SearchString("=", $this->department_id->CurrentValue, DATATYPE_NUMBER, "");
+					$filterWrk = "`id`" . SearchString("=", $this->type_id->CurrentValue, DATATYPE_NUMBER, "");
 				}
-				$sqlWrk = $this->department_id->Lookup->getSql(TRUE, $filterWrk, '', $this);
+				$sqlWrk = $this->type_id->Lookup->getSql(TRUE, $filterWrk, '', $this);
 				$rswrk = Conn()->execute($sqlWrk);
 				if ($rswrk && !$rswrk->EOF) { // Lookup values found
 					$arwrk = [];
 					$arwrk[1] = HtmlEncode($rswrk->fields('df'));
-					$this->department_id->ViewValue = $this->department_id->displayValue($arwrk);
+					$this->type_id->ViewValue = $this->type_id->displayValue($arwrk);
 				} else {
-					$this->department_id->ViewValue = $Language->phrase("PleaseSelect");
+					$this->type_id->ViewValue = $Language->phrase("PleaseSelect");
 				}
 				$arwrk = $rswrk ? $rswrk->getRows() : [];
 				if ($rswrk)
 					$rswrk->close();
-				$this->department_id->EditValue = $arwrk;
+				$this->type_id->EditValue = $arwrk;
+			}
+
+			// Description
+			$this->Description->EditAttrs["class"] = "form-control";
+			$this->Description->EditCustomAttributes = "";
+			if (!$this->Description->Raw)
+				$this->Description->CurrentValue = HtmlDecode($this->Description->CurrentValue);
+			$this->Description->EditValue = HtmlEncode($this->Description->CurrentValue);
+			$this->Description->PlaceHolder = RemoveHtml($this->Description->caption());
+
+			// brand_id
+			$this->brand_id->EditCustomAttributes = "";
+			$curVal = trim(strval($this->brand_id->CurrentValue));
+			if ($curVal != "")
+				$this->brand_id->ViewValue = $this->brand_id->lookupCacheOption($curVal);
+			else
+				$this->brand_id->ViewValue = $this->brand_id->Lookup !== NULL && is_array($this->brand_id->Lookup->Options) ? $curVal : NULL;
+			if ($this->brand_id->ViewValue !== NULL) { // Load from cache
+				$this->brand_id->EditValue = array_values($this->brand_id->Lookup->Options);
+				if ($this->brand_id->ViewValue == "")
+					$this->brand_id->ViewValue = $Language->phrase("PleaseSelect");
+			} else { // Lookup from database
+				if ($curVal == "") {
+					$filterWrk = "0=1";
+				} else {
+					$filterWrk = "`id`" . SearchString("=", $this->brand_id->CurrentValue, DATATYPE_NUMBER, "");
+				}
+				$sqlWrk = $this->brand_id->Lookup->getSql(TRUE, $filterWrk, '', $this);
+				$rswrk = Conn()->execute($sqlWrk);
+				if ($rswrk && !$rswrk->EOF) { // Lookup values found
+					$arwrk = [];
+					$arwrk[1] = HtmlEncode($rswrk->fields('df'));
+					$this->brand_id->ViewValue = $this->brand_id->displayValue($arwrk);
+				} else {
+					$this->brand_id->ViewValue = $Language->phrase("PleaseSelect");
+				}
+				$arwrk = $rswrk ? $rswrk->getRows() : [];
+				if ($rswrk)
+					$rswrk->close();
+				$this->brand_id->EditValue = $arwrk;
 			}
 
 			// signature_id
@@ -1476,82 +1583,69 @@ class t004_asset_edit extends t004_asset
 				$this->signature_id->EditValue = $arwrk;
 			}
 
-			// Code
-			$this->Code->EditAttrs["class"] = "form-control";
-			$this->Code->EditCustomAttributes = "";
-			if (!$this->Code->Raw)
-				$this->Code->CurrentValue = HtmlDecode($this->Code->CurrentValue);
-			$this->Code->EditValue = HtmlEncode($this->Code->CurrentValue);
-			$this->Code->PlaceHolder = RemoveHtml($this->Code->caption());
-
-			// Description
-			$this->Description->EditAttrs["class"] = "form-control";
-			$this->Description->EditCustomAttributes = "";
-			if (!$this->Description->Raw)
-				$this->Description->CurrentValue = HtmlDecode($this->Description->CurrentValue);
-			$this->Description->EditValue = HtmlEncode($this->Description->CurrentValue);
-			$this->Description->PlaceHolder = RemoveHtml($this->Description->caption());
-
-			// group_id
-			$this->group_id->EditCustomAttributes = "";
-			$curVal = trim(strval($this->group_id->CurrentValue));
+			// department_id
+			$this->department_id->EditCustomAttributes = "";
+			$curVal = trim(strval($this->department_id->CurrentValue));
 			if ($curVal != "")
-				$this->group_id->ViewValue = $this->group_id->lookupCacheOption($curVal);
+				$this->department_id->ViewValue = $this->department_id->lookupCacheOption($curVal);
 			else
-				$this->group_id->ViewValue = $this->group_id->Lookup !== NULL && is_array($this->group_id->Lookup->Options) ? $curVal : NULL;
-			if ($this->group_id->ViewValue !== NULL) { // Load from cache
-				$this->group_id->EditValue = array_values($this->group_id->Lookup->Options);
-				if ($this->group_id->ViewValue == "")
-					$this->group_id->ViewValue = $Language->phrase("PleaseSelect");
+				$this->department_id->ViewValue = $this->department_id->Lookup !== NULL && is_array($this->department_id->Lookup->Options) ? $curVal : NULL;
+			if ($this->department_id->ViewValue !== NULL) { // Load from cache
+				$this->department_id->EditValue = array_values($this->department_id->Lookup->Options);
+				if ($this->department_id->ViewValue == "")
+					$this->department_id->ViewValue = $Language->phrase("PleaseSelect");
 			} else { // Lookup from database
 				if ($curVal == "") {
 					$filterWrk = "0=1";
 				} else {
-					$filterWrk = "`id`" . SearchString("=", $this->group_id->CurrentValue, DATATYPE_NUMBER, "");
+					$filterWrk = "`id`" . SearchString("=", $this->department_id->CurrentValue, DATATYPE_NUMBER, "");
 				}
-				$sqlWrk = $this->group_id->Lookup->getSql(TRUE, $filterWrk, '', $this);
+				$sqlWrk = $this->department_id->Lookup->getSql(TRUE, $filterWrk, '', $this);
 				$rswrk = Conn()->execute($sqlWrk);
 				if ($rswrk && !$rswrk->EOF) { // Lookup values found
 					$arwrk = [];
 					$arwrk[1] = HtmlEncode($rswrk->fields('df'));
-					$arwrk[2] = HtmlEncode(FormatNumber($rswrk->fields('df2'), 0, -2, -2, -2));
-					$this->group_id->ViewValue = $this->group_id->displayValue($arwrk);
+					$this->department_id->ViewValue = $this->department_id->displayValue($arwrk);
 				} else {
-					$this->group_id->ViewValue = $Language->phrase("PleaseSelect");
+					$this->department_id->ViewValue = $Language->phrase("PleaseSelect");
 				}
 				$arwrk = $rswrk ? $rswrk->getRows() : [];
 				if ($rswrk)
 					$rswrk->close();
-				$rowcnt = count($arwrk);
-				for ($i = 0; $i < $rowcnt; $i++) {
-					$arwrk[$i][2] = FormatNumber($arwrk[$i][2], 0, -2, -2, -2);
-				}
-				$this->group_id->EditValue = $arwrk;
+				$this->department_id->EditValue = $arwrk;
 			}
 
-			// ProcurementDate
-			$this->ProcurementDate->EditAttrs["class"] = "form-control";
-			$this->ProcurementDate->EditCustomAttributes = "";
-			$this->ProcurementDate->EditValue = HtmlEncode(FormatDateTime($this->ProcurementDate->CurrentValue, 7));
-			$this->ProcurementDate->PlaceHolder = RemoveHtml($this->ProcurementDate->caption());
-
-			// ProcurementCurrentCost
-			$this->ProcurementCurrentCost->EditAttrs["class"] = "form-control";
-			$this->ProcurementCurrentCost->EditCustomAttributes = "";
-			$this->ProcurementCurrentCost->EditValue = HtmlEncode($this->ProcurementCurrentCost->CurrentValue);
-			$this->ProcurementCurrentCost->PlaceHolder = RemoveHtml($this->ProcurementCurrentCost->caption());
-			if (strval($this->ProcurementCurrentCost->EditValue) != "" && is_numeric($this->ProcurementCurrentCost->EditValue))
-				$this->ProcurementCurrentCost->EditValue = FormatNumber($this->ProcurementCurrentCost->EditValue, -2, -2, -2, -2);
-			
-
-			// Salvage
-			$this->Salvage->EditAttrs["class"] = "form-control";
-			$this->Salvage->EditCustomAttributes = "";
-			$this->Salvage->EditValue = HtmlEncode($this->Salvage->CurrentValue);
-			$this->Salvage->PlaceHolder = RemoveHtml($this->Salvage->caption());
-			if (strval($this->Salvage->EditValue) != "" && is_numeric($this->Salvage->EditValue))
-				$this->Salvage->EditValue = FormatNumber($this->Salvage->EditValue, -2, -2, -2, -2);
-			
+			// location_id
+			$this->location_id->EditCustomAttributes = "";
+			$curVal = trim(strval($this->location_id->CurrentValue));
+			if ($curVal != "")
+				$this->location_id->ViewValue = $this->location_id->lookupCacheOption($curVal);
+			else
+				$this->location_id->ViewValue = $this->location_id->Lookup !== NULL && is_array($this->location_id->Lookup->Options) ? $curVal : NULL;
+			if ($this->location_id->ViewValue !== NULL) { // Load from cache
+				$this->location_id->EditValue = array_values($this->location_id->Lookup->Options);
+				if ($this->location_id->ViewValue == "")
+					$this->location_id->ViewValue = $Language->phrase("PleaseSelect");
+			} else { // Lookup from database
+				if ($curVal == "") {
+					$filterWrk = "0=1";
+				} else {
+					$filterWrk = "`id`" . SearchString("=", $this->location_id->CurrentValue, DATATYPE_NUMBER, "");
+				}
+				$sqlWrk = $this->location_id->Lookup->getSql(TRUE, $filterWrk, '', $this);
+				$rswrk = Conn()->execute($sqlWrk);
+				if ($rswrk && !$rswrk->EOF) { // Lookup values found
+					$arwrk = [];
+					$arwrk[1] = HtmlEncode($rswrk->fields('df'));
+					$this->location_id->ViewValue = $this->location_id->displayValue($arwrk);
+				} else {
+					$this->location_id->ViewValue = $Language->phrase("PleaseSelect");
+				}
+				$arwrk = $rswrk ? $rswrk->getRows() : [];
+				if ($rswrk)
+					$rswrk->close();
+				$this->location_id->EditValue = $arwrk;
+			}
 
 			// Qty
 			$this->Qty->EditAttrs["class"] = "form-control";
@@ -1567,6 +1661,21 @@ class t004_asset_edit extends t004_asset
 			$this->Remarks->EditCustomAttributes = "";
 			$this->Remarks->EditValue = HtmlEncode($this->Remarks->CurrentValue);
 			$this->Remarks->PlaceHolder = RemoveHtml($this->Remarks->caption());
+
+			// ProcurementDate
+			$this->ProcurementDate->EditAttrs["class"] = "form-control";
+			$this->ProcurementDate->EditCustomAttributes = "";
+			$this->ProcurementDate->EditValue = HtmlEncode(FormatDateTime($this->ProcurementDate->CurrentValue, 7));
+			$this->ProcurementDate->PlaceHolder = RemoveHtml($this->ProcurementDate->caption());
+
+			// ProcurementCurrentCost
+			$this->ProcurementCurrentCost->EditAttrs["class"] = "form-control";
+			$this->ProcurementCurrentCost->EditCustomAttributes = "";
+			$this->ProcurementCurrentCost->EditValue = HtmlEncode($this->ProcurementCurrentCost->CurrentValue);
+			$this->ProcurementCurrentCost->PlaceHolder = RemoveHtml($this->ProcurementCurrentCost->caption());
+			if (strval($this->ProcurementCurrentCost->EditValue) != "" && is_numeric($this->ProcurementCurrentCost->EditValue))
+				$this->ProcurementCurrentCost->EditValue = FormatNumber($this->ProcurementCurrentCost->EditValue, -2, -2, -2, -2);
+			
 
 			// PeriodBegin
 			$this->PeriodBegin->EditAttrs["class"] = "form-control";
@@ -1588,37 +1697,29 @@ class t004_asset_edit extends t004_asset
 			$this->property_id->LinkCustomAttributes = "";
 			$this->property_id->HrefValue = "";
 
-			// department_id
-			$this->department_id->LinkCustomAttributes = "";
-			$this->department_id->HrefValue = "";
-
-			// signature_id
-			$this->signature_id->LinkCustomAttributes = "";
-			$this->signature_id->HrefValue = "";
-
-			// Code
-			$this->Code->LinkCustomAttributes = "";
-			$this->Code->HrefValue = "";
+			// type_id
+			$this->type_id->LinkCustomAttributes = "";
+			$this->type_id->HrefValue = "";
 
 			// Description
 			$this->Description->LinkCustomAttributes = "";
 			$this->Description->HrefValue = "";
 
-			// group_id
-			$this->group_id->LinkCustomAttributes = "";
-			$this->group_id->HrefValue = "";
+			// brand_id
+			$this->brand_id->LinkCustomAttributes = "";
+			$this->brand_id->HrefValue = "";
 
-			// ProcurementDate
-			$this->ProcurementDate->LinkCustomAttributes = "";
-			$this->ProcurementDate->HrefValue = "";
+			// signature_id
+			$this->signature_id->LinkCustomAttributes = "";
+			$this->signature_id->HrefValue = "";
 
-			// ProcurementCurrentCost
-			$this->ProcurementCurrentCost->LinkCustomAttributes = "";
-			$this->ProcurementCurrentCost->HrefValue = "";
+			// department_id
+			$this->department_id->LinkCustomAttributes = "";
+			$this->department_id->HrefValue = "";
 
-			// Salvage
-			$this->Salvage->LinkCustomAttributes = "";
-			$this->Salvage->HrefValue = "";
+			// location_id
+			$this->location_id->LinkCustomAttributes = "";
+			$this->location_id->HrefValue = "";
 
 			// Qty
 			$this->Qty->LinkCustomAttributes = "";
@@ -1627,6 +1728,14 @@ class t004_asset_edit extends t004_asset
 			// Remarks
 			$this->Remarks->LinkCustomAttributes = "";
 			$this->Remarks->HrefValue = "";
+
+			// ProcurementDate
+			$this->ProcurementDate->LinkCustomAttributes = "";
+			$this->ProcurementDate->HrefValue = "";
+
+			// ProcurementCurrentCost
+			$this->ProcurementCurrentCost->LinkCustomAttributes = "";
+			$this->ProcurementCurrentCost->HrefValue = "";
 
 			// PeriodBegin
 			$this->PeriodBegin->LinkCustomAttributes = "";
@@ -1662,19 +1771,9 @@ class t004_asset_edit extends t004_asset
 				AddMessage($FormError, str_replace("%s", $this->property_id->caption(), $this->property_id->RequiredErrorMessage));
 			}
 		}
-		if ($this->department_id->Required) {
-			if (!$this->department_id->IsDetailKey && $this->department_id->FormValue != NULL && $this->department_id->FormValue == "") {
-				AddMessage($FormError, str_replace("%s", $this->department_id->caption(), $this->department_id->RequiredErrorMessage));
-			}
-		}
-		if ($this->signature_id->Required) {
-			if (!$this->signature_id->IsDetailKey && $this->signature_id->FormValue != NULL && $this->signature_id->FormValue == "") {
-				AddMessage($FormError, str_replace("%s", $this->signature_id->caption(), $this->signature_id->RequiredErrorMessage));
-			}
-		}
-		if ($this->Code->Required) {
-			if (!$this->Code->IsDetailKey && $this->Code->FormValue != NULL && $this->Code->FormValue == "") {
-				AddMessage($FormError, str_replace("%s", $this->Code->caption(), $this->Code->RequiredErrorMessage));
+		if ($this->type_id->Required) {
+			if (!$this->type_id->IsDetailKey && $this->type_id->FormValue != NULL && $this->type_id->FormValue == "") {
+				AddMessage($FormError, str_replace("%s", $this->type_id->caption(), $this->type_id->RequiredErrorMessage));
 			}
 		}
 		if ($this->Description->Required) {
@@ -1682,9 +1781,37 @@ class t004_asset_edit extends t004_asset
 				AddMessage($FormError, str_replace("%s", $this->Description->caption(), $this->Description->RequiredErrorMessage));
 			}
 		}
-		if ($this->group_id->Required) {
-			if (!$this->group_id->IsDetailKey && $this->group_id->FormValue != NULL && $this->group_id->FormValue == "") {
-				AddMessage($FormError, str_replace("%s", $this->group_id->caption(), $this->group_id->RequiredErrorMessage));
+		if ($this->brand_id->Required) {
+			if (!$this->brand_id->IsDetailKey && $this->brand_id->FormValue != NULL && $this->brand_id->FormValue == "") {
+				AddMessage($FormError, str_replace("%s", $this->brand_id->caption(), $this->brand_id->RequiredErrorMessage));
+			}
+		}
+		if ($this->signature_id->Required) {
+			if (!$this->signature_id->IsDetailKey && $this->signature_id->FormValue != NULL && $this->signature_id->FormValue == "") {
+				AddMessage($FormError, str_replace("%s", $this->signature_id->caption(), $this->signature_id->RequiredErrorMessage));
+			}
+		}
+		if ($this->department_id->Required) {
+			if (!$this->department_id->IsDetailKey && $this->department_id->FormValue != NULL && $this->department_id->FormValue == "") {
+				AddMessage($FormError, str_replace("%s", $this->department_id->caption(), $this->department_id->RequiredErrorMessage));
+			}
+		}
+		if ($this->location_id->Required) {
+			if (!$this->location_id->IsDetailKey && $this->location_id->FormValue != NULL && $this->location_id->FormValue == "") {
+				AddMessage($FormError, str_replace("%s", $this->location_id->caption(), $this->location_id->RequiredErrorMessage));
+			}
+		}
+		if ($this->Qty->Required) {
+			if (!$this->Qty->IsDetailKey && $this->Qty->FormValue != NULL && $this->Qty->FormValue == "") {
+				AddMessage($FormError, str_replace("%s", $this->Qty->caption(), $this->Qty->RequiredErrorMessage));
+			}
+		}
+		if (!CheckNumber($this->Qty->FormValue)) {
+			AddMessage($FormError, $this->Qty->errorMessage());
+		}
+		if ($this->Remarks->Required) {
+			if (!$this->Remarks->IsDetailKey && $this->Remarks->FormValue != NULL && $this->Remarks->FormValue == "") {
+				AddMessage($FormError, str_replace("%s", $this->Remarks->caption(), $this->Remarks->RequiredErrorMessage));
 			}
 		}
 		if ($this->ProcurementDate->Required) {
@@ -1702,27 +1829,6 @@ class t004_asset_edit extends t004_asset
 		}
 		if (!CheckNumber($this->ProcurementCurrentCost->FormValue)) {
 			AddMessage($FormError, $this->ProcurementCurrentCost->errorMessage());
-		}
-		if ($this->Salvage->Required) {
-			if (!$this->Salvage->IsDetailKey && $this->Salvage->FormValue != NULL && $this->Salvage->FormValue == "") {
-				AddMessage($FormError, str_replace("%s", $this->Salvage->caption(), $this->Salvage->RequiredErrorMessage));
-			}
-		}
-		if (!CheckNumber($this->Salvage->FormValue)) {
-			AddMessage($FormError, $this->Salvage->errorMessage());
-		}
-		if ($this->Qty->Required) {
-			if (!$this->Qty->IsDetailKey && $this->Qty->FormValue != NULL && $this->Qty->FormValue == "") {
-				AddMessage($FormError, str_replace("%s", $this->Qty->caption(), $this->Qty->RequiredErrorMessage));
-			}
-		}
-		if (!CheckNumber($this->Qty->FormValue)) {
-			AddMessage($FormError, $this->Qty->errorMessage());
-		}
-		if ($this->Remarks->Required) {
-			if (!$this->Remarks->IsDetailKey && $this->Remarks->FormValue != NULL && $this->Remarks->FormValue == "") {
-				AddMessage($FormError, str_replace("%s", $this->Remarks->caption(), $this->Remarks->RequiredErrorMessage));
-			}
 		}
 		if ($this->PeriodBegin->Required) {
 			if (!$this->PeriodBegin->IsDetailKey && $this->PeriodBegin->FormValue != NULL && $this->PeriodBegin->FormValue == "") {
@@ -1786,35 +1892,35 @@ class t004_asset_edit extends t004_asset
 			// property_id
 			$this->property_id->setDbValueDef($rsnew, $this->property_id->CurrentValue, 0, $this->property_id->ReadOnly);
 
-			// department_id
-			$this->department_id->setDbValueDef($rsnew, $this->department_id->CurrentValue, 0, $this->department_id->ReadOnly);
-
-			// signature_id
-			$this->signature_id->setDbValueDef($rsnew, $this->signature_id->CurrentValue, 0, $this->signature_id->ReadOnly);
-
-			// Code
-			$this->Code->setDbValueDef($rsnew, $this->Code->CurrentValue, "", $this->Code->ReadOnly);
+			// type_id
+			$this->type_id->setDbValueDef($rsnew, $this->type_id->CurrentValue, 0, $this->type_id->ReadOnly);
 
 			// Description
 			$this->Description->setDbValueDef($rsnew, $this->Description->CurrentValue, "", $this->Description->ReadOnly);
 
-			// group_id
-			$this->group_id->setDbValueDef($rsnew, $this->group_id->CurrentValue, 0, $this->group_id->ReadOnly);
+			// brand_id
+			$this->brand_id->setDbValueDef($rsnew, $this->brand_id->CurrentValue, 0, $this->brand_id->ReadOnly);
 
-			// ProcurementDate
-			$this->ProcurementDate->setDbValueDef($rsnew, UnFormatDateTime($this->ProcurementDate->CurrentValue, 7), CurrentDate(), $this->ProcurementDate->ReadOnly);
+			// signature_id
+			$this->signature_id->setDbValueDef($rsnew, $this->signature_id->CurrentValue, 0, $this->signature_id->ReadOnly);
 
-			// ProcurementCurrentCost
-			$this->ProcurementCurrentCost->setDbValueDef($rsnew, $this->ProcurementCurrentCost->CurrentValue, 0, $this->ProcurementCurrentCost->ReadOnly);
+			// department_id
+			$this->department_id->setDbValueDef($rsnew, $this->department_id->CurrentValue, 0, $this->department_id->ReadOnly);
 
-			// Salvage
-			$this->Salvage->setDbValueDef($rsnew, $this->Salvage->CurrentValue, 0, $this->Salvage->ReadOnly);
+			// location_id
+			$this->location_id->setDbValueDef($rsnew, $this->location_id->CurrentValue, 0, $this->location_id->ReadOnly);
 
 			// Qty
 			$this->Qty->setDbValueDef($rsnew, $this->Qty->CurrentValue, 0, $this->Qty->ReadOnly);
 
 			// Remarks
 			$this->Remarks->setDbValueDef($rsnew, $this->Remarks->CurrentValue, NULL, $this->Remarks->ReadOnly);
+
+			// ProcurementDate
+			$this->ProcurementDate->setDbValueDef($rsnew, UnFormatDateTime($this->ProcurementDate->CurrentValue, 7), CurrentDate(), $this->ProcurementDate->ReadOnly);
+
+			// ProcurementCurrentCost
+			$this->ProcurementCurrentCost->setDbValueDef($rsnew, $this->ProcurementCurrentCost->CurrentValue, 0, $this->ProcurementCurrentCost->ReadOnly);
 
 			// Call Row Updating event
 			$updateRow = $this->Row_Updating($rsold, $rsnew);
@@ -1951,11 +2057,17 @@ class t004_asset_edit extends t004_asset
 			switch ($fld->FieldVar) {
 				case "x_property_id":
 					break;
-				case "x_department_id":
+				case "x_group_id":
+					break;
+				case "x_type_id":
+					break;
+				case "x_brand_id":
 					break;
 				case "x_signature_id":
 					break;
-				case "x_group_id":
+				case "x_department_id":
+					break;
+				case "x_location_id":
 					break;
 				default:
 					$lookupFilter = "";
@@ -1979,13 +2091,17 @@ class t004_asset_edit extends t004_asset
 					switch ($fld->FieldVar) {
 						case "x_property_id":
 							break;
-						case "x_department_id":
+						case "x_group_id":
+							break;
+						case "x_type_id":
+							break;
+						case "x_brand_id":
 							break;
 						case "x_signature_id":
 							break;
-						case "x_group_id":
-							$row[2] = FormatNumber($row[2], 0, -2, -2, -2);
-							$row['df2'] = $row[2];
+						case "x_department_id":
+							break;
+						case "x_location_id":
 							break;
 					}
 					$ar[strval($row[0])] = $row;

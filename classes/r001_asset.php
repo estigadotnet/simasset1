@@ -29,16 +29,18 @@ class r001_asset extends ReportTable
 	// Fields
 	public $id;
 	public $property_id;
-	public $department_id;
-	public $signature_id;
+	public $group_id;
 	public $Code;
 	public $Description;
-	public $group_id;
-	public $ProcurementDate;
-	public $ProcurementCurrentCost;
-	public $Salvage;
+	public $brand_id;
+	public $type_id;
+	public $signature_id;
+	public $department_id;
+	public $location_id;
 	public $Qty;
 	public $Remarks;
+	public $ProcurementDate;
+	public $ProcurementCurrentCost;
 	public $PeriodBegin;
 	public $PeriodEnd;
 
@@ -88,25 +90,15 @@ class r001_asset extends ReportTable
 		$this->property_id->SourceTableVar = 't004_asset';
 		$this->fields['property_id'] = &$this->property_id;
 
-		// department_id
-		$this->department_id = new ReportField('r001_asset', 'r001_asset', 'x_department_id', 'department_id', '`department_id`', '`department_id`', 3, 11, -1, FALSE, '`department_id`', FALSE, FALSE, FALSE, 'FORMATTED TEXT', 'TEXT');
-		$this->department_id->Nullable = FALSE; // NOT NULL field
-		$this->department_id->Required = TRUE; // Required field
-		$this->department_id->Sortable = TRUE; // Allow sort
-		$this->department_id->Lookup = new Lookup('department_id', 't002_department', FALSE, 'id', ["Department","","",""], [], [], [], [], [], [], '', '');
-		$this->department_id->DefaultErrorMessage = $Language->phrase("IncorrectInteger");
-		$this->department_id->SourceTableVar = 't004_asset';
-		$this->fields['department_id'] = &$this->department_id;
-
-		// signature_id
-		$this->signature_id = new ReportField('r001_asset', 'r001_asset', 'x_signature_id', 'signature_id', '`signature_id`', '`signature_id`', 3, 11, -1, FALSE, '`signature_id`', FALSE, FALSE, FALSE, 'FORMATTED TEXT', 'TEXT');
-		$this->signature_id->Nullable = FALSE; // NOT NULL field
-		$this->signature_id->Required = TRUE; // Required field
-		$this->signature_id->Sortable = TRUE; // Allow sort
-		$this->signature_id->Lookup = new Lookup('signature_id', 't003_signature', FALSE, 'id', ["Signature","","",""], [], [], [], [], [], [], '', '');
-		$this->signature_id->DefaultErrorMessage = $Language->phrase("IncorrectInteger");
-		$this->signature_id->SourceTableVar = 't004_asset';
-		$this->fields['signature_id'] = &$this->signature_id;
+		// group_id
+		$this->group_id = new ReportField('r001_asset', 'r001_asset', 'x_group_id', 'group_id', '`group_id`', '`group_id`', 3, 11, -1, FALSE, '`group_id`', FALSE, FALSE, FALSE, 'FORMATTED TEXT', 'TEXT');
+		$this->group_id->Nullable = FALSE; // NOT NULL field
+		$this->group_id->Required = TRUE; // Required field
+		$this->group_id->Sortable = TRUE; // Allow sort
+		$this->group_id->Lookup = new Lookup('group_id', 't005_assetgroup', FALSE, 'id', ["Description","","",""], [], [], [], [], [], [], '', '');
+		$this->group_id->DefaultErrorMessage = $Language->phrase("IncorrectInteger");
+		$this->group_id->SourceTableVar = 't004_asset';
+		$this->fields['group_id'] = &$this->group_id;
 
 		// Code
 		$this->Code = new ReportField('r001_asset', 'r001_asset', 'x_Code', 'Code', '`Code`', '`Code`', 200, 25, -1, FALSE, '`Code`', FALSE, FALSE, FALSE, 'FORMATTED TEXT', 'TEXT');
@@ -124,41 +116,59 @@ class r001_asset extends ReportTable
 		$this->Description->SourceTableVar = 't004_asset';
 		$this->fields['Description'] = &$this->Description;
 
-		// group_id
-		$this->group_id = new ReportField('r001_asset', 'r001_asset', 'x_group_id', 'group_id', '`group_id`', '`group_id`', 3, 11, -1, FALSE, '`group_id`', FALSE, FALSE, FALSE, 'FORMATTED TEXT', 'TEXT');
-		$this->group_id->Nullable = FALSE; // NOT NULL field
-		$this->group_id->Required = TRUE; // Required field
-		$this->group_id->Sortable = TRUE; // Allow sort
-		$this->group_id->Lookup = new Lookup('group_id', 't005_assetgroup', FALSE, 'id', ["Description","EstimatedLife","",""], [], [], [], [], [], [], '', '');
-		$this->group_id->DefaultErrorMessage = $Language->phrase("IncorrectInteger");
-		$this->group_id->SourceTableVar = 't004_asset';
-		$this->fields['group_id'] = &$this->group_id;
+		// brand_id
+		$this->brand_id = new ReportField('r001_asset', 'r001_asset', 'x_brand_id', 'brand_id', '`brand_id`', '`brand_id`', 3, 11, -1, FALSE, '`brand_id`', FALSE, FALSE, FALSE, 'FORMATTED TEXT', 'SELECT');
+		$this->brand_id->Nullable = FALSE; // NOT NULL field
+		$this->brand_id->Required = TRUE; // Required field
+		$this->brand_id->Sortable = TRUE; // Allow sort
+		$this->brand_id->UsePleaseSelect = TRUE; // Use PleaseSelect by default
+		$this->brand_id->PleaseSelectText = $Language->phrase("PleaseSelect"); // "PleaseSelect" text
+		$this->brand_id->Lookup = new Lookup('brand_id', 't008_brand', FALSE, 'id', ["Brand","","",""], [], [], [], [], [], [], '', '');
+		$this->brand_id->DefaultErrorMessage = $Language->phrase("IncorrectInteger");
+		$this->brand_id->SourceTableVar = 't004_asset';
+		$this->fields['brand_id'] = &$this->brand_id;
 
-		// ProcurementDate
-		$this->ProcurementDate = new ReportField('r001_asset', 'r001_asset', 'x_ProcurementDate', 'ProcurementDate', '`ProcurementDate`', CastDateFieldForLike("`ProcurementDate`", 7, "DB"), 133, 10, 7, FALSE, '`ProcurementDate`', FALSE, FALSE, FALSE, 'FORMATTED TEXT', 'TEXT');
-		$this->ProcurementDate->Nullable = FALSE; // NOT NULL field
-		$this->ProcurementDate->Required = TRUE; // Required field
-		$this->ProcurementDate->Sortable = TRUE; // Allow sort
-		$this->ProcurementDate->DefaultErrorMessage = str_replace("%s", $GLOBALS["DATE_SEPARATOR"], $Language->phrase("IncorrectDateDMY"));
-		$this->ProcurementDate->SourceTableVar = 't004_asset';
-		$this->fields['ProcurementDate'] = &$this->ProcurementDate;
+		// type_id
+		$this->type_id = new ReportField('r001_asset', 'r001_asset', 'x_type_id', 'type_id', '`type_id`', '`type_id`', 3, 11, -1, FALSE, '`type_id`', FALSE, FALSE, FALSE, 'FORMATTED TEXT', 'TEXT');
+		$this->type_id->Nullable = FALSE; // NOT NULL field
+		$this->type_id->Required = TRUE; // Required field
+		$this->type_id->Sortable = TRUE; // Allow sort
+		$this->type_id->Lookup = new Lookup('type_id', 't007_assettype', FALSE, 'id', ["Description","","",""], [], [], [], [], [], [], '', '');
+		$this->type_id->DefaultErrorMessage = $Language->phrase("IncorrectInteger");
+		$this->type_id->SourceTableVar = 't004_asset';
+		$this->fields['type_id'] = &$this->type_id;
 
-		// ProcurementCurrentCost
-		$this->ProcurementCurrentCost = new ReportField('r001_asset', 'r001_asset', 'x_ProcurementCurrentCost', 'ProcurementCurrentCost', '`ProcurementCurrentCost`', '`ProcurementCurrentCost`', 4, 14, -1, FALSE, '`ProcurementCurrentCost`', FALSE, FALSE, FALSE, 'FORMATTED TEXT', 'TEXT');
-		$this->ProcurementCurrentCost->Nullable = FALSE; // NOT NULL field
-		$this->ProcurementCurrentCost->Required = TRUE; // Required field
-		$this->ProcurementCurrentCost->Sortable = TRUE; // Allow sort
-		$this->ProcurementCurrentCost->DefaultErrorMessage = $Language->phrase("IncorrectFloat");
-		$this->ProcurementCurrentCost->SourceTableVar = 't004_asset';
-		$this->fields['ProcurementCurrentCost'] = &$this->ProcurementCurrentCost;
+		// signature_id
+		$this->signature_id = new ReportField('r001_asset', 'r001_asset', 'x_signature_id', 'signature_id', '`signature_id`', '`signature_id`', 3, 11, -1, FALSE, '`signature_id`', FALSE, FALSE, FALSE, 'FORMATTED TEXT', 'TEXT');
+		$this->signature_id->Nullable = FALSE; // NOT NULL field
+		$this->signature_id->Required = TRUE; // Required field
+		$this->signature_id->Sortable = TRUE; // Allow sort
+		$this->signature_id->Lookup = new Lookup('signature_id', 't003_signature', FALSE, 'id', ["Signature","","",""], [], [], [], [], [], [], '', '');
+		$this->signature_id->DefaultErrorMessage = $Language->phrase("IncorrectInteger");
+		$this->signature_id->SourceTableVar = 't004_asset';
+		$this->fields['signature_id'] = &$this->signature_id;
 
-		// Salvage
-		$this->Salvage = new ReportField('r001_asset', 'r001_asset', 'x_Salvage', 'Salvage', '`Salvage`', '`Salvage`', 4, 14, -1, FALSE, '`Salvage`', FALSE, FALSE, FALSE, 'FORMATTED TEXT', 'TEXT');
-		$this->Salvage->Nullable = FALSE; // NOT NULL field
-		$this->Salvage->Sortable = TRUE; // Allow sort
-		$this->Salvage->DefaultErrorMessage = $Language->phrase("IncorrectFloat");
-		$this->Salvage->SourceTableVar = 't004_asset';
-		$this->fields['Salvage'] = &$this->Salvage;
+		// department_id
+		$this->department_id = new ReportField('r001_asset', 'r001_asset', 'x_department_id', 'department_id', '`department_id`', '`department_id`', 3, 11, -1, FALSE, '`department_id`', FALSE, FALSE, FALSE, 'FORMATTED TEXT', 'TEXT');
+		$this->department_id->Nullable = FALSE; // NOT NULL field
+		$this->department_id->Required = TRUE; // Required field
+		$this->department_id->Sortable = TRUE; // Allow sort
+		$this->department_id->Lookup = new Lookup('department_id', 't002_department', FALSE, 'id', ["Department","","",""], [], [], [], [], [], [], '', '');
+		$this->department_id->DefaultErrorMessage = $Language->phrase("IncorrectInteger");
+		$this->department_id->SourceTableVar = 't004_asset';
+		$this->fields['department_id'] = &$this->department_id;
+
+		// location_id
+		$this->location_id = new ReportField('r001_asset', 'r001_asset', 'x_location_id', 'location_id', '`location_id`', '`location_id`', 3, 11, -1, FALSE, '`location_id`', FALSE, FALSE, FALSE, 'FORMATTED TEXT', 'SELECT');
+		$this->location_id->Nullable = FALSE; // NOT NULL field
+		$this->location_id->Required = TRUE; // Required field
+		$this->location_id->Sortable = TRUE; // Allow sort
+		$this->location_id->UsePleaseSelect = TRUE; // Use PleaseSelect by default
+		$this->location_id->PleaseSelectText = $Language->phrase("PleaseSelect"); // "PleaseSelect" text
+		$this->location_id->Lookup = new Lookup('location_id', 't009_location', FALSE, 'id', ["Location","","",""], [], [], [], [], [], [], '', '');
+		$this->location_id->DefaultErrorMessage = $Language->phrase("IncorrectInteger");
+		$this->location_id->SourceTableVar = 't004_asset';
+		$this->fields['location_id'] = &$this->location_id;
 
 		// Qty
 		$this->Qty = new ReportField('r001_asset', 'r001_asset', 'x_Qty', 'Qty', '`Qty`', '`Qty`', 4, 14, -1, FALSE, '`Qty`', FALSE, FALSE, FALSE, 'FORMATTED TEXT', 'TEXT');
@@ -174,6 +184,24 @@ class r001_asset extends ReportTable
 		$this->Remarks->Sortable = TRUE; // Allow sort
 		$this->Remarks->SourceTableVar = 't004_asset';
 		$this->fields['Remarks'] = &$this->Remarks;
+
+		// ProcurementDate
+		$this->ProcurementDate = new ReportField('r001_asset', 'r001_asset', 'x_ProcurementDate', 'ProcurementDate', '`ProcurementDate`', CastDateFieldForLike("`ProcurementDate`", 7, "DB"), 133, 10, 7, FALSE, '`ProcurementDate`', FALSE, FALSE, FALSE, 'FORMATTED TEXT', 'TEXT');
+		$this->ProcurementDate->Nullable = FALSE; // NOT NULL field
+		$this->ProcurementDate->Required = TRUE; // Required field
+		$this->ProcurementDate->Sortable = TRUE; // Allow sort
+		$this->ProcurementDate->DefaultErrorMessage = str_replace("%s", $GLOBALS["DATE_SEPARATOR"], $Language->phrase("IncorrectDateDMY"));
+		$this->ProcurementDate->SourceTableVar = 't004_asset';
+		$this->fields['ProcurementDate'] = &$this->ProcurementDate;
+
+		// ProcurementCurrentCost
+		$this->ProcurementCurrentCost = new ReportField('r001_asset', 'r001_asset', 'x_ProcurementCurrentCost', 'ProcurementCurrentCost', '`ProcurementCurrentCost`', '`ProcurementCurrentCost`', 4, 17, -1, FALSE, '`ProcurementCurrentCost`', FALSE, FALSE, FALSE, 'FORMATTED TEXT', 'TEXT');
+		$this->ProcurementCurrentCost->Nullable = FALSE; // NOT NULL field
+		$this->ProcurementCurrentCost->Required = TRUE; // Required field
+		$this->ProcurementCurrentCost->Sortable = TRUE; // Allow sort
+		$this->ProcurementCurrentCost->DefaultErrorMessage = $Language->phrase("IncorrectFloat");
+		$this->ProcurementCurrentCost->SourceTableVar = 't004_asset';
+		$this->fields['ProcurementCurrentCost'] = &$this->ProcurementCurrentCost;
 
 		// PeriodBegin
 		$this->PeriodBegin = new ReportField('r001_asset', 'r001_asset', 'x_PeriodBegin', 'PeriodBegin', '`PeriodBegin`', CastDateFieldForLike("`PeriodBegin`", 7, "DB"), 133, 10, 7, FALSE, '`PeriodBegin`', FALSE, FALSE, FALSE, 'FORMATTED TEXT', 'TEXT');

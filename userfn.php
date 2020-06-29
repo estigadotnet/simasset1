@@ -127,8 +127,12 @@ function fCreatePenyusutan($rsnew) {
 	// ambil nilai economical life time
 	// untuk acuan looping list of year
 
-	$q = "select EconomicalLifeTime from t005_assetgroup where id = ".$rsnew["group_id"]."";
+	$q = "select EstimatedLife from t005_assetgroup where id = ".$rsnew["group_id"]."";
 	$economicalLifeTime = ExecuteScalar($q);
+
+	// ambil nilai SLN
+	$q = "select SLN from t005_assetgroup where id = ".$rsnew["group_id"]."";
+	$SLN = ExecuteScalar($q);
 
 	// mencari acuan looping
 	list($awalPeriode, $akhirPeriode) = fCariAwalAkhirPeriode($rsnew["group_id"], $rsnew["ProcurementDate"]);
@@ -158,8 +162,10 @@ function fCreatePenyusutan($rsnew) {
 		}
 
 		// DepreciationAmount
-		$depreciationAmount = \PhpOffice\PhpSpreadsheet\Calculation\Financial::SLN(
-		$rsnew["ProcurementCurrentCost"], $rsnew["Salvage"], $economicalLifeTime) / 12 * $numberOfMonths;
+		//$depreciationAmount = \PhpOffice\PhpSpreadsheet\Calculation\Financial::SLN(
+		//$rsnew["ProcurementCurrentCost"], $rsnew["Salvage"], $economicalLifeTime) / 12 * $numberOfMonths;
+
+		$depreciationAmount = (($rsnew["ProcurementCurrentCost"] * ($SLN/100)) / 12) * $numberOfMonths;
 
 		// DepreciationYtd
 		$depreciationYtd += $depreciationAmount;
@@ -189,7 +195,7 @@ function fCreatePenyusutan($rsnew) {
 function fCariAwalAkhirPeriode($group_id, $ProcurementDate) {
 
 	// ambil nilai economical life time
-	$q = "select EconomicalLifeTime from t005_assetgroup where id = ".$group_id."";
+	$q = "select EstimatedLife from t005_assetgroup where id = ".$group_id."";
 	$economicalLifeTime = ExecuteScalar($q);
 
 	// ambil nilai awal periode
@@ -199,5 +205,70 @@ function fCariAwalAkhirPeriode($group_id, $ProcurementDate) {
 	// ambil nilai akhir periode
 	$akhirPeriode = \PhpOffice\PhpSpreadsheet\Shared\Date::excelToDateTimeObject(\PhpOffice\PhpSpreadsheet\Calculation\DateTime::EDATE($awalPeriode, ($economicalLifeTime*12)-1))->format("Y-m-d");
 	return array($awalPeriode, $akhirPeriode);
+}
+
+function fUpdateCode($property_id, $group_id, $type_id, $ProcurementDate, $id) {
+
+	// ambil huruf pertama Property
+	$q = "select left(Property, 1) from t001_property where id = ".$property_id."";
+	$Code = ExecuteScalar($q);
+
+	// ambil Code asset group
+	$q = "select Code from t005_assetgroup where id = ".$group_id."";
+	$Code = $Code . ExecuteScalar($q);
+
+	// ambil Code asset type
+	$q = "select Code from t007_assettype where id = ".$type_id."";
+	$Code = $Code . ExecuteScalar($q);
+
+	// ambil nilai 2 digit tahun perolehan
+	$date = date_create($ProcurementDate);
+	$Code = $Code . date_format($date, "y");
+
+	// ambil nomor urut terakhir data tabel asset
+	$sNextKode = "";
+	$sLastKode = "";
+	$value = ExecuteScalar("SELECT Code FROM t004_asset where id = ".$id."");
+	$Kode = substr($value, 8, 6); // ambil 6 digit terakhir
+	$Code = $Code . $Kode;
+	return $Code;
+}
+
+function fCreateCode($property_id, $group_id, $type_id, $ProcurementDate) {
+
+	// ambil huruf pertama Property
+	$q = "select left(Property, 1) from t001_property where id = ".$property_id."";
+	$Code = ExecuteScalar($q);
+
+	// ambil Code asset group
+	$q = "select Code from t005_assetgroup where id = ".$group_id."";
+	$Code = $Code . ExecuteScalar($q);
+
+	// ambil Code asset type
+	$q = "select Code from t007_assettype where id = ".$type_id."";
+	$Code = $Code . ExecuteScalar($q);
+
+	// ambil nilai 2 digit tahun perolehan
+	$date = date_create($ProcurementDate);
+	$Code = $Code . date_format($date, "y");
+
+	// ambil nomor urut terakhir data tabel asset
+	$sNextKode = "";
+	$sLastKode = "";
+	$value = ExecuteScalar("SELECT Code FROM t004_asset ORDER BY Code DESC");
+	if ($value != "") { // jika sudah ada, langsung ambil dan proses...
+		$sLastKode = intval(substr($value, 8, 6)); // ambil 6 digit terakhir
+		$sLastKode = intval($sLastKode) + 1; // konversi ke integer, lalu tambahkan satu
+		$sNextKode = sprintf('%06s', $sLastKode); // format hasilnya dan tambahkan prefix
+	} else { // jika belum ada, gunakan kode yang pertama
+		$sNextKode = "000001";
+	}
+	$Code = $Code . $sNextKode;
+	return $Code;
+}
+
+function fCariGroupID($type_id) {
+	$q = "select assetgroup_id from t007_assettype where id = ".$type_id."";
+	return ExecuteScalar($q);
 }
 ?>

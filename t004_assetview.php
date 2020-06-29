@@ -81,22 +81,22 @@ $t004_asset_view->showMessage();
 </td>
 	</tr>
 <?php } ?>
-<?php if ($t004_asset_view->department_id->Visible) { // department_id ?>
-	<tr id="r_department_id">
-		<td class="<?php echo $t004_asset_view->TableLeftColumnClass ?>"><span id="elh_t004_asset_department_id"><?php echo $t004_asset_view->department_id->caption() ?></span></td>
-		<td data-name="department_id" <?php echo $t004_asset_view->department_id->cellAttributes() ?>>
-<span id="el_t004_asset_department_id">
-<span<?php echo $t004_asset_view->department_id->viewAttributes() ?>><?php echo $t004_asset_view->department_id->getViewValue() ?></span>
+<?php if ($t004_asset_view->group_id->Visible) { // group_id ?>
+	<tr id="r_group_id">
+		<td class="<?php echo $t004_asset_view->TableLeftColumnClass ?>"><span id="elh_t004_asset_group_id"><?php echo $t004_asset_view->group_id->caption() ?></span></td>
+		<td data-name="group_id" <?php echo $t004_asset_view->group_id->cellAttributes() ?>>
+<span id="el_t004_asset_group_id">
+<span<?php echo $t004_asset_view->group_id->viewAttributes() ?>><?php echo $t004_asset_view->group_id->getViewValue() ?></span>
 </span>
 </td>
 	</tr>
 <?php } ?>
-<?php if ($t004_asset_view->signature_id->Visible) { // signature_id ?>
-	<tr id="r_signature_id">
-		<td class="<?php echo $t004_asset_view->TableLeftColumnClass ?>"><span id="elh_t004_asset_signature_id"><?php echo $t004_asset_view->signature_id->caption() ?></span></td>
-		<td data-name="signature_id" <?php echo $t004_asset_view->signature_id->cellAttributes() ?>>
-<span id="el_t004_asset_signature_id">
-<span<?php echo $t004_asset_view->signature_id->viewAttributes() ?>><?php echo $t004_asset_view->signature_id->getViewValue() ?></span>
+<?php if ($t004_asset_view->type_id->Visible) { // type_id ?>
+	<tr id="r_type_id">
+		<td class="<?php echo $t004_asset_view->TableLeftColumnClass ?>"><span id="elh_t004_asset_type_id"><?php echo $t004_asset_view->type_id->caption() ?></span></td>
+		<td data-name="type_id" <?php echo $t004_asset_view->type_id->cellAttributes() ?>>
+<span id="el_t004_asset_type_id">
+<span<?php echo $t004_asset_view->type_id->viewAttributes() ?>><?php echo $t004_asset_view->type_id->getViewValue() ?></span>
 </span>
 </td>
 	</tr>
@@ -121,42 +121,42 @@ $t004_asset_view->showMessage();
 </td>
 	</tr>
 <?php } ?>
-<?php if ($t004_asset_view->group_id->Visible) { // group_id ?>
-	<tr id="r_group_id">
-		<td class="<?php echo $t004_asset_view->TableLeftColumnClass ?>"><span id="elh_t004_asset_group_id"><?php echo $t004_asset_view->group_id->caption() ?></span></td>
-		<td data-name="group_id" <?php echo $t004_asset_view->group_id->cellAttributes() ?>>
-<span id="el_t004_asset_group_id">
-<span<?php echo $t004_asset_view->group_id->viewAttributes() ?>><?php echo $t004_asset_view->group_id->getViewValue() ?></span>
+<?php if ($t004_asset_view->brand_id->Visible) { // brand_id ?>
+	<tr id="r_brand_id">
+		<td class="<?php echo $t004_asset_view->TableLeftColumnClass ?>"><span id="elh_t004_asset_brand_id"><?php echo $t004_asset_view->brand_id->caption() ?></span></td>
+		<td data-name="brand_id" <?php echo $t004_asset_view->brand_id->cellAttributes() ?>>
+<span id="el_t004_asset_brand_id">
+<span<?php echo $t004_asset_view->brand_id->viewAttributes() ?>><?php echo $t004_asset_view->brand_id->getViewValue() ?></span>
 </span>
 </td>
 	</tr>
 <?php } ?>
-<?php if ($t004_asset_view->ProcurementDate->Visible) { // ProcurementDate ?>
-	<tr id="r_ProcurementDate">
-		<td class="<?php echo $t004_asset_view->TableLeftColumnClass ?>"><span id="elh_t004_asset_ProcurementDate"><?php echo $t004_asset_view->ProcurementDate->caption() ?></span></td>
-		<td data-name="ProcurementDate" <?php echo $t004_asset_view->ProcurementDate->cellAttributes() ?>>
-<span id="el_t004_asset_ProcurementDate">
-<span<?php echo $t004_asset_view->ProcurementDate->viewAttributes() ?>><?php echo $t004_asset_view->ProcurementDate->getViewValue() ?></span>
+<?php if ($t004_asset_view->signature_id->Visible) { // signature_id ?>
+	<tr id="r_signature_id">
+		<td class="<?php echo $t004_asset_view->TableLeftColumnClass ?>"><span id="elh_t004_asset_signature_id"><?php echo $t004_asset_view->signature_id->caption() ?></span></td>
+		<td data-name="signature_id" <?php echo $t004_asset_view->signature_id->cellAttributes() ?>>
+<span id="el_t004_asset_signature_id">
+<span<?php echo $t004_asset_view->signature_id->viewAttributes() ?>><?php echo $t004_asset_view->signature_id->getViewValue() ?></span>
 </span>
 </td>
 	</tr>
 <?php } ?>
-<?php if ($t004_asset_view->ProcurementCurrentCost->Visible) { // ProcurementCurrentCost ?>
-	<tr id="r_ProcurementCurrentCost">
-		<td class="<?php echo $t004_asset_view->TableLeftColumnClass ?>"><span id="elh_t004_asset_ProcurementCurrentCost"><?php echo $t004_asset_view->ProcurementCurrentCost->caption() ?></span></td>
-		<td data-name="ProcurementCurrentCost" <?php echo $t004_asset_view->ProcurementCurrentCost->cellAttributes() ?>>
-<span id="el_t004_asset_ProcurementCurrentCost">
-<span<?php echo $t004_asset_view->ProcurementCurrentCost->viewAttributes() ?>><?php echo $t004_asset_view->ProcurementCurrentCost->getViewValue() ?></span>
+<?php if ($t004_asset_view->department_id->Visible) { // department_id ?>
+	<tr id="r_department_id">
+		<td class="<?php echo $t004_asset_view->TableLeftColumnClass ?>"><span id="elh_t004_asset_department_id"><?php echo $t004_asset_view->department_id->caption() ?></span></td>
+		<td data-name="department_id" <?php echo $t004_asset_view->department_id->cellAttributes() ?>>
+<span id="el_t004_asset_department_id">
+<span<?php echo $t004_asset_view->department_id->viewAttributes() ?>><?php echo $t004_asset_view->department_id->getViewValue() ?></span>
 </span>
 </td>
 	</tr>
 <?php } ?>
-<?php if ($t004_asset_view->Salvage->Visible) { // Salvage ?>
-	<tr id="r_Salvage">
-		<td class="<?php echo $t004_asset_view->TableLeftColumnClass ?>"><span id="elh_t004_asset_Salvage"><?php echo $t004_asset_view->Salvage->caption() ?></span></td>
-		<td data-name="Salvage" <?php echo $t004_asset_view->Salvage->cellAttributes() ?>>
-<span id="el_t004_asset_Salvage">
-<span<?php echo $t004_asset_view->Salvage->viewAttributes() ?>><?php echo $t004_asset_view->Salvage->getViewValue() ?></span>
+<?php if ($t004_asset_view->location_id->Visible) { // location_id ?>
+	<tr id="r_location_id">
+		<td class="<?php echo $t004_asset_view->TableLeftColumnClass ?>"><span id="elh_t004_asset_location_id"><?php echo $t004_asset_view->location_id->caption() ?></span></td>
+		<td data-name="location_id" <?php echo $t004_asset_view->location_id->cellAttributes() ?>>
+<span id="el_t004_asset_location_id">
+<span<?php echo $t004_asset_view->location_id->viewAttributes() ?>><?php echo $t004_asset_view->location_id->getViewValue() ?></span>
 </span>
 </td>
 	</tr>
@@ -177,6 +177,26 @@ $t004_asset_view->showMessage();
 		<td data-name="Remarks" <?php echo $t004_asset_view->Remarks->cellAttributes() ?>>
 <span id="el_t004_asset_Remarks">
 <span<?php echo $t004_asset_view->Remarks->viewAttributes() ?>><?php echo $t004_asset_view->Remarks->getViewValue() ?></span>
+</span>
+</td>
+	</tr>
+<?php } ?>
+<?php if ($t004_asset_view->ProcurementDate->Visible) { // ProcurementDate ?>
+	<tr id="r_ProcurementDate">
+		<td class="<?php echo $t004_asset_view->TableLeftColumnClass ?>"><span id="elh_t004_asset_ProcurementDate"><?php echo $t004_asset_view->ProcurementDate->caption() ?></span></td>
+		<td data-name="ProcurementDate" <?php echo $t004_asset_view->ProcurementDate->cellAttributes() ?>>
+<span id="el_t004_asset_ProcurementDate">
+<span<?php echo $t004_asset_view->ProcurementDate->viewAttributes() ?>><?php echo $t004_asset_view->ProcurementDate->getViewValue() ?></span>
+</span>
+</td>
+	</tr>
+<?php } ?>
+<?php if ($t004_asset_view->ProcurementCurrentCost->Visible) { // ProcurementCurrentCost ?>
+	<tr id="r_ProcurementCurrentCost">
+		<td class="<?php echo $t004_asset_view->TableLeftColumnClass ?>"><span id="elh_t004_asset_ProcurementCurrentCost"><?php echo $t004_asset_view->ProcurementCurrentCost->caption() ?></span></td>
+		<td data-name="ProcurementCurrentCost" <?php echo $t004_asset_view->ProcurementCurrentCost->cellAttributes() ?>>
+<span id="el_t004_asset_ProcurementCurrentCost">
+<span<?php echo $t004_asset_view->ProcurementCurrentCost->viewAttributes() ?>><?php echo $t004_asset_view->ProcurementCurrentCost->getViewValue() ?></span>
 </span>
 </td>
 	</tr>

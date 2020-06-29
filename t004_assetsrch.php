@@ -51,18 +51,18 @@ loadjs.ready("head", function() {
 			return true; // Ignore validation
 		fobj = fobj || this._form;
 		var infix = "";
+		elm = this.getElements("x" + infix + "_group_id");
+		if (elm && !ew.checkInteger(elm.value))
+			return this.onError(elm, "<?php echo JsEncode($t004_asset_search->group_id->errorMessage()) ?>");
+		elm = this.getElements("x" + infix + "_Qty");
+		if (elm && !ew.checkNumber(elm.value))
+			return this.onError(elm, "<?php echo JsEncode($t004_asset_search->Qty->errorMessage()) ?>");
 		elm = this.getElements("x" + infix + "_ProcurementDate");
 		if (elm && !ew.checkEuroDate(elm.value))
 			return this.onError(elm, "<?php echo JsEncode($t004_asset_search->ProcurementDate->errorMessage()) ?>");
 		elm = this.getElements("x" + infix + "_ProcurementCurrentCost");
 		if (elm && !ew.checkNumber(elm.value))
 			return this.onError(elm, "<?php echo JsEncode($t004_asset_search->ProcurementCurrentCost->errorMessage()) ?>");
-		elm = this.getElements("x" + infix + "_Salvage");
-		if (elm && !ew.checkNumber(elm.value))
-			return this.onError(elm, "<?php echo JsEncode($t004_asset_search->Salvage->errorMessage()) ?>");
-		elm = this.getElements("x" + infix + "_Qty");
-		if (elm && !ew.checkNumber(elm.value))
-			return this.onError(elm, "<?php echo JsEncode($t004_asset_search->Qty->errorMessage()) ?>");
 		elm = this.getElements("x" + infix + "_PeriodBegin");
 		if (elm && !ew.checkEuroDate(elm.value))
 			return this.onError(elm, "<?php echo JsEncode($t004_asset_search->PeriodBegin->errorMessage()) ?>");
@@ -89,12 +89,19 @@ loadjs.ready("head", function() {
 	// Dynamic selection lists
 	ft004_assetsearch.lists["x_property_id"] = <?php echo $t004_asset_search->property_id->Lookup->toClientList($t004_asset_search) ?>;
 	ft004_assetsearch.lists["x_property_id"].options = <?php echo JsonEncode($t004_asset_search->property_id->lookupOptions()) ?>;
-	ft004_assetsearch.lists["x_department_id"] = <?php echo $t004_asset_search->department_id->Lookup->toClientList($t004_asset_search) ?>;
-	ft004_assetsearch.lists["x_department_id"].options = <?php echo JsonEncode($t004_asset_search->department_id->lookupOptions()) ?>;
-	ft004_assetsearch.lists["x_signature_id"] = <?php echo $t004_asset_search->signature_id->Lookup->toClientList($t004_asset_search) ?>;
-	ft004_assetsearch.lists["x_signature_id"].options = <?php echo JsonEncode($t004_asset_search->signature_id->lookupOptions()) ?>;
 	ft004_assetsearch.lists["x_group_id"] = <?php echo $t004_asset_search->group_id->Lookup->toClientList($t004_asset_search) ?>;
 	ft004_assetsearch.lists["x_group_id"].options = <?php echo JsonEncode($t004_asset_search->group_id->lookupOptions()) ?>;
+	ft004_assetsearch.autoSuggests["x_group_id"] = <?php echo json_encode(["data" => "ajax=autosuggest"]) ?>;
+	ft004_assetsearch.lists["x_type_id"] = <?php echo $t004_asset_search->type_id->Lookup->toClientList($t004_asset_search) ?>;
+	ft004_assetsearch.lists["x_type_id"].options = <?php echo JsonEncode($t004_asset_search->type_id->lookupOptions()) ?>;
+	ft004_assetsearch.lists["x_brand_id"] = <?php echo $t004_asset_search->brand_id->Lookup->toClientList($t004_asset_search) ?>;
+	ft004_assetsearch.lists["x_brand_id"].options = <?php echo JsonEncode($t004_asset_search->brand_id->lookupOptions()) ?>;
+	ft004_assetsearch.lists["x_signature_id"] = <?php echo $t004_asset_search->signature_id->Lookup->toClientList($t004_asset_search) ?>;
+	ft004_assetsearch.lists["x_signature_id"].options = <?php echo JsonEncode($t004_asset_search->signature_id->lookupOptions()) ?>;
+	ft004_assetsearch.lists["x_department_id"] = <?php echo $t004_asset_search->department_id->Lookup->toClientList($t004_asset_search) ?>;
+	ft004_assetsearch.lists["x_department_id"].options = <?php echo JsonEncode($t004_asset_search->department_id->lookupOptions()) ?>;
+	ft004_assetsearch.lists["x_location_id"] = <?php echo $t004_asset_search->location_id->Lookup->toClientList($t004_asset_search) ?>;
+	ft004_assetsearch.lists["x_location_id"].options = <?php echo JsonEncode($t004_asset_search->location_id->lookupOptions()) ?>;
 	loadjs.done("ft004_assetsearch");
 });
 </script>
@@ -140,46 +147,53 @@ $t004_asset_search->showMessage();
 		</div></div>
 	</div>
 <?php } ?>
-<?php if ($t004_asset_search->department_id->Visible) { // department_id ?>
-	<div id="r_department_id" class="form-group row">
-		<label for="x_department_id" class="<?php echo $t004_asset_search->LeftColumnClass ?>"><span id="elh_t004_asset_department_id"><?php echo $t004_asset_search->department_id->caption() ?></span>
+<?php if ($t004_asset_search->group_id->Visible) { // group_id ?>
+	<div id="r_group_id" class="form-group row">
+		<label class="<?php echo $t004_asset_search->LeftColumnClass ?>"><span id="elh_t004_asset_group_id"><?php echo $t004_asset_search->group_id->caption() ?></span>
 		<span class="ew-search-operator">
 <?php echo $Language->phrase("=") ?>
-<input type="hidden" name="z_department_id" id="z_department_id" value="=">
+<input type="hidden" name="z_group_id" id="z_group_id" value="=">
 </span>
 		</label>
-		<div class="<?php echo $t004_asset_search->RightColumnClass ?>"><div <?php echo $t004_asset_search->department_id->cellAttributes() ?>>
-			<span id="el_t004_asset_department_id" class="ew-search-field">
-<div class="input-group ew-lookup-list">
-	<div class="form-control ew-lookup-text" tabindex="-1" id="lu_x_department_id"><?php echo EmptyValue(strval($t004_asset_search->department_id->AdvancedSearch->ViewValue)) ? $Language->phrase("PleaseSelect") : $t004_asset_search->department_id->AdvancedSearch->ViewValue ?></div>
-	<div class="input-group-append">
-		<button type="button" title="<?php echo HtmlEncode(str_replace("%s", RemoveHtml($t004_asset_search->department_id->caption()), $Language->phrase("LookupLink", TRUE))) ?>" class="ew-lookup-btn btn btn-default"<?php echo ($t004_asset_search->department_id->ReadOnly || $t004_asset_search->department_id->Disabled) ? " disabled" : "" ?> onclick="ew.modalLookupShow({lnk:this,el:'x_department_id',m:0,n:10});"><i class="fas fa-search ew-icon"></i></button>
-	</div>
-</div>
-<?php echo $t004_asset_search->department_id->Lookup->getParamTag($t004_asset_search, "p_x_department_id") ?>
-<input type="hidden" data-table="t004_asset" data-field="x_department_id" data-multiple="0" data-lookup="1" data-value-separator="<?php echo $t004_asset_search->department_id->displayValueSeparatorAttribute() ?>" name="x_department_id" id="x_department_id" value="<?php echo $t004_asset_search->department_id->AdvancedSearch->SearchValue ?>"<?php echo $t004_asset_search->department_id->editAttributes() ?>>
+		<div class="<?php echo $t004_asset_search->RightColumnClass ?>"><div <?php echo $t004_asset_search->group_id->cellAttributes() ?>>
+			<span id="el_t004_asset_group_id" class="ew-search-field">
+<?php
+$onchange = $t004_asset_search->group_id->EditAttrs->prepend("onchange", "");
+$onchange = ($onchange) ? ' onchange="' . JsEncode($onchange) . '"' : '';
+$t004_asset_search->group_id->EditAttrs["onchange"] = "";
+?>
+<span id="as_x_group_id">
+	<input type="text" class="form-control" name="sv_x_group_id" id="sv_x_group_id" value="<?php echo RemoveHtml($t004_asset_search->group_id->EditValue) ?>" size="30" maxlength="11" placeholder="<?php echo HtmlEncode($t004_asset_search->group_id->getPlaceHolder()) ?>" data-placeholder="<?php echo HtmlEncode($t004_asset_search->group_id->getPlaceHolder()) ?>"<?php echo $t004_asset_search->group_id->editAttributes() ?>>
+</span>
+<input type="hidden" data-table="t004_asset" data-field="x_group_id" data-value-separator="<?php echo $t004_asset_search->group_id->displayValueSeparatorAttribute() ?>" name="x_group_id" id="x_group_id" value="<?php echo HtmlEncode($t004_asset_search->group_id->AdvancedSearch->SearchValue) ?>"<?php echo $onchange ?>>
+<script>
+loadjs.ready(["ft004_assetsearch"], function() {
+	ft004_assetsearch.createAutoSuggest({"id":"x_group_id","forceSelect":false});
+});
+</script>
+<?php echo $t004_asset_search->group_id->Lookup->getParamTag($t004_asset_search, "p_x_group_id") ?>
 </span>
 		</div></div>
 	</div>
 <?php } ?>
-<?php if ($t004_asset_search->signature_id->Visible) { // signature_id ?>
-	<div id="r_signature_id" class="form-group row">
-		<label for="x_signature_id" class="<?php echo $t004_asset_search->LeftColumnClass ?>"><span id="elh_t004_asset_signature_id"><?php echo $t004_asset_search->signature_id->caption() ?></span>
+<?php if ($t004_asset_search->type_id->Visible) { // type_id ?>
+	<div id="r_type_id" class="form-group row">
+		<label for="x_type_id" class="<?php echo $t004_asset_search->LeftColumnClass ?>"><span id="elh_t004_asset_type_id"><?php echo $t004_asset_search->type_id->caption() ?></span>
 		<span class="ew-search-operator">
 <?php echo $Language->phrase("=") ?>
-<input type="hidden" name="z_signature_id" id="z_signature_id" value="=">
+<input type="hidden" name="z_type_id" id="z_type_id" value="=">
 </span>
 		</label>
-		<div class="<?php echo $t004_asset_search->RightColumnClass ?>"><div <?php echo $t004_asset_search->signature_id->cellAttributes() ?>>
-			<span id="el_t004_asset_signature_id" class="ew-search-field">
+		<div class="<?php echo $t004_asset_search->RightColumnClass ?>"><div <?php echo $t004_asset_search->type_id->cellAttributes() ?>>
+			<span id="el_t004_asset_type_id" class="ew-search-field">
 <div class="input-group ew-lookup-list">
-	<div class="form-control ew-lookup-text" tabindex="-1" id="lu_x_signature_id"><?php echo EmptyValue(strval($t004_asset_search->signature_id->AdvancedSearch->ViewValue)) ? $Language->phrase("PleaseSelect") : $t004_asset_search->signature_id->AdvancedSearch->ViewValue ?></div>
+	<div class="form-control ew-lookup-text" tabindex="-1" id="lu_x_type_id"><?php echo EmptyValue(strval($t004_asset_search->type_id->AdvancedSearch->ViewValue)) ? $Language->phrase("PleaseSelect") : $t004_asset_search->type_id->AdvancedSearch->ViewValue ?></div>
 	<div class="input-group-append">
-		<button type="button" title="<?php echo HtmlEncode(str_replace("%s", RemoveHtml($t004_asset_search->signature_id->caption()), $Language->phrase("LookupLink", TRUE))) ?>" class="ew-lookup-btn btn btn-default"<?php echo ($t004_asset_search->signature_id->ReadOnly || $t004_asset_search->signature_id->Disabled) ? " disabled" : "" ?> onclick="ew.modalLookupShow({lnk:this,el:'x_signature_id',m:0,n:10});"><i class="fas fa-search ew-icon"></i></button>
+		<button type="button" title="<?php echo HtmlEncode(str_replace("%s", RemoveHtml($t004_asset_search->type_id->caption()), $Language->phrase("LookupLink", TRUE))) ?>" class="ew-lookup-btn btn btn-default"<?php echo ($t004_asset_search->type_id->ReadOnly || $t004_asset_search->type_id->Disabled) ? " disabled" : "" ?> onclick="ew.modalLookupShow({lnk:this,el:'x_type_id',m:0,n:10});"><i class="fas fa-search ew-icon"></i></button>
 	</div>
 </div>
-<?php echo $t004_asset_search->signature_id->Lookup->getParamTag($t004_asset_search, "p_x_signature_id") ?>
-<input type="hidden" data-table="t004_asset" data-field="x_signature_id" data-multiple="0" data-lookup="1" data-value-separator="<?php echo $t004_asset_search->signature_id->displayValueSeparatorAttribute() ?>" name="x_signature_id" id="x_signature_id" value="<?php echo $t004_asset_search->signature_id->AdvancedSearch->SearchValue ?>"<?php echo $t004_asset_search->signature_id->editAttributes() ?>>
+<?php echo $t004_asset_search->type_id->Lookup->getParamTag($t004_asset_search, "p_x_type_id") ?>
+<input type="hidden" data-table="t004_asset" data-field="x_type_id" data-multiple="0" data-lookup="1" data-value-separator="<?php echo $t004_asset_search->type_id->displayValueSeparatorAttribute() ?>" name="x_type_id" id="x_type_id" value="<?php echo $t004_asset_search->type_id->AdvancedSearch->SearchValue ?>"<?php echo $t004_asset_search->type_id->editAttributes() ?>>
 </span>
 		</div></div>
 	</div>
@@ -214,24 +228,120 @@ $t004_asset_search->showMessage();
 		</div></div>
 	</div>
 <?php } ?>
-<?php if ($t004_asset_search->group_id->Visible) { // group_id ?>
-	<div id="r_group_id" class="form-group row">
-		<label for="x_group_id" class="<?php echo $t004_asset_search->LeftColumnClass ?>"><span id="elh_t004_asset_group_id"><?php echo $t004_asset_search->group_id->caption() ?></span>
+<?php if ($t004_asset_search->brand_id->Visible) { // brand_id ?>
+	<div id="r_brand_id" class="form-group row">
+		<label for="x_brand_id" class="<?php echo $t004_asset_search->LeftColumnClass ?>"><span id="elh_t004_asset_brand_id"><?php echo $t004_asset_search->brand_id->caption() ?></span>
 		<span class="ew-search-operator">
 <?php echo $Language->phrase("=") ?>
-<input type="hidden" name="z_group_id" id="z_group_id" value="=">
+<input type="hidden" name="z_brand_id" id="z_brand_id" value="=">
 </span>
 		</label>
-		<div class="<?php echo $t004_asset_search->RightColumnClass ?>"><div <?php echo $t004_asset_search->group_id->cellAttributes() ?>>
-			<span id="el_t004_asset_group_id" class="ew-search-field">
+		<div class="<?php echo $t004_asset_search->RightColumnClass ?>"><div <?php echo $t004_asset_search->brand_id->cellAttributes() ?>>
+			<span id="el_t004_asset_brand_id" class="ew-search-field">
 <div class="input-group ew-lookup-list">
-	<div class="form-control ew-lookup-text" tabindex="-1" id="lu_x_group_id"><?php echo EmptyValue(strval($t004_asset_search->group_id->AdvancedSearch->ViewValue)) ? $Language->phrase("PleaseSelect") : $t004_asset_search->group_id->AdvancedSearch->ViewValue ?></div>
+	<div class="form-control ew-lookup-text" tabindex="-1" id="lu_x_brand_id"><?php echo EmptyValue(strval($t004_asset_search->brand_id->AdvancedSearch->ViewValue)) ? $Language->phrase("PleaseSelect") : $t004_asset_search->brand_id->AdvancedSearch->ViewValue ?></div>
 	<div class="input-group-append">
-		<button type="button" title="<?php echo HtmlEncode(str_replace("%s", RemoveHtml($t004_asset_search->group_id->caption()), $Language->phrase("LookupLink", TRUE))) ?>" class="ew-lookup-btn btn btn-default"<?php echo ($t004_asset_search->group_id->ReadOnly || $t004_asset_search->group_id->Disabled) ? " disabled" : "" ?> onclick="ew.modalLookupShow({lnk:this,el:'x_group_id',m:0,n:10});"><i class="fas fa-search ew-icon"></i></button>
+		<button type="button" title="<?php echo HtmlEncode(str_replace("%s", RemoveHtml($t004_asset_search->brand_id->caption()), $Language->phrase("LookupLink", TRUE))) ?>" class="ew-lookup-btn btn btn-default"<?php echo ($t004_asset_search->brand_id->ReadOnly || $t004_asset_search->brand_id->Disabled) ? " disabled" : "" ?> onclick="ew.modalLookupShow({lnk:this,el:'x_brand_id',m:0,n:10});"><i class="fas fa-search ew-icon"></i></button>
 	</div>
 </div>
-<?php echo $t004_asset_search->group_id->Lookup->getParamTag($t004_asset_search, "p_x_group_id") ?>
-<input type="hidden" data-table="t004_asset" data-field="x_group_id" data-multiple="0" data-lookup="1" data-value-separator="<?php echo $t004_asset_search->group_id->displayValueSeparatorAttribute() ?>" name="x_group_id" id="x_group_id" value="<?php echo $t004_asset_search->group_id->AdvancedSearch->SearchValue ?>"<?php echo $t004_asset_search->group_id->editAttributes() ?>>
+<?php echo $t004_asset_search->brand_id->Lookup->getParamTag($t004_asset_search, "p_x_brand_id") ?>
+<input type="hidden" data-table="t004_asset" data-field="x_brand_id" data-multiple="0" data-lookup="1" data-value-separator="<?php echo $t004_asset_search->brand_id->displayValueSeparatorAttribute() ?>" name="x_brand_id" id="x_brand_id" value="<?php echo $t004_asset_search->brand_id->AdvancedSearch->SearchValue ?>"<?php echo $t004_asset_search->brand_id->editAttributes() ?>>
+</span>
+		</div></div>
+	</div>
+<?php } ?>
+<?php if ($t004_asset_search->signature_id->Visible) { // signature_id ?>
+	<div id="r_signature_id" class="form-group row">
+		<label for="x_signature_id" class="<?php echo $t004_asset_search->LeftColumnClass ?>"><span id="elh_t004_asset_signature_id"><?php echo $t004_asset_search->signature_id->caption() ?></span>
+		<span class="ew-search-operator">
+<?php echo $Language->phrase("=") ?>
+<input type="hidden" name="z_signature_id" id="z_signature_id" value="=">
+</span>
+		</label>
+		<div class="<?php echo $t004_asset_search->RightColumnClass ?>"><div <?php echo $t004_asset_search->signature_id->cellAttributes() ?>>
+			<span id="el_t004_asset_signature_id" class="ew-search-field">
+<div class="input-group ew-lookup-list">
+	<div class="form-control ew-lookup-text" tabindex="-1" id="lu_x_signature_id"><?php echo EmptyValue(strval($t004_asset_search->signature_id->AdvancedSearch->ViewValue)) ? $Language->phrase("PleaseSelect") : $t004_asset_search->signature_id->AdvancedSearch->ViewValue ?></div>
+	<div class="input-group-append">
+		<button type="button" title="<?php echo HtmlEncode(str_replace("%s", RemoveHtml($t004_asset_search->signature_id->caption()), $Language->phrase("LookupLink", TRUE))) ?>" class="ew-lookup-btn btn btn-default"<?php echo ($t004_asset_search->signature_id->ReadOnly || $t004_asset_search->signature_id->Disabled) ? " disabled" : "" ?> onclick="ew.modalLookupShow({lnk:this,el:'x_signature_id',m:0,n:10});"><i class="fas fa-search ew-icon"></i></button>
+	</div>
+</div>
+<?php echo $t004_asset_search->signature_id->Lookup->getParamTag($t004_asset_search, "p_x_signature_id") ?>
+<input type="hidden" data-table="t004_asset" data-field="x_signature_id" data-multiple="0" data-lookup="1" data-value-separator="<?php echo $t004_asset_search->signature_id->displayValueSeparatorAttribute() ?>" name="x_signature_id" id="x_signature_id" value="<?php echo $t004_asset_search->signature_id->AdvancedSearch->SearchValue ?>"<?php echo $t004_asset_search->signature_id->editAttributes() ?>>
+</span>
+		</div></div>
+	</div>
+<?php } ?>
+<?php if ($t004_asset_search->department_id->Visible) { // department_id ?>
+	<div id="r_department_id" class="form-group row">
+		<label for="x_department_id" class="<?php echo $t004_asset_search->LeftColumnClass ?>"><span id="elh_t004_asset_department_id"><?php echo $t004_asset_search->department_id->caption() ?></span>
+		<span class="ew-search-operator">
+<?php echo $Language->phrase("=") ?>
+<input type="hidden" name="z_department_id" id="z_department_id" value="=">
+</span>
+		</label>
+		<div class="<?php echo $t004_asset_search->RightColumnClass ?>"><div <?php echo $t004_asset_search->department_id->cellAttributes() ?>>
+			<span id="el_t004_asset_department_id" class="ew-search-field">
+<div class="input-group ew-lookup-list">
+	<div class="form-control ew-lookup-text" tabindex="-1" id="lu_x_department_id"><?php echo EmptyValue(strval($t004_asset_search->department_id->AdvancedSearch->ViewValue)) ? $Language->phrase("PleaseSelect") : $t004_asset_search->department_id->AdvancedSearch->ViewValue ?></div>
+	<div class="input-group-append">
+		<button type="button" title="<?php echo HtmlEncode(str_replace("%s", RemoveHtml($t004_asset_search->department_id->caption()), $Language->phrase("LookupLink", TRUE))) ?>" class="ew-lookup-btn btn btn-default"<?php echo ($t004_asset_search->department_id->ReadOnly || $t004_asset_search->department_id->Disabled) ? " disabled" : "" ?> onclick="ew.modalLookupShow({lnk:this,el:'x_department_id',m:0,n:10});"><i class="fas fa-search ew-icon"></i></button>
+	</div>
+</div>
+<?php echo $t004_asset_search->department_id->Lookup->getParamTag($t004_asset_search, "p_x_department_id") ?>
+<input type="hidden" data-table="t004_asset" data-field="x_department_id" data-multiple="0" data-lookup="1" data-value-separator="<?php echo $t004_asset_search->department_id->displayValueSeparatorAttribute() ?>" name="x_department_id" id="x_department_id" value="<?php echo $t004_asset_search->department_id->AdvancedSearch->SearchValue ?>"<?php echo $t004_asset_search->department_id->editAttributes() ?>>
+</span>
+		</div></div>
+	</div>
+<?php } ?>
+<?php if ($t004_asset_search->location_id->Visible) { // location_id ?>
+	<div id="r_location_id" class="form-group row">
+		<label for="x_location_id" class="<?php echo $t004_asset_search->LeftColumnClass ?>"><span id="elh_t004_asset_location_id"><?php echo $t004_asset_search->location_id->caption() ?></span>
+		<span class="ew-search-operator">
+<?php echo $Language->phrase("=") ?>
+<input type="hidden" name="z_location_id" id="z_location_id" value="=">
+</span>
+		</label>
+		<div class="<?php echo $t004_asset_search->RightColumnClass ?>"><div <?php echo $t004_asset_search->location_id->cellAttributes() ?>>
+			<span id="el_t004_asset_location_id" class="ew-search-field">
+<div class="input-group ew-lookup-list">
+	<div class="form-control ew-lookup-text" tabindex="-1" id="lu_x_location_id"><?php echo EmptyValue(strval($t004_asset_search->location_id->AdvancedSearch->ViewValue)) ? $Language->phrase("PleaseSelect") : $t004_asset_search->location_id->AdvancedSearch->ViewValue ?></div>
+	<div class="input-group-append">
+		<button type="button" title="<?php echo HtmlEncode(str_replace("%s", RemoveHtml($t004_asset_search->location_id->caption()), $Language->phrase("LookupLink", TRUE))) ?>" class="ew-lookup-btn btn btn-default"<?php echo ($t004_asset_search->location_id->ReadOnly || $t004_asset_search->location_id->Disabled) ? " disabled" : "" ?> onclick="ew.modalLookupShow({lnk:this,el:'x_location_id',m:0,n:10});"><i class="fas fa-search ew-icon"></i></button>
+	</div>
+</div>
+<?php echo $t004_asset_search->location_id->Lookup->getParamTag($t004_asset_search, "p_x_location_id") ?>
+<input type="hidden" data-table="t004_asset" data-field="x_location_id" data-multiple="0" data-lookup="1" data-value-separator="<?php echo $t004_asset_search->location_id->displayValueSeparatorAttribute() ?>" name="x_location_id" id="x_location_id" value="<?php echo $t004_asset_search->location_id->AdvancedSearch->SearchValue ?>"<?php echo $t004_asset_search->location_id->editAttributes() ?>>
+</span>
+		</div></div>
+	</div>
+<?php } ?>
+<?php if ($t004_asset_search->Qty->Visible) { // Qty ?>
+	<div id="r_Qty" class="form-group row">
+		<label for="x_Qty" class="<?php echo $t004_asset_search->LeftColumnClass ?>"><span id="elh_t004_asset_Qty"><?php echo $t004_asset_search->Qty->caption() ?></span>
+		<span class="ew-search-operator">
+<?php echo $Language->phrase("=") ?>
+<input type="hidden" name="z_Qty" id="z_Qty" value="=">
+</span>
+		</label>
+		<div class="<?php echo $t004_asset_search->RightColumnClass ?>"><div <?php echo $t004_asset_search->Qty->cellAttributes() ?>>
+			<span id="el_t004_asset_Qty" class="ew-search-field">
+<input type="text" data-table="t004_asset" data-field="x_Qty" name="x_Qty" id="x_Qty" size="5" maxlength="14" placeholder="<?php echo HtmlEncode($t004_asset_search->Qty->getPlaceHolder()) ?>" value="<?php echo $t004_asset_search->Qty->EditValue ?>"<?php echo $t004_asset_search->Qty->editAttributes() ?>>
+</span>
+		</div></div>
+	</div>
+<?php } ?>
+<?php if ($t004_asset_search->Remarks->Visible) { // Remarks ?>
+	<div id="r_Remarks" class="form-group row">
+		<label for="x_Remarks" class="<?php echo $t004_asset_search->LeftColumnClass ?>"><span id="elh_t004_asset_Remarks"><?php echo $t004_asset_search->Remarks->caption() ?></span>
+		<span class="ew-search-operator">
+<?php echo $Language->phrase("LIKE") ?>
+<input type="hidden" name="z_Remarks" id="z_Remarks" value="LIKE">
+</span>
+		</label>
+		<div class="<?php echo $t004_asset_search->RightColumnClass ?>"><div <?php echo $t004_asset_search->Remarks->cellAttributes() ?>>
+			<span id="el_t004_asset_Remarks" class="ew-search-field">
+<input type="text" data-table="t004_asset" data-field="x_Remarks" name="x_Remarks" id="x_Remarks" size="15" maxlength="65535" placeholder="<?php echo HtmlEncode($t004_asset_search->Remarks->getPlaceHolder()) ?>" value="<?php echo $t004_asset_search->Remarks->EditValue ?>"<?php echo $t004_asset_search->Remarks->editAttributes() ?>>
 </span>
 		</div></div>
 	</div>
@@ -269,51 +379,6 @@ loadjs.ready(["ft004_assetsearch", "datetimepicker"], function() {
 		<div class="<?php echo $t004_asset_search->RightColumnClass ?>"><div <?php echo $t004_asset_search->ProcurementCurrentCost->cellAttributes() ?>>
 			<span id="el_t004_asset_ProcurementCurrentCost" class="ew-search-field">
 <input type="text" data-table="t004_asset" data-field="x_ProcurementCurrentCost" name="x_ProcurementCurrentCost" id="x_ProcurementCurrentCost" size="10" maxlength="14" placeholder="<?php echo HtmlEncode($t004_asset_search->ProcurementCurrentCost->getPlaceHolder()) ?>" value="<?php echo $t004_asset_search->ProcurementCurrentCost->EditValue ?>"<?php echo $t004_asset_search->ProcurementCurrentCost->editAttributes() ?>>
-</span>
-		</div></div>
-	</div>
-<?php } ?>
-<?php if ($t004_asset_search->Salvage->Visible) { // Salvage ?>
-	<div id="r_Salvage" class="form-group row">
-		<label for="x_Salvage" class="<?php echo $t004_asset_search->LeftColumnClass ?>"><span id="elh_t004_asset_Salvage"><?php echo $t004_asset_search->Salvage->caption() ?></span>
-		<span class="ew-search-operator">
-<?php echo $Language->phrase("=") ?>
-<input type="hidden" name="z_Salvage" id="z_Salvage" value="=">
-</span>
-		</label>
-		<div class="<?php echo $t004_asset_search->RightColumnClass ?>"><div <?php echo $t004_asset_search->Salvage->cellAttributes() ?>>
-			<span id="el_t004_asset_Salvage" class="ew-search-field">
-<input type="text" data-table="t004_asset" data-field="x_Salvage" name="x_Salvage" id="x_Salvage" size="10" maxlength="14" placeholder="<?php echo HtmlEncode($t004_asset_search->Salvage->getPlaceHolder()) ?>" value="<?php echo $t004_asset_search->Salvage->EditValue ?>"<?php echo $t004_asset_search->Salvage->editAttributes() ?>>
-</span>
-		</div></div>
-	</div>
-<?php } ?>
-<?php if ($t004_asset_search->Qty->Visible) { // Qty ?>
-	<div id="r_Qty" class="form-group row">
-		<label for="x_Qty" class="<?php echo $t004_asset_search->LeftColumnClass ?>"><span id="elh_t004_asset_Qty"><?php echo $t004_asset_search->Qty->caption() ?></span>
-		<span class="ew-search-operator">
-<?php echo $Language->phrase("=") ?>
-<input type="hidden" name="z_Qty" id="z_Qty" value="=">
-</span>
-		</label>
-		<div class="<?php echo $t004_asset_search->RightColumnClass ?>"><div <?php echo $t004_asset_search->Qty->cellAttributes() ?>>
-			<span id="el_t004_asset_Qty" class="ew-search-field">
-<input type="text" data-table="t004_asset" data-field="x_Qty" name="x_Qty" id="x_Qty" size="5" maxlength="14" placeholder="<?php echo HtmlEncode($t004_asset_search->Qty->getPlaceHolder()) ?>" value="<?php echo $t004_asset_search->Qty->EditValue ?>"<?php echo $t004_asset_search->Qty->editAttributes() ?>>
-</span>
-		</div></div>
-	</div>
-<?php } ?>
-<?php if ($t004_asset_search->Remarks->Visible) { // Remarks ?>
-	<div id="r_Remarks" class="form-group row">
-		<label for="x_Remarks" class="<?php echo $t004_asset_search->LeftColumnClass ?>"><span id="elh_t004_asset_Remarks"><?php echo $t004_asset_search->Remarks->caption() ?></span>
-		<span class="ew-search-operator">
-<?php echo $Language->phrase("LIKE") ?>
-<input type="hidden" name="z_Remarks" id="z_Remarks" value="LIKE">
-</span>
-		</label>
-		<div class="<?php echo $t004_asset_search->RightColumnClass ?>"><div <?php echo $t004_asset_search->Remarks->cellAttributes() ?>>
-			<span id="el_t004_asset_Remarks" class="ew-search-field">
-<input type="text" data-table="t004_asset" data-field="x_Remarks" name="x_Remarks" id="x_Remarks" size="15" maxlength="65535" placeholder="<?php echo HtmlEncode($t004_asset_search->Remarks->getPlaceHolder()) ?>" value="<?php echo $t004_asset_search->Remarks->EditValue ?>"<?php echo $t004_asset_search->Remarks->editAttributes() ?>>
 </span>
 		</div></div>
 	</div>

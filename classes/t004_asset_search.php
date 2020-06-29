@@ -682,16 +682,18 @@ class t004_asset_search extends t004_asset
 		$this->CurrentAction = Param("action"); // Set up current action
 		$this->id->Visible = FALSE;
 		$this->property_id->setVisibility();
-		$this->department_id->setVisibility();
-		$this->signature_id->setVisibility();
+		$this->group_id->setVisibility();
+		$this->type_id->setVisibility();
 		$this->Code->setVisibility();
 		$this->Description->setVisibility();
-		$this->group_id->setVisibility();
-		$this->ProcurementDate->setVisibility();
-		$this->ProcurementCurrentCost->setVisibility();
-		$this->Salvage->setVisibility();
+		$this->brand_id->setVisibility();
+		$this->signature_id->setVisibility();
+		$this->department_id->setVisibility();
+		$this->location_id->setVisibility();
 		$this->Qty->setVisibility();
 		$this->Remarks->setVisibility();
+		$this->ProcurementDate->setVisibility();
+		$this->ProcurementCurrentCost->setVisibility();
 		$this->PeriodBegin->setVisibility();
 		$this->PeriodEnd->setVisibility();
 		$this->hideFieldsForAddEdit();
@@ -716,9 +718,12 @@ class t004_asset_search extends t004_asset
 
 		// Set up lookup cache
 		$this->setupLookupOptions($this->property_id);
-		$this->setupLookupOptions($this->department_id);
-		$this->setupLookupOptions($this->signature_id);
 		$this->setupLookupOptions($this->group_id);
+		$this->setupLookupOptions($this->type_id);
+		$this->setupLookupOptions($this->brand_id);
+		$this->setupLookupOptions($this->signature_id);
+		$this->setupLookupOptions($this->department_id);
+		$this->setupLookupOptions($this->location_id);
 
 		// Set up Breadcrumb
 		$this->setupBreadcrumb();
@@ -764,16 +769,18 @@ class t004_asset_search extends t004_asset
 	{
 		$srchUrl = "";
 		$this->buildSearchUrl($srchUrl, $this->property_id); // property_id
-		$this->buildSearchUrl($srchUrl, $this->department_id); // department_id
-		$this->buildSearchUrl($srchUrl, $this->signature_id); // signature_id
+		$this->buildSearchUrl($srchUrl, $this->group_id); // group_id
+		$this->buildSearchUrl($srchUrl, $this->type_id); // type_id
 		$this->buildSearchUrl($srchUrl, $this->Code); // Code
 		$this->buildSearchUrl($srchUrl, $this->Description); // Description
-		$this->buildSearchUrl($srchUrl, $this->group_id); // group_id
-		$this->buildSearchUrl($srchUrl, $this->ProcurementDate); // ProcurementDate
-		$this->buildSearchUrl($srchUrl, $this->ProcurementCurrentCost); // ProcurementCurrentCost
-		$this->buildSearchUrl($srchUrl, $this->Salvage); // Salvage
+		$this->buildSearchUrl($srchUrl, $this->brand_id); // brand_id
+		$this->buildSearchUrl($srchUrl, $this->signature_id); // signature_id
+		$this->buildSearchUrl($srchUrl, $this->department_id); // department_id
+		$this->buildSearchUrl($srchUrl, $this->location_id); // location_id
 		$this->buildSearchUrl($srchUrl, $this->Qty); // Qty
 		$this->buildSearchUrl($srchUrl, $this->Remarks); // Remarks
+		$this->buildSearchUrl($srchUrl, $this->ProcurementDate); // ProcurementDate
+		$this->buildSearchUrl($srchUrl, $this->ProcurementCurrentCost); // ProcurementCurrentCost
 		$this->buildSearchUrl($srchUrl, $this->PeriodBegin); // PeriodBegin
 		$this->buildSearchUrl($srchUrl, $this->PeriodEnd); // PeriodEnd
 		if ($srchUrl != "")
@@ -850,25 +857,29 @@ class t004_asset_search extends t004_asset
 		$got = FALSE;
 		if ($this->property_id->AdvancedSearch->post())
 			$got = TRUE;
-		if ($this->department_id->AdvancedSearch->post())
+		if ($this->group_id->AdvancedSearch->post())
 			$got = TRUE;
-		if ($this->signature_id->AdvancedSearch->post())
+		if ($this->type_id->AdvancedSearch->post())
 			$got = TRUE;
 		if ($this->Code->AdvancedSearch->post())
 			$got = TRUE;
 		if ($this->Description->AdvancedSearch->post())
 			$got = TRUE;
-		if ($this->group_id->AdvancedSearch->post())
+		if ($this->brand_id->AdvancedSearch->post())
 			$got = TRUE;
-		if ($this->ProcurementDate->AdvancedSearch->post())
+		if ($this->signature_id->AdvancedSearch->post())
 			$got = TRUE;
-		if ($this->ProcurementCurrentCost->AdvancedSearch->post())
+		if ($this->department_id->AdvancedSearch->post())
 			$got = TRUE;
-		if ($this->Salvage->AdvancedSearch->post())
+		if ($this->location_id->AdvancedSearch->post())
 			$got = TRUE;
 		if ($this->Qty->AdvancedSearch->post())
 			$got = TRUE;
 		if ($this->Remarks->AdvancedSearch->post())
+			$got = TRUE;
+		if ($this->ProcurementDate->AdvancedSearch->post())
+			$got = TRUE;
+		if ($this->ProcurementCurrentCost->AdvancedSearch->post())
 			$got = TRUE;
 		if ($this->PeriodBegin->AdvancedSearch->post())
 			$got = TRUE;
@@ -885,16 +896,12 @@ class t004_asset_search extends t004_asset
 		// Initialize URLs
 		// Convert decimal values if posted back
 
-		if ($this->ProcurementCurrentCost->FormValue == $this->ProcurementCurrentCost->CurrentValue && is_numeric(ConvertToFloatString($this->ProcurementCurrentCost->CurrentValue)))
-			$this->ProcurementCurrentCost->CurrentValue = ConvertToFloatString($this->ProcurementCurrentCost->CurrentValue);
-
-		// Convert decimal values if posted back
-		if ($this->Salvage->FormValue == $this->Salvage->CurrentValue && is_numeric(ConvertToFloatString($this->Salvage->CurrentValue)))
-			$this->Salvage->CurrentValue = ConvertToFloatString($this->Salvage->CurrentValue);
-
-		// Convert decimal values if posted back
 		if ($this->Qty->FormValue == $this->Qty->CurrentValue && is_numeric(ConvertToFloatString($this->Qty->CurrentValue)))
 			$this->Qty->CurrentValue = ConvertToFloatString($this->Qty->CurrentValue);
+
+		// Convert decimal values if posted back
+		if ($this->ProcurementCurrentCost->FormValue == $this->ProcurementCurrentCost->CurrentValue && is_numeric(ConvertToFloatString($this->ProcurementCurrentCost->CurrentValue)))
+			$this->ProcurementCurrentCost->CurrentValue = ConvertToFloatString($this->ProcurementCurrentCost->CurrentValue);
 
 		// Call Row_Rendering event
 		$this->Row_Rendering();
@@ -902,16 +909,18 @@ class t004_asset_search extends t004_asset
 		// Common render codes for all row types
 		// id
 		// property_id
-		// department_id
-		// signature_id
+		// group_id
+		// type_id
 		// Code
 		// Description
-		// group_id
-		// ProcurementDate
-		// ProcurementCurrentCost
-		// Salvage
+		// brand_id
+		// signature_id
+		// department_id
+		// location_id
 		// Qty
 		// Remarks
+		// ProcurementDate
+		// ProcurementCurrentCost
 		// PeriodBegin
 		// PeriodEnd
 
@@ -943,27 +952,80 @@ class t004_asset_search extends t004_asset
 			}
 			$this->property_id->ViewCustomAttributes = "";
 
-			// department_id
-			$curVal = strval($this->department_id->CurrentValue);
+			// group_id
+			$this->group_id->ViewValue = $this->group_id->CurrentValue;
+			$curVal = strval($this->group_id->CurrentValue);
 			if ($curVal != "") {
-				$this->department_id->ViewValue = $this->department_id->lookupCacheOption($curVal);
-				if ($this->department_id->ViewValue === NULL) { // Lookup from database
+				$this->group_id->ViewValue = $this->group_id->lookupCacheOption($curVal);
+				if ($this->group_id->ViewValue === NULL) { // Lookup from database
 					$filterWrk = "`id`" . SearchString("=", $curVal, DATATYPE_NUMBER, "");
-					$sqlWrk = $this->department_id->Lookup->getSql(FALSE, $filterWrk, '', $this);
+					$sqlWrk = $this->group_id->Lookup->getSql(FALSE, $filterWrk, '', $this);
 					$rswrk = Conn()->execute($sqlWrk);
 					if ($rswrk && !$rswrk->EOF) { // Lookup values found
 						$arwrk = [];
 						$arwrk[1] = $rswrk->fields('df');
-						$this->department_id->ViewValue = $this->department_id->displayValue($arwrk);
+						$this->group_id->ViewValue = $this->group_id->displayValue($arwrk);
 						$rswrk->Close();
 					} else {
-						$this->department_id->ViewValue = $this->department_id->CurrentValue;
+						$this->group_id->ViewValue = $this->group_id->CurrentValue;
 					}
 				}
 			} else {
-				$this->department_id->ViewValue = NULL;
+				$this->group_id->ViewValue = NULL;
 			}
-			$this->department_id->ViewCustomAttributes = "";
+			$this->group_id->ViewCustomAttributes = "";
+
+			// type_id
+			$curVal = strval($this->type_id->CurrentValue);
+			if ($curVal != "") {
+				$this->type_id->ViewValue = $this->type_id->lookupCacheOption($curVal);
+				if ($this->type_id->ViewValue === NULL) { // Lookup from database
+					$filterWrk = "`id`" . SearchString("=", $curVal, DATATYPE_NUMBER, "");
+					$sqlWrk = $this->type_id->Lookup->getSql(FALSE, $filterWrk, '', $this);
+					$rswrk = Conn()->execute($sqlWrk);
+					if ($rswrk && !$rswrk->EOF) { // Lookup values found
+						$arwrk = [];
+						$arwrk[1] = $rswrk->fields('df');
+						$this->type_id->ViewValue = $this->type_id->displayValue($arwrk);
+						$rswrk->Close();
+					} else {
+						$this->type_id->ViewValue = $this->type_id->CurrentValue;
+					}
+				}
+			} else {
+				$this->type_id->ViewValue = NULL;
+			}
+			$this->type_id->ViewCustomAttributes = "";
+
+			// Code
+			$this->Code->ViewValue = $this->Code->CurrentValue;
+			$this->Code->ViewCustomAttributes = "";
+
+			// Description
+			$this->Description->ViewValue = $this->Description->CurrentValue;
+			$this->Description->ViewCustomAttributes = "";
+
+			// brand_id
+			$curVal = strval($this->brand_id->CurrentValue);
+			if ($curVal != "") {
+				$this->brand_id->ViewValue = $this->brand_id->lookupCacheOption($curVal);
+				if ($this->brand_id->ViewValue === NULL) { // Lookup from database
+					$filterWrk = "`id`" . SearchString("=", $curVal, DATATYPE_NUMBER, "");
+					$sqlWrk = $this->brand_id->Lookup->getSql(FALSE, $filterWrk, '', $this);
+					$rswrk = Conn()->execute($sqlWrk);
+					if ($rswrk && !$rswrk->EOF) { // Lookup values found
+						$arwrk = [];
+						$arwrk[1] = $rswrk->fields('df');
+						$this->brand_id->ViewValue = $this->brand_id->displayValue($arwrk);
+						$rswrk->Close();
+					} else {
+						$this->brand_id->ViewValue = $this->brand_id->CurrentValue;
+					}
+				}
+			} else {
+				$this->brand_id->ViewValue = NULL;
+			}
+			$this->brand_id->ViewCustomAttributes = "";
 
 			// signature_id
 			$curVal = strval($this->signature_id->CurrentValue);
@@ -987,36 +1049,59 @@ class t004_asset_search extends t004_asset
 			}
 			$this->signature_id->ViewCustomAttributes = "";
 
-			// Code
-			$this->Code->ViewValue = $this->Code->CurrentValue;
-			$this->Code->ViewCustomAttributes = "";
-
-			// Description
-			$this->Description->ViewValue = $this->Description->CurrentValue;
-			$this->Description->ViewCustomAttributes = "";
-
-			// group_id
-			$curVal = strval($this->group_id->CurrentValue);
+			// department_id
+			$curVal = strval($this->department_id->CurrentValue);
 			if ($curVal != "") {
-				$this->group_id->ViewValue = $this->group_id->lookupCacheOption($curVal);
-				if ($this->group_id->ViewValue === NULL) { // Lookup from database
+				$this->department_id->ViewValue = $this->department_id->lookupCacheOption($curVal);
+				if ($this->department_id->ViewValue === NULL) { // Lookup from database
 					$filterWrk = "`id`" . SearchString("=", $curVal, DATATYPE_NUMBER, "");
-					$sqlWrk = $this->group_id->Lookup->getSql(FALSE, $filterWrk, '', $this);
+					$sqlWrk = $this->department_id->Lookup->getSql(FALSE, $filterWrk, '', $this);
 					$rswrk = Conn()->execute($sqlWrk);
 					if ($rswrk && !$rswrk->EOF) { // Lookup values found
 						$arwrk = [];
 						$arwrk[1] = $rswrk->fields('df');
-						$arwrk[2] = FormatNumber($rswrk->fields('df2'), 0, -2, -2, -2);
-						$this->group_id->ViewValue = $this->group_id->displayValue($arwrk);
+						$this->department_id->ViewValue = $this->department_id->displayValue($arwrk);
 						$rswrk->Close();
 					} else {
-						$this->group_id->ViewValue = $this->group_id->CurrentValue;
+						$this->department_id->ViewValue = $this->department_id->CurrentValue;
 					}
 				}
 			} else {
-				$this->group_id->ViewValue = NULL;
+				$this->department_id->ViewValue = NULL;
 			}
-			$this->group_id->ViewCustomAttributes = "";
+			$this->department_id->ViewCustomAttributes = "";
+
+			// location_id
+			$curVal = strval($this->location_id->CurrentValue);
+			if ($curVal != "") {
+				$this->location_id->ViewValue = $this->location_id->lookupCacheOption($curVal);
+				if ($this->location_id->ViewValue === NULL) { // Lookup from database
+					$filterWrk = "`id`" . SearchString("=", $curVal, DATATYPE_NUMBER, "");
+					$sqlWrk = $this->location_id->Lookup->getSql(FALSE, $filterWrk, '', $this);
+					$rswrk = Conn()->execute($sqlWrk);
+					if ($rswrk && !$rswrk->EOF) { // Lookup values found
+						$arwrk = [];
+						$arwrk[1] = $rswrk->fields('df');
+						$this->location_id->ViewValue = $this->location_id->displayValue($arwrk);
+						$rswrk->Close();
+					} else {
+						$this->location_id->ViewValue = $this->location_id->CurrentValue;
+					}
+				}
+			} else {
+				$this->location_id->ViewValue = NULL;
+			}
+			$this->location_id->ViewCustomAttributes = "";
+
+			// Qty
+			$this->Qty->ViewValue = $this->Qty->CurrentValue;
+			$this->Qty->ViewValue = FormatNumber($this->Qty->ViewValue, 2, -2, -2, -2);
+			$this->Qty->CellCssStyle .= "text-align: right;";
+			$this->Qty->ViewCustomAttributes = "";
+
+			// Remarks
+			$this->Remarks->ViewValue = $this->Remarks->CurrentValue;
+			$this->Remarks->ViewCustomAttributes = "";
 
 			// ProcurementDate
 			$this->ProcurementDate->ViewValue = $this->ProcurementDate->CurrentValue;
@@ -1028,22 +1113,6 @@ class t004_asset_search extends t004_asset
 			$this->ProcurementCurrentCost->ViewValue = FormatNumber($this->ProcurementCurrentCost->ViewValue, 2, -2, -2, -2);
 			$this->ProcurementCurrentCost->CellCssStyle .= "text-align: right;";
 			$this->ProcurementCurrentCost->ViewCustomAttributes = "";
-
-			// Salvage
-			$this->Salvage->ViewValue = $this->Salvage->CurrentValue;
-			$this->Salvage->ViewValue = FormatNumber($this->Salvage->ViewValue, 2, -2, -2, -2);
-			$this->Salvage->CellCssStyle .= "text-align: right;";
-			$this->Salvage->ViewCustomAttributes = "";
-
-			// Qty
-			$this->Qty->ViewValue = $this->Qty->CurrentValue;
-			$this->Qty->ViewValue = FormatNumber($this->Qty->ViewValue, 2, -2, -2, -2);
-			$this->Qty->CellCssStyle .= "text-align: right;";
-			$this->Qty->ViewCustomAttributes = "";
-
-			// Remarks
-			$this->Remarks->ViewValue = $this->Remarks->CurrentValue;
-			$this->Remarks->ViewCustomAttributes = "";
 
 			// PeriodBegin
 			$this->PeriodBegin->ViewValue = $this->PeriodBegin->CurrentValue;
@@ -1060,15 +1129,15 @@ class t004_asset_search extends t004_asset
 			$this->property_id->HrefValue = "";
 			$this->property_id->TooltipValue = "";
 
-			// department_id
-			$this->department_id->LinkCustomAttributes = "";
-			$this->department_id->HrefValue = "";
-			$this->department_id->TooltipValue = "";
+			// group_id
+			$this->group_id->LinkCustomAttributes = "";
+			$this->group_id->HrefValue = "";
+			$this->group_id->TooltipValue = "";
 
-			// signature_id
-			$this->signature_id->LinkCustomAttributes = "";
-			$this->signature_id->HrefValue = "";
-			$this->signature_id->TooltipValue = "";
+			// type_id
+			$this->type_id->LinkCustomAttributes = "";
+			$this->type_id->HrefValue = "";
+			$this->type_id->TooltipValue = "";
 
 			// Code
 			$this->Code->LinkCustomAttributes = "";
@@ -1080,25 +1149,25 @@ class t004_asset_search extends t004_asset
 			$this->Description->HrefValue = "";
 			$this->Description->TooltipValue = "";
 
-			// group_id
-			$this->group_id->LinkCustomAttributes = "";
-			$this->group_id->HrefValue = "";
-			$this->group_id->TooltipValue = "";
+			// brand_id
+			$this->brand_id->LinkCustomAttributes = "";
+			$this->brand_id->HrefValue = "";
+			$this->brand_id->TooltipValue = "";
 
-			// ProcurementDate
-			$this->ProcurementDate->LinkCustomAttributes = "";
-			$this->ProcurementDate->HrefValue = "";
-			$this->ProcurementDate->TooltipValue = "";
+			// signature_id
+			$this->signature_id->LinkCustomAttributes = "";
+			$this->signature_id->HrefValue = "";
+			$this->signature_id->TooltipValue = "";
 
-			// ProcurementCurrentCost
-			$this->ProcurementCurrentCost->LinkCustomAttributes = "";
-			$this->ProcurementCurrentCost->HrefValue = "";
-			$this->ProcurementCurrentCost->TooltipValue = "";
+			// department_id
+			$this->department_id->LinkCustomAttributes = "";
+			$this->department_id->HrefValue = "";
+			$this->department_id->TooltipValue = "";
 
-			// Salvage
-			$this->Salvage->LinkCustomAttributes = "";
-			$this->Salvage->HrefValue = "";
-			$this->Salvage->TooltipValue = "";
+			// location_id
+			$this->location_id->LinkCustomAttributes = "";
+			$this->location_id->HrefValue = "";
+			$this->location_id->TooltipValue = "";
 
 			// Qty
 			$this->Qty->LinkCustomAttributes = "";
@@ -1109,6 +1178,16 @@ class t004_asset_search extends t004_asset
 			$this->Remarks->LinkCustomAttributes = "";
 			$this->Remarks->HrefValue = "";
 			$this->Remarks->TooltipValue = "";
+
+			// ProcurementDate
+			$this->ProcurementDate->LinkCustomAttributes = "";
+			$this->ProcurementDate->HrefValue = "";
+			$this->ProcurementDate->TooltipValue = "";
+
+			// ProcurementCurrentCost
+			$this->ProcurementCurrentCost->LinkCustomAttributes = "";
+			$this->ProcurementCurrentCost->HrefValue = "";
+			$this->ProcurementCurrentCost->TooltipValue = "";
 
 			// PeriodBegin
 			$this->PeriodBegin->LinkCustomAttributes = "";
@@ -1153,36 +1232,109 @@ class t004_asset_search extends t004_asset
 				$this->property_id->EditValue = $arwrk;
 			}
 
-			// department_id
-			$this->department_id->EditCustomAttributes = "";
-			$curVal = trim(strval($this->department_id->AdvancedSearch->SearchValue));
+			// group_id
+			$this->group_id->EditAttrs["class"] = "form-control";
+			$this->group_id->EditCustomAttributes = "";
+			$this->group_id->EditValue = HtmlEncode($this->group_id->AdvancedSearch->SearchValue);
+			$curVal = strval($this->group_id->AdvancedSearch->SearchValue);
+			if ($curVal != "") {
+				$this->group_id->EditValue = $this->group_id->lookupCacheOption($curVal);
+				if ($this->group_id->EditValue === NULL) { // Lookup from database
+					$filterWrk = "`id`" . SearchString("=", $curVal, DATATYPE_NUMBER, "");
+					$sqlWrk = $this->group_id->Lookup->getSql(FALSE, $filterWrk, '', $this);
+					$rswrk = Conn()->execute($sqlWrk);
+					if ($rswrk && !$rswrk->EOF) { // Lookup values found
+						$arwrk = [];
+						$arwrk[1] = HtmlEncode($rswrk->fields('df'));
+						$this->group_id->EditValue = $this->group_id->displayValue($arwrk);
+						$rswrk->Close();
+					} else {
+						$this->group_id->EditValue = HtmlEncode($this->group_id->AdvancedSearch->SearchValue);
+					}
+				}
+			} else {
+				$this->group_id->EditValue = NULL;
+			}
+			$this->group_id->PlaceHolder = RemoveHtml($this->group_id->caption());
+
+			// type_id
+			$this->type_id->EditCustomAttributes = "";
+			$curVal = trim(strval($this->type_id->AdvancedSearch->SearchValue));
 			if ($curVal != "")
-				$this->department_id->AdvancedSearch->ViewValue = $this->department_id->lookupCacheOption($curVal);
+				$this->type_id->AdvancedSearch->ViewValue = $this->type_id->lookupCacheOption($curVal);
 			else
-				$this->department_id->AdvancedSearch->ViewValue = $this->department_id->Lookup !== NULL && is_array($this->department_id->Lookup->Options) ? $curVal : NULL;
-			if ($this->department_id->AdvancedSearch->ViewValue !== NULL) { // Load from cache
-				$this->department_id->EditValue = array_values($this->department_id->Lookup->Options);
-				if ($this->department_id->AdvancedSearch->ViewValue == "")
-					$this->department_id->AdvancedSearch->ViewValue = $Language->phrase("PleaseSelect");
+				$this->type_id->AdvancedSearch->ViewValue = $this->type_id->Lookup !== NULL && is_array($this->type_id->Lookup->Options) ? $curVal : NULL;
+			if ($this->type_id->AdvancedSearch->ViewValue !== NULL) { // Load from cache
+				$this->type_id->EditValue = array_values($this->type_id->Lookup->Options);
+				if ($this->type_id->AdvancedSearch->ViewValue == "")
+					$this->type_id->AdvancedSearch->ViewValue = $Language->phrase("PleaseSelect");
 			} else { // Lookup from database
 				if ($curVal == "") {
 					$filterWrk = "0=1";
 				} else {
-					$filterWrk = "`id`" . SearchString("=", $this->department_id->AdvancedSearch->SearchValue, DATATYPE_NUMBER, "");
+					$filterWrk = "`id`" . SearchString("=", $this->type_id->AdvancedSearch->SearchValue, DATATYPE_NUMBER, "");
 				}
-				$sqlWrk = $this->department_id->Lookup->getSql(TRUE, $filterWrk, '', $this);
+				$sqlWrk = $this->type_id->Lookup->getSql(TRUE, $filterWrk, '', $this);
 				$rswrk = Conn()->execute($sqlWrk);
 				if ($rswrk && !$rswrk->EOF) { // Lookup values found
 					$arwrk = [];
 					$arwrk[1] = HtmlEncode($rswrk->fields('df'));
-					$this->department_id->AdvancedSearch->ViewValue = $this->department_id->displayValue($arwrk);
+					$this->type_id->AdvancedSearch->ViewValue = $this->type_id->displayValue($arwrk);
 				} else {
-					$this->department_id->AdvancedSearch->ViewValue = $Language->phrase("PleaseSelect");
+					$this->type_id->AdvancedSearch->ViewValue = $Language->phrase("PleaseSelect");
 				}
 				$arwrk = $rswrk ? $rswrk->getRows() : [];
 				if ($rswrk)
 					$rswrk->close();
-				$this->department_id->EditValue = $arwrk;
+				$this->type_id->EditValue = $arwrk;
+			}
+
+			// Code
+			$this->Code->EditAttrs["class"] = "form-control";
+			$this->Code->EditCustomAttributes = "";
+			if (!$this->Code->Raw)
+				$this->Code->AdvancedSearch->SearchValue = HtmlDecode($this->Code->AdvancedSearch->SearchValue);
+			$this->Code->EditValue = HtmlEncode($this->Code->AdvancedSearch->SearchValue);
+			$this->Code->PlaceHolder = RemoveHtml($this->Code->caption());
+
+			// Description
+			$this->Description->EditAttrs["class"] = "form-control";
+			$this->Description->EditCustomAttributes = "";
+			if (!$this->Description->Raw)
+				$this->Description->AdvancedSearch->SearchValue = HtmlDecode($this->Description->AdvancedSearch->SearchValue);
+			$this->Description->EditValue = HtmlEncode($this->Description->AdvancedSearch->SearchValue);
+			$this->Description->PlaceHolder = RemoveHtml($this->Description->caption());
+
+			// brand_id
+			$this->brand_id->EditCustomAttributes = "";
+			$curVal = trim(strval($this->brand_id->AdvancedSearch->SearchValue));
+			if ($curVal != "")
+				$this->brand_id->AdvancedSearch->ViewValue = $this->brand_id->lookupCacheOption($curVal);
+			else
+				$this->brand_id->AdvancedSearch->ViewValue = $this->brand_id->Lookup !== NULL && is_array($this->brand_id->Lookup->Options) ? $curVal : NULL;
+			if ($this->brand_id->AdvancedSearch->ViewValue !== NULL) { // Load from cache
+				$this->brand_id->EditValue = array_values($this->brand_id->Lookup->Options);
+				if ($this->brand_id->AdvancedSearch->ViewValue == "")
+					$this->brand_id->AdvancedSearch->ViewValue = $Language->phrase("PleaseSelect");
+			} else { // Lookup from database
+				if ($curVal == "") {
+					$filterWrk = "0=1";
+				} else {
+					$filterWrk = "`id`" . SearchString("=", $this->brand_id->AdvancedSearch->SearchValue, DATATYPE_NUMBER, "");
+				}
+				$sqlWrk = $this->brand_id->Lookup->getSql(TRUE, $filterWrk, '', $this);
+				$rswrk = Conn()->execute($sqlWrk);
+				if ($rswrk && !$rswrk->EOF) { // Lookup values found
+					$arwrk = [];
+					$arwrk[1] = HtmlEncode($rswrk->fields('df'));
+					$this->brand_id->AdvancedSearch->ViewValue = $this->brand_id->displayValue($arwrk);
+				} else {
+					$this->brand_id->AdvancedSearch->ViewValue = $Language->phrase("PleaseSelect");
+				}
+				$arwrk = $rswrk ? $rswrk->getRows() : [];
+				if ($rswrk)
+					$rswrk->close();
+				$this->brand_id->EditValue = $arwrk;
 			}
 
 			// signature_id
@@ -1217,76 +1369,69 @@ class t004_asset_search extends t004_asset
 				$this->signature_id->EditValue = $arwrk;
 			}
 
-			// Code
-			$this->Code->EditAttrs["class"] = "form-control";
-			$this->Code->EditCustomAttributes = "";
-			if (!$this->Code->Raw)
-				$this->Code->AdvancedSearch->SearchValue = HtmlDecode($this->Code->AdvancedSearch->SearchValue);
-			$this->Code->EditValue = HtmlEncode($this->Code->AdvancedSearch->SearchValue);
-			$this->Code->PlaceHolder = RemoveHtml($this->Code->caption());
-
-			// Description
-			$this->Description->EditAttrs["class"] = "form-control";
-			$this->Description->EditCustomAttributes = "";
-			if (!$this->Description->Raw)
-				$this->Description->AdvancedSearch->SearchValue = HtmlDecode($this->Description->AdvancedSearch->SearchValue);
-			$this->Description->EditValue = HtmlEncode($this->Description->AdvancedSearch->SearchValue);
-			$this->Description->PlaceHolder = RemoveHtml($this->Description->caption());
-
-			// group_id
-			$this->group_id->EditCustomAttributes = "";
-			$curVal = trim(strval($this->group_id->AdvancedSearch->SearchValue));
+			// department_id
+			$this->department_id->EditCustomAttributes = "";
+			$curVal = trim(strval($this->department_id->AdvancedSearch->SearchValue));
 			if ($curVal != "")
-				$this->group_id->AdvancedSearch->ViewValue = $this->group_id->lookupCacheOption($curVal);
+				$this->department_id->AdvancedSearch->ViewValue = $this->department_id->lookupCacheOption($curVal);
 			else
-				$this->group_id->AdvancedSearch->ViewValue = $this->group_id->Lookup !== NULL && is_array($this->group_id->Lookup->Options) ? $curVal : NULL;
-			if ($this->group_id->AdvancedSearch->ViewValue !== NULL) { // Load from cache
-				$this->group_id->EditValue = array_values($this->group_id->Lookup->Options);
-				if ($this->group_id->AdvancedSearch->ViewValue == "")
-					$this->group_id->AdvancedSearch->ViewValue = $Language->phrase("PleaseSelect");
+				$this->department_id->AdvancedSearch->ViewValue = $this->department_id->Lookup !== NULL && is_array($this->department_id->Lookup->Options) ? $curVal : NULL;
+			if ($this->department_id->AdvancedSearch->ViewValue !== NULL) { // Load from cache
+				$this->department_id->EditValue = array_values($this->department_id->Lookup->Options);
+				if ($this->department_id->AdvancedSearch->ViewValue == "")
+					$this->department_id->AdvancedSearch->ViewValue = $Language->phrase("PleaseSelect");
 			} else { // Lookup from database
 				if ($curVal == "") {
 					$filterWrk = "0=1";
 				} else {
-					$filterWrk = "`id`" . SearchString("=", $this->group_id->AdvancedSearch->SearchValue, DATATYPE_NUMBER, "");
+					$filterWrk = "`id`" . SearchString("=", $this->department_id->AdvancedSearch->SearchValue, DATATYPE_NUMBER, "");
 				}
-				$sqlWrk = $this->group_id->Lookup->getSql(TRUE, $filterWrk, '', $this);
+				$sqlWrk = $this->department_id->Lookup->getSql(TRUE, $filterWrk, '', $this);
 				$rswrk = Conn()->execute($sqlWrk);
 				if ($rswrk && !$rswrk->EOF) { // Lookup values found
 					$arwrk = [];
 					$arwrk[1] = HtmlEncode($rswrk->fields('df'));
-					$arwrk[2] = HtmlEncode(FormatNumber($rswrk->fields('df2'), 0, -2, -2, -2));
-					$this->group_id->AdvancedSearch->ViewValue = $this->group_id->displayValue($arwrk);
+					$this->department_id->AdvancedSearch->ViewValue = $this->department_id->displayValue($arwrk);
 				} else {
-					$this->group_id->AdvancedSearch->ViewValue = $Language->phrase("PleaseSelect");
+					$this->department_id->AdvancedSearch->ViewValue = $Language->phrase("PleaseSelect");
 				}
 				$arwrk = $rswrk ? $rswrk->getRows() : [];
 				if ($rswrk)
 					$rswrk->close();
-				$rowcnt = count($arwrk);
-				for ($i = 0; $i < $rowcnt; $i++) {
-					$arwrk[$i][2] = FormatNumber($arwrk[$i][2], 0, -2, -2, -2);
-				}
-				$this->group_id->EditValue = $arwrk;
+				$this->department_id->EditValue = $arwrk;
 			}
 
-			// ProcurementDate
-			$this->ProcurementDate->EditAttrs["class"] = "form-control";
-			$this->ProcurementDate->EditCustomAttributes = "";
-			$this->ProcurementDate->EditValue = HtmlEncode(FormatDateTime(UnFormatDateTime($this->ProcurementDate->AdvancedSearch->SearchValue, 7), 7));
-			$this->ProcurementDate->PlaceHolder = RemoveHtml($this->ProcurementDate->caption());
-
-			// ProcurementCurrentCost
-			$this->ProcurementCurrentCost->EditAttrs["class"] = "form-control";
-			$this->ProcurementCurrentCost->EditCustomAttributes = "";
-			$this->ProcurementCurrentCost->EditValue = HtmlEncode($this->ProcurementCurrentCost->AdvancedSearch->SearchValue);
-			$this->ProcurementCurrentCost->PlaceHolder = RemoveHtml($this->ProcurementCurrentCost->caption());
-
-			// Salvage
-			$this->Salvage->EditAttrs["class"] = "form-control";
-			$this->Salvage->EditCustomAttributes = "";
-			$this->Salvage->EditValue = HtmlEncode($this->Salvage->AdvancedSearch->SearchValue);
-			$this->Salvage->PlaceHolder = RemoveHtml($this->Salvage->caption());
+			// location_id
+			$this->location_id->EditCustomAttributes = "";
+			$curVal = trim(strval($this->location_id->AdvancedSearch->SearchValue));
+			if ($curVal != "")
+				$this->location_id->AdvancedSearch->ViewValue = $this->location_id->lookupCacheOption($curVal);
+			else
+				$this->location_id->AdvancedSearch->ViewValue = $this->location_id->Lookup !== NULL && is_array($this->location_id->Lookup->Options) ? $curVal : NULL;
+			if ($this->location_id->AdvancedSearch->ViewValue !== NULL) { // Load from cache
+				$this->location_id->EditValue = array_values($this->location_id->Lookup->Options);
+				if ($this->location_id->AdvancedSearch->ViewValue == "")
+					$this->location_id->AdvancedSearch->ViewValue = $Language->phrase("PleaseSelect");
+			} else { // Lookup from database
+				if ($curVal == "") {
+					$filterWrk = "0=1";
+				} else {
+					$filterWrk = "`id`" . SearchString("=", $this->location_id->AdvancedSearch->SearchValue, DATATYPE_NUMBER, "");
+				}
+				$sqlWrk = $this->location_id->Lookup->getSql(TRUE, $filterWrk, '', $this);
+				$rswrk = Conn()->execute($sqlWrk);
+				if ($rswrk && !$rswrk->EOF) { // Lookup values found
+					$arwrk = [];
+					$arwrk[1] = HtmlEncode($rswrk->fields('df'));
+					$this->location_id->AdvancedSearch->ViewValue = $this->location_id->displayValue($arwrk);
+				} else {
+					$this->location_id->AdvancedSearch->ViewValue = $Language->phrase("PleaseSelect");
+				}
+				$arwrk = $rswrk ? $rswrk->getRows() : [];
+				if ($rswrk)
+					$rswrk->close();
+				$this->location_id->EditValue = $arwrk;
+			}
 
 			// Qty
 			$this->Qty->EditAttrs["class"] = "form-control";
@@ -1299,6 +1444,18 @@ class t004_asset_search extends t004_asset
 			$this->Remarks->EditCustomAttributes = "";
 			$this->Remarks->EditValue = HtmlEncode($this->Remarks->AdvancedSearch->SearchValue);
 			$this->Remarks->PlaceHolder = RemoveHtml($this->Remarks->caption());
+
+			// ProcurementDate
+			$this->ProcurementDate->EditAttrs["class"] = "form-control";
+			$this->ProcurementDate->EditCustomAttributes = "";
+			$this->ProcurementDate->EditValue = HtmlEncode(FormatDateTime(UnFormatDateTime($this->ProcurementDate->AdvancedSearch->SearchValue, 7), 7));
+			$this->ProcurementDate->PlaceHolder = RemoveHtml($this->ProcurementDate->caption());
+
+			// ProcurementCurrentCost
+			$this->ProcurementCurrentCost->EditAttrs["class"] = "form-control";
+			$this->ProcurementCurrentCost->EditCustomAttributes = "";
+			$this->ProcurementCurrentCost->EditValue = HtmlEncode($this->ProcurementCurrentCost->AdvancedSearch->SearchValue);
+			$this->ProcurementCurrentCost->PlaceHolder = RemoveHtml($this->ProcurementCurrentCost->caption());
 
 			// PeriodBegin
 			$this->PeriodBegin->EditAttrs["class"] = "form-control";
@@ -1331,17 +1488,17 @@ class t004_asset_search extends t004_asset
 		// Check if validation required
 		if (!Config("SERVER_VALIDATE"))
 			return TRUE;
+		if (!CheckInteger($this->group_id->AdvancedSearch->SearchValue)) {
+			AddMessage($SearchError, $this->group_id->errorMessage());
+		}
+		if (!CheckNumber($this->Qty->AdvancedSearch->SearchValue)) {
+			AddMessage($SearchError, $this->Qty->errorMessage());
+		}
 		if (!CheckEuroDate($this->ProcurementDate->AdvancedSearch->SearchValue)) {
 			AddMessage($SearchError, $this->ProcurementDate->errorMessage());
 		}
 		if (!CheckNumber($this->ProcurementCurrentCost->AdvancedSearch->SearchValue)) {
 			AddMessage($SearchError, $this->ProcurementCurrentCost->errorMessage());
-		}
-		if (!CheckNumber($this->Salvage->AdvancedSearch->SearchValue)) {
-			AddMessage($SearchError, $this->Salvage->errorMessage());
-		}
-		if (!CheckNumber($this->Qty->AdvancedSearch->SearchValue)) {
-			AddMessage($SearchError, $this->Qty->errorMessage());
 		}
 		if (!CheckEuroDate($this->PeriodBegin->AdvancedSearch->SearchValue)) {
 			AddMessage($SearchError, $this->PeriodBegin->errorMessage());
@@ -1366,16 +1523,18 @@ class t004_asset_search extends t004_asset
 	public function loadAdvancedSearch()
 	{
 		$this->property_id->AdvancedSearch->load();
-		$this->department_id->AdvancedSearch->load();
-		$this->signature_id->AdvancedSearch->load();
+		$this->group_id->AdvancedSearch->load();
+		$this->type_id->AdvancedSearch->load();
 		$this->Code->AdvancedSearch->load();
 		$this->Description->AdvancedSearch->load();
-		$this->group_id->AdvancedSearch->load();
-		$this->ProcurementDate->AdvancedSearch->load();
-		$this->ProcurementCurrentCost->AdvancedSearch->load();
-		$this->Salvage->AdvancedSearch->load();
+		$this->brand_id->AdvancedSearch->load();
+		$this->signature_id->AdvancedSearch->load();
+		$this->department_id->AdvancedSearch->load();
+		$this->location_id->AdvancedSearch->load();
 		$this->Qty->AdvancedSearch->load();
 		$this->Remarks->AdvancedSearch->load();
+		$this->ProcurementDate->AdvancedSearch->load();
+		$this->ProcurementCurrentCost->AdvancedSearch->load();
 		$this->PeriodBegin->AdvancedSearch->load();
 		$this->PeriodEnd->AdvancedSearch->load();
 	}
@@ -1407,11 +1566,17 @@ class t004_asset_search extends t004_asset
 			switch ($fld->FieldVar) {
 				case "x_property_id":
 					break;
-				case "x_department_id":
+				case "x_group_id":
+					break;
+				case "x_type_id":
+					break;
+				case "x_brand_id":
 					break;
 				case "x_signature_id":
 					break;
-				case "x_group_id":
+				case "x_department_id":
+					break;
+				case "x_location_id":
 					break;
 				default:
 					$lookupFilter = "";
@@ -1435,13 +1600,17 @@ class t004_asset_search extends t004_asset
 					switch ($fld->FieldVar) {
 						case "x_property_id":
 							break;
-						case "x_department_id":
+						case "x_group_id":
+							break;
+						case "x_type_id":
+							break;
+						case "x_brand_id":
 							break;
 						case "x_signature_id":
 							break;
-						case "x_group_id":
-							$row[2] = FormatNumber($row[2], 0, -2, -2, -2);
-							$row['df2'] = $row[2];
+						case "x_department_id":
+							break;
+						case "x_location_id":
 							break;
 					}
 					$ar[strval($row[0])] = $row;

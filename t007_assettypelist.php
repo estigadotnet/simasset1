@@ -184,7 +184,7 @@ $t007_assettype_list->showMessage();
 <input type="hidden" name="fk_id" value="<?php echo HtmlEncode($t007_assettype_list->assetgroup_id->getSessionValue()) ?>">
 <?php } ?>
 <div id="gmp_t007_assettype" class="<?php echo ResponsiveTableClass() ?>card-body ew-grid-middle-panel">
-<?php if ($t007_assettype_list->TotalRecords > 0 || $t007_assettype_list->isAdd() || $t007_assettype_list->isCopy() || $t007_assettype_list->isGridEdit()) { ?>
+<?php if ($t007_assettype_list->TotalRecords > 0 || $t007_assettype_list->isGridEdit()) { ?>
 <table id="tbl_t007_assettypelist" class="table ew-table"><!-- .ew-table -->
 <thead>
 	<tr class="ew-table-header">
@@ -235,99 +235,6 @@ $t007_assettype_list->ListOptions->render("header", "right");
 </thead>
 <tbody>
 <?php
-	if ($t007_assettype_list->isAdd() || $t007_assettype_list->isCopy()) {
-		$t007_assettype_list->RowIndex = 0;
-		$t007_assettype_list->KeyCount = $t007_assettype_list->RowIndex;
-		if ($t007_assettype_list->isCopy() && !$t007_assettype_list->loadRow())
-			$t007_assettype->CurrentAction = "add";
-		if ($t007_assettype_list->isAdd())
-			$t007_assettype_list->loadRowValues();
-		if ($t007_assettype->EventCancelled) // Insert failed
-			$t007_assettype_list->restoreFormValues(); // Restore form values
-
-		// Set row properties
-		$t007_assettype->resetAttributes();
-		$t007_assettype->RowAttrs->merge(["data-rowindex" => 0, "id" => "r0_t007_assettype", "data-rowtype" => ROWTYPE_ADD]);
-		$t007_assettype->RowType = ROWTYPE_ADD;
-
-		// Render row
-		$t007_assettype_list->renderRow();
-
-		// Render list options
-		$t007_assettype_list->renderListOptions();
-		$t007_assettype_list->StartRowCount = 0;
-?>
-	<tr <?php echo $t007_assettype->rowAttributes() ?>>
-<?php
-
-// Render list options (body, left)
-$t007_assettype_list->ListOptions->render("body", "left", $t007_assettype_list->RowCount);
-?>
-	<?php if ($t007_assettype_list->assetgroup_id->Visible) { // assetgroup_id ?>
-		<td data-name="assetgroup_id">
-<?php if ($t007_assettype_list->assetgroup_id->getSessionValue() != "") { ?>
-<span id="el<?php echo $t007_assettype_list->RowCount ?>_t007_assettype_assetgroup_id" class="form-group t007_assettype_assetgroup_id">
-<span<?php echo $t007_assettype_list->assetgroup_id->viewAttributes() ?>><input type="text" readonly class="form-control-plaintext" value="<?php echo HtmlEncode(RemoveHtml($t007_assettype_list->assetgroup_id->ViewValue)) ?>"></span>
-</span>
-<input type="hidden" id="x<?php echo $t007_assettype_list->RowIndex ?>_assetgroup_id" name="x<?php echo $t007_assettype_list->RowIndex ?>_assetgroup_id" value="<?php echo HtmlEncode($t007_assettype_list->assetgroup_id->CurrentValue) ?>">
-<?php } else { ?>
-<span id="el<?php echo $t007_assettype_list->RowCount ?>_t007_assettype_assetgroup_id" class="form-group t007_assettype_assetgroup_id">
-<?php
-$onchange = $t007_assettype_list->assetgroup_id->EditAttrs->prepend("onchange", "");
-$onchange = ($onchange) ? ' onchange="' . JsEncode($onchange) . '"' : '';
-$t007_assettype_list->assetgroup_id->EditAttrs["onchange"] = "";
-?>
-<span id="as_x<?php echo $t007_assettype_list->RowIndex ?>_assetgroup_id">
-	<div class="input-group">
-		<input type="text" class="form-control" name="sv_x<?php echo $t007_assettype_list->RowIndex ?>_assetgroup_id" id="sv_x<?php echo $t007_assettype_list->RowIndex ?>_assetgroup_id" value="<?php echo RemoveHtml($t007_assettype_list->assetgroup_id->EditValue) ?>" size="30" maxlength="11" placeholder="<?php echo HtmlEncode($t007_assettype_list->assetgroup_id->getPlaceHolder()) ?>" data-placeholder="<?php echo HtmlEncode($t007_assettype_list->assetgroup_id->getPlaceHolder()) ?>"<?php echo $t007_assettype_list->assetgroup_id->editAttributes() ?>>
-		<div class="input-group-append">
-			<button type="button" title="<?php echo HtmlEncode(str_replace("%s", RemoveHtml($t007_assettype_list->assetgroup_id->caption()), $Language->phrase("LookupLink", TRUE))) ?>" onclick="ew.modalLookupShow({lnk:this,el:'x<?php echo $t007_assettype_list->RowIndex ?>_assetgroup_id',m:0,n:10,srch:true});" class="ew-lookup-btn btn btn-default"<?php echo ($t007_assettype_list->assetgroup_id->ReadOnly || $t007_assettype_list->assetgroup_id->Disabled) ? " disabled" : "" ?>><i class="fas fa-search ew-icon"></i></button>
-		</div>
-	</div>
-</span>
-<input type="hidden" data-table="t007_assettype" data-field="x_assetgroup_id" data-multiple="0" data-lookup="1" data-value-separator="<?php echo $t007_assettype_list->assetgroup_id->displayValueSeparatorAttribute() ?>" name="x<?php echo $t007_assettype_list->RowIndex ?>_assetgroup_id" id="x<?php echo $t007_assettype_list->RowIndex ?>_assetgroup_id" value="<?php echo HtmlEncode($t007_assettype_list->assetgroup_id->CurrentValue) ?>"<?php echo $onchange ?>>
-<script>
-loadjs.ready(["ft007_assettypelist"], function() {
-	ft007_assettypelist.createAutoSuggest({"id":"x<?php echo $t007_assettype_list->RowIndex ?>_assetgroup_id","forceSelect":false});
-});
-</script>
-<?php echo $t007_assettype_list->assetgroup_id->Lookup->getParamTag($t007_assettype_list, "p_x" . $t007_assettype_list->RowIndex . "_assetgroup_id") ?>
-</span>
-<?php } ?>
-<input type="hidden" data-table="t007_assettype" data-field="x_assetgroup_id" name="o<?php echo $t007_assettype_list->RowIndex ?>_assetgroup_id" id="o<?php echo $t007_assettype_list->RowIndex ?>_assetgroup_id" value="<?php echo HtmlEncode($t007_assettype_list->assetgroup_id->OldValue) ?>">
-</td>
-	<?php } ?>
-	<?php if ($t007_assettype_list->Description->Visible) { // Description ?>
-		<td data-name="Description">
-<span id="el<?php echo $t007_assettype_list->RowCount ?>_t007_assettype_Description" class="form-group t007_assettype_Description">
-<input type="text" data-table="t007_assettype" data-field="x_Description" name="x<?php echo $t007_assettype_list->RowIndex ?>_Description" id="x<?php echo $t007_assettype_list->RowIndex ?>_Description" size="30" maxlength="50" placeholder="<?php echo HtmlEncode($t007_assettype_list->Description->getPlaceHolder()) ?>" value="<?php echo $t007_assettype_list->Description->EditValue ?>"<?php echo $t007_assettype_list->Description->editAttributes() ?>>
-</span>
-<input type="hidden" data-table="t007_assettype" data-field="x_Description" name="o<?php echo $t007_assettype_list->RowIndex ?>_Description" id="o<?php echo $t007_assettype_list->RowIndex ?>_Description" value="<?php echo HtmlEncode($t007_assettype_list->Description->OldValue) ?>">
-</td>
-	<?php } ?>
-	<?php if ($t007_assettype_list->Code->Visible) { // Code ?>
-		<td data-name="Code">
-<span id="el<?php echo $t007_assettype_list->RowCount ?>_t007_assettype_Code" class="form-group t007_assettype_Code">
-<input type="text" data-table="t007_assettype" data-field="x_Code" name="x<?php echo $t007_assettype_list->RowIndex ?>_Code" id="x<?php echo $t007_assettype_list->RowIndex ?>_Code" size="30" maxlength="3" placeholder="<?php echo HtmlEncode($t007_assettype_list->Code->getPlaceHolder()) ?>" value="<?php echo $t007_assettype_list->Code->EditValue ?>"<?php echo $t007_assettype_list->Code->editAttributes() ?>>
-</span>
-<input type="hidden" data-table="t007_assettype" data-field="x_Code" name="o<?php echo $t007_assettype_list->RowIndex ?>_Code" id="o<?php echo $t007_assettype_list->RowIndex ?>_Code" value="<?php echo HtmlEncode($t007_assettype_list->Code->OldValue) ?>">
-</td>
-	<?php } ?>
-<?php
-
-// Render list options (body, right)
-$t007_assettype_list->ListOptions->render("body", "right", $t007_assettype_list->RowCount);
-?>
-<script>
-loadjs.ready(["ft007_assettypelist", "load"], function() {
-	ft007_assettypelist.updateLists(<?php echo $t007_assettype_list->RowIndex ?>);
-});
-</script>
-	</tr>
-<?php
-	}
-?>
-<?php
 if ($t007_assettype_list->ExportAll && $t007_assettype_list->isExport()) {
 	$t007_assettype_list->StopRecord = $t007_assettype_list->TotalRecords;
 } else {
@@ -361,9 +268,6 @@ if ($t007_assettype_list->Recordset && !$t007_assettype_list->Recordset->EOF) {
 $t007_assettype->RowType = ROWTYPE_AGGREGATEINIT;
 $t007_assettype->resetAttributes();
 $t007_assettype_list->renderRow();
-$t007_assettype_list->EditRowCount = 0;
-if ($t007_assettype_list->isEdit())
-	$t007_assettype_list->RowIndex = 1;
 if ($t007_assettype_list->isGridAdd())
 	$t007_assettype_list->RowIndex = 0;
 if ($t007_assettype_list->isGridEdit())
@@ -399,11 +303,6 @@ while ($t007_assettype_list->RecordCount < $t007_assettype_list->StopRecord) {
 			$t007_assettype->RowType = ROWTYPE_ADD; // Render add
 		if ($t007_assettype_list->isGridAdd() && $t007_assettype->EventCancelled && !$CurrentForm->hasValue("k_blankrow")) // Insert failed
 			$t007_assettype_list->restoreCurrentRowFormValues($t007_assettype_list->RowIndex); // Restore form values
-		if ($t007_assettype_list->isEdit()) {
-			if ($t007_assettype_list->checkInlineEditKey() && $t007_assettype_list->EditRowCount == 0) { // Inline edit
-				$t007_assettype->RowType = ROWTYPE_EDIT; // Render edit
-			}
-		}
 		if ($t007_assettype_list->isGridEdit()) { // Grid edit
 			if ($t007_assettype->EventCancelled)
 				$t007_assettype_list->restoreCurrentRowFormValues($t007_assettype_list->RowIndex); // Restore form values
@@ -411,10 +310,6 @@ while ($t007_assettype_list->RecordCount < $t007_assettype_list->StopRecord) {
 				$t007_assettype->RowType = ROWTYPE_ADD; // Render add
 			else
 				$t007_assettype->RowType = ROWTYPE_EDIT; // Render edit
-		}
-		if ($t007_assettype_list->isEdit() && $t007_assettype->RowType == ROWTYPE_EDIT && $t007_assettype->EventCancelled) { // Update failed
-			$CurrentForm->Index = 1;
-			$t007_assettype_list->restoreFormValues(); // Restore form values
 		}
 		if ($t007_assettype_list->isGridEdit() && ($t007_assettype->RowType == ROWTYPE_EDIT || $t007_assettype->RowType == ROWTYPE_ADD) && $t007_assettype->EventCancelled) // Update failed
 			$t007_assettype_list->restoreCurrentRowFormValues($t007_assettype_list->RowIndex); // Restore form values
@@ -671,16 +566,10 @@ loadjs.ready(["ft007_assettypelist", "load"], function() {
 </table><!-- /.ew-table -->
 <?php } ?>
 </div><!-- /.ew-grid-middle-panel -->
-<?php if ($t007_assettype_list->isAdd() || $t007_assettype_list->isCopy()) { ?>
-<input type="hidden" name="<?php echo $t007_assettype_list->FormKeyCountName ?>" id="<?php echo $t007_assettype_list->FormKeyCountName ?>" value="<?php echo $t007_assettype_list->KeyCount ?>">
-<?php } ?>
 <?php if ($t007_assettype_list->isGridAdd()) { ?>
 <input type="hidden" name="action" id="action" value="gridinsert">
 <input type="hidden" name="<?php echo $t007_assettype_list->FormKeyCountName ?>" id="<?php echo $t007_assettype_list->FormKeyCountName ?>" value="<?php echo $t007_assettype_list->KeyCount ?>">
 <?php echo $t007_assettype_list->MultiSelectKey ?>
-<?php } ?>
-<?php if ($t007_assettype_list->isEdit()) { ?>
-<input type="hidden" name="<?php echo $t007_assettype_list->FormKeyCountName ?>" id="<?php echo $t007_assettype_list->FormKeyCountName ?>" value="<?php echo $t007_assettype_list->KeyCount ?>">
 <?php } ?>
 <?php if ($t007_assettype_list->isGridEdit()) { ?>
 <input type="hidden" name="action" id="action" value="gridupdate">

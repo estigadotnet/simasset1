@@ -1,4 +1,8 @@
-create view v101_ho as
+CREATE 
+    -- ALGORITHM = UNDEFINED 
+    -- DEFINER = `root`@`localhost` 
+    -- SQL SECURITY DEFINER
+VIEW `v101_ho` AS
     SELECT 
         `a`.`id` AS `id`,
         `a`.`property_id` AS `property_id`,
@@ -27,11 +31,11 @@ create view v101_ho as
         `g`.`JobTitle` AS `hoJobTitleBy`,
         `h`.`Code` AS `Code`,
         `h`.`Description` AS `Description`,
-        `n`.`Description` AS `Group`,
+        `n`.`Description` AS `Type`,
+        `o`.`Description` AS `Group`,
         `h`.`ProcurementDate` AS `ProcurementDate`,
         `h`.`ProcurementCurrentCost` AS `ProcurementCurrentCost`,
-        `n`.`EstimatedLife` AS `Estimated Life (in Year)`,
-        `h`.`Salvage` AS `Salvage`,
+        `o`.`EstimatedLife` AS `Estimated Life (in Year)`,
         `h`.`Qty` AS `Qty`,
         `h`.`Remarks` AS `Remarks`,
         `i`.`Signature` AS `Sign1Signature`,
@@ -44,7 +48,7 @@ create view v101_ho as
         `l`.`JobTitle` AS `Sign4JobTitle`,
         `m`.`Department` AS `AssetDepartment`
     FROM
-        (((((((((((((`t101_ho_head` `a`
+        ((((((((((((((`t101_ho_head` `a`
         LEFT JOIN `t102_ho_detail` `b` ON (`a`.`id` = `b`.`hohead_id`))
         LEFT JOIN `t001_property` `c` ON (`a`.`property_id` = `c`.`id`))
         LEFT JOIN `t002_department` `d` ON (`a`.`DepartmentTo` = `d`.`id`))
@@ -57,4 +61,5 @@ create view v101_ho as
         LEFT JOIN `t003_signature` `k` ON (`a`.`Sign3` = `k`.`id`))
         LEFT JOIN `t003_signature` `l` ON (`a`.`Sign4` = `l`.`id`))
         LEFT JOIN `t002_department` `m` ON (`h`.`department_id` = `m`.`id`))
-        LEFT JOIN `t005_assetgroup` `n` ON (`h`.`group_id` = `n`.`id`))
+        LEFT JOIN `t007_assettype` `n` ON (`h`.`type_id` = `n`.`id`))
+        LEFT JOIN `t005_assetgroup` `o` ON (`n`.`assetgroup_id` = `o`.`id`))

@@ -73,11 +73,11 @@ $t004_asset_delete->showMessage();
 <?php if ($t004_asset_delete->property_id->Visible) { // property_id ?>
 		<th class="<?php echo $t004_asset_delete->property_id->headerCellClass() ?>"><span id="elh_t004_asset_property_id" class="t004_asset_property_id"><?php echo $t004_asset_delete->property_id->caption() ?></span></th>
 <?php } ?>
-<?php if ($t004_asset_delete->department_id->Visible) { // department_id ?>
-		<th class="<?php echo $t004_asset_delete->department_id->headerCellClass() ?>"><span id="elh_t004_asset_department_id" class="t004_asset_department_id"><?php echo $t004_asset_delete->department_id->caption() ?></span></th>
+<?php if ($t004_asset_delete->group_id->Visible) { // group_id ?>
+		<th class="<?php echo $t004_asset_delete->group_id->headerCellClass() ?>"><span id="elh_t004_asset_group_id" class="t004_asset_group_id"><?php echo $t004_asset_delete->group_id->caption() ?></span></th>
 <?php } ?>
-<?php if ($t004_asset_delete->signature_id->Visible) { // signature_id ?>
-		<th class="<?php echo $t004_asset_delete->signature_id->headerCellClass() ?>"><span id="elh_t004_asset_signature_id" class="t004_asset_signature_id"><?php echo $t004_asset_delete->signature_id->caption() ?></span></th>
+<?php if ($t004_asset_delete->type_id->Visible) { // type_id ?>
+		<th class="<?php echo $t004_asset_delete->type_id->headerCellClass() ?>"><span id="elh_t004_asset_type_id" class="t004_asset_type_id"><?php echo $t004_asset_delete->type_id->caption() ?></span></th>
 <?php } ?>
 <?php if ($t004_asset_delete->Code->Visible) { // Code ?>
 		<th class="<?php echo $t004_asset_delete->Code->headerCellClass() ?>"><span id="elh_t004_asset_Code" class="t004_asset_Code"><?php echo $t004_asset_delete->Code->caption() ?></span></th>
@@ -85,23 +85,29 @@ $t004_asset_delete->showMessage();
 <?php if ($t004_asset_delete->Description->Visible) { // Description ?>
 		<th class="<?php echo $t004_asset_delete->Description->headerCellClass() ?>"><span id="elh_t004_asset_Description" class="t004_asset_Description"><?php echo $t004_asset_delete->Description->caption() ?></span></th>
 <?php } ?>
-<?php if ($t004_asset_delete->group_id->Visible) { // group_id ?>
-		<th class="<?php echo $t004_asset_delete->group_id->headerCellClass() ?>"><span id="elh_t004_asset_group_id" class="t004_asset_group_id"><?php echo $t004_asset_delete->group_id->caption() ?></span></th>
+<?php if ($t004_asset_delete->brand_id->Visible) { // brand_id ?>
+		<th class="<?php echo $t004_asset_delete->brand_id->headerCellClass() ?>"><span id="elh_t004_asset_brand_id" class="t004_asset_brand_id"><?php echo $t004_asset_delete->brand_id->caption() ?></span></th>
 <?php } ?>
-<?php if ($t004_asset_delete->ProcurementDate->Visible) { // ProcurementDate ?>
-		<th class="<?php echo $t004_asset_delete->ProcurementDate->headerCellClass() ?>"><span id="elh_t004_asset_ProcurementDate" class="t004_asset_ProcurementDate"><?php echo $t004_asset_delete->ProcurementDate->caption() ?></span></th>
+<?php if ($t004_asset_delete->signature_id->Visible) { // signature_id ?>
+		<th class="<?php echo $t004_asset_delete->signature_id->headerCellClass() ?>"><span id="elh_t004_asset_signature_id" class="t004_asset_signature_id"><?php echo $t004_asset_delete->signature_id->caption() ?></span></th>
 <?php } ?>
-<?php if ($t004_asset_delete->ProcurementCurrentCost->Visible) { // ProcurementCurrentCost ?>
-		<th class="<?php echo $t004_asset_delete->ProcurementCurrentCost->headerCellClass() ?>"><span id="elh_t004_asset_ProcurementCurrentCost" class="t004_asset_ProcurementCurrentCost"><?php echo $t004_asset_delete->ProcurementCurrentCost->caption() ?></span></th>
+<?php if ($t004_asset_delete->department_id->Visible) { // department_id ?>
+		<th class="<?php echo $t004_asset_delete->department_id->headerCellClass() ?>"><span id="elh_t004_asset_department_id" class="t004_asset_department_id"><?php echo $t004_asset_delete->department_id->caption() ?></span></th>
 <?php } ?>
-<?php if ($t004_asset_delete->Salvage->Visible) { // Salvage ?>
-		<th class="<?php echo $t004_asset_delete->Salvage->headerCellClass() ?>"><span id="elh_t004_asset_Salvage" class="t004_asset_Salvage"><?php echo $t004_asset_delete->Salvage->caption() ?></span></th>
+<?php if ($t004_asset_delete->location_id->Visible) { // location_id ?>
+		<th class="<?php echo $t004_asset_delete->location_id->headerCellClass() ?>"><span id="elh_t004_asset_location_id" class="t004_asset_location_id"><?php echo $t004_asset_delete->location_id->caption() ?></span></th>
 <?php } ?>
 <?php if ($t004_asset_delete->Qty->Visible) { // Qty ?>
 		<th class="<?php echo $t004_asset_delete->Qty->headerCellClass() ?>"><span id="elh_t004_asset_Qty" class="t004_asset_Qty"><?php echo $t004_asset_delete->Qty->caption() ?></span></th>
 <?php } ?>
 <?php if ($t004_asset_delete->Remarks->Visible) { // Remarks ?>
 		<th class="<?php echo $t004_asset_delete->Remarks->headerCellClass() ?>"><span id="elh_t004_asset_Remarks" class="t004_asset_Remarks"><?php echo $t004_asset_delete->Remarks->caption() ?></span></th>
+<?php } ?>
+<?php if ($t004_asset_delete->ProcurementDate->Visible) { // ProcurementDate ?>
+		<th class="<?php echo $t004_asset_delete->ProcurementDate->headerCellClass() ?>"><span id="elh_t004_asset_ProcurementDate" class="t004_asset_ProcurementDate"><?php echo $t004_asset_delete->ProcurementDate->caption() ?></span></th>
+<?php } ?>
+<?php if ($t004_asset_delete->ProcurementCurrentCost->Visible) { // ProcurementCurrentCost ?>
+		<th class="<?php echo $t004_asset_delete->ProcurementCurrentCost->headerCellClass() ?>"><span id="elh_t004_asset_ProcurementCurrentCost" class="t004_asset_ProcurementCurrentCost"><?php echo $t004_asset_delete->ProcurementCurrentCost->caption() ?></span></th>
 <?php } ?>
 <?php if ($t004_asset_delete->PeriodBegin->Visible) { // PeriodBegin ?>
 		<th class="<?php echo $t004_asset_delete->PeriodBegin->headerCellClass() ?>"><span id="elh_t004_asset_PeriodBegin" class="t004_asset_PeriodBegin"><?php echo $t004_asset_delete->PeriodBegin->caption() ?></span></th>
@@ -137,17 +143,17 @@ while (!$t004_asset_delete->Recordset->EOF) {
 </span>
 </td>
 <?php } ?>
-<?php if ($t004_asset_delete->department_id->Visible) { // department_id ?>
-		<td <?php echo $t004_asset_delete->department_id->cellAttributes() ?>>
-<span id="el<?php echo $t004_asset_delete->RowCount ?>_t004_asset_department_id" class="t004_asset_department_id">
-<span<?php echo $t004_asset_delete->department_id->viewAttributes() ?>><?php echo $t004_asset_delete->department_id->getViewValue() ?></span>
+<?php if ($t004_asset_delete->group_id->Visible) { // group_id ?>
+		<td <?php echo $t004_asset_delete->group_id->cellAttributes() ?>>
+<span id="el<?php echo $t004_asset_delete->RowCount ?>_t004_asset_group_id" class="t004_asset_group_id">
+<span<?php echo $t004_asset_delete->group_id->viewAttributes() ?>><?php echo $t004_asset_delete->group_id->getViewValue() ?></span>
 </span>
 </td>
 <?php } ?>
-<?php if ($t004_asset_delete->signature_id->Visible) { // signature_id ?>
-		<td <?php echo $t004_asset_delete->signature_id->cellAttributes() ?>>
-<span id="el<?php echo $t004_asset_delete->RowCount ?>_t004_asset_signature_id" class="t004_asset_signature_id">
-<span<?php echo $t004_asset_delete->signature_id->viewAttributes() ?>><?php echo $t004_asset_delete->signature_id->getViewValue() ?></span>
+<?php if ($t004_asset_delete->type_id->Visible) { // type_id ?>
+		<td <?php echo $t004_asset_delete->type_id->cellAttributes() ?>>
+<span id="el<?php echo $t004_asset_delete->RowCount ?>_t004_asset_type_id" class="t004_asset_type_id">
+<span<?php echo $t004_asset_delete->type_id->viewAttributes() ?>><?php echo $t004_asset_delete->type_id->getViewValue() ?></span>
 </span>
 </td>
 <?php } ?>
@@ -165,31 +171,31 @@ while (!$t004_asset_delete->Recordset->EOF) {
 </span>
 </td>
 <?php } ?>
-<?php if ($t004_asset_delete->group_id->Visible) { // group_id ?>
-		<td <?php echo $t004_asset_delete->group_id->cellAttributes() ?>>
-<span id="el<?php echo $t004_asset_delete->RowCount ?>_t004_asset_group_id" class="t004_asset_group_id">
-<span<?php echo $t004_asset_delete->group_id->viewAttributes() ?>><?php echo $t004_asset_delete->group_id->getViewValue() ?></span>
+<?php if ($t004_asset_delete->brand_id->Visible) { // brand_id ?>
+		<td <?php echo $t004_asset_delete->brand_id->cellAttributes() ?>>
+<span id="el<?php echo $t004_asset_delete->RowCount ?>_t004_asset_brand_id" class="t004_asset_brand_id">
+<span<?php echo $t004_asset_delete->brand_id->viewAttributes() ?>><?php echo $t004_asset_delete->brand_id->getViewValue() ?></span>
 </span>
 </td>
 <?php } ?>
-<?php if ($t004_asset_delete->ProcurementDate->Visible) { // ProcurementDate ?>
-		<td <?php echo $t004_asset_delete->ProcurementDate->cellAttributes() ?>>
-<span id="el<?php echo $t004_asset_delete->RowCount ?>_t004_asset_ProcurementDate" class="t004_asset_ProcurementDate">
-<span<?php echo $t004_asset_delete->ProcurementDate->viewAttributes() ?>><?php echo $t004_asset_delete->ProcurementDate->getViewValue() ?></span>
+<?php if ($t004_asset_delete->signature_id->Visible) { // signature_id ?>
+		<td <?php echo $t004_asset_delete->signature_id->cellAttributes() ?>>
+<span id="el<?php echo $t004_asset_delete->RowCount ?>_t004_asset_signature_id" class="t004_asset_signature_id">
+<span<?php echo $t004_asset_delete->signature_id->viewAttributes() ?>><?php echo $t004_asset_delete->signature_id->getViewValue() ?></span>
 </span>
 </td>
 <?php } ?>
-<?php if ($t004_asset_delete->ProcurementCurrentCost->Visible) { // ProcurementCurrentCost ?>
-		<td <?php echo $t004_asset_delete->ProcurementCurrentCost->cellAttributes() ?>>
-<span id="el<?php echo $t004_asset_delete->RowCount ?>_t004_asset_ProcurementCurrentCost" class="t004_asset_ProcurementCurrentCost">
-<span<?php echo $t004_asset_delete->ProcurementCurrentCost->viewAttributes() ?>><?php echo $t004_asset_delete->ProcurementCurrentCost->getViewValue() ?></span>
+<?php if ($t004_asset_delete->department_id->Visible) { // department_id ?>
+		<td <?php echo $t004_asset_delete->department_id->cellAttributes() ?>>
+<span id="el<?php echo $t004_asset_delete->RowCount ?>_t004_asset_department_id" class="t004_asset_department_id">
+<span<?php echo $t004_asset_delete->department_id->viewAttributes() ?>><?php echo $t004_asset_delete->department_id->getViewValue() ?></span>
 </span>
 </td>
 <?php } ?>
-<?php if ($t004_asset_delete->Salvage->Visible) { // Salvage ?>
-		<td <?php echo $t004_asset_delete->Salvage->cellAttributes() ?>>
-<span id="el<?php echo $t004_asset_delete->RowCount ?>_t004_asset_Salvage" class="t004_asset_Salvage">
-<span<?php echo $t004_asset_delete->Salvage->viewAttributes() ?>><?php echo $t004_asset_delete->Salvage->getViewValue() ?></span>
+<?php if ($t004_asset_delete->location_id->Visible) { // location_id ?>
+		<td <?php echo $t004_asset_delete->location_id->cellAttributes() ?>>
+<span id="el<?php echo $t004_asset_delete->RowCount ?>_t004_asset_location_id" class="t004_asset_location_id">
+<span<?php echo $t004_asset_delete->location_id->viewAttributes() ?>><?php echo $t004_asset_delete->location_id->getViewValue() ?></span>
 </span>
 </td>
 <?php } ?>
@@ -204,6 +210,20 @@ while (!$t004_asset_delete->Recordset->EOF) {
 		<td <?php echo $t004_asset_delete->Remarks->cellAttributes() ?>>
 <span id="el<?php echo $t004_asset_delete->RowCount ?>_t004_asset_Remarks" class="t004_asset_Remarks">
 <span<?php echo $t004_asset_delete->Remarks->viewAttributes() ?>><?php echo $t004_asset_delete->Remarks->getViewValue() ?></span>
+</span>
+</td>
+<?php } ?>
+<?php if ($t004_asset_delete->ProcurementDate->Visible) { // ProcurementDate ?>
+		<td <?php echo $t004_asset_delete->ProcurementDate->cellAttributes() ?>>
+<span id="el<?php echo $t004_asset_delete->RowCount ?>_t004_asset_ProcurementDate" class="t004_asset_ProcurementDate">
+<span<?php echo $t004_asset_delete->ProcurementDate->viewAttributes() ?>><?php echo $t004_asset_delete->ProcurementDate->getViewValue() ?></span>
+</span>
+</td>
+<?php } ?>
+<?php if ($t004_asset_delete->ProcurementCurrentCost->Visible) { // ProcurementCurrentCost ?>
+		<td <?php echo $t004_asset_delete->ProcurementCurrentCost->cellAttributes() ?>>
+<span id="el<?php echo $t004_asset_delete->RowCount ?>_t004_asset_ProcurementCurrentCost" class="t004_asset_ProcurementCurrentCost">
+<span<?php echo $t004_asset_delete->ProcurementCurrentCost->viewAttributes() ?>><?php echo $t004_asset_delete->ProcurementCurrentCost->getViewValue() ?></span>
 </span>
 </td>
 <?php } ?>

@@ -100,21 +100,12 @@ while ($r001_asset_summary->RecordCount < count($r001_asset_summary->DetailRecor
 	</div></div></th>
 	<?php } ?>
 <?php } ?>
-<?php if ($r001_asset_summary->department_id->Visible) { ?>
-	<?php if ($r001_asset_summary->sortUrl($r001_asset_summary->department_id) == "") { ?>
-	<th data-name="department_id" class="<?php echo $r001_asset_summary->department_id->headerCellClass() ?>"><div class="r001_asset_department_id"><div class="ew-table-header-caption"><?php echo $r001_asset_summary->department_id->caption() ?></div></div></th>
+<?php if ($r001_asset_summary->group_id->Visible) { ?>
+	<?php if ($r001_asset_summary->sortUrl($r001_asset_summary->group_id) == "") { ?>
+	<th data-name="group_id" class="<?php echo $r001_asset_summary->group_id->headerCellClass() ?>"><div class="r001_asset_group_id"><div class="ew-table-header-caption"><?php echo $r001_asset_summary->group_id->caption() ?></div></div></th>
 	<?php } else { ?>
-	<th data-name="department_id" class="<?php echo $r001_asset_summary->department_id->headerCellClass() ?>"><div class="ew-pointer" onclick="ew.sort(event, '<?php echo $r001_asset_summary->sortUrl($r001_asset_summary->department_id) ?>', 2);"><div class="r001_asset_department_id">
-		<div class="ew-table-header-btn"><span class="ew-table-header-caption"><?php echo $r001_asset_summary->department_id->caption() ?></span><span class="ew-table-header-sort"><?php if ($r001_asset_summary->department_id->getSort() == "ASC") { ?><i class="fas fa-sort-up"></i><?php } elseif ($r001_asset_summary->department_id->getSort() == "DESC") { ?><i class="fas fa-sort-down"></i><?php } ?></span></div>
-	</div></div></th>
-	<?php } ?>
-<?php } ?>
-<?php if ($r001_asset_summary->signature_id->Visible) { ?>
-	<?php if ($r001_asset_summary->sortUrl($r001_asset_summary->signature_id) == "") { ?>
-	<th data-name="signature_id" class="<?php echo $r001_asset_summary->signature_id->headerCellClass() ?>"><div class="r001_asset_signature_id"><div class="ew-table-header-caption"><?php echo $r001_asset_summary->signature_id->caption() ?></div></div></th>
-	<?php } else { ?>
-	<th data-name="signature_id" class="<?php echo $r001_asset_summary->signature_id->headerCellClass() ?>"><div class="ew-pointer" onclick="ew.sort(event, '<?php echo $r001_asset_summary->sortUrl($r001_asset_summary->signature_id) ?>', 2);"><div class="r001_asset_signature_id">
-		<div class="ew-table-header-btn"><span class="ew-table-header-caption"><?php echo $r001_asset_summary->signature_id->caption() ?></span><span class="ew-table-header-sort"><?php if ($r001_asset_summary->signature_id->getSort() == "ASC") { ?><i class="fas fa-sort-up"></i><?php } elseif ($r001_asset_summary->signature_id->getSort() == "DESC") { ?><i class="fas fa-sort-down"></i><?php } ?></span></div>
+	<th data-name="group_id" class="<?php echo $r001_asset_summary->group_id->headerCellClass() ?>"><div class="ew-pointer" onclick="ew.sort(event, '<?php echo $r001_asset_summary->sortUrl($r001_asset_summary->group_id) ?>', 2);"><div class="r001_asset_group_id">
+		<div class="ew-table-header-btn"><span class="ew-table-header-caption"><?php echo $r001_asset_summary->group_id->caption() ?></span><span class="ew-table-header-sort"><?php if ($r001_asset_summary->group_id->getSort() == "ASC") { ?><i class="fas fa-sort-up"></i><?php } elseif ($r001_asset_summary->group_id->getSort() == "DESC") { ?><i class="fas fa-sort-down"></i><?php } ?></span></div>
 	</div></div></th>
 	<?php } ?>
 <?php } ?>
@@ -136,39 +127,48 @@ while ($r001_asset_summary->RecordCount < count($r001_asset_summary->DetailRecor
 	</div></div></th>
 	<?php } ?>
 <?php } ?>
-<?php if ($r001_asset_summary->group_id->Visible) { ?>
-	<?php if ($r001_asset_summary->sortUrl($r001_asset_summary->group_id) == "") { ?>
-	<th data-name="group_id" class="<?php echo $r001_asset_summary->group_id->headerCellClass() ?>"><div class="r001_asset_group_id"><div class="ew-table-header-caption"><?php echo $r001_asset_summary->group_id->caption() ?></div></div></th>
+<?php if ($r001_asset_summary->brand_id->Visible) { ?>
+	<?php if ($r001_asset_summary->sortUrl($r001_asset_summary->brand_id) == "") { ?>
+	<th data-name="brand_id" class="<?php echo $r001_asset_summary->brand_id->headerCellClass() ?>"><div class="r001_asset_brand_id"><div class="ew-table-header-caption"><?php echo $r001_asset_summary->brand_id->caption() ?></div></div></th>
 	<?php } else { ?>
-	<th data-name="group_id" class="<?php echo $r001_asset_summary->group_id->headerCellClass() ?>"><div class="ew-pointer" onclick="ew.sort(event, '<?php echo $r001_asset_summary->sortUrl($r001_asset_summary->group_id) ?>', 2);"><div class="r001_asset_group_id">
-		<div class="ew-table-header-btn"><span class="ew-table-header-caption"><?php echo $r001_asset_summary->group_id->caption() ?></span><span class="ew-table-header-sort"><?php if ($r001_asset_summary->group_id->getSort() == "ASC") { ?><i class="fas fa-sort-up"></i><?php } elseif ($r001_asset_summary->group_id->getSort() == "DESC") { ?><i class="fas fa-sort-down"></i><?php } ?></span></div>
+	<th data-name="brand_id" class="<?php echo $r001_asset_summary->brand_id->headerCellClass() ?>"><div class="ew-pointer" onclick="ew.sort(event, '<?php echo $r001_asset_summary->sortUrl($r001_asset_summary->brand_id) ?>', 2);"><div class="r001_asset_brand_id">
+		<div class="ew-table-header-btn"><span class="ew-table-header-caption"><?php echo $r001_asset_summary->brand_id->caption() ?></span><span class="ew-table-header-sort"><?php if ($r001_asset_summary->brand_id->getSort() == "ASC") { ?><i class="fas fa-sort-up"></i><?php } elseif ($r001_asset_summary->brand_id->getSort() == "DESC") { ?><i class="fas fa-sort-down"></i><?php } ?></span></div>
 	</div></div></th>
 	<?php } ?>
 <?php } ?>
-<?php if ($r001_asset_summary->ProcurementDate->Visible) { ?>
-	<?php if ($r001_asset_summary->sortUrl($r001_asset_summary->ProcurementDate) == "") { ?>
-	<th data-name="ProcurementDate" class="<?php echo $r001_asset_summary->ProcurementDate->headerCellClass() ?>"><div class="r001_asset_ProcurementDate"><div class="ew-table-header-caption"><?php echo $r001_asset_summary->ProcurementDate->caption() ?></div></div></th>
+<?php if ($r001_asset_summary->type_id->Visible) { ?>
+	<?php if ($r001_asset_summary->sortUrl($r001_asset_summary->type_id) == "") { ?>
+	<th data-name="type_id" class="<?php echo $r001_asset_summary->type_id->headerCellClass() ?>"><div class="r001_asset_type_id"><div class="ew-table-header-caption"><?php echo $r001_asset_summary->type_id->caption() ?></div></div></th>
 	<?php } else { ?>
-	<th data-name="ProcurementDate" class="<?php echo $r001_asset_summary->ProcurementDate->headerCellClass() ?>"><div class="ew-pointer" onclick="ew.sort(event, '<?php echo $r001_asset_summary->sortUrl($r001_asset_summary->ProcurementDate) ?>', 2);"><div class="r001_asset_ProcurementDate">
-		<div class="ew-table-header-btn"><span class="ew-table-header-caption"><?php echo $r001_asset_summary->ProcurementDate->caption() ?></span><span class="ew-table-header-sort"><?php if ($r001_asset_summary->ProcurementDate->getSort() == "ASC") { ?><i class="fas fa-sort-up"></i><?php } elseif ($r001_asset_summary->ProcurementDate->getSort() == "DESC") { ?><i class="fas fa-sort-down"></i><?php } ?></span></div>
+	<th data-name="type_id" class="<?php echo $r001_asset_summary->type_id->headerCellClass() ?>"><div class="ew-pointer" onclick="ew.sort(event, '<?php echo $r001_asset_summary->sortUrl($r001_asset_summary->type_id) ?>', 2);"><div class="r001_asset_type_id">
+		<div class="ew-table-header-btn"><span class="ew-table-header-caption"><?php echo $r001_asset_summary->type_id->caption() ?></span><span class="ew-table-header-sort"><?php if ($r001_asset_summary->type_id->getSort() == "ASC") { ?><i class="fas fa-sort-up"></i><?php } elseif ($r001_asset_summary->type_id->getSort() == "DESC") { ?><i class="fas fa-sort-down"></i><?php } ?></span></div>
 	</div></div></th>
 	<?php } ?>
 <?php } ?>
-<?php if ($r001_asset_summary->ProcurementCurrentCost->Visible) { ?>
-	<?php if ($r001_asset_summary->sortUrl($r001_asset_summary->ProcurementCurrentCost) == "") { ?>
-	<th data-name="ProcurementCurrentCost" class="<?php echo $r001_asset_summary->ProcurementCurrentCost->headerCellClass() ?>"><div class="r001_asset_ProcurementCurrentCost"><div class="ew-table-header-caption"><?php echo $r001_asset_summary->ProcurementCurrentCost->caption() ?></div></div></th>
+<?php if ($r001_asset_summary->signature_id->Visible) { ?>
+	<?php if ($r001_asset_summary->sortUrl($r001_asset_summary->signature_id) == "") { ?>
+	<th data-name="signature_id" class="<?php echo $r001_asset_summary->signature_id->headerCellClass() ?>"><div class="r001_asset_signature_id"><div class="ew-table-header-caption"><?php echo $r001_asset_summary->signature_id->caption() ?></div></div></th>
 	<?php } else { ?>
-	<th data-name="ProcurementCurrentCost" class="<?php echo $r001_asset_summary->ProcurementCurrentCost->headerCellClass() ?>"><div class="ew-pointer" onclick="ew.sort(event, '<?php echo $r001_asset_summary->sortUrl($r001_asset_summary->ProcurementCurrentCost) ?>', 2);"><div class="r001_asset_ProcurementCurrentCost">
-		<div class="ew-table-header-btn"><span class="ew-table-header-caption"><?php echo $r001_asset_summary->ProcurementCurrentCost->caption() ?></span><span class="ew-table-header-sort"><?php if ($r001_asset_summary->ProcurementCurrentCost->getSort() == "ASC") { ?><i class="fas fa-sort-up"></i><?php } elseif ($r001_asset_summary->ProcurementCurrentCost->getSort() == "DESC") { ?><i class="fas fa-sort-down"></i><?php } ?></span></div>
+	<th data-name="signature_id" class="<?php echo $r001_asset_summary->signature_id->headerCellClass() ?>"><div class="ew-pointer" onclick="ew.sort(event, '<?php echo $r001_asset_summary->sortUrl($r001_asset_summary->signature_id) ?>', 2);"><div class="r001_asset_signature_id">
+		<div class="ew-table-header-btn"><span class="ew-table-header-caption"><?php echo $r001_asset_summary->signature_id->caption() ?></span><span class="ew-table-header-sort"><?php if ($r001_asset_summary->signature_id->getSort() == "ASC") { ?><i class="fas fa-sort-up"></i><?php } elseif ($r001_asset_summary->signature_id->getSort() == "DESC") { ?><i class="fas fa-sort-down"></i><?php } ?></span></div>
 	</div></div></th>
 	<?php } ?>
 <?php } ?>
-<?php if ($r001_asset_summary->Salvage->Visible) { ?>
-	<?php if ($r001_asset_summary->sortUrl($r001_asset_summary->Salvage) == "") { ?>
-	<th data-name="Salvage" class="<?php echo $r001_asset_summary->Salvage->headerCellClass() ?>"><div class="r001_asset_Salvage"><div class="ew-table-header-caption"><?php echo $r001_asset_summary->Salvage->caption() ?></div></div></th>
+<?php if ($r001_asset_summary->department_id->Visible) { ?>
+	<?php if ($r001_asset_summary->sortUrl($r001_asset_summary->department_id) == "") { ?>
+	<th data-name="department_id" class="<?php echo $r001_asset_summary->department_id->headerCellClass() ?>"><div class="r001_asset_department_id"><div class="ew-table-header-caption"><?php echo $r001_asset_summary->department_id->caption() ?></div></div></th>
 	<?php } else { ?>
-	<th data-name="Salvage" class="<?php echo $r001_asset_summary->Salvage->headerCellClass() ?>"><div class="ew-pointer" onclick="ew.sort(event, '<?php echo $r001_asset_summary->sortUrl($r001_asset_summary->Salvage) ?>', 2);"><div class="r001_asset_Salvage">
-		<div class="ew-table-header-btn"><span class="ew-table-header-caption"><?php echo $r001_asset_summary->Salvage->caption() ?></span><span class="ew-table-header-sort"><?php if ($r001_asset_summary->Salvage->getSort() == "ASC") { ?><i class="fas fa-sort-up"></i><?php } elseif ($r001_asset_summary->Salvage->getSort() == "DESC") { ?><i class="fas fa-sort-down"></i><?php } ?></span></div>
+	<th data-name="department_id" class="<?php echo $r001_asset_summary->department_id->headerCellClass() ?>"><div class="ew-pointer" onclick="ew.sort(event, '<?php echo $r001_asset_summary->sortUrl($r001_asset_summary->department_id) ?>', 2);"><div class="r001_asset_department_id">
+		<div class="ew-table-header-btn"><span class="ew-table-header-caption"><?php echo $r001_asset_summary->department_id->caption() ?></span><span class="ew-table-header-sort"><?php if ($r001_asset_summary->department_id->getSort() == "ASC") { ?><i class="fas fa-sort-up"></i><?php } elseif ($r001_asset_summary->department_id->getSort() == "DESC") { ?><i class="fas fa-sort-down"></i><?php } ?></span></div>
+	</div></div></th>
+	<?php } ?>
+<?php } ?>
+<?php if ($r001_asset_summary->location_id->Visible) { ?>
+	<?php if ($r001_asset_summary->sortUrl($r001_asset_summary->location_id) == "") { ?>
+	<th data-name="location_id" class="<?php echo $r001_asset_summary->location_id->headerCellClass() ?>"><div class="r001_asset_location_id"><div class="ew-table-header-caption"><?php echo $r001_asset_summary->location_id->caption() ?></div></div></th>
+	<?php } else { ?>
+	<th data-name="location_id" class="<?php echo $r001_asset_summary->location_id->headerCellClass() ?>"><div class="ew-pointer" onclick="ew.sort(event, '<?php echo $r001_asset_summary->sortUrl($r001_asset_summary->location_id) ?>', 2);"><div class="r001_asset_location_id">
+		<div class="ew-table-header-btn"><span class="ew-table-header-caption"><?php echo $r001_asset_summary->location_id->caption() ?></span><span class="ew-table-header-sort"><?php if ($r001_asset_summary->location_id->getSort() == "ASC") { ?><i class="fas fa-sort-up"></i><?php } elseif ($r001_asset_summary->location_id->getSort() == "DESC") { ?><i class="fas fa-sort-down"></i><?php } ?></span></div>
 	</div></div></th>
 	<?php } ?>
 <?php } ?>
@@ -187,6 +187,24 @@ while ($r001_asset_summary->RecordCount < count($r001_asset_summary->DetailRecor
 	<?php } else { ?>
 	<th data-name="Remarks" class="<?php echo $r001_asset_summary->Remarks->headerCellClass() ?>"><div class="ew-pointer" onclick="ew.sort(event, '<?php echo $r001_asset_summary->sortUrl($r001_asset_summary->Remarks) ?>', 2);"><div class="r001_asset_Remarks">
 		<div class="ew-table-header-btn"><span class="ew-table-header-caption"><?php echo $r001_asset_summary->Remarks->caption() ?></span><span class="ew-table-header-sort"><?php if ($r001_asset_summary->Remarks->getSort() == "ASC") { ?><i class="fas fa-sort-up"></i><?php } elseif ($r001_asset_summary->Remarks->getSort() == "DESC") { ?><i class="fas fa-sort-down"></i><?php } ?></span></div>
+	</div></div></th>
+	<?php } ?>
+<?php } ?>
+<?php if ($r001_asset_summary->ProcurementDate->Visible) { ?>
+	<?php if ($r001_asset_summary->sortUrl($r001_asset_summary->ProcurementDate) == "") { ?>
+	<th data-name="ProcurementDate" class="<?php echo $r001_asset_summary->ProcurementDate->headerCellClass() ?>"><div class="r001_asset_ProcurementDate"><div class="ew-table-header-caption"><?php echo $r001_asset_summary->ProcurementDate->caption() ?></div></div></th>
+	<?php } else { ?>
+	<th data-name="ProcurementDate" class="<?php echo $r001_asset_summary->ProcurementDate->headerCellClass() ?>"><div class="ew-pointer" onclick="ew.sort(event, '<?php echo $r001_asset_summary->sortUrl($r001_asset_summary->ProcurementDate) ?>', 2);"><div class="r001_asset_ProcurementDate">
+		<div class="ew-table-header-btn"><span class="ew-table-header-caption"><?php echo $r001_asset_summary->ProcurementDate->caption() ?></span><span class="ew-table-header-sort"><?php if ($r001_asset_summary->ProcurementDate->getSort() == "ASC") { ?><i class="fas fa-sort-up"></i><?php } elseif ($r001_asset_summary->ProcurementDate->getSort() == "DESC") { ?><i class="fas fa-sort-down"></i><?php } ?></span></div>
+	</div></div></th>
+	<?php } ?>
+<?php } ?>
+<?php if ($r001_asset_summary->ProcurementCurrentCost->Visible) { ?>
+	<?php if ($r001_asset_summary->sortUrl($r001_asset_summary->ProcurementCurrentCost) == "") { ?>
+	<th data-name="ProcurementCurrentCost" class="<?php echo $r001_asset_summary->ProcurementCurrentCost->headerCellClass() ?>"><div class="r001_asset_ProcurementCurrentCost"><div class="ew-table-header-caption"><?php echo $r001_asset_summary->ProcurementCurrentCost->caption() ?></div></div></th>
+	<?php } else { ?>
+	<th data-name="ProcurementCurrentCost" class="<?php echo $r001_asset_summary->ProcurementCurrentCost->headerCellClass() ?>"><div class="ew-pointer" onclick="ew.sort(event, '<?php echo $r001_asset_summary->sortUrl($r001_asset_summary->ProcurementCurrentCost) ?>', 2);"><div class="r001_asset_ProcurementCurrentCost">
+		<div class="ew-table-header-btn"><span class="ew-table-header-caption"><?php echo $r001_asset_summary->ProcurementCurrentCost->caption() ?></span><span class="ew-table-header-sort"><?php if ($r001_asset_summary->ProcurementCurrentCost->getSort() == "ASC") { ?><i class="fas fa-sort-up"></i><?php } elseif ($r001_asset_summary->ProcurementCurrentCost->getSort() == "DESC") { ?><i class="fas fa-sort-down"></i><?php } ?></span></div>
 	</div></div></th>
 	<?php } ?>
 <?php } ?>
@@ -235,14 +253,9 @@ while ($r001_asset_summary->RecordCount < count($r001_asset_summary->DetailRecor
 <span<?php echo $r001_asset_summary->property_id->viewAttributes() ?>><?php echo $r001_asset_summary->property_id->getViewValue() ?></span>
 </td>
 <?php } ?>
-<?php if ($r001_asset_summary->department_id->Visible) { ?>
-		<td data-field="department_id"<?php echo $r001_asset_summary->department_id->cellAttributes() ?>>
-<span<?php echo $r001_asset_summary->department_id->viewAttributes() ?>><?php echo $r001_asset_summary->department_id->getViewValue() ?></span>
-</td>
-<?php } ?>
-<?php if ($r001_asset_summary->signature_id->Visible) { ?>
-		<td data-field="signature_id"<?php echo $r001_asset_summary->signature_id->cellAttributes() ?>>
-<span<?php echo $r001_asset_summary->signature_id->viewAttributes() ?>><?php echo $r001_asset_summary->signature_id->getViewValue() ?></span>
+<?php if ($r001_asset_summary->group_id->Visible) { ?>
+		<td data-field="group_id"<?php echo $r001_asset_summary->group_id->cellAttributes() ?>>
+<span<?php echo $r001_asset_summary->group_id->viewAttributes() ?>><?php echo $r001_asset_summary->group_id->getViewValue() ?></span>
 </td>
 <?php } ?>
 <?php if ($r001_asset_summary->Code->Visible) { ?>
@@ -255,24 +268,29 @@ while ($r001_asset_summary->RecordCount < count($r001_asset_summary->DetailRecor
 <span<?php echo $r001_asset_summary->Description->viewAttributes() ?>><?php echo $r001_asset_summary->Description->getViewValue() ?></span>
 </td>
 <?php } ?>
-<?php if ($r001_asset_summary->group_id->Visible) { ?>
-		<td data-field="group_id"<?php echo $r001_asset_summary->group_id->cellAttributes() ?>>
-<span<?php echo $r001_asset_summary->group_id->viewAttributes() ?>><?php echo $r001_asset_summary->group_id->getViewValue() ?></span>
+<?php if ($r001_asset_summary->brand_id->Visible) { ?>
+		<td data-field="brand_id"<?php echo $r001_asset_summary->brand_id->cellAttributes() ?>>
+<span<?php echo $r001_asset_summary->brand_id->viewAttributes() ?>><?php echo $r001_asset_summary->brand_id->getViewValue() ?></span>
 </td>
 <?php } ?>
-<?php if ($r001_asset_summary->ProcurementDate->Visible) { ?>
-		<td data-field="ProcurementDate"<?php echo $r001_asset_summary->ProcurementDate->cellAttributes() ?>>
-<span<?php echo $r001_asset_summary->ProcurementDate->viewAttributes() ?>><?php echo $r001_asset_summary->ProcurementDate->getViewValue() ?></span>
+<?php if ($r001_asset_summary->type_id->Visible) { ?>
+		<td data-field="type_id"<?php echo $r001_asset_summary->type_id->cellAttributes() ?>>
+<span<?php echo $r001_asset_summary->type_id->viewAttributes() ?>><?php echo $r001_asset_summary->type_id->getViewValue() ?></span>
 </td>
 <?php } ?>
-<?php if ($r001_asset_summary->ProcurementCurrentCost->Visible) { ?>
-		<td data-field="ProcurementCurrentCost"<?php echo $r001_asset_summary->ProcurementCurrentCost->cellAttributes() ?>>
-<span<?php echo $r001_asset_summary->ProcurementCurrentCost->viewAttributes() ?>><?php echo $r001_asset_summary->ProcurementCurrentCost->getViewValue() ?></span>
+<?php if ($r001_asset_summary->signature_id->Visible) { ?>
+		<td data-field="signature_id"<?php echo $r001_asset_summary->signature_id->cellAttributes() ?>>
+<span<?php echo $r001_asset_summary->signature_id->viewAttributes() ?>><?php echo $r001_asset_summary->signature_id->getViewValue() ?></span>
 </td>
 <?php } ?>
-<?php if ($r001_asset_summary->Salvage->Visible) { ?>
-		<td data-field="Salvage"<?php echo $r001_asset_summary->Salvage->cellAttributes() ?>>
-<span<?php echo $r001_asset_summary->Salvage->viewAttributes() ?>><?php echo $r001_asset_summary->Salvage->getViewValue() ?></span>
+<?php if ($r001_asset_summary->department_id->Visible) { ?>
+		<td data-field="department_id"<?php echo $r001_asset_summary->department_id->cellAttributes() ?>>
+<span<?php echo $r001_asset_summary->department_id->viewAttributes() ?>><?php echo $r001_asset_summary->department_id->getViewValue() ?></span>
+</td>
+<?php } ?>
+<?php if ($r001_asset_summary->location_id->Visible) { ?>
+		<td data-field="location_id"<?php echo $r001_asset_summary->location_id->cellAttributes() ?>>
+<span<?php echo $r001_asset_summary->location_id->viewAttributes() ?>><?php echo $r001_asset_summary->location_id->getViewValue() ?></span>
 </td>
 <?php } ?>
 <?php if ($r001_asset_summary->Qty->Visible) { ?>
@@ -283,6 +301,16 @@ while ($r001_asset_summary->RecordCount < count($r001_asset_summary->DetailRecor
 <?php if ($r001_asset_summary->Remarks->Visible) { ?>
 		<td data-field="Remarks"<?php echo $r001_asset_summary->Remarks->cellAttributes() ?>>
 <span<?php echo $r001_asset_summary->Remarks->viewAttributes() ?>><?php echo $r001_asset_summary->Remarks->getViewValue() ?></span>
+</td>
+<?php } ?>
+<?php if ($r001_asset_summary->ProcurementDate->Visible) { ?>
+		<td data-field="ProcurementDate"<?php echo $r001_asset_summary->ProcurementDate->cellAttributes() ?>>
+<span<?php echo $r001_asset_summary->ProcurementDate->viewAttributes() ?>><?php echo $r001_asset_summary->ProcurementDate->getViewValue() ?></span>
+</td>
+<?php } ?>
+<?php if ($r001_asset_summary->ProcurementCurrentCost->Visible) { ?>
+		<td data-field="ProcurementCurrentCost"<?php echo $r001_asset_summary->ProcurementCurrentCost->cellAttributes() ?>>
+<span<?php echo $r001_asset_summary->ProcurementCurrentCost->viewAttributes() ?>><?php echo $r001_asset_summary->ProcurementCurrentCost->getViewValue() ?></span>
 </td>
 <?php } ?>
 <?php if ($r001_asset_summary->PeriodBegin->Visible) { ?>

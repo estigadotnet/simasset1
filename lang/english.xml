@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8" standalone="yes"?>
-<ew-language date="2020/6/29" version="16.0.1" id="en" name="English" desc="English" author="e.World Technology Ltd.">
+<ew-language date="2020/6/30" version="16.0.1" id="en" name="English" desc="English" author="e.World Technology Ltd.">
   <!--
 	*** Important Notes:
 	1. Language ID should follow: https://developers.google.com/recaptcha/docs/language,
@@ -865,17 +865,23 @@
     <menu id="1">
       <phrase id="menutext" value="Property" />
     </menu>
-    <menu id="2">
-      <phrase id="menutext" value="Department/Location/Area" />
+    <menu id="20">
+      <phrase id="menutext" value="Asset Group &amp; Type" />
+    </menu>
+    <menu id="41">
+      <phrase id="menutext" value="Asset Type" />
+    </menu>
+    <menu id="43">
+      <phrase id="menutext" value="Brand" />
     </menu>
     <menu id="3">
       <phrase id="menutext" value="Signature" />
     </menu>
-    <menu id="20">
-      <phrase id="menutext" value="Asset Group" />
+    <menu id="2">
+      <phrase id="menutext" value="Department" />
     </menu>
-    <menu id="41">
-      <phrase id="menutext" value="Asset Type" />
+    <menu id="44">
+      <phrase id="menutext" value="Location" />
     </menu>
     <menu id="4">
       <phrase id="menutext" value="Asset" />
@@ -900,6 +906,9 @@
     </menu>
     <menu id="19">
       <phrase id="menutext" value="Handover Form" />
+    </menu>
+    <menu id="42">
+      <phrase id="menutext" value="viewHandover" />
     </menu>
     <menu id="39">
       <phrase id="menutext" value="Property to Personnel/Dept." />
@@ -948,11 +957,8 @@
       <field id="property_id">
         <phrase id="fldcaption" value="Property" />
       </field>
-      <field id="department_id">
-        <phrase id="fldcaption" value="Dept./Location/Area" />
-      </field>
-      <field id="signature_id">
-        <phrase id="fldcaption" value="Signature" />
+      <field id="group_id">
+        <phrase id="fldcaption" value="Group" />
       </field>
       <field id="code">
         <phrase id="fldcaption" value="Code" />
@@ -960,23 +966,32 @@
       <field id="description">
         <phrase id="fldcaption" value="Description" />
       </field>
-      <field id="group_id">
-        <phrase id="fldcaption" value="Group" />
+      <field id="brand_id">
+        <phrase id="fldcaption" value="Brand" />
       </field>
-      <field id="procurementdate">
-        <phrase id="fldcaption" value="Procurement Date" />
+      <field id="type_id">
+        <phrase id="fldcaption" value="Type" />
       </field>
-      <field id="procurementcurrentcost">
-        <phrase id="fldcaption" value="Procurement Current Cost" />
+      <field id="signature_id">
+        <phrase id="fldcaption" value="Signature" />
       </field>
-      <field id="salvage">
-        <phrase id="fldcaption" value="Salvage" />
+      <field id="department_id">
+        <phrase id="fldcaption" value="Department" />
+      </field>
+      <field id="location_id">
+        <phrase id="fldcaption" value="Location" />
       </field>
       <field id="qty">
         <phrase id="fldcaption" value="Qty" />
       </field>
       <field id="remarks">
         <phrase id="fldcaption" value="Remarks" />
+      </field>
+      <field id="procurementdate">
+        <phrase id="fldcaption" value="Procurement Date" />
+      </field>
+      <field id="procurementcurrentcost">
+        <phrase id="fldcaption" value="Asset Procurement" />
       </field>
       <field id="periodbegin">
         <phrase id="fldcaption" value="Period Begin" />
@@ -998,12 +1013,12 @@
       </field>
     </table>
     <table id="t002_department">
-      <phrase id="tblcaption" value="Department/Location/Area" />
+      <phrase id="tblcaption" value="Department" />
       <field id="id">
         <phrase id="fldcaption" value="id" />
       </field>
       <field id="department">
-        <phrase id="fldcaption" value="Department/Location/Area" />
+        <phrase id="fldcaption" value="Department" />
       </field>
     </table>
     <table id="t003_signature">
@@ -1026,11 +1041,11 @@
       <field id="property_id">
         <phrase id="fldcaption" value="Property" />
       </field>
-      <field id="department_id">
-        <phrase id="fldcaption" value="Dept./Location/Area" />
+      <field id="group_id">
+        <phrase id="fldcaption" value="Group" />
       </field>
-      <field id="signature_id">
-        <phrase id="fldcaption" value="Signature" />
+      <field id="type_id">
+        <phrase id="fldcaption" value="Type" />
       </field>
       <field id="code">
         <phrase id="fldcaption" value="Code" />
@@ -1038,23 +1053,29 @@
       <field id="description">
         <phrase id="fldcaption" value="Description" />
       </field>
-      <field id="group_id">
-        <phrase id="fldcaption" value="Group" />
+      <field id="brand_id">
+        <phrase id="fldcaption" value="Brand" />
+      </field>
+      <field id="signature_id">
+        <phrase id="fldcaption" value="Signature" />
+      </field>
+      <field id="department_id">
+        <phrase id="fldcaption" value="Department" />
+      </field>
+      <field id="location_id">
+        <phrase id="fldcaption" value="Location" />
+      </field>
+      <field id="qty">
+        <phrase id="fldcaption" value="Qty." />
+      </field>
+      <field id="remarks">
+        <phrase id="fldcaption" value="Remarks" />
       </field>
       <field id="procurementdate">
         <phrase id="fldcaption" value="Procurement Date" />
       </field>
       <field id="procurementcurrentcost">
-        <phrase id="fldcaption" value="Procurement Current Cost" />
-      </field>
-      <field id="salvage">
-        <phrase id="fldcaption" value="Salvage" />
-      </field>
-      <field id="qty">
-        <phrase id="fldcaption" value="Qty" />
-      </field>
-      <field id="remarks">
-        <phrase id="fldcaption" value="Remarks" />
+        <phrase id="fldcaption" value="Asset Procurement" />
       </field>
       <field id="periodbegin">
         <phrase id="fldcaption" value="Period Begin" />
@@ -1118,6 +1139,24 @@
       </field>
       <field id="code">
         <phrase id="fldcaption" value="Code" />
+      </field>
+    </table>
+    <table id="t008_brand">
+      <phrase id="tblcaption" value="Brand" />
+      <field id="id">
+        <phrase id="fldcaption" value="id" />
+      </field>
+      <field id="brand">
+        <phrase id="fldcaption" value="Brand" />
+      </field>
+    </table>
+    <table id="t009_location">
+      <phrase id="tblcaption" value="Location" />
+      <field id="id">
+        <phrase id="fldcaption" value="id" />
+      </field>
+      <field id="location">
+        <phrase id="fldcaption" value="Location" />
       </field>
     </table>
     <table id="t101_ho_head">
@@ -1390,6 +1429,138 @@
       </field>
       <field id="nilai">
         <phrase id="fldcaption" value="Nilai" />
+      </field>
+    </table>
+    <table id="v101_ho">
+      <phrase id="tblcaption" value="viewHandover" />
+      <field id="id">
+        <phrase id="fldcaption" value="id" />
+      </field>
+      <field id="property_id">
+        <phrase id="fldcaption" value="property id" />
+      </field>
+      <field id="transactionno">
+        <phrase id="fldcaption" value="Transaction No" />
+      </field>
+      <field id="transactiondate">
+        <phrase id="fldcaption" value="Transaction Date" />
+      </field>
+      <field id="transactiontype">
+        <phrase id="fldcaption" value="Transaction Type" />
+      </field>
+      <field id="handedoverto">
+        <phrase id="fldcaption" value="Handed Over To" />
+      </field>
+      <field id="codenoto">
+        <phrase id="fldcaption" value="Code No To" />
+      </field>
+      <field id="departmentto">
+        <phrase id="fldcaption" value="Department To" />
+      </field>
+      <field id="handedoverby">
+        <phrase id="fldcaption" value="Handed Over By" />
+      </field>
+      <field id="codenoby">
+        <phrase id="fldcaption" value="Code No By" />
+      </field>
+      <field id="departmentby">
+        <phrase id="fldcaption" value="Department By" />
+      </field>
+      <field id="sign1">
+        <phrase id="fldcaption" value="Sign 1" />
+      </field>
+      <field id="sign2">
+        <phrase id="fldcaption" value="Sign 2" />
+      </field>
+      <field id="sign3">
+        <phrase id="fldcaption" value="Sign 3" />
+      </field>
+      <field id="sign4">
+        <phrase id="fldcaption" value="Sign 4" />
+      </field>
+      <field id="hodetail_id">
+        <phrase id="fldcaption" value="hodetail id" />
+      </field>
+      <field id="asset_id">
+        <phrase id="fldcaption" value="asset id" />
+      </field>
+      <field id="property">
+        <phrase id="fldcaption" value="Property" />
+      </field>
+      <field id="templatefile">
+        <phrase id="fldcaption" value="Template File" />
+      </field>
+      <field id="hodepartmentto">
+        <phrase id="fldcaption" value="ho Department To" />
+      </field>
+      <field id="hosignatureto">
+        <phrase id="fldcaption" value="ho Signature To" />
+      </field>
+      <field id="hojobtitleto">
+        <phrase id="fldcaption" value="ho Job Title To" />
+      </field>
+      <field id="hodepartmentby">
+        <phrase id="fldcaption" value="ho Department By" />
+      </field>
+      <field id="hosignatureby">
+        <phrase id="fldcaption" value="ho Signature By" />
+      </field>
+      <field id="hojobtitleby">
+        <phrase id="fldcaption" value="ho Job Title By" />
+      </field>
+      <field id="code">
+        <phrase id="fldcaption" value="Code" />
+      </field>
+      <field id="description">
+        <phrase id="fldcaption" value="Description" />
+      </field>
+      <field id="type">
+        <phrase id="fldcaption" value="Type" />
+      </field>
+      <field id="group">
+        <phrase id="fldcaption" value="Group" />
+      </field>
+      <field id="procurementdate">
+        <phrase id="fldcaption" value="Procurement Date" />
+      </field>
+      <field id="procurementcurrentcost">
+        <phrase id="fldcaption" value="Procurement Current Cost" />
+      </field>
+      <field id="estimated_life_28in_year29">
+        <phrase id="fldcaption" value="Estimated Life (in Year)" />
+      </field>
+      <field id="qty">
+        <phrase id="fldcaption" value="Qty" />
+      </field>
+      <field id="remarks">
+        <phrase id="fldcaption" value="Remarks" />
+      </field>
+      <field id="sign1signature">
+        <phrase id="fldcaption" value="Sign 1Signature" />
+      </field>
+      <field id="sign1jobtitle">
+        <phrase id="fldcaption" value="Sign 1Job Title" />
+      </field>
+      <field id="sign2signature">
+        <phrase id="fldcaption" value="Sign 2Signature" />
+      </field>
+      <field id="sign2jobtitle">
+        <phrase id="fldcaption" value="Sign 2Job Title" />
+      </field>
+      <field id="sign3signature">
+        <phrase id="fldcaption" value="Sign 3Signature" />
+      </field>
+      <field id="sign3jobtitle">
+        <phrase id="fldcaption" value="Sign 3Job Title" />
+      </field>
+      <field id="sign4signature">
+        <phrase id="fldcaption" value="Sign 4Signature" />
+      </field>
+      <field id="sign4jobtitle">
+        <phrase id="fldcaption" value="Sign 4Job Title" />
+      </field>
+      <field id="assetdepartment">
+        <phrase id="fldcaption" value="Asset Department" />
       </field>
     </table>
   </project>

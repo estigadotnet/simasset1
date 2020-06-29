@@ -52,11 +52,11 @@ class v101_ho extends DbTable
 	public $hoJobTitleBy;
 	public $Code;
 	public $Description;
+	public $Type;
 	public $Group;
 	public $ProcurementDate;
 	public $ProcurementCurrentCost;
-	public $Economical_Life_Time_28in_Year29;
-	public $Salvage;
+	public $Estimated_Life_28in_Year29;
 	public $Qty;
 	public $Remarks;
 	public $Sign1Signature;
@@ -283,6 +283,11 @@ class v101_ho extends DbTable
 		$this->Description->Sortable = TRUE; // Allow sort
 		$this->fields['Description'] = &$this->Description;
 
+		// Type
+		$this->Type = new DbField('v101_ho', 'v101_ho', 'x_Type', 'Type', '`Type`', '`Type`', 200, 50, -1, FALSE, '`Type`', FALSE, FALSE, FALSE, 'FORMATTED TEXT', 'TEXT');
+		$this->Type->Sortable = TRUE; // Allow sort
+		$this->fields['Type'] = &$this->Type;
+
 		// Group
 		$this->Group = new DbField('v101_ho', 'v101_ho', 'x_Group', 'Group', '`Group`', '`Group`', 200, 255, -1, FALSE, '`Group`', FALSE, FALSE, FALSE, 'FORMATTED TEXT', 'TEXT');
 		$this->Group->Sortable = TRUE; // Allow sort
@@ -295,22 +300,16 @@ class v101_ho extends DbTable
 		$this->fields['ProcurementDate'] = &$this->ProcurementDate;
 
 		// ProcurementCurrentCost
-		$this->ProcurementCurrentCost = new DbField('v101_ho', 'v101_ho', 'x_ProcurementCurrentCost', 'ProcurementCurrentCost', '`ProcurementCurrentCost`', '`ProcurementCurrentCost`', 4, 14, -1, FALSE, '`ProcurementCurrentCost`', FALSE, FALSE, FALSE, 'FORMATTED TEXT', 'TEXT');
+		$this->ProcurementCurrentCost = new DbField('v101_ho', 'v101_ho', 'x_ProcurementCurrentCost', 'ProcurementCurrentCost', '`ProcurementCurrentCost`', '`ProcurementCurrentCost`', 4, 17, -1, FALSE, '`ProcurementCurrentCost`', FALSE, FALSE, FALSE, 'FORMATTED TEXT', 'TEXT');
 		$this->ProcurementCurrentCost->Sortable = TRUE; // Allow sort
 		$this->ProcurementCurrentCost->DefaultErrorMessage = $Language->phrase("IncorrectFloat");
 		$this->fields['ProcurementCurrentCost'] = &$this->ProcurementCurrentCost;
 
-		// Economical Life Time (in Year)
-		$this->Economical_Life_Time_28in_Year29 = new DbField('v101_ho', 'v101_ho', 'x_Economical_Life_Time_28in_Year29', 'Economical Life Time (in Year)', '`Economical Life Time (in Year)`', '`Economical Life Time (in Year)`', 16, 4, -1, FALSE, '`Economical Life Time (in Year)`', FALSE, FALSE, FALSE, 'FORMATTED TEXT', 'TEXT');
-		$this->Economical_Life_Time_28in_Year29->Sortable = TRUE; // Allow sort
-		$this->Economical_Life_Time_28in_Year29->DefaultErrorMessage = $Language->phrase("IncorrectInteger");
-		$this->fields['Economical Life Time (in Year)'] = &$this->Economical_Life_Time_28in_Year29;
-
-		// Salvage
-		$this->Salvage = new DbField('v101_ho', 'v101_ho', 'x_Salvage', 'Salvage', '`Salvage`', '`Salvage`', 4, 14, -1, FALSE, '`Salvage`', FALSE, FALSE, FALSE, 'FORMATTED TEXT', 'TEXT');
-		$this->Salvage->Sortable = TRUE; // Allow sort
-		$this->Salvage->DefaultErrorMessage = $Language->phrase("IncorrectFloat");
-		$this->fields['Salvage'] = &$this->Salvage;
+		// Estimated Life (in Year)
+		$this->Estimated_Life_28in_Year29 = new DbField('v101_ho', 'v101_ho', 'x_Estimated_Life_28in_Year29', 'Estimated Life (in Year)', '`Estimated Life (in Year)`', '`Estimated Life (in Year)`', 16, 4, -1, FALSE, '`Estimated Life (in Year)`', FALSE, FALSE, FALSE, 'FORMATTED TEXT', 'TEXT');
+		$this->Estimated_Life_28in_Year29->Sortable = TRUE; // Allow sort
+		$this->Estimated_Life_28in_Year29->DefaultErrorMessage = $Language->phrase("IncorrectInteger");
+		$this->fields['Estimated Life (in Year)'] = &$this->Estimated_Life_28in_Year29;
 
 		// Qty
 		$this->Qty = new DbField('v101_ho', 'v101_ho', 'x_Qty', 'Qty', '`Qty`', '`Qty`', 4, 14, -1, FALSE, '`Qty`', FALSE, FALSE, FALSE, 'FORMATTED TEXT', 'TEXT');
@@ -768,11 +767,11 @@ class v101_ho extends DbTable
 		$this->hoJobTitleBy->DbValue = $row['hoJobTitleBy'];
 		$this->Code->DbValue = $row['Code'];
 		$this->Description->DbValue = $row['Description'];
+		$this->Type->DbValue = $row['Type'];
 		$this->Group->DbValue = $row['Group'];
 		$this->ProcurementDate->DbValue = $row['ProcurementDate'];
 		$this->ProcurementCurrentCost->DbValue = $row['ProcurementCurrentCost'];
-		$this->Economical_Life_Time_28in_Year29->DbValue = $row['Economical Life Time (in Year)'];
-		$this->Salvage->DbValue = $row['Salvage'];
+		$this->Estimated_Life_28in_Year29->DbValue = $row['Estimated Life (in Year)'];
 		$this->Qty->DbValue = $row['Qty'];
 		$this->Remarks->DbValue = $row['Remarks'];
 		$this->Sign1Signature->DbValue = $row['Sign1Signature'];
@@ -1076,11 +1075,11 @@ class v101_ho extends DbTable
 		$this->hoJobTitleBy->setDbValue($rs->fields('hoJobTitleBy'));
 		$this->Code->setDbValue($rs->fields('Code'));
 		$this->Description->setDbValue($rs->fields('Description'));
+		$this->Type->setDbValue($rs->fields('Type'));
 		$this->Group->setDbValue($rs->fields('Group'));
 		$this->ProcurementDate->setDbValue($rs->fields('ProcurementDate'));
 		$this->ProcurementCurrentCost->setDbValue($rs->fields('ProcurementCurrentCost'));
-		$this->Economical_Life_Time_28in_Year29->setDbValue($rs->fields('Economical Life Time (in Year)'));
-		$this->Salvage->setDbValue($rs->fields('Salvage'));
+		$this->Estimated_Life_28in_Year29->setDbValue($rs->fields('Estimated Life (in Year)'));
 		$this->Qty->setDbValue($rs->fields('Qty'));
 		$this->Remarks->setDbValue($rs->fields('Remarks'));
 		$this->Sign1Signature->setDbValue($rs->fields('Sign1Signature'));
@@ -1130,11 +1129,11 @@ class v101_ho extends DbTable
 		// hoJobTitleBy
 		// Code
 		// Description
+		// Type
 		// Group
 		// ProcurementDate
 		// ProcurementCurrentCost
-		// Economical Life Time (in Year)
-		// Salvage
+		// Estimated Life (in Year)
 		// Qty
 		// Remarks
 		// Sign1Signature
@@ -1267,6 +1266,10 @@ class v101_ho extends DbTable
 		$this->Description->ViewValue = $this->Description->CurrentValue;
 		$this->Description->ViewCustomAttributes = "";
 
+		// Type
+		$this->Type->ViewValue = $this->Type->CurrentValue;
+		$this->Type->ViewCustomAttributes = "";
+
 		// Group
 		$this->Group->ViewValue = $this->Group->CurrentValue;
 		$this->Group->ViewCustomAttributes = "";
@@ -1281,15 +1284,10 @@ class v101_ho extends DbTable
 		$this->ProcurementCurrentCost->ViewValue = FormatNumber($this->ProcurementCurrentCost->ViewValue, 2, -2, -2, -2);
 		$this->ProcurementCurrentCost->ViewCustomAttributes = "";
 
-		// Economical Life Time (in Year)
-		$this->Economical_Life_Time_28in_Year29->ViewValue = $this->Economical_Life_Time_28in_Year29->CurrentValue;
-		$this->Economical_Life_Time_28in_Year29->ViewValue = FormatNumber($this->Economical_Life_Time_28in_Year29->ViewValue, 0, -2, -2, -2);
-		$this->Economical_Life_Time_28in_Year29->ViewCustomAttributes = "";
-
-		// Salvage
-		$this->Salvage->ViewValue = $this->Salvage->CurrentValue;
-		$this->Salvage->ViewValue = FormatNumber($this->Salvage->ViewValue, 2, -2, -2, -2);
-		$this->Salvage->ViewCustomAttributes = "";
+		// Estimated Life (in Year)
+		$this->Estimated_Life_28in_Year29->ViewValue = $this->Estimated_Life_28in_Year29->CurrentValue;
+		$this->Estimated_Life_28in_Year29->ViewValue = FormatNumber($this->Estimated_Life_28in_Year29->ViewValue, 0, -2, -2, -2);
+		$this->Estimated_Life_28in_Year29->ViewCustomAttributes = "";
 
 		// Qty
 		$this->Qty->ViewValue = $this->Qty->CurrentValue;
@@ -1471,6 +1469,11 @@ class v101_ho extends DbTable
 		$this->Description->HrefValue = "";
 		$this->Description->TooltipValue = "";
 
+		// Type
+		$this->Type->LinkCustomAttributes = "";
+		$this->Type->HrefValue = "";
+		$this->Type->TooltipValue = "";
+
 		// Group
 		$this->Group->LinkCustomAttributes = "";
 		$this->Group->HrefValue = "";
@@ -1486,15 +1489,10 @@ class v101_ho extends DbTable
 		$this->ProcurementCurrentCost->HrefValue = "";
 		$this->ProcurementCurrentCost->TooltipValue = "";
 
-		// Economical Life Time (in Year)
-		$this->Economical_Life_Time_28in_Year29->LinkCustomAttributes = "";
-		$this->Economical_Life_Time_28in_Year29->HrefValue = "";
-		$this->Economical_Life_Time_28in_Year29->TooltipValue = "";
-
-		// Salvage
-		$this->Salvage->LinkCustomAttributes = "";
-		$this->Salvage->HrefValue = "";
-		$this->Salvage->TooltipValue = "";
+		// Estimated Life (in Year)
+		$this->Estimated_Life_28in_Year29->LinkCustomAttributes = "";
+		$this->Estimated_Life_28in_Year29->HrefValue = "";
+		$this->Estimated_Life_28in_Year29->TooltipValue = "";
 
 		// Qty
 		$this->Qty->LinkCustomAttributes = "";
@@ -1754,6 +1752,14 @@ class v101_ho extends DbTable
 		$this->Description->EditValue = $this->Description->CurrentValue;
 		$this->Description->PlaceHolder = RemoveHtml($this->Description->caption());
 
+		// Type
+		$this->Type->EditAttrs["class"] = "form-control";
+		$this->Type->EditCustomAttributes = "";
+		if (!$this->Type->Raw)
+			$this->Type->CurrentValue = HtmlDecode($this->Type->CurrentValue);
+		$this->Type->EditValue = $this->Type->CurrentValue;
+		$this->Type->PlaceHolder = RemoveHtml($this->Type->caption());
+
 		// Group
 		$this->Group->EditAttrs["class"] = "form-control";
 		$this->Group->EditCustomAttributes = "";
@@ -1777,20 +1783,11 @@ class v101_ho extends DbTable
 			$this->ProcurementCurrentCost->EditValue = FormatNumber($this->ProcurementCurrentCost->EditValue, -2, -2, -2, -2);
 		
 
-		// Economical Life Time (in Year)
-		$this->Economical_Life_Time_28in_Year29->EditAttrs["class"] = "form-control";
-		$this->Economical_Life_Time_28in_Year29->EditCustomAttributes = "";
-		$this->Economical_Life_Time_28in_Year29->EditValue = $this->Economical_Life_Time_28in_Year29->CurrentValue;
-		$this->Economical_Life_Time_28in_Year29->PlaceHolder = RemoveHtml($this->Economical_Life_Time_28in_Year29->caption());
-
-		// Salvage
-		$this->Salvage->EditAttrs["class"] = "form-control";
-		$this->Salvage->EditCustomAttributes = "";
-		$this->Salvage->EditValue = $this->Salvage->CurrentValue;
-		$this->Salvage->PlaceHolder = RemoveHtml($this->Salvage->caption());
-		if (strval($this->Salvage->EditValue) != "" && is_numeric($this->Salvage->EditValue))
-			$this->Salvage->EditValue = FormatNumber($this->Salvage->EditValue, -2, -2, -2, -2);
-		
+		// Estimated Life (in Year)
+		$this->Estimated_Life_28in_Year29->EditAttrs["class"] = "form-control";
+		$this->Estimated_Life_28in_Year29->EditCustomAttributes = "";
+		$this->Estimated_Life_28in_Year29->EditValue = $this->Estimated_Life_28in_Year29->CurrentValue;
+		$this->Estimated_Life_28in_Year29->PlaceHolder = RemoveHtml($this->Estimated_Life_28in_Year29->caption());
 
 		// Qty
 		$this->Qty->EditAttrs["class"] = "form-control";
@@ -1935,11 +1932,11 @@ class v101_ho extends DbTable
 					$doc->exportCaption($this->hoJobTitleBy);
 					$doc->exportCaption($this->Code);
 					$doc->exportCaption($this->Description);
+					$doc->exportCaption($this->Type);
 					$doc->exportCaption($this->Group);
 					$doc->exportCaption($this->ProcurementDate);
 					$doc->exportCaption($this->ProcurementCurrentCost);
-					$doc->exportCaption($this->Economical_Life_Time_28in_Year29);
-					$doc->exportCaption($this->Salvage);
+					$doc->exportCaption($this->Estimated_Life_28in_Year29);
 					$doc->exportCaption($this->Qty);
 					$doc->exportCaption($this->Remarks);
 					$doc->exportCaption($this->Sign1Signature);
@@ -1979,11 +1976,11 @@ class v101_ho extends DbTable
 					$doc->exportCaption($this->hoJobTitleBy);
 					$doc->exportCaption($this->Code);
 					$doc->exportCaption($this->Description);
+					$doc->exportCaption($this->Type);
 					$doc->exportCaption($this->Group);
 					$doc->exportCaption($this->ProcurementDate);
 					$doc->exportCaption($this->ProcurementCurrentCost);
-					$doc->exportCaption($this->Economical_Life_Time_28in_Year29);
-					$doc->exportCaption($this->Salvage);
+					$doc->exportCaption($this->Estimated_Life_28in_Year29);
 					$doc->exportCaption($this->Qty);
 					$doc->exportCaption($this->Sign1Signature);
 					$doc->exportCaption($this->Sign1JobTitle);
@@ -2052,11 +2049,11 @@ class v101_ho extends DbTable
 						$doc->exportField($this->hoJobTitleBy);
 						$doc->exportField($this->Code);
 						$doc->exportField($this->Description);
+						$doc->exportField($this->Type);
 						$doc->exportField($this->Group);
 						$doc->exportField($this->ProcurementDate);
 						$doc->exportField($this->ProcurementCurrentCost);
-						$doc->exportField($this->Economical_Life_Time_28in_Year29);
-						$doc->exportField($this->Salvage);
+						$doc->exportField($this->Estimated_Life_28in_Year29);
 						$doc->exportField($this->Qty);
 						$doc->exportField($this->Remarks);
 						$doc->exportField($this->Sign1Signature);
@@ -2096,11 +2093,11 @@ class v101_ho extends DbTable
 						$doc->exportField($this->hoJobTitleBy);
 						$doc->exportField($this->Code);
 						$doc->exportField($this->Description);
+						$doc->exportField($this->Type);
 						$doc->exportField($this->Group);
 						$doc->exportField($this->ProcurementDate);
 						$doc->exportField($this->ProcurementCurrentCost);
-						$doc->exportField($this->Economical_Life_Time_28in_Year29);
-						$doc->exportField($this->Salvage);
+						$doc->exportField($this->Estimated_Life_28in_Year29);
 						$doc->exportField($this->Qty);
 						$doc->exportField($this->Sign1Signature);
 						$doc->exportField($this->Sign1JobTitle);

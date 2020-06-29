@@ -35,16 +35,18 @@ class t004_asset extends DbTable
 	// Fields
 	public $id;
 	public $property_id;
-	public $department_id;
-	public $signature_id;
+	public $group_id;
+	public $type_id;
 	public $Code;
 	public $Description;
-	public $group_id;
-	public $ProcurementDate;
-	public $ProcurementCurrentCost;
-	public $Salvage;
+	public $brand_id;
+	public $signature_id;
+	public $department_id;
+	public $location_id;
 	public $Qty;
 	public $Remarks;
+	public $ProcurementDate;
+	public $ProcurementCurrentCost;
 	public $PeriodBegin;
 	public $PeriodEnd;
 
@@ -101,27 +103,25 @@ class t004_asset extends DbTable
 		$this->property_id->DefaultErrorMessage = $Language->phrase("IncorrectInteger");
 		$this->fields['property_id'] = &$this->property_id;
 
-		// department_id
-		$this->department_id = new DbField('t004_asset', 't004_asset', 'x_department_id', 'department_id', '`department_id`', '`department_id`', 3, 11, -1, FALSE, '`department_id`', FALSE, FALSE, FALSE, 'FORMATTED TEXT', 'SELECT');
-		$this->department_id->Nullable = FALSE; // NOT NULL field
-		$this->department_id->Required = TRUE; // Required field
-		$this->department_id->Sortable = TRUE; // Allow sort
-		$this->department_id->UsePleaseSelect = TRUE; // Use PleaseSelect by default
-		$this->department_id->PleaseSelectText = $Language->phrase("PleaseSelect"); // "PleaseSelect" text
-		$this->department_id->Lookup = new Lookup('department_id', 't002_department', FALSE, 'id', ["Department","","",""], [], [], [], [], [], [], '', '');
-		$this->department_id->DefaultErrorMessage = $Language->phrase("IncorrectInteger");
-		$this->fields['department_id'] = &$this->department_id;
+		// group_id
+		$this->group_id = new DbField('t004_asset', 't004_asset', 'x_group_id', 'group_id', '`group_id`', '`group_id`', 3, 11, -1, FALSE, '`group_id`', FALSE, FALSE, FALSE, 'FORMATTED TEXT', 'TEXT');
+		$this->group_id->Nullable = FALSE; // NOT NULL field
+		$this->group_id->Required = TRUE; // Required field
+		$this->group_id->Sortable = TRUE; // Allow sort
+		$this->group_id->Lookup = new Lookup('group_id', 't005_assetgroup', FALSE, 'id', ["Code","","",""], [], [], [], [], [], [], '', '');
+		$this->group_id->DefaultErrorMessage = $Language->phrase("IncorrectInteger");
+		$this->fields['group_id'] = &$this->group_id;
 
-		// signature_id
-		$this->signature_id = new DbField('t004_asset', 't004_asset', 'x_signature_id', 'signature_id', '`signature_id`', '`signature_id`', 3, 11, -1, FALSE, '`signature_id`', FALSE, FALSE, FALSE, 'FORMATTED TEXT', 'SELECT');
-		$this->signature_id->Nullable = FALSE; // NOT NULL field
-		$this->signature_id->Required = TRUE; // Required field
-		$this->signature_id->Sortable = TRUE; // Allow sort
-		$this->signature_id->UsePleaseSelect = TRUE; // Use PleaseSelect by default
-		$this->signature_id->PleaseSelectText = $Language->phrase("PleaseSelect"); // "PleaseSelect" text
-		$this->signature_id->Lookup = new Lookup('signature_id', 't003_signature', FALSE, 'id', ["Signature","","",""], [], [], [], [], [], [], '', '');
-		$this->signature_id->DefaultErrorMessage = $Language->phrase("IncorrectInteger");
-		$this->fields['signature_id'] = &$this->signature_id;
+		// type_id
+		$this->type_id = new DbField('t004_asset', 't004_asset', 'x_type_id', 'type_id', '`type_id`', '`type_id`', 3, 11, -1, FALSE, '`type_id`', FALSE, FALSE, FALSE, 'FORMATTED TEXT', 'SELECT');
+		$this->type_id->Nullable = FALSE; // NOT NULL field
+		$this->type_id->Required = TRUE; // Required field
+		$this->type_id->Sortable = TRUE; // Allow sort
+		$this->type_id->UsePleaseSelect = TRUE; // Use PleaseSelect by default
+		$this->type_id->PleaseSelectText = $Language->phrase("PleaseSelect"); // "PleaseSelect" text
+		$this->type_id->Lookup = new Lookup('type_id', 't007_assettype', FALSE, 'id', ["Description","","",""], [], [], [], [], [], [], '', '');
+		$this->type_id->DefaultErrorMessage = $Language->phrase("IncorrectInteger");
+		$this->fields['type_id'] = &$this->type_id;
 
 		// Code
 		$this->Code = new DbField('t004_asset', 't004_asset', 'x_Code', 'Code', '`Code`', '`Code`', 200, 25, -1, FALSE, '`Code`', FALSE, FALSE, FALSE, 'FORMATTED TEXT', 'TEXT');
@@ -137,39 +137,49 @@ class t004_asset extends DbTable
 		$this->Description->Sortable = TRUE; // Allow sort
 		$this->fields['Description'] = &$this->Description;
 
-		// group_id
-		$this->group_id = new DbField('t004_asset', 't004_asset', 'x_group_id', 'group_id', '`group_id`', '`group_id`', 3, 11, -1, FALSE, '`group_id`', FALSE, FALSE, FALSE, 'FORMATTED TEXT', 'SELECT');
-		$this->group_id->Nullable = FALSE; // NOT NULL field
-		$this->group_id->Required = TRUE; // Required field
-		$this->group_id->Sortable = TRUE; // Allow sort
-		$this->group_id->UsePleaseSelect = TRUE; // Use PleaseSelect by default
-		$this->group_id->PleaseSelectText = $Language->phrase("PleaseSelect"); // "PleaseSelect" text
-		$this->group_id->Lookup = new Lookup('group_id', 't005_assetgroup', FALSE, 'id', ["Description","EstimatedLife","",""], [], [], [], [], [], [], '', '');
-		$this->group_id->DefaultErrorMessage = $Language->phrase("IncorrectInteger");
-		$this->fields['group_id'] = &$this->group_id;
+		// brand_id
+		$this->brand_id = new DbField('t004_asset', 't004_asset', 'x_brand_id', 'brand_id', '`brand_id`', '`brand_id`', 3, 11, -1, FALSE, '`brand_id`', FALSE, FALSE, FALSE, 'FORMATTED TEXT', 'SELECT');
+		$this->brand_id->Nullable = FALSE; // NOT NULL field
+		$this->brand_id->Required = TRUE; // Required field
+		$this->brand_id->Sortable = TRUE; // Allow sort
+		$this->brand_id->UsePleaseSelect = TRUE; // Use PleaseSelect by default
+		$this->brand_id->PleaseSelectText = $Language->phrase("PleaseSelect"); // "PleaseSelect" text
+		$this->brand_id->Lookup = new Lookup('brand_id', 't008_brand', FALSE, 'id', ["Brand","","",""], [], [], [], [], [], [], '', '');
+		$this->brand_id->DefaultErrorMessage = $Language->phrase("IncorrectInteger");
+		$this->fields['brand_id'] = &$this->brand_id;
 
-		// ProcurementDate
-		$this->ProcurementDate = new DbField('t004_asset', 't004_asset', 'x_ProcurementDate', 'ProcurementDate', '`ProcurementDate`', CastDateFieldForLike("`ProcurementDate`", 7, "DB"), 133, 10, 7, FALSE, '`ProcurementDate`', FALSE, FALSE, FALSE, 'FORMATTED TEXT', 'TEXT');
-		$this->ProcurementDate->Nullable = FALSE; // NOT NULL field
-		$this->ProcurementDate->Required = TRUE; // Required field
-		$this->ProcurementDate->Sortable = TRUE; // Allow sort
-		$this->ProcurementDate->DefaultErrorMessage = str_replace("%s", $GLOBALS["DATE_SEPARATOR"], $Language->phrase("IncorrectDateDMY"));
-		$this->fields['ProcurementDate'] = &$this->ProcurementDate;
+		// signature_id
+		$this->signature_id = new DbField('t004_asset', 't004_asset', 'x_signature_id', 'signature_id', '`signature_id`', '`signature_id`', 3, 11, -1, FALSE, '`signature_id`', FALSE, FALSE, FALSE, 'FORMATTED TEXT', 'SELECT');
+		$this->signature_id->Nullable = FALSE; // NOT NULL field
+		$this->signature_id->Required = TRUE; // Required field
+		$this->signature_id->Sortable = TRUE; // Allow sort
+		$this->signature_id->UsePleaseSelect = TRUE; // Use PleaseSelect by default
+		$this->signature_id->PleaseSelectText = $Language->phrase("PleaseSelect"); // "PleaseSelect" text
+		$this->signature_id->Lookup = new Lookup('signature_id', 't003_signature', FALSE, 'id', ["Signature","","",""], [], [], [], [], [], [], '', '');
+		$this->signature_id->DefaultErrorMessage = $Language->phrase("IncorrectInteger");
+		$this->fields['signature_id'] = &$this->signature_id;
 
-		// ProcurementCurrentCost
-		$this->ProcurementCurrentCost = new DbField('t004_asset', 't004_asset', 'x_ProcurementCurrentCost', 'ProcurementCurrentCost', '`ProcurementCurrentCost`', '`ProcurementCurrentCost`', 4, 14, -1, FALSE, '`ProcurementCurrentCost`', FALSE, FALSE, FALSE, 'FORMATTED TEXT', 'TEXT');
-		$this->ProcurementCurrentCost->Nullable = FALSE; // NOT NULL field
-		$this->ProcurementCurrentCost->Required = TRUE; // Required field
-		$this->ProcurementCurrentCost->Sortable = TRUE; // Allow sort
-		$this->ProcurementCurrentCost->DefaultErrorMessage = $Language->phrase("IncorrectFloat");
-		$this->fields['ProcurementCurrentCost'] = &$this->ProcurementCurrentCost;
+		// department_id
+		$this->department_id = new DbField('t004_asset', 't004_asset', 'x_department_id', 'department_id', '`department_id`', '`department_id`', 3, 11, -1, FALSE, '`department_id`', FALSE, FALSE, FALSE, 'FORMATTED TEXT', 'SELECT');
+		$this->department_id->Nullable = FALSE; // NOT NULL field
+		$this->department_id->Required = TRUE; // Required field
+		$this->department_id->Sortable = TRUE; // Allow sort
+		$this->department_id->UsePleaseSelect = TRUE; // Use PleaseSelect by default
+		$this->department_id->PleaseSelectText = $Language->phrase("PleaseSelect"); // "PleaseSelect" text
+		$this->department_id->Lookup = new Lookup('department_id', 't002_department', FALSE, 'id', ["Department","","",""], [], [], [], [], [], [], '', '');
+		$this->department_id->DefaultErrorMessage = $Language->phrase("IncorrectInteger");
+		$this->fields['department_id'] = &$this->department_id;
 
-		// Salvage
-		$this->Salvage = new DbField('t004_asset', 't004_asset', 'x_Salvage', 'Salvage', '`Salvage`', '`Salvage`', 4, 14, -1, FALSE, '`Salvage`', FALSE, FALSE, FALSE, 'FORMATTED TEXT', 'TEXT');
-		$this->Salvage->Nullable = FALSE; // NOT NULL field
-		$this->Salvage->Sortable = TRUE; // Allow sort
-		$this->Salvage->DefaultErrorMessage = $Language->phrase("IncorrectFloat");
-		$this->fields['Salvage'] = &$this->Salvage;
+		// location_id
+		$this->location_id = new DbField('t004_asset', 't004_asset', 'x_location_id', 'location_id', '`location_id`', '`location_id`', 3, 11, -1, FALSE, '`location_id`', FALSE, FALSE, FALSE, 'FORMATTED TEXT', 'SELECT');
+		$this->location_id->Nullable = FALSE; // NOT NULL field
+		$this->location_id->Required = TRUE; // Required field
+		$this->location_id->Sortable = TRUE; // Allow sort
+		$this->location_id->UsePleaseSelect = TRUE; // Use PleaseSelect by default
+		$this->location_id->PleaseSelectText = $Language->phrase("PleaseSelect"); // "PleaseSelect" text
+		$this->location_id->Lookup = new Lookup('location_id', 't009_location', FALSE, 'id', ["Location","","",""], [], [], [], [], [], [], '', '');
+		$this->location_id->DefaultErrorMessage = $Language->phrase("IncorrectInteger");
+		$this->fields['location_id'] = &$this->location_id;
 
 		// Qty
 		$this->Qty = new DbField('t004_asset', 't004_asset', 'x_Qty', 'Qty', '`Qty`', '`Qty`', 4, 14, -1, FALSE, '`Qty`', FALSE, FALSE, FALSE, 'FORMATTED TEXT', 'TEXT');
@@ -183,6 +193,22 @@ class t004_asset extends DbTable
 		$this->Remarks = new DbField('t004_asset', 't004_asset', 'x_Remarks', 'Remarks', '`Remarks`', '`Remarks`', 201, 65535, -1, FALSE, '`Remarks`', FALSE, FALSE, FALSE, 'FORMATTED TEXT', 'TEXTAREA');
 		$this->Remarks->Sortable = TRUE; // Allow sort
 		$this->fields['Remarks'] = &$this->Remarks;
+
+		// ProcurementDate
+		$this->ProcurementDate = new DbField('t004_asset', 't004_asset', 'x_ProcurementDate', 'ProcurementDate', '`ProcurementDate`', CastDateFieldForLike("`ProcurementDate`", 7, "DB"), 133, 10, 7, FALSE, '`ProcurementDate`', FALSE, FALSE, FALSE, 'FORMATTED TEXT', 'TEXT');
+		$this->ProcurementDate->Nullable = FALSE; // NOT NULL field
+		$this->ProcurementDate->Required = TRUE; // Required field
+		$this->ProcurementDate->Sortable = TRUE; // Allow sort
+		$this->ProcurementDate->DefaultErrorMessage = str_replace("%s", $GLOBALS["DATE_SEPARATOR"], $Language->phrase("IncorrectDateDMY"));
+		$this->fields['ProcurementDate'] = &$this->ProcurementDate;
+
+		// ProcurementCurrentCost
+		$this->ProcurementCurrentCost = new DbField('t004_asset', 't004_asset', 'x_ProcurementCurrentCost', 'ProcurementCurrentCost', '`ProcurementCurrentCost`', '`ProcurementCurrentCost`', 4, 17, -1, FALSE, '`ProcurementCurrentCost`', FALSE, FALSE, FALSE, 'FORMATTED TEXT', 'TEXT');
+		$this->ProcurementCurrentCost->Nullable = FALSE; // NOT NULL field
+		$this->ProcurementCurrentCost->Required = TRUE; // Required field
+		$this->ProcurementCurrentCost->Sortable = TRUE; // Allow sort
+		$this->ProcurementCurrentCost->DefaultErrorMessage = $Language->phrase("IncorrectFloat");
+		$this->fields['ProcurementCurrentCost'] = &$this->ProcurementCurrentCost;
 
 		// PeriodBegin
 		$this->PeriodBegin = new DbField('t004_asset', 't004_asset', 'x_PeriodBegin', 'PeriodBegin', '`PeriodBegin`', CastDateFieldForLike("`PeriodBegin`", 7, "DB"), 133, 10, 7, FALSE, '`PeriodBegin`', FALSE, FALSE, FALSE, 'FORMATTED TEXT', 'TEXT');
@@ -662,16 +688,18 @@ class t004_asset extends DbTable
 		$row = is_array($rs) ? $rs : $rs->fields;
 		$this->id->DbValue = $row['id'];
 		$this->property_id->DbValue = $row['property_id'];
-		$this->department_id->DbValue = $row['department_id'];
-		$this->signature_id->DbValue = $row['signature_id'];
+		$this->group_id->DbValue = $row['group_id'];
+		$this->type_id->DbValue = $row['type_id'];
 		$this->Code->DbValue = $row['Code'];
 		$this->Description->DbValue = $row['Description'];
-		$this->group_id->DbValue = $row['group_id'];
-		$this->ProcurementDate->DbValue = $row['ProcurementDate'];
-		$this->ProcurementCurrentCost->DbValue = $row['ProcurementCurrentCost'];
-		$this->Salvage->DbValue = $row['Salvage'];
+		$this->brand_id->DbValue = $row['brand_id'];
+		$this->signature_id->DbValue = $row['signature_id'];
+		$this->department_id->DbValue = $row['department_id'];
+		$this->location_id->DbValue = $row['location_id'];
 		$this->Qty->DbValue = $row['Qty'];
 		$this->Remarks->DbValue = $row['Remarks'];
+		$this->ProcurementDate->DbValue = $row['ProcurementDate'];
+		$this->ProcurementCurrentCost->DbValue = $row['ProcurementCurrentCost'];
 		$this->PeriodBegin->DbValue = $row['PeriodBegin'];
 		$this->PeriodEnd->DbValue = $row['PeriodEnd'];
 	}
@@ -912,16 +940,18 @@ class t004_asset extends DbTable
 	{
 		$this->id->setDbValue($rs->fields('id'));
 		$this->property_id->setDbValue($rs->fields('property_id'));
-		$this->department_id->setDbValue($rs->fields('department_id'));
-		$this->signature_id->setDbValue($rs->fields('signature_id'));
+		$this->group_id->setDbValue($rs->fields('group_id'));
+		$this->type_id->setDbValue($rs->fields('type_id'));
 		$this->Code->setDbValue($rs->fields('Code'));
 		$this->Description->setDbValue($rs->fields('Description'));
-		$this->group_id->setDbValue($rs->fields('group_id'));
-		$this->ProcurementDate->setDbValue($rs->fields('ProcurementDate'));
-		$this->ProcurementCurrentCost->setDbValue($rs->fields('ProcurementCurrentCost'));
-		$this->Salvage->setDbValue($rs->fields('Salvage'));
+		$this->brand_id->setDbValue($rs->fields('brand_id'));
+		$this->signature_id->setDbValue($rs->fields('signature_id'));
+		$this->department_id->setDbValue($rs->fields('department_id'));
+		$this->location_id->setDbValue($rs->fields('location_id'));
 		$this->Qty->setDbValue($rs->fields('Qty'));
 		$this->Remarks->setDbValue($rs->fields('Remarks'));
+		$this->ProcurementDate->setDbValue($rs->fields('ProcurementDate'));
+		$this->ProcurementCurrentCost->setDbValue($rs->fields('ProcurementCurrentCost'));
 		$this->PeriodBegin->setDbValue($rs->fields('PeriodBegin'));
 		$this->PeriodEnd->setDbValue($rs->fields('PeriodEnd'));
 	}
@@ -937,16 +967,18 @@ class t004_asset extends DbTable
 		// Common render codes
 		// id
 		// property_id
-		// department_id
-		// signature_id
+		// group_id
+		// type_id
 		// Code
 		// Description
-		// group_id
-		// ProcurementDate
-		// ProcurementCurrentCost
-		// Salvage
+		// brand_id
+		// signature_id
+		// department_id
+		// location_id
 		// Qty
 		// Remarks
+		// ProcurementDate
+		// ProcurementCurrentCost
 		// PeriodBegin
 		// PeriodEnd
 		// id
@@ -976,27 +1008,80 @@ class t004_asset extends DbTable
 		}
 		$this->property_id->ViewCustomAttributes = "";
 
-		// department_id
-		$curVal = strval($this->department_id->CurrentValue);
+		// group_id
+		$this->group_id->ViewValue = $this->group_id->CurrentValue;
+		$curVal = strval($this->group_id->CurrentValue);
 		if ($curVal != "") {
-			$this->department_id->ViewValue = $this->department_id->lookupCacheOption($curVal);
-			if ($this->department_id->ViewValue === NULL) { // Lookup from database
+			$this->group_id->ViewValue = $this->group_id->lookupCacheOption($curVal);
+			if ($this->group_id->ViewValue === NULL) { // Lookup from database
 				$filterWrk = "`id`" . SearchString("=", $curVal, DATATYPE_NUMBER, "");
-				$sqlWrk = $this->department_id->Lookup->getSql(FALSE, $filterWrk, '', $this);
+				$sqlWrk = $this->group_id->Lookup->getSql(FALSE, $filterWrk, '', $this);
 				$rswrk = Conn()->execute($sqlWrk);
 				if ($rswrk && !$rswrk->EOF) { // Lookup values found
 					$arwrk = [];
 					$arwrk[1] = $rswrk->fields('df');
-					$this->department_id->ViewValue = $this->department_id->displayValue($arwrk);
+					$this->group_id->ViewValue = $this->group_id->displayValue($arwrk);
 					$rswrk->Close();
 				} else {
-					$this->department_id->ViewValue = $this->department_id->CurrentValue;
+					$this->group_id->ViewValue = $this->group_id->CurrentValue;
 				}
 			}
 		} else {
-			$this->department_id->ViewValue = NULL;
+			$this->group_id->ViewValue = NULL;
 		}
-		$this->department_id->ViewCustomAttributes = "";
+		$this->group_id->ViewCustomAttributes = "";
+
+		// type_id
+		$curVal = strval($this->type_id->CurrentValue);
+		if ($curVal != "") {
+			$this->type_id->ViewValue = $this->type_id->lookupCacheOption($curVal);
+			if ($this->type_id->ViewValue === NULL) { // Lookup from database
+				$filterWrk = "`id`" . SearchString("=", $curVal, DATATYPE_NUMBER, "");
+				$sqlWrk = $this->type_id->Lookup->getSql(FALSE, $filterWrk, '', $this);
+				$rswrk = Conn()->execute($sqlWrk);
+				if ($rswrk && !$rswrk->EOF) { // Lookup values found
+					$arwrk = [];
+					$arwrk[1] = $rswrk->fields('df');
+					$this->type_id->ViewValue = $this->type_id->displayValue($arwrk);
+					$rswrk->Close();
+				} else {
+					$this->type_id->ViewValue = $this->type_id->CurrentValue;
+				}
+			}
+		} else {
+			$this->type_id->ViewValue = NULL;
+		}
+		$this->type_id->ViewCustomAttributes = "";
+
+		// Code
+		$this->Code->ViewValue = $this->Code->CurrentValue;
+		$this->Code->ViewCustomAttributes = "";
+
+		// Description
+		$this->Description->ViewValue = $this->Description->CurrentValue;
+		$this->Description->ViewCustomAttributes = "";
+
+		// brand_id
+		$curVal = strval($this->brand_id->CurrentValue);
+		if ($curVal != "") {
+			$this->brand_id->ViewValue = $this->brand_id->lookupCacheOption($curVal);
+			if ($this->brand_id->ViewValue === NULL) { // Lookup from database
+				$filterWrk = "`id`" . SearchString("=", $curVal, DATATYPE_NUMBER, "");
+				$sqlWrk = $this->brand_id->Lookup->getSql(FALSE, $filterWrk, '', $this);
+				$rswrk = Conn()->execute($sqlWrk);
+				if ($rswrk && !$rswrk->EOF) { // Lookup values found
+					$arwrk = [];
+					$arwrk[1] = $rswrk->fields('df');
+					$this->brand_id->ViewValue = $this->brand_id->displayValue($arwrk);
+					$rswrk->Close();
+				} else {
+					$this->brand_id->ViewValue = $this->brand_id->CurrentValue;
+				}
+			}
+		} else {
+			$this->brand_id->ViewValue = NULL;
+		}
+		$this->brand_id->ViewCustomAttributes = "";
 
 		// signature_id
 		$curVal = strval($this->signature_id->CurrentValue);
@@ -1020,36 +1105,59 @@ class t004_asset extends DbTable
 		}
 		$this->signature_id->ViewCustomAttributes = "";
 
-		// Code
-		$this->Code->ViewValue = $this->Code->CurrentValue;
-		$this->Code->ViewCustomAttributes = "";
-
-		// Description
-		$this->Description->ViewValue = $this->Description->CurrentValue;
-		$this->Description->ViewCustomAttributes = "";
-
-		// group_id
-		$curVal = strval($this->group_id->CurrentValue);
+		// department_id
+		$curVal = strval($this->department_id->CurrentValue);
 		if ($curVal != "") {
-			$this->group_id->ViewValue = $this->group_id->lookupCacheOption($curVal);
-			if ($this->group_id->ViewValue === NULL) { // Lookup from database
+			$this->department_id->ViewValue = $this->department_id->lookupCacheOption($curVal);
+			if ($this->department_id->ViewValue === NULL) { // Lookup from database
 				$filterWrk = "`id`" . SearchString("=", $curVal, DATATYPE_NUMBER, "");
-				$sqlWrk = $this->group_id->Lookup->getSql(FALSE, $filterWrk, '', $this);
+				$sqlWrk = $this->department_id->Lookup->getSql(FALSE, $filterWrk, '', $this);
 				$rswrk = Conn()->execute($sqlWrk);
 				if ($rswrk && !$rswrk->EOF) { // Lookup values found
 					$arwrk = [];
 					$arwrk[1] = $rswrk->fields('df');
-					$arwrk[2] = FormatNumber($rswrk->fields('df2'), 0, -2, -2, -2);
-					$this->group_id->ViewValue = $this->group_id->displayValue($arwrk);
+					$this->department_id->ViewValue = $this->department_id->displayValue($arwrk);
 					$rswrk->Close();
 				} else {
-					$this->group_id->ViewValue = $this->group_id->CurrentValue;
+					$this->department_id->ViewValue = $this->department_id->CurrentValue;
 				}
 			}
 		} else {
-			$this->group_id->ViewValue = NULL;
+			$this->department_id->ViewValue = NULL;
 		}
-		$this->group_id->ViewCustomAttributes = "";
+		$this->department_id->ViewCustomAttributes = "";
+
+		// location_id
+		$curVal = strval($this->location_id->CurrentValue);
+		if ($curVal != "") {
+			$this->location_id->ViewValue = $this->location_id->lookupCacheOption($curVal);
+			if ($this->location_id->ViewValue === NULL) { // Lookup from database
+				$filterWrk = "`id`" . SearchString("=", $curVal, DATATYPE_NUMBER, "");
+				$sqlWrk = $this->location_id->Lookup->getSql(FALSE, $filterWrk, '', $this);
+				$rswrk = Conn()->execute($sqlWrk);
+				if ($rswrk && !$rswrk->EOF) { // Lookup values found
+					$arwrk = [];
+					$arwrk[1] = $rswrk->fields('df');
+					$this->location_id->ViewValue = $this->location_id->displayValue($arwrk);
+					$rswrk->Close();
+				} else {
+					$this->location_id->ViewValue = $this->location_id->CurrentValue;
+				}
+			}
+		} else {
+			$this->location_id->ViewValue = NULL;
+		}
+		$this->location_id->ViewCustomAttributes = "";
+
+		// Qty
+		$this->Qty->ViewValue = $this->Qty->CurrentValue;
+		$this->Qty->ViewValue = FormatNumber($this->Qty->ViewValue, 2, -2, -2, -2);
+		$this->Qty->CellCssStyle .= "text-align: right;";
+		$this->Qty->ViewCustomAttributes = "";
+
+		// Remarks
+		$this->Remarks->ViewValue = $this->Remarks->CurrentValue;
+		$this->Remarks->ViewCustomAttributes = "";
 
 		// ProcurementDate
 		$this->ProcurementDate->ViewValue = $this->ProcurementDate->CurrentValue;
@@ -1061,22 +1169,6 @@ class t004_asset extends DbTable
 		$this->ProcurementCurrentCost->ViewValue = FormatNumber($this->ProcurementCurrentCost->ViewValue, 2, -2, -2, -2);
 		$this->ProcurementCurrentCost->CellCssStyle .= "text-align: right;";
 		$this->ProcurementCurrentCost->ViewCustomAttributes = "";
-
-		// Salvage
-		$this->Salvage->ViewValue = $this->Salvage->CurrentValue;
-		$this->Salvage->ViewValue = FormatNumber($this->Salvage->ViewValue, 2, -2, -2, -2);
-		$this->Salvage->CellCssStyle .= "text-align: right;";
-		$this->Salvage->ViewCustomAttributes = "";
-
-		// Qty
-		$this->Qty->ViewValue = $this->Qty->CurrentValue;
-		$this->Qty->ViewValue = FormatNumber($this->Qty->ViewValue, 2, -2, -2, -2);
-		$this->Qty->CellCssStyle .= "text-align: right;";
-		$this->Qty->ViewCustomAttributes = "";
-
-		// Remarks
-		$this->Remarks->ViewValue = $this->Remarks->CurrentValue;
-		$this->Remarks->ViewCustomAttributes = "";
 
 		// PeriodBegin
 		$this->PeriodBegin->ViewValue = $this->PeriodBegin->CurrentValue;
@@ -1098,15 +1190,15 @@ class t004_asset extends DbTable
 		$this->property_id->HrefValue = "";
 		$this->property_id->TooltipValue = "";
 
-		// department_id
-		$this->department_id->LinkCustomAttributes = "";
-		$this->department_id->HrefValue = "";
-		$this->department_id->TooltipValue = "";
+		// group_id
+		$this->group_id->LinkCustomAttributes = "";
+		$this->group_id->HrefValue = "";
+		$this->group_id->TooltipValue = "";
 
-		// signature_id
-		$this->signature_id->LinkCustomAttributes = "";
-		$this->signature_id->HrefValue = "";
-		$this->signature_id->TooltipValue = "";
+		// type_id
+		$this->type_id->LinkCustomAttributes = "";
+		$this->type_id->HrefValue = "";
+		$this->type_id->TooltipValue = "";
 
 		// Code
 		$this->Code->LinkCustomAttributes = "";
@@ -1118,25 +1210,25 @@ class t004_asset extends DbTable
 		$this->Description->HrefValue = "";
 		$this->Description->TooltipValue = "";
 
-		// group_id
-		$this->group_id->LinkCustomAttributes = "";
-		$this->group_id->HrefValue = "";
-		$this->group_id->TooltipValue = "";
+		// brand_id
+		$this->brand_id->LinkCustomAttributes = "";
+		$this->brand_id->HrefValue = "";
+		$this->brand_id->TooltipValue = "";
 
-		// ProcurementDate
-		$this->ProcurementDate->LinkCustomAttributes = "";
-		$this->ProcurementDate->HrefValue = "";
-		$this->ProcurementDate->TooltipValue = "";
+		// signature_id
+		$this->signature_id->LinkCustomAttributes = "";
+		$this->signature_id->HrefValue = "";
+		$this->signature_id->TooltipValue = "";
 
-		// ProcurementCurrentCost
-		$this->ProcurementCurrentCost->LinkCustomAttributes = "";
-		$this->ProcurementCurrentCost->HrefValue = "";
-		$this->ProcurementCurrentCost->TooltipValue = "";
+		// department_id
+		$this->department_id->LinkCustomAttributes = "";
+		$this->department_id->HrefValue = "";
+		$this->department_id->TooltipValue = "";
 
-		// Salvage
-		$this->Salvage->LinkCustomAttributes = "";
-		$this->Salvage->HrefValue = "";
-		$this->Salvage->TooltipValue = "";
+		// location_id
+		$this->location_id->LinkCustomAttributes = "";
+		$this->location_id->HrefValue = "";
+		$this->location_id->TooltipValue = "";
 
 		// Qty
 		$this->Qty->LinkCustomAttributes = "";
@@ -1147,6 +1239,16 @@ class t004_asset extends DbTable
 		$this->Remarks->LinkCustomAttributes = "";
 		$this->Remarks->HrefValue = "";
 		$this->Remarks->TooltipValue = "";
+
+		// ProcurementDate
+		$this->ProcurementDate->LinkCustomAttributes = "";
+		$this->ProcurementDate->HrefValue = "";
+		$this->ProcurementDate->TooltipValue = "";
+
+		// ProcurementCurrentCost
+		$this->ProcurementCurrentCost->LinkCustomAttributes = "";
+		$this->ProcurementCurrentCost->HrefValue = "";
+		$this->ProcurementCurrentCost->TooltipValue = "";
 
 		// PeriodBegin
 		$this->PeriodBegin->LinkCustomAttributes = "";
@@ -1183,13 +1285,15 @@ class t004_asset extends DbTable
 		$this->property_id->EditAttrs["class"] = "form-control";
 		$this->property_id->EditCustomAttributes = "";
 
-		// department_id
-		$this->department_id->EditAttrs["class"] = "form-control";
-		$this->department_id->EditCustomAttributes = "";
+		// group_id
+		$this->group_id->EditAttrs["class"] = "form-control";
+		$this->group_id->EditCustomAttributes = "";
+		$this->group_id->EditValue = $this->group_id->CurrentValue;
+		$this->group_id->PlaceHolder = RemoveHtml($this->group_id->caption());
 
-		// signature_id
-		$this->signature_id->EditAttrs["class"] = "form-control";
-		$this->signature_id->EditCustomAttributes = "";
+		// type_id
+		$this->type_id->EditAttrs["class"] = "form-control";
+		$this->type_id->EditCustomAttributes = "";
 
 		// Code
 		$this->Code->EditAttrs["class"] = "form-control";
@@ -1207,33 +1311,21 @@ class t004_asset extends DbTable
 		$this->Description->EditValue = $this->Description->CurrentValue;
 		$this->Description->PlaceHolder = RemoveHtml($this->Description->caption());
 
-		// group_id
-		$this->group_id->EditAttrs["class"] = "form-control";
-		$this->group_id->EditCustomAttributes = "";
+		// brand_id
+		$this->brand_id->EditAttrs["class"] = "form-control";
+		$this->brand_id->EditCustomAttributes = "";
 
-		// ProcurementDate
-		$this->ProcurementDate->EditAttrs["class"] = "form-control";
-		$this->ProcurementDate->EditCustomAttributes = "";
-		$this->ProcurementDate->EditValue = FormatDateTime($this->ProcurementDate->CurrentValue, 7);
-		$this->ProcurementDate->PlaceHolder = RemoveHtml($this->ProcurementDate->caption());
+		// signature_id
+		$this->signature_id->EditAttrs["class"] = "form-control";
+		$this->signature_id->EditCustomAttributes = "";
 
-		// ProcurementCurrentCost
-		$this->ProcurementCurrentCost->EditAttrs["class"] = "form-control";
-		$this->ProcurementCurrentCost->EditCustomAttributes = "";
-		$this->ProcurementCurrentCost->EditValue = $this->ProcurementCurrentCost->CurrentValue;
-		$this->ProcurementCurrentCost->PlaceHolder = RemoveHtml($this->ProcurementCurrentCost->caption());
-		if (strval($this->ProcurementCurrentCost->EditValue) != "" && is_numeric($this->ProcurementCurrentCost->EditValue))
-			$this->ProcurementCurrentCost->EditValue = FormatNumber($this->ProcurementCurrentCost->EditValue, -2, -2, -2, -2);
-		
+		// department_id
+		$this->department_id->EditAttrs["class"] = "form-control";
+		$this->department_id->EditCustomAttributes = "";
 
-		// Salvage
-		$this->Salvage->EditAttrs["class"] = "form-control";
-		$this->Salvage->EditCustomAttributes = "";
-		$this->Salvage->EditValue = $this->Salvage->CurrentValue;
-		$this->Salvage->PlaceHolder = RemoveHtml($this->Salvage->caption());
-		if (strval($this->Salvage->EditValue) != "" && is_numeric($this->Salvage->EditValue))
-			$this->Salvage->EditValue = FormatNumber($this->Salvage->EditValue, -2, -2, -2, -2);
-		
+		// location_id
+		$this->location_id->EditAttrs["class"] = "form-control";
+		$this->location_id->EditCustomAttributes = "";
 
 		// Qty
 		$this->Qty->EditAttrs["class"] = "form-control";
@@ -1249,6 +1341,21 @@ class t004_asset extends DbTable
 		$this->Remarks->EditCustomAttributes = "";
 		$this->Remarks->EditValue = $this->Remarks->CurrentValue;
 		$this->Remarks->PlaceHolder = RemoveHtml($this->Remarks->caption());
+
+		// ProcurementDate
+		$this->ProcurementDate->EditAttrs["class"] = "form-control";
+		$this->ProcurementDate->EditCustomAttributes = "";
+		$this->ProcurementDate->EditValue = FormatDateTime($this->ProcurementDate->CurrentValue, 7);
+		$this->ProcurementDate->PlaceHolder = RemoveHtml($this->ProcurementDate->caption());
+
+		// ProcurementCurrentCost
+		$this->ProcurementCurrentCost->EditAttrs["class"] = "form-control";
+		$this->ProcurementCurrentCost->EditCustomAttributes = "";
+		$this->ProcurementCurrentCost->EditValue = $this->ProcurementCurrentCost->CurrentValue;
+		$this->ProcurementCurrentCost->PlaceHolder = RemoveHtml($this->ProcurementCurrentCost->caption());
+		if (strval($this->ProcurementCurrentCost->EditValue) != "" && is_numeric($this->ProcurementCurrentCost->EditValue))
+			$this->ProcurementCurrentCost->EditValue = FormatNumber($this->ProcurementCurrentCost->EditValue, -2, -2, -2, -2);
+		
 
 		// PeriodBegin
 		$this->PeriodBegin->EditAttrs["class"] = "form-control";
@@ -1294,31 +1401,35 @@ class t004_asset extends DbTable
 				$doc->beginExportRow();
 				if ($exportPageType == "view") {
 					$doc->exportCaption($this->property_id);
-					$doc->exportCaption($this->department_id);
-					$doc->exportCaption($this->signature_id);
+					$doc->exportCaption($this->group_id);
+					$doc->exportCaption($this->type_id);
 					$doc->exportCaption($this->Code);
 					$doc->exportCaption($this->Description);
-					$doc->exportCaption($this->group_id);
-					$doc->exportCaption($this->ProcurementDate);
-					$doc->exportCaption($this->ProcurementCurrentCost);
-					$doc->exportCaption($this->Salvage);
+					$doc->exportCaption($this->brand_id);
+					$doc->exportCaption($this->signature_id);
+					$doc->exportCaption($this->department_id);
+					$doc->exportCaption($this->location_id);
 					$doc->exportCaption($this->Qty);
 					$doc->exportCaption($this->Remarks);
+					$doc->exportCaption($this->ProcurementDate);
+					$doc->exportCaption($this->ProcurementCurrentCost);
 					$doc->exportCaption($this->PeriodBegin);
 					$doc->exportCaption($this->PeriodEnd);
 				} else {
 					$doc->exportCaption($this->id);
 					$doc->exportCaption($this->property_id);
-					$doc->exportCaption($this->department_id);
-					$doc->exportCaption($this->signature_id);
+					$doc->exportCaption($this->group_id);
+					$doc->exportCaption($this->type_id);
 					$doc->exportCaption($this->Code);
 					$doc->exportCaption($this->Description);
-					$doc->exportCaption($this->group_id);
-					$doc->exportCaption($this->ProcurementDate);
-					$doc->exportCaption($this->ProcurementCurrentCost);
-					$doc->exportCaption($this->Salvage);
+					$doc->exportCaption($this->brand_id);
+					$doc->exportCaption($this->signature_id);
+					$doc->exportCaption($this->department_id);
+					$doc->exportCaption($this->location_id);
 					$doc->exportCaption($this->Qty);
 					$doc->exportCaption($this->Remarks);
+					$doc->exportCaption($this->ProcurementDate);
+					$doc->exportCaption($this->ProcurementCurrentCost);
 					$doc->exportCaption($this->PeriodBegin);
 					$doc->exportCaption($this->PeriodEnd);
 				}
@@ -1353,31 +1464,35 @@ class t004_asset extends DbTable
 					$doc->beginExportRow($rowCnt); // Allow CSS styles if enabled
 					if ($exportPageType == "view") {
 						$doc->exportField($this->property_id);
-						$doc->exportField($this->department_id);
-						$doc->exportField($this->signature_id);
+						$doc->exportField($this->group_id);
+						$doc->exportField($this->type_id);
 						$doc->exportField($this->Code);
 						$doc->exportField($this->Description);
-						$doc->exportField($this->group_id);
-						$doc->exportField($this->ProcurementDate);
-						$doc->exportField($this->ProcurementCurrentCost);
-						$doc->exportField($this->Salvage);
+						$doc->exportField($this->brand_id);
+						$doc->exportField($this->signature_id);
+						$doc->exportField($this->department_id);
+						$doc->exportField($this->location_id);
 						$doc->exportField($this->Qty);
 						$doc->exportField($this->Remarks);
+						$doc->exportField($this->ProcurementDate);
+						$doc->exportField($this->ProcurementCurrentCost);
 						$doc->exportField($this->PeriodBegin);
 						$doc->exportField($this->PeriodEnd);
 					} else {
 						$doc->exportField($this->id);
 						$doc->exportField($this->property_id);
-						$doc->exportField($this->department_id);
-						$doc->exportField($this->signature_id);
+						$doc->exportField($this->group_id);
+						$doc->exportField($this->type_id);
 						$doc->exportField($this->Code);
 						$doc->exportField($this->Description);
-						$doc->exportField($this->group_id);
-						$doc->exportField($this->ProcurementDate);
-						$doc->exportField($this->ProcurementCurrentCost);
-						$doc->exportField($this->Salvage);
+						$doc->exportField($this->brand_id);
+						$doc->exportField($this->signature_id);
+						$doc->exportField($this->department_id);
+						$doc->exportField($this->location_id);
 						$doc->exportField($this->Qty);
 						$doc->exportField($this->Remarks);
+						$doc->exportField($this->ProcurementDate);
+						$doc->exportField($this->ProcurementCurrentCost);
 						$doc->exportField($this->PeriodBegin);
 						$doc->exportField($this->PeriodEnd);
 					}
@@ -1579,6 +1694,18 @@ class t004_asset extends DbTable
 
 		// Enter your code here
 		// To cancel, set return value to FALSE
+		// cari nilai group_id berdasarkan $rsnew["type_id"]
+
+		$rsnew["group_id"] = fCariGroupID($rsnew["type_id"]);
+
+		// Create Code
+		$rsnew["Code"] = fCreateCode(
+			$rsnew["property_id"],
+			$rsnew["group_id"],
+			$rsnew["type_id"],
+			$rsnew["ProcurementDate"]
+		);
+
 		// ambil nilai economical life time
 		// ambil nilai awal periode
 		// ambil nilai akhir periode
@@ -1601,6 +1728,19 @@ class t004_asset extends DbTable
 
 		// Enter your code here
 		// To cancel, set return value to FALSE
+		// cari nilai group_id berdasarkan $rsnew["type_id"]
+
+		$rsnew["group_id"] = fCariGroupID($rsnew["type_id"]);
+
+		// Update Code
+		$rsnew["Code"] = fUpdateCode(
+			$rsnew["property_id"],
+			$rsnew["group_id"],
+			$rsnew["type_id"],
+			$rsnew["ProcurementDate"],
+			$rsold["id"]
+		);
+
 		// ambil nilai economical life time
 		// ambil nilai awal periode
 		// ambil nilai akhir periode

@@ -567,7 +567,7 @@ class r001_asset_summary extends r001_asset
 	public $TotalGroups = 0; // Total groups
 	public $GroupCount = 0; // Group count
 	public $GroupCounter = []; // Group counter
-	public $DisplayGroups = 3; // Groups per page
+	public $DisplayGroups = 5; // Groups per page
 	public $GroupRange = 10;
 	public $PageSizes = "1,2,3,5,-1"; // Page sizes (comma separated)
 	public $Sort = "";
@@ -693,16 +693,18 @@ class r001_asset_summary extends r001_asset
 
 		// Set field visibility for detail fields
 		$this->property_id->setVisibility();
-		$this->department_id->setVisibility();
-		$this->signature_id->setVisibility();
+		$this->group_id->setVisibility();
 		$this->Code->setVisibility();
 		$this->Description->setVisibility();
-		$this->group_id->setVisibility();
-		$this->ProcurementDate->setVisibility();
-		$this->ProcurementCurrentCost->setVisibility();
-		$this->Salvage->setVisibility();
+		$this->brand_id->setVisibility();
+		$this->type_id->setVisibility();
+		$this->signature_id->setVisibility();
+		$this->department_id->setVisibility();
+		$this->location_id->setVisibility();
 		$this->Qty->setVisibility();
 		$this->Remarks->setVisibility();
+		$this->ProcurementDate->setVisibility();
+		$this->ProcurementCurrentCost->setVisibility();
 		$this->PeriodBegin->setVisibility();
 		$this->PeriodEnd->setVisibility();
 
@@ -812,31 +814,35 @@ class r001_asset_summary extends r001_asset
 			$data = [];
 			$data["id"] = $record['id'];
 			$data["property_id"] = $record['property_id'];
-			$data["department_id"] = $record['department_id'];
-			$data["signature_id"] = $record['signature_id'];
+			$data["group_id"] = $record['group_id'];
 			$data["Code"] = $record['Code'];
 			$data["Description"] = $record['Description'];
-			$data["group_id"] = $record['group_id'];
+			$data["brand_id"] = $record['brand_id'];
+			$data["type_id"] = $record['type_id'];
+			$data["signature_id"] = $record['signature_id'];
+			$data["department_id"] = $record['department_id'];
+			$data["location_id"] = $record['location_id'];
+			$data["Qty"] = $record['Qty'];
 			$data["ProcurementDate"] = $record['ProcurementDate'];
 			$data["ProcurementCurrentCost"] = $record['ProcurementCurrentCost'];
-			$data["Salvage"] = $record['Salvage'];
-			$data["Qty"] = $record['Qty'];
 			$data["PeriodBegin"] = $record['PeriodBegin'];
 			$data["PeriodEnd"] = $record['PeriodEnd'];
 			$this->Rows[] = $data;
 		}
 		$this->id->setDbValue($record['id']);
 		$this->property_id->setDbValue($record['property_id']);
-		$this->department_id->setDbValue($record['department_id']);
-		$this->signature_id->setDbValue($record['signature_id']);
+		$this->group_id->setDbValue($record['group_id']);
 		$this->Code->setDbValue($record['Code']);
 		$this->Description->setDbValue($record['Description']);
-		$this->group_id->setDbValue($record['group_id']);
-		$this->ProcurementDate->setDbValue($record['ProcurementDate']);
-		$this->ProcurementCurrentCost->setDbValue($record['ProcurementCurrentCost']);
-		$this->Salvage->setDbValue($record['Salvage']);
+		$this->brand_id->setDbValue($record['brand_id']);
+		$this->type_id->setDbValue($record['type_id']);
+		$this->signature_id->setDbValue($record['signature_id']);
+		$this->department_id->setDbValue($record['department_id']);
+		$this->location_id->setDbValue($record['location_id']);
 		$this->Qty->setDbValue($record['Qty']);
 		$this->Remarks->setDbValue($record['Remarks']);
+		$this->ProcurementDate->setDbValue($record['ProcurementDate']);
+		$this->ProcurementCurrentCost->setDbValue($record['ProcurementCurrentCost']);
 		$this->PeriodBegin->setDbValue($record['PeriodBegin']);
 		$this->PeriodEnd->setDbValue($record['PeriodEnd']);
 	}
@@ -878,16 +884,18 @@ class r001_asset_summary extends r001_asset
 		$this->Row_Rendering();
 
 		// property_id
-		// department_id
-		// signature_id
+		// group_id
 		// Code
 		// Description
-		// group_id
-		// ProcurementDate
-		// ProcurementCurrentCost
-		// Salvage
+		// brand_id
+		// type_id
+		// signature_id
+		// department_id
+		// location_id
 		// Qty
 		// Remarks
+		// ProcurementDate
+		// ProcurementCurrentCost
 		// PeriodBegin
 		// PeriodEnd
 
@@ -898,11 +906,8 @@ class r001_asset_summary extends r001_asset
 			// property_id
 			$this->property_id->HrefValue = "";
 
-			// department_id
-			$this->department_id->HrefValue = "";
-
-			// signature_id
-			$this->signature_id->HrefValue = "";
+			// group_id
+			$this->group_id->HrefValue = "";
 
 			// Code
 			$this->Code->HrefValue = "";
@@ -910,23 +915,32 @@ class r001_asset_summary extends r001_asset
 			// Description
 			$this->Description->HrefValue = "";
 
-			// group_id
-			$this->group_id->HrefValue = "";
+			// brand_id
+			$this->brand_id->HrefValue = "";
 
-			// ProcurementDate
-			$this->ProcurementDate->HrefValue = "";
+			// type_id
+			$this->type_id->HrefValue = "";
 
-			// ProcurementCurrentCost
-			$this->ProcurementCurrentCost->HrefValue = "";
+			// signature_id
+			$this->signature_id->HrefValue = "";
 
-			// Salvage
-			$this->Salvage->HrefValue = "";
+			// department_id
+			$this->department_id->HrefValue = "";
+
+			// location_id
+			$this->location_id->HrefValue = "";
 
 			// Qty
 			$this->Qty->HrefValue = "";
 
 			// Remarks
 			$this->Remarks->HrefValue = "";
+
+			// ProcurementDate
+			$this->ProcurementDate->HrefValue = "";
+
+			// ProcurementCurrentCost
+			$this->ProcurementCurrentCost->HrefValue = "";
 
 			// PeriodBegin
 			$this->PeriodBegin->HrefValue = "";
@@ -962,29 +976,86 @@ class r001_asset_summary extends r001_asset
 			$this->property_id->CellCssClass = ($this->RecordCount % 2 != 1 ? "ew-table-alt-row" : "ew-table-row");
 			$this->property_id->ViewCustomAttributes = "";
 
-			// department_id
-			$this->department_id->ViewValue = $this->department_id->CurrentValue;
-			$curVal = strval($this->department_id->CurrentValue);
+			// group_id
+			$this->group_id->ViewValue = $this->group_id->CurrentValue;
+			$curVal = strval($this->group_id->CurrentValue);
 			if ($curVal != "") {
-				$this->department_id->ViewValue = $this->department_id->lookupCacheOption($curVal);
-				if ($this->department_id->ViewValue === NULL) { // Lookup from database
+				$this->group_id->ViewValue = $this->group_id->lookupCacheOption($curVal);
+				if ($this->group_id->ViewValue === NULL) { // Lookup from database
 					$filterWrk = "`id`" . SearchString("=", $curVal, DATATYPE_NUMBER, "");
-					$sqlWrk = $this->department_id->Lookup->getSql(FALSE, $filterWrk, '', $this);
+					$sqlWrk = $this->group_id->Lookup->getSql(FALSE, $filterWrk, '', $this);
 					$rswrk = Conn()->execute($sqlWrk);
 					if ($rswrk && !$rswrk->EOF) { // Lookup values found
 						$arwrk = [];
 						$arwrk[1] = $rswrk->fields('df');
-						$this->department_id->ViewValue = $this->department_id->displayValue($arwrk);
+						$this->group_id->ViewValue = $this->group_id->displayValue($arwrk);
 						$rswrk->Close();
 					} else {
-						$this->department_id->ViewValue = $this->department_id->CurrentValue;
+						$this->group_id->ViewValue = $this->group_id->CurrentValue;
 					}
 				}
 			} else {
-				$this->department_id->ViewValue = NULL;
+				$this->group_id->ViewValue = NULL;
 			}
-			$this->department_id->CellCssClass = ($this->RecordCount % 2 != 1 ? "ew-table-alt-row" : "ew-table-row");
-			$this->department_id->ViewCustomAttributes = "";
+			$this->group_id->CellCssClass = ($this->RecordCount % 2 != 1 ? "ew-table-alt-row" : "ew-table-row");
+			$this->group_id->ViewCustomAttributes = "";
+
+			// Code
+			$this->Code->ViewValue = $this->Code->CurrentValue;
+			$this->Code->CellCssClass = ($this->RecordCount % 2 != 1 ? "ew-table-alt-row" : "ew-table-row");
+			$this->Code->ViewCustomAttributes = "";
+
+			// Description
+			$this->Description->ViewValue = $this->Description->CurrentValue;
+			$this->Description->CellCssClass = ($this->RecordCount % 2 != 1 ? "ew-table-alt-row" : "ew-table-row");
+			$this->Description->ViewCustomAttributes = "";
+
+			// brand_id
+			$curVal = strval($this->brand_id->CurrentValue);
+			if ($curVal != "") {
+				$this->brand_id->ViewValue = $this->brand_id->lookupCacheOption($curVal);
+				if ($this->brand_id->ViewValue === NULL) { // Lookup from database
+					$filterWrk = "`id`" . SearchString("=", $curVal, DATATYPE_NUMBER, "");
+					$sqlWrk = $this->brand_id->Lookup->getSql(FALSE, $filterWrk, '', $this);
+					$rswrk = Conn()->execute($sqlWrk);
+					if ($rswrk && !$rswrk->EOF) { // Lookup values found
+						$arwrk = [];
+						$arwrk[1] = $rswrk->fields('df');
+						$this->brand_id->ViewValue = $this->brand_id->displayValue($arwrk);
+						$rswrk->Close();
+					} else {
+						$this->brand_id->ViewValue = $this->brand_id->CurrentValue;
+					}
+				}
+			} else {
+				$this->brand_id->ViewValue = NULL;
+			}
+			$this->brand_id->CellCssClass = ($this->RecordCount % 2 != 1 ? "ew-table-alt-row" : "ew-table-row");
+			$this->brand_id->ViewCustomAttributes = "";
+
+			// type_id
+			$this->type_id->ViewValue = $this->type_id->CurrentValue;
+			$curVal = strval($this->type_id->CurrentValue);
+			if ($curVal != "") {
+				$this->type_id->ViewValue = $this->type_id->lookupCacheOption($curVal);
+				if ($this->type_id->ViewValue === NULL) { // Lookup from database
+					$filterWrk = "`id`" . SearchString("=", $curVal, DATATYPE_NUMBER, "");
+					$sqlWrk = $this->type_id->Lookup->getSql(FALSE, $filterWrk, '', $this);
+					$rswrk = Conn()->execute($sqlWrk);
+					if ($rswrk && !$rswrk->EOF) { // Lookup values found
+						$arwrk = [];
+						$arwrk[1] = $rswrk->fields('df');
+						$this->type_id->ViewValue = $this->type_id->displayValue($arwrk);
+						$rswrk->Close();
+					} else {
+						$this->type_id->ViewValue = $this->type_id->CurrentValue;
+					}
+				}
+			} else {
+				$this->type_id->ViewValue = NULL;
+			}
+			$this->type_id->CellCssClass = ($this->RecordCount % 2 != 1 ? "ew-table-alt-row" : "ew-table-row");
+			$this->type_id->ViewCustomAttributes = "";
 
 			// signature_id
 			$this->signature_id->ViewValue = $this->signature_id->CurrentValue;
@@ -1010,40 +1081,64 @@ class r001_asset_summary extends r001_asset
 			$this->signature_id->CellCssClass = ($this->RecordCount % 2 != 1 ? "ew-table-alt-row" : "ew-table-row");
 			$this->signature_id->ViewCustomAttributes = "";
 
-			// Code
-			$this->Code->ViewValue = $this->Code->CurrentValue;
-			$this->Code->CellCssClass = ($this->RecordCount % 2 != 1 ? "ew-table-alt-row" : "ew-table-row");
-			$this->Code->ViewCustomAttributes = "";
-
-			// Description
-			$this->Description->ViewValue = $this->Description->CurrentValue;
-			$this->Description->CellCssClass = ($this->RecordCount % 2 != 1 ? "ew-table-alt-row" : "ew-table-row");
-			$this->Description->ViewCustomAttributes = "";
-
-			// group_id
-			$this->group_id->ViewValue = $this->group_id->CurrentValue;
-			$curVal = strval($this->group_id->CurrentValue);
+			// department_id
+			$this->department_id->ViewValue = $this->department_id->CurrentValue;
+			$curVal = strval($this->department_id->CurrentValue);
 			if ($curVal != "") {
-				$this->group_id->ViewValue = $this->group_id->lookupCacheOption($curVal);
-				if ($this->group_id->ViewValue === NULL) { // Lookup from database
+				$this->department_id->ViewValue = $this->department_id->lookupCacheOption($curVal);
+				if ($this->department_id->ViewValue === NULL) { // Lookup from database
 					$filterWrk = "`id`" . SearchString("=", $curVal, DATATYPE_NUMBER, "");
-					$sqlWrk = $this->group_id->Lookup->getSql(FALSE, $filterWrk, '', $this);
+					$sqlWrk = $this->department_id->Lookup->getSql(FALSE, $filterWrk, '', $this);
 					$rswrk = Conn()->execute($sqlWrk);
 					if ($rswrk && !$rswrk->EOF) { // Lookup values found
 						$arwrk = [];
 						$arwrk[1] = $rswrk->fields('df');
-						$arwrk[2] = FormatNumber($rswrk->fields('df2'), 0, -2, -2, -2);
-						$this->group_id->ViewValue = $this->group_id->displayValue($arwrk);
+						$this->department_id->ViewValue = $this->department_id->displayValue($arwrk);
 						$rswrk->Close();
 					} else {
-						$this->group_id->ViewValue = $this->group_id->CurrentValue;
+						$this->department_id->ViewValue = $this->department_id->CurrentValue;
 					}
 				}
 			} else {
-				$this->group_id->ViewValue = NULL;
+				$this->department_id->ViewValue = NULL;
 			}
-			$this->group_id->CellCssClass = ($this->RecordCount % 2 != 1 ? "ew-table-alt-row" : "ew-table-row");
-			$this->group_id->ViewCustomAttributes = "";
+			$this->department_id->CellCssClass = ($this->RecordCount % 2 != 1 ? "ew-table-alt-row" : "ew-table-row");
+			$this->department_id->ViewCustomAttributes = "";
+
+			// location_id
+			$curVal = strval($this->location_id->CurrentValue);
+			if ($curVal != "") {
+				$this->location_id->ViewValue = $this->location_id->lookupCacheOption($curVal);
+				if ($this->location_id->ViewValue === NULL) { // Lookup from database
+					$filterWrk = "`id`" . SearchString("=", $curVal, DATATYPE_NUMBER, "");
+					$sqlWrk = $this->location_id->Lookup->getSql(FALSE, $filterWrk, '', $this);
+					$rswrk = Conn()->execute($sqlWrk);
+					if ($rswrk && !$rswrk->EOF) { // Lookup values found
+						$arwrk = [];
+						$arwrk[1] = $rswrk->fields('df');
+						$this->location_id->ViewValue = $this->location_id->displayValue($arwrk);
+						$rswrk->Close();
+					} else {
+						$this->location_id->ViewValue = $this->location_id->CurrentValue;
+					}
+				}
+			} else {
+				$this->location_id->ViewValue = NULL;
+			}
+			$this->location_id->CellCssClass = ($this->RecordCount % 2 != 1 ? "ew-table-alt-row" : "ew-table-row");
+			$this->location_id->ViewCustomAttributes = "";
+
+			// Qty
+			$this->Qty->ViewValue = $this->Qty->CurrentValue;
+			$this->Qty->ViewValue = FormatNumber($this->Qty->ViewValue, 2, -2, -2, -2);
+			$this->Qty->CellCssClass = ($this->RecordCount % 2 != 1 ? "ew-table-alt-row" : "ew-table-row");
+			$this->Qty->CellCssStyle .= "text-align: right;";
+			$this->Qty->ViewCustomAttributes = "";
+
+			// Remarks
+			$this->Remarks->ViewValue = $this->Remarks->CurrentValue;
+			$this->Remarks->CellCssClass = ($this->RecordCount % 2 != 1 ? "ew-table-alt-row" : "ew-table-row");
+			$this->Remarks->ViewCustomAttributes = "";
 
 			// ProcurementDate
 			$this->ProcurementDate->ViewValue = $this->ProcurementDate->CurrentValue;
@@ -1057,25 +1152,6 @@ class r001_asset_summary extends r001_asset
 			$this->ProcurementCurrentCost->CellCssClass = ($this->RecordCount % 2 != 1 ? "ew-table-alt-row" : "ew-table-row");
 			$this->ProcurementCurrentCost->CellCssStyle .= "text-align: right;";
 			$this->ProcurementCurrentCost->ViewCustomAttributes = "";
-
-			// Salvage
-			$this->Salvage->ViewValue = $this->Salvage->CurrentValue;
-			$this->Salvage->ViewValue = FormatNumber($this->Salvage->ViewValue, 2, -2, -2, -2);
-			$this->Salvage->CellCssClass = ($this->RecordCount % 2 != 1 ? "ew-table-alt-row" : "ew-table-row");
-			$this->Salvage->CellCssStyle .= "text-align: right;";
-			$this->Salvage->ViewCustomAttributes = "";
-
-			// Qty
-			$this->Qty->ViewValue = $this->Qty->CurrentValue;
-			$this->Qty->ViewValue = FormatNumber($this->Qty->ViewValue, 2, -2, -2, -2);
-			$this->Qty->CellCssClass = ($this->RecordCount % 2 != 1 ? "ew-table-alt-row" : "ew-table-row");
-			$this->Qty->CellCssStyle .= "text-align: right;";
-			$this->Qty->ViewCustomAttributes = "";
-
-			// Remarks
-			$this->Remarks->ViewValue = $this->Remarks->CurrentValue;
-			$this->Remarks->CellCssClass = ($this->RecordCount % 2 != 1 ? "ew-table-alt-row" : "ew-table-row");
-			$this->Remarks->ViewCustomAttributes = "";
 
 			// PeriodBegin
 			$this->PeriodBegin->ViewValue = $this->PeriodBegin->CurrentValue;
@@ -1094,15 +1170,10 @@ class r001_asset_summary extends r001_asset
 			$this->property_id->HrefValue = "";
 			$this->property_id->TooltipValue = "";
 
-			// department_id
-			$this->department_id->LinkCustomAttributes = "";
-			$this->department_id->HrefValue = "";
-			$this->department_id->TooltipValue = "";
-
-			// signature_id
-			$this->signature_id->LinkCustomAttributes = "";
-			$this->signature_id->HrefValue = "";
-			$this->signature_id->TooltipValue = "";
+			// group_id
+			$this->group_id->LinkCustomAttributes = "";
+			$this->group_id->HrefValue = "";
+			$this->group_id->TooltipValue = "";
 
 			// Code
 			$this->Code->LinkCustomAttributes = "";
@@ -1114,25 +1185,30 @@ class r001_asset_summary extends r001_asset
 			$this->Description->HrefValue = "";
 			$this->Description->TooltipValue = "";
 
-			// group_id
-			$this->group_id->LinkCustomAttributes = "";
-			$this->group_id->HrefValue = "";
-			$this->group_id->TooltipValue = "";
+			// brand_id
+			$this->brand_id->LinkCustomAttributes = "";
+			$this->brand_id->HrefValue = "";
+			$this->brand_id->TooltipValue = "";
 
-			// ProcurementDate
-			$this->ProcurementDate->LinkCustomAttributes = "";
-			$this->ProcurementDate->HrefValue = "";
-			$this->ProcurementDate->TooltipValue = "";
+			// type_id
+			$this->type_id->LinkCustomAttributes = "";
+			$this->type_id->HrefValue = "";
+			$this->type_id->TooltipValue = "";
 
-			// ProcurementCurrentCost
-			$this->ProcurementCurrentCost->LinkCustomAttributes = "";
-			$this->ProcurementCurrentCost->HrefValue = "";
-			$this->ProcurementCurrentCost->TooltipValue = "";
+			// signature_id
+			$this->signature_id->LinkCustomAttributes = "";
+			$this->signature_id->HrefValue = "";
+			$this->signature_id->TooltipValue = "";
 
-			// Salvage
-			$this->Salvage->LinkCustomAttributes = "";
-			$this->Salvage->HrefValue = "";
-			$this->Salvage->TooltipValue = "";
+			// department_id
+			$this->department_id->LinkCustomAttributes = "";
+			$this->department_id->HrefValue = "";
+			$this->department_id->TooltipValue = "";
+
+			// location_id
+			$this->location_id->LinkCustomAttributes = "";
+			$this->location_id->HrefValue = "";
+			$this->location_id->TooltipValue = "";
 
 			// Qty
 			$this->Qty->LinkCustomAttributes = "";
@@ -1143,6 +1219,16 @@ class r001_asset_summary extends r001_asset
 			$this->Remarks->LinkCustomAttributes = "";
 			$this->Remarks->HrefValue = "";
 			$this->Remarks->TooltipValue = "";
+
+			// ProcurementDate
+			$this->ProcurementDate->LinkCustomAttributes = "";
+			$this->ProcurementDate->HrefValue = "";
+			$this->ProcurementDate->TooltipValue = "";
+
+			// ProcurementCurrentCost
+			$this->ProcurementCurrentCost->LinkCustomAttributes = "";
+			$this->ProcurementCurrentCost->HrefValue = "";
+			$this->ProcurementCurrentCost->TooltipValue = "";
 
 			// PeriodBegin
 			$this->PeriodBegin->LinkCustomAttributes = "";
@@ -1168,23 +1254,14 @@ class r001_asset_summary extends r001_asset
 			$linkAttrs = &$this->property_id->LinkAttrs;
 			$this->Cell_Rendered($this->property_id, $currentValue, $viewValue, $viewAttrs, $cellAttrs, $hrefValue, $linkAttrs);
 
-			// department_id
-			$currentValue = $this->department_id->CurrentValue;
-			$viewValue = &$this->department_id->ViewValue;
-			$viewAttrs = &$this->department_id->ViewAttrs;
-			$cellAttrs = &$this->department_id->CellAttrs;
-			$hrefValue = &$this->department_id->HrefValue;
-			$linkAttrs = &$this->department_id->LinkAttrs;
-			$this->Cell_Rendered($this->department_id, $currentValue, $viewValue, $viewAttrs, $cellAttrs, $hrefValue, $linkAttrs);
-
-			// signature_id
-			$currentValue = $this->signature_id->CurrentValue;
-			$viewValue = &$this->signature_id->ViewValue;
-			$viewAttrs = &$this->signature_id->ViewAttrs;
-			$cellAttrs = &$this->signature_id->CellAttrs;
-			$hrefValue = &$this->signature_id->HrefValue;
-			$linkAttrs = &$this->signature_id->LinkAttrs;
-			$this->Cell_Rendered($this->signature_id, $currentValue, $viewValue, $viewAttrs, $cellAttrs, $hrefValue, $linkAttrs);
+			// group_id
+			$currentValue = $this->group_id->CurrentValue;
+			$viewValue = &$this->group_id->ViewValue;
+			$viewAttrs = &$this->group_id->ViewAttrs;
+			$cellAttrs = &$this->group_id->CellAttrs;
+			$hrefValue = &$this->group_id->HrefValue;
+			$linkAttrs = &$this->group_id->LinkAttrs;
+			$this->Cell_Rendered($this->group_id, $currentValue, $viewValue, $viewAttrs, $cellAttrs, $hrefValue, $linkAttrs);
 
 			// Code
 			$currentValue = $this->Code->CurrentValue;
@@ -1204,41 +1281,50 @@ class r001_asset_summary extends r001_asset
 			$linkAttrs = &$this->Description->LinkAttrs;
 			$this->Cell_Rendered($this->Description, $currentValue, $viewValue, $viewAttrs, $cellAttrs, $hrefValue, $linkAttrs);
 
-			// group_id
-			$currentValue = $this->group_id->CurrentValue;
-			$viewValue = &$this->group_id->ViewValue;
-			$viewAttrs = &$this->group_id->ViewAttrs;
-			$cellAttrs = &$this->group_id->CellAttrs;
-			$hrefValue = &$this->group_id->HrefValue;
-			$linkAttrs = &$this->group_id->LinkAttrs;
-			$this->Cell_Rendered($this->group_id, $currentValue, $viewValue, $viewAttrs, $cellAttrs, $hrefValue, $linkAttrs);
+			// brand_id
+			$currentValue = $this->brand_id->CurrentValue;
+			$viewValue = &$this->brand_id->ViewValue;
+			$viewAttrs = &$this->brand_id->ViewAttrs;
+			$cellAttrs = &$this->brand_id->CellAttrs;
+			$hrefValue = &$this->brand_id->HrefValue;
+			$linkAttrs = &$this->brand_id->LinkAttrs;
+			$this->Cell_Rendered($this->brand_id, $currentValue, $viewValue, $viewAttrs, $cellAttrs, $hrefValue, $linkAttrs);
 
-			// ProcurementDate
-			$currentValue = $this->ProcurementDate->CurrentValue;
-			$viewValue = &$this->ProcurementDate->ViewValue;
-			$viewAttrs = &$this->ProcurementDate->ViewAttrs;
-			$cellAttrs = &$this->ProcurementDate->CellAttrs;
-			$hrefValue = &$this->ProcurementDate->HrefValue;
-			$linkAttrs = &$this->ProcurementDate->LinkAttrs;
-			$this->Cell_Rendered($this->ProcurementDate, $currentValue, $viewValue, $viewAttrs, $cellAttrs, $hrefValue, $linkAttrs);
+			// type_id
+			$currentValue = $this->type_id->CurrentValue;
+			$viewValue = &$this->type_id->ViewValue;
+			$viewAttrs = &$this->type_id->ViewAttrs;
+			$cellAttrs = &$this->type_id->CellAttrs;
+			$hrefValue = &$this->type_id->HrefValue;
+			$linkAttrs = &$this->type_id->LinkAttrs;
+			$this->Cell_Rendered($this->type_id, $currentValue, $viewValue, $viewAttrs, $cellAttrs, $hrefValue, $linkAttrs);
 
-			// ProcurementCurrentCost
-			$currentValue = $this->ProcurementCurrentCost->CurrentValue;
-			$viewValue = &$this->ProcurementCurrentCost->ViewValue;
-			$viewAttrs = &$this->ProcurementCurrentCost->ViewAttrs;
-			$cellAttrs = &$this->ProcurementCurrentCost->CellAttrs;
-			$hrefValue = &$this->ProcurementCurrentCost->HrefValue;
-			$linkAttrs = &$this->ProcurementCurrentCost->LinkAttrs;
-			$this->Cell_Rendered($this->ProcurementCurrentCost, $currentValue, $viewValue, $viewAttrs, $cellAttrs, $hrefValue, $linkAttrs);
+			// signature_id
+			$currentValue = $this->signature_id->CurrentValue;
+			$viewValue = &$this->signature_id->ViewValue;
+			$viewAttrs = &$this->signature_id->ViewAttrs;
+			$cellAttrs = &$this->signature_id->CellAttrs;
+			$hrefValue = &$this->signature_id->HrefValue;
+			$linkAttrs = &$this->signature_id->LinkAttrs;
+			$this->Cell_Rendered($this->signature_id, $currentValue, $viewValue, $viewAttrs, $cellAttrs, $hrefValue, $linkAttrs);
 
-			// Salvage
-			$currentValue = $this->Salvage->CurrentValue;
-			$viewValue = &$this->Salvage->ViewValue;
-			$viewAttrs = &$this->Salvage->ViewAttrs;
-			$cellAttrs = &$this->Salvage->CellAttrs;
-			$hrefValue = &$this->Salvage->HrefValue;
-			$linkAttrs = &$this->Salvage->LinkAttrs;
-			$this->Cell_Rendered($this->Salvage, $currentValue, $viewValue, $viewAttrs, $cellAttrs, $hrefValue, $linkAttrs);
+			// department_id
+			$currentValue = $this->department_id->CurrentValue;
+			$viewValue = &$this->department_id->ViewValue;
+			$viewAttrs = &$this->department_id->ViewAttrs;
+			$cellAttrs = &$this->department_id->CellAttrs;
+			$hrefValue = &$this->department_id->HrefValue;
+			$linkAttrs = &$this->department_id->LinkAttrs;
+			$this->Cell_Rendered($this->department_id, $currentValue, $viewValue, $viewAttrs, $cellAttrs, $hrefValue, $linkAttrs);
+
+			// location_id
+			$currentValue = $this->location_id->CurrentValue;
+			$viewValue = &$this->location_id->ViewValue;
+			$viewAttrs = &$this->location_id->ViewAttrs;
+			$cellAttrs = &$this->location_id->CellAttrs;
+			$hrefValue = &$this->location_id->HrefValue;
+			$linkAttrs = &$this->location_id->LinkAttrs;
+			$this->Cell_Rendered($this->location_id, $currentValue, $viewValue, $viewAttrs, $cellAttrs, $hrefValue, $linkAttrs);
 
 			// Qty
 			$currentValue = $this->Qty->CurrentValue;
@@ -1257,6 +1343,24 @@ class r001_asset_summary extends r001_asset
 			$hrefValue = &$this->Remarks->HrefValue;
 			$linkAttrs = &$this->Remarks->LinkAttrs;
 			$this->Cell_Rendered($this->Remarks, $currentValue, $viewValue, $viewAttrs, $cellAttrs, $hrefValue, $linkAttrs);
+
+			// ProcurementDate
+			$currentValue = $this->ProcurementDate->CurrentValue;
+			$viewValue = &$this->ProcurementDate->ViewValue;
+			$viewAttrs = &$this->ProcurementDate->ViewAttrs;
+			$cellAttrs = &$this->ProcurementDate->CellAttrs;
+			$hrefValue = &$this->ProcurementDate->HrefValue;
+			$linkAttrs = &$this->ProcurementDate->LinkAttrs;
+			$this->Cell_Rendered($this->ProcurementDate, $currentValue, $viewValue, $viewAttrs, $cellAttrs, $hrefValue, $linkAttrs);
+
+			// ProcurementCurrentCost
+			$currentValue = $this->ProcurementCurrentCost->CurrentValue;
+			$viewValue = &$this->ProcurementCurrentCost->ViewValue;
+			$viewAttrs = &$this->ProcurementCurrentCost->ViewAttrs;
+			$cellAttrs = &$this->ProcurementCurrentCost->CellAttrs;
+			$hrefValue = &$this->ProcurementCurrentCost->HrefValue;
+			$linkAttrs = &$this->ProcurementCurrentCost->LinkAttrs;
+			$this->Cell_Rendered($this->ProcurementCurrentCost, $currentValue, $viewValue, $viewAttrs, $cellAttrs, $hrefValue, $linkAttrs);
 
 			// PeriodBegin
 			$currentValue = $this->PeriodBegin->CurrentValue;
@@ -1325,25 +1429,29 @@ class r001_asset_summary extends r001_asset
 		$this->DetailColumnCount = 0;
 		if ($this->property_id->Visible)
 			$this->DetailColumnCount += 1;
-		if ($this->department_id->Visible)
-			$this->DetailColumnCount += 1;
-		if ($this->signature_id->Visible)
+		if ($this->group_id->Visible)
 			$this->DetailColumnCount += 1;
 		if ($this->Code->Visible)
 			$this->DetailColumnCount += 1;
 		if ($this->Description->Visible)
 			$this->DetailColumnCount += 1;
-		if ($this->group_id->Visible)
+		if ($this->brand_id->Visible)
 			$this->DetailColumnCount += 1;
-		if ($this->ProcurementDate->Visible)
+		if ($this->type_id->Visible)
 			$this->DetailColumnCount += 1;
-		if ($this->ProcurementCurrentCost->Visible)
+		if ($this->signature_id->Visible)
 			$this->DetailColumnCount += 1;
-		if ($this->Salvage->Visible)
+		if ($this->department_id->Visible)
+			$this->DetailColumnCount += 1;
+		if ($this->location_id->Visible)
 			$this->DetailColumnCount += 1;
 		if ($this->Qty->Visible)
 			$this->DetailColumnCount += 1;
 		if ($this->Remarks->Visible)
+			$this->DetailColumnCount += 1;
+		if ($this->ProcurementDate->Visible)
+			$this->DetailColumnCount += 1;
+		if ($this->ProcurementCurrentCost->Visible)
 			$this->DetailColumnCount += 1;
 		if ($this->PeriodBegin->Visible)
 			$this->DetailColumnCount += 1;
@@ -1468,11 +1576,17 @@ class r001_asset_summary extends r001_asset
 			switch ($fld->FieldVar) {
 				case "x_property_id":
 					break;
-				case "x_department_id":
+				case "x_group_id":
+					break;
+				case "x_brand_id":
+					break;
+				case "x_type_id":
 					break;
 				case "x_signature_id":
 					break;
-				case "x_group_id":
+				case "x_department_id":
+					break;
+				case "x_location_id":
 					break;
 				default:
 					$lookupFilter = "";
@@ -1496,13 +1610,17 @@ class r001_asset_summary extends r001_asset
 					switch ($fld->FieldVar) {
 						case "x_property_id":
 							break;
-						case "x_department_id":
+						case "x_group_id":
+							break;
+						case "x_brand_id":
+							break;
+						case "x_type_id":
 							break;
 						case "x_signature_id":
 							break;
-						case "x_group_id":
-							$row[2] = FormatNumber($row[2], 0, -2, -2, -2);
-							$row['df2'] = $row[2];
+						case "x_department_id":
+							break;
+						case "x_location_id":
 							break;
 					}
 					$ar[strval($row[0])] = $row;
@@ -1667,7 +1785,7 @@ class r001_asset_summary extends r001_asset
 				if (strtoupper($wrk) == "ALL") { // Display all groups
 					$this->DisplayGroups = -1;
 				} else {
-					$this->DisplayGroups = 3; // Non-numeric, load default
+					$this->DisplayGroups = 5; // Non-numeric, load default
 				}
 			}
 			$this->setGroupPerPage($this->DisplayGroups); // Save to session
@@ -1679,7 +1797,7 @@ class r001_asset_summary extends r001_asset
 			if ($this->getGroupPerPage() != "") {
 				$this->DisplayGroups = $this->getGroupPerPage(); // Restore from session
 			} else {
-				$this->DisplayGroups = 3; // Load default
+				$this->DisplayGroups = 5; // Load default
 			}
 		}
 	}
@@ -1701,16 +1819,18 @@ class r001_asset_summary extends r001_asset
 			$this->setOrderBy("");
 			$this->setStartGroup(1);
 			$this->property_id->setSort("");
-			$this->department_id->setSort("");
-			$this->signature_id->setSort("");
+			$this->group_id->setSort("");
 			$this->Code->setSort("");
 			$this->Description->setSort("");
-			$this->group_id->setSort("");
-			$this->ProcurementDate->setSort("");
-			$this->ProcurementCurrentCost->setSort("");
-			$this->Salvage->setSort("");
+			$this->brand_id->setSort("");
+			$this->type_id->setSort("");
+			$this->signature_id->setSort("");
+			$this->department_id->setSort("");
+			$this->location_id->setSort("");
 			$this->Qty->setSort("");
 			$this->Remarks->setSort("");
+			$this->ProcurementDate->setSort("");
+			$this->ProcurementCurrentCost->setSort("");
 			$this->PeriodBegin->setSort("");
 			$this->PeriodEnd->setSort("");
 
@@ -1719,16 +1839,18 @@ class r001_asset_summary extends r001_asset
 			$this->CurrentOrder = $orderBy;
 			$this->CurrentOrderType = $orderType;
 			$this->updateSort($this->property_id, $ctrl); // property_id
-			$this->updateSort($this->department_id, $ctrl); // department_id
-			$this->updateSort($this->signature_id, $ctrl); // signature_id
+			$this->updateSort($this->group_id, $ctrl); // group_id
 			$this->updateSort($this->Code, $ctrl); // Code
 			$this->updateSort($this->Description, $ctrl); // Description
-			$this->updateSort($this->group_id, $ctrl); // group_id
-			$this->updateSort($this->ProcurementDate, $ctrl); // ProcurementDate
-			$this->updateSort($this->ProcurementCurrentCost, $ctrl); // ProcurementCurrentCost
-			$this->updateSort($this->Salvage, $ctrl); // Salvage
+			$this->updateSort($this->brand_id, $ctrl); // brand_id
+			$this->updateSort($this->type_id, $ctrl); // type_id
+			$this->updateSort($this->signature_id, $ctrl); // signature_id
+			$this->updateSort($this->department_id, $ctrl); // department_id
+			$this->updateSort($this->location_id, $ctrl); // location_id
 			$this->updateSort($this->Qty, $ctrl); // Qty
 			$this->updateSort($this->Remarks, $ctrl); // Remarks
+			$this->updateSort($this->ProcurementDate, $ctrl); // ProcurementDate
+			$this->updateSort($this->ProcurementCurrentCost, $ctrl); // ProcurementCurrentCost
 			$this->updateSort($this->PeriodBegin, $ctrl); // PeriodBegin
 			$this->updateSort($this->PeriodEnd, $ctrl); // PeriodEnd
 			$sortSql = $this->sortSql();

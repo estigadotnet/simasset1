@@ -685,7 +685,7 @@ class d301_home_dashboard extends ReportTable
 				if (strtoupper($wrk) == "ALL") { // Display all groups
 					$this->DisplayGroups = -1;
 				} else {
-					$this->DisplayGroups = 3; // Non-numeric, load default
+					$this->DisplayGroups = 5; // Non-numeric, load default
 				}
 			}
 			$this->setGroupPerPage($this->DisplayGroups); // Save to session
@@ -697,7 +697,7 @@ class d301_home_dashboard extends ReportTable
 			if ($this->getGroupPerPage() != "") {
 				$this->DisplayGroups = $this->getGroupPerPage(); // Restore from session
 			} else {
-				$this->DisplayGroups = 3; // Load default
+				$this->DisplayGroups = 5; // Load default
 			}
 		}
 	}
