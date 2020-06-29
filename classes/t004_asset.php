@@ -144,7 +144,7 @@ class t004_asset extends DbTable
 		$this->group_id->Sortable = TRUE; // Allow sort
 		$this->group_id->UsePleaseSelect = TRUE; // Use PleaseSelect by default
 		$this->group_id->PleaseSelectText = $Language->phrase("PleaseSelect"); // "PleaseSelect" text
-		$this->group_id->Lookup = new Lookup('group_id', 't005_assetgroup', FALSE, 'id', ["Description","EconomicalLifeTime","",""], [], [], [], [], [], [], '', '');
+		$this->group_id->Lookup = new Lookup('group_id', 't005_assetgroup', FALSE, 'id', ["Description","EstimatedLife","",""], [], [], [], [], [], [], '', '');
 		$this->group_id->DefaultErrorMessage = $Language->phrase("IncorrectInteger");
 		$this->fields['group_id'] = &$this->group_id;
 

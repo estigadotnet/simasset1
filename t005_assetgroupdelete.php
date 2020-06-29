@@ -70,11 +70,17 @@ $t005_assetgroup_delete->showMessage();
 <table class="table ew-table">
 	<thead>
 	<tr class="ew-table-header">
+<?php if ($t005_assetgroup_delete->Code->Visible) { // Code ?>
+		<th class="<?php echo $t005_assetgroup_delete->Code->headerCellClass() ?>"><span id="elh_t005_assetgroup_Code" class="t005_assetgroup_Code"><?php echo $t005_assetgroup_delete->Code->caption() ?></span></th>
+<?php } ?>
 <?php if ($t005_assetgroup_delete->Description->Visible) { // Description ?>
 		<th class="<?php echo $t005_assetgroup_delete->Description->headerCellClass() ?>"><span id="elh_t005_assetgroup_Description" class="t005_assetgroup_Description"><?php echo $t005_assetgroup_delete->Description->caption() ?></span></th>
 <?php } ?>
-<?php if ($t005_assetgroup_delete->EconomicalLifeTime->Visible) { // EconomicalLifeTime ?>
-		<th class="<?php echo $t005_assetgroup_delete->EconomicalLifeTime->headerCellClass() ?>"><span id="elh_t005_assetgroup_EconomicalLifeTime" class="t005_assetgroup_EconomicalLifeTime"><?php echo $t005_assetgroup_delete->EconomicalLifeTime->caption() ?></span></th>
+<?php if ($t005_assetgroup_delete->EstimatedLife->Visible) { // EstimatedLife ?>
+		<th class="<?php echo $t005_assetgroup_delete->EstimatedLife->headerCellClass() ?>"><span id="elh_t005_assetgroup_EstimatedLife" class="t005_assetgroup_EstimatedLife"><?php echo $t005_assetgroup_delete->EstimatedLife->caption() ?></span></th>
+<?php } ?>
+<?php if ($t005_assetgroup_delete->SLN->Visible) { // SLN ?>
+		<th class="<?php echo $t005_assetgroup_delete->SLN->headerCellClass() ?>"><span id="elh_t005_assetgroup_SLN" class="t005_assetgroup_SLN"><?php echo $t005_assetgroup_delete->SLN->caption() ?></span></th>
 <?php } ?>
 	</tr>
 	</thead>
@@ -97,6 +103,13 @@ while (!$t005_assetgroup_delete->Recordset->EOF) {
 	$t005_assetgroup_delete->renderRow();
 ?>
 	<tr <?php echo $t005_assetgroup->rowAttributes() ?>>
+<?php if ($t005_assetgroup_delete->Code->Visible) { // Code ?>
+		<td <?php echo $t005_assetgroup_delete->Code->cellAttributes() ?>>
+<span id="el<?php echo $t005_assetgroup_delete->RowCount ?>_t005_assetgroup_Code" class="t005_assetgroup_Code">
+<span<?php echo $t005_assetgroup_delete->Code->viewAttributes() ?>><?php echo $t005_assetgroup_delete->Code->getViewValue() ?></span>
+</span>
+</td>
+<?php } ?>
 <?php if ($t005_assetgroup_delete->Description->Visible) { // Description ?>
 		<td <?php echo $t005_assetgroup_delete->Description->cellAttributes() ?>>
 <span id="el<?php echo $t005_assetgroup_delete->RowCount ?>_t005_assetgroup_Description" class="t005_assetgroup_Description">
@@ -104,10 +117,17 @@ while (!$t005_assetgroup_delete->Recordset->EOF) {
 </span>
 </td>
 <?php } ?>
-<?php if ($t005_assetgroup_delete->EconomicalLifeTime->Visible) { // EconomicalLifeTime ?>
-		<td <?php echo $t005_assetgroup_delete->EconomicalLifeTime->cellAttributes() ?>>
-<span id="el<?php echo $t005_assetgroup_delete->RowCount ?>_t005_assetgroup_EconomicalLifeTime" class="t005_assetgroup_EconomicalLifeTime">
-<span<?php echo $t005_assetgroup_delete->EconomicalLifeTime->viewAttributes() ?>><?php echo $t005_assetgroup_delete->EconomicalLifeTime->getViewValue() ?></span>
+<?php if ($t005_assetgroup_delete->EstimatedLife->Visible) { // EstimatedLife ?>
+		<td <?php echo $t005_assetgroup_delete->EstimatedLife->cellAttributes() ?>>
+<span id="el<?php echo $t005_assetgroup_delete->RowCount ?>_t005_assetgroup_EstimatedLife" class="t005_assetgroup_EstimatedLife">
+<span<?php echo $t005_assetgroup_delete->EstimatedLife->viewAttributes() ?>><?php echo $t005_assetgroup_delete->EstimatedLife->getViewValue() ?></span>
+</span>
+</td>
+<?php } ?>
+<?php if ($t005_assetgroup_delete->SLN->Visible) { // SLN ?>
+		<td <?php echo $t005_assetgroup_delete->SLN->cellAttributes() ?>>
+<span id="el<?php echo $t005_assetgroup_delete->RowCount ?>_t005_assetgroup_SLN" class="t005_assetgroup_SLN">
+<span<?php echo $t005_assetgroup_delete->SLN->viewAttributes() ?>><?php echo $t005_assetgroup_delete->SLN->getViewValue() ?></span>
 </span>
 </td>
 <?php } ?>

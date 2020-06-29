@@ -4,7 +4,7 @@ namespace PHPMaker2020\p_simasset1;
 /**
  * Page class
  */
-class t104_ho1_detail_grid extends t104_ho1_detail
+class t007_assettype_grid extends t007_assettype
 {
 
 	// Page ID
@@ -14,13 +14,13 @@ class t104_ho1_detail_grid extends t104_ho1_detail
 	public $ProjectID = "{E1C6E322-15B9-474C-85CF-A99378A9BC2B}";
 
 	// Table name
-	public $TableName = 't104_ho1_detail';
+	public $TableName = 't007_assettype';
 
 	// Page object name
-	public $PageObjName = "t104_ho1_detail_grid";
+	public $PageObjName = "t007_assettype_grid";
 
 	// Grid form hidden field names
-	public $FormName = "ft104_ho1_detailgrid";
+	public $FormName = "ft007_assettypegrid";
 	public $FormActionName = "k_action";
 	public $FormKeyName = "k_key";
 	public $FormOldKeyName = "k_oldkey";
@@ -370,16 +370,16 @@ class t104_ho1_detail_grid extends t104_ho1_detail
 		// Parent constuctor
 		parent::__construct();
 
-		// Table object (t104_ho1_detail)
-		if (!isset($GLOBALS["t104_ho1_detail"]) || get_class($GLOBALS["t104_ho1_detail"]) == PROJECT_NAMESPACE . "t104_ho1_detail") {
-			$GLOBALS["t104_ho1_detail"] = &$this;
+		// Table object (t007_assettype)
+		if (!isset($GLOBALS["t007_assettype"]) || get_class($GLOBALS["t007_assettype"]) == PROJECT_NAMESPACE . "t007_assettype") {
+			$GLOBALS["t007_assettype"] = &$this;
 
 			// $GLOBALS["MasterTable"] = &$GLOBALS["Table"];
 			// if (!isset($GLOBALS["Table"]))
-			// 	$GLOBALS["Table"] = &$GLOBALS["t104_ho1_detail"];
+			// 	$GLOBALS["Table"] = &$GLOBALS["t007_assettype"];
 
 		}
-		$this->AddUrl = "t104_ho1_detailadd.php";
+		$this->AddUrl = "t007_assettypeadd.php";
 
 		// Table object (t201_users)
 		if (!isset($GLOBALS['t201_users']))
@@ -391,7 +391,7 @@ class t104_ho1_detail_grid extends t104_ho1_detail
 
 		// Table name (for backward compatibility only)
 		if (!defined(PROJECT_NAMESPACE . "TABLE_NAME"))
-			define(PROJECT_NAMESPACE . "TABLE_NAME", 't104_ho1_detail');
+			define(PROJECT_NAMESPACE . "TABLE_NAME", 't007_assettype');
 
 		// Start timer
 		if (!isset($GLOBALS["DebugTimer"]))
@@ -424,14 +424,14 @@ class t104_ho1_detail_grid extends t104_ho1_detail
 		global $ExportFileName, $TempImages, $DashboardReport;
 
 		// Export
-		global $t104_ho1_detail;
+		global $t007_assettype;
 		if ($this->CustomExport && $this->CustomExport == $this->Export && array_key_exists($this->CustomExport, Config("EXPORT_CLASSES"))) {
 				$content = ob_get_contents();
 			if ($ExportFileName == "")
 				$ExportFileName = $this->TableVar;
 			$class = PROJECT_NAMESPACE . Config("EXPORT_CLASSES." . $this->CustomExport);
 			if (class_exists($class)) {
-				$doc = new $class($t104_ho1_detail);
+				$doc = new $class($t007_assettype);
 				$doc->Text = @$content;
 				if ($this->isExport("email"))
 					echo $this->exportEmail($doc->Text);
@@ -734,9 +734,10 @@ class t104_ho1_detail_grid extends t104_ho1_detail
 
 		// Set up list options
 		$this->setupListOptions();
-		$this->id->setVisibility();
-		$this->hohead_id->setVisibility();
-		$this->asset_id->setVisibility();
+		$this->id->Visible = FALSE;
+		$this->assetgroup_id->setVisibility();
+		$this->Description->setVisibility();
+		$this->Code->setVisibility();
 		$this->hideFieldsForAddEdit();
 
 		// Global Page Loading event (in userfn*.php)
@@ -761,8 +762,9 @@ class t104_ho1_detail_grid extends t104_ho1_detail
 		$this->setupOtherOptions();
 
 		// Set up lookup cache
-		// Search filters
+		$this->setupLookupOptions($this->assetgroup_id);
 
+		// Search filters
 		$srchAdvanced = ""; // Advanced search filter
 		$srchBasic = ""; // Basic search filter
 		$filter = "";
@@ -825,17 +827,17 @@ class t104_ho1_detail_grid extends t104_ho1_detail
 		AddFilter($filter, $this->SearchWhere);
 
 		// Load master record
-		if ($this->CurrentMode != "add" && $this->getMasterFilter() != "" && $this->getCurrentMasterTable() == "t103_ho1_head") {
-			global $t103_ho1_head;
-			$rsmaster = $t103_ho1_head->loadRs($this->DbMasterFilter);
+		if ($this->CurrentMode != "add" && $this->getMasterFilter() != "" && $this->getCurrentMasterTable() == "t005_assetgroup") {
+			global $t005_assetgroup;
+			$rsmaster = $t005_assetgroup->loadRs($this->DbMasterFilter);
 			$this->MasterRecordExists = ($rsmaster && !$rsmaster->EOF);
 			if (!$this->MasterRecordExists) {
 				$this->setFailureMessage($Language->phrase("NoRecord")); // Set no record found
-				$this->terminate("t103_ho1_headlist.php"); // Return to master page
+				$this->terminate("t005_assetgrouplist.php"); // Return to master page
 			} else {
-				$t103_ho1_head->loadListRowValues($rsmaster);
-				$t103_ho1_head->RowType = ROWTYPE_MASTER; // Master row
-				$t103_ho1_head->renderListRow();
+				$t005_assetgroup->loadListRowValues($rsmaster);
+				$t005_assetgroup->RowType = ROWTYPE_MASTER; // Master row
+				$t005_assetgroup->renderListRow();
 				$rsmaster->close();
 			}
 		}
@@ -1182,9 +1184,11 @@ class t104_ho1_detail_grid extends t104_ho1_detail
 	public function emptyRow()
 	{
 		global $CurrentForm;
-		if ($CurrentForm->hasValue("x_hohead_id") && $CurrentForm->hasValue("o_hohead_id") && $this->hohead_id->CurrentValue != $this->hohead_id->OldValue)
+		if ($CurrentForm->hasValue("x_assetgroup_id") && $CurrentForm->hasValue("o_assetgroup_id") && $this->assetgroup_id->CurrentValue != $this->assetgroup_id->OldValue)
 			return FALSE;
-		if ($CurrentForm->hasValue("x_asset_id") && $CurrentForm->hasValue("o_asset_id") && $this->asset_id->CurrentValue != $this->asset_id->OldValue)
+		if ($CurrentForm->hasValue("x_Description") && $CurrentForm->hasValue("o_Description") && $this->Description->CurrentValue != $this->Description->OldValue)
+			return FALSE;
+		if ($CurrentForm->hasValue("x_Code") && $CurrentForm->hasValue("o_Code") && $this->Code->CurrentValue != $this->Code->OldValue)
 			return FALSE;
 		return TRUE;
 	}
@@ -1300,7 +1304,7 @@ class t104_ho1_detail_grid extends t104_ho1_detail
 				$this->setCurrentMasterTable(""); // Clear master table
 				$this->DbMasterFilter = "";
 				$this->DbDetailFilter = "";
-				$this->hohead_id->setSessionValue("");
+				$this->assetgroup_id->setSessionValue("");
 			}
 
 			// Reset sorting order
@@ -1357,6 +1361,14 @@ class t104_ho1_detail_grid extends t104_ho1_detail
 		$item->CssClass = "text-nowrap";
 		$item->Visible = $Security->canDelete();
 		$item->OnLeft = TRUE;
+
+		// "sequence"
+		$item = &$this->ListOptions->add("sequence");
+		$item->CssClass = "text-nowrap";
+		$item->Visible = TRUE;
+		$item->OnLeft = TRUE; // Always on left
+		$item->ShowInDropDown = FALSE;
+		$item->ShowInButtonGroup = FALSE;
 
 		// Drop down button for ListOptions
 		$this->ListOptions->UseDropDownButton = FALSE;
@@ -1419,13 +1431,20 @@ class t104_ho1_detail_grid extends t104_ho1_detail
 				}
 			}
 		}
+
+		// "sequence"
+		$opt = $this->ListOptions["sequence"];
+		$opt->Body = FormatSequenceNumber($this->RecordCount);
 		if ($this->CurrentMode == "view") { // View mode
 
 		// "view"
 		$opt = $this->ListOptions["view"];
 		$viewcaption = HtmlTitle($Language->phrase("ViewLink"));
 		if ($Security->canView()) {
-			$opt->Body = "<a class=\"ew-row-link ew-view\" title=\"" . $viewcaption . "\" data-caption=\"" . $viewcaption . "\" href=\"" . HtmlEncode($this->ViewUrl) . "\">" . $Language->phrase("ViewLink") . "</a>";
+			if (IsMobile())
+				$opt->Body = "<a class=\"ew-row-link ew-view\" title=\"" . $viewcaption . "\" data-caption=\"" . $viewcaption . "\" href=\"" . HtmlEncode($this->ViewUrl) . "\">" . $Language->phrase("ViewLink") . "</a>";
+			else
+				$opt->Body = "<a class=\"ew-row-link ew-view\" title=\"" . $viewcaption . "\" data-table=\"t007_assettype\" data-caption=\"" . $viewcaption . "\" href=\"#\" onclick=\"return ew.modalDialogShow({lnk:this,url:'" . HtmlEncode($this->ViewUrl) . "',btn:null});\">" . $Language->phrase("ViewLink") . "</a>";
 		} else {
 			$opt->Body = "";
 		}
@@ -1434,7 +1453,10 @@ class t104_ho1_detail_grid extends t104_ho1_detail
 		$opt = $this->ListOptions["edit"];
 		$editcaption = HtmlTitle($Language->phrase("EditLink"));
 		if ($Security->canEdit()) {
-			$opt->Body = "<a class=\"ew-row-link ew-edit\" title=\"" . HtmlTitle($Language->phrase("EditLink")) . "\" data-caption=\"" . HtmlTitle($Language->phrase("EditLink")) . "\" href=\"" . HtmlEncode($this->EditUrl) . "\">" . $Language->phrase("EditLink") . "</a>";
+			if (IsMobile())
+				$opt->Body = "<a class=\"ew-row-link ew-edit\" title=\"" . $editcaption . "\" data-caption=\"" . $editcaption . "\" href=\"" . HtmlEncode($this->EditUrl) . "\">" . $Language->phrase("EditLink") . "</a>";
+			else
+				$opt->Body = "<a class=\"ew-row-link ew-edit\" title=\"" . $editcaption . "\" data-table=\"t007_assettype\" data-caption=\"" . $editcaption . "\" href=\"#\" onclick=\"return ew.modalDialogShow({lnk:this,btn:'SaveBtn',url:'" . HtmlEncode($this->EditUrl) . "'});\">" . $Language->phrase("EditLink") . "</a>";
 		} else {
 			$opt->Body = "";
 		}
@@ -1443,7 +1465,10 @@ class t104_ho1_detail_grid extends t104_ho1_detail
 		$opt = $this->ListOptions["copy"];
 		$copycaption = HtmlTitle($Language->phrase("CopyLink"));
 		if ($Security->canAdd()) {
-			$opt->Body = "<a class=\"ew-row-link ew-copy\" title=\"" . $copycaption . "\" data-caption=\"" . $copycaption . "\" href=\"" . HtmlEncode($this->CopyUrl) . "\">" . $Language->phrase("CopyLink") . "</a>";
+			if (IsMobile())
+				$opt->Body = "<a class=\"ew-row-link ew-copy\" title=\"" . $copycaption . "\" data-caption=\"" . $copycaption . "\" href=\"" . HtmlEncode($this->CopyUrl) . "\">" . $Language->phrase("CopyLink") . "</a>";
+			else
+				$opt->Body = "<a class=\"ew-row-link ew-copy\" title=\"" . $copycaption . "\" data-table=\"t007_assettype\" data-caption=\"" . $copycaption . "\" href=\"#\" onclick=\"return ew.modalDialogShow({lnk:this,btn:'AddBtn',url:'" . HtmlEncode($this->CopyUrl) . "'});\">" . $Language->phrase("CopyLink") . "</a>";
 		} else {
 			$opt->Body = "";
 		}
@@ -1451,7 +1476,7 @@ class t104_ho1_detail_grid extends t104_ho1_detail
 		// "delete"
 		$opt = $this->ListOptions["delete"];
 		if ($Security->canDelete())
-			$opt->Body = "<a class=\"ew-row-link ew-delete\"" . "" . " title=\"" . HtmlTitle($Language->phrase("DeleteLink")) . "\" data-caption=\"" . HtmlTitle($Language->phrase("DeleteLink")) . "\" href=\"" . HtmlEncode($this->DeleteUrl) . "\">" . $Language->phrase("DeleteLink") . "</a>";
+			$opt->Body = "<a class=\"ew-row-link ew-delete\"" . " onclick=\"return ew.confirmDelete(this);\"" . " title=\"" . HtmlTitle($Language->phrase("DeleteLink")) . "\" data-caption=\"" . HtmlTitle($Language->phrase("DeleteLink")) . "\" href=\"" . HtmlEncode($this->DeleteUrl) . "\">" . $Language->phrase("DeleteLink") . "</a>";
 		else
 			$opt->Body = "";
 		} // End View mode
@@ -1492,7 +1517,10 @@ class t104_ho1_detail_grid extends t104_ho1_detail
 			$item = &$option->add("add");
 			$addcaption = HtmlTitle($Language->phrase("AddLink"));
 			$this->AddUrl = $this->getAddUrl();
-			$item->Body = "<a class=\"ew-add-edit ew-add\" title=\"" . $addcaption . "\" data-caption=\"" . $addcaption . "\" href=\"" . HtmlEncode($this->AddUrl) . "\">" . $Language->phrase("AddLink") . "</a>";
+			if (IsMobile())
+				$item->Body = "<a class=\"ew-add-edit ew-add\" title=\"" . $addcaption . "\" data-caption=\"" . $addcaption . "\" href=\"" . HtmlEncode($this->AddUrl) . "\">" . $Language->phrase("AddLink") . "</a>";
+			else
+				$item->Body = "<a class=\"ew-add-edit ew-add\" title=\"" . $addcaption . "\" data-table=\"t007_assettype\" data-caption=\"" . $addcaption . "\" href=\"#\" onclick=\"return ew.modalDialogShow({lnk:this,btn:'AddBtn',url:'" . HtmlEncode($this->AddUrl) . "'});\">" . $Language->phrase("AddLink") . "</a>";
 			$item->Visible = $this->AddUrl != "" && $Security->canAdd();
 		}
 	}
@@ -1540,10 +1568,12 @@ class t104_ho1_detail_grid extends t104_ho1_detail
 	{
 		$this->id->CurrentValue = NULL;
 		$this->id->OldValue = $this->id->CurrentValue;
-		$this->hohead_id->CurrentValue = NULL;
-		$this->hohead_id->OldValue = $this->hohead_id->CurrentValue;
-		$this->asset_id->CurrentValue = NULL;
-		$this->asset_id->OldValue = $this->asset_id->CurrentValue;
+		$this->assetgroup_id->CurrentValue = NULL;
+		$this->assetgroup_id->OldValue = $this->assetgroup_id->CurrentValue;
+		$this->Description->CurrentValue = NULL;
+		$this->Description->OldValue = $this->Description->CurrentValue;
+		$this->Code->CurrentValue = NULL;
+		$this->Code->OldValue = $this->Code->CurrentValue;
 	}
 
 	// Load form values
@@ -1554,32 +1584,43 @@ class t104_ho1_detail_grid extends t104_ho1_detail
 		global $CurrentForm;
 		$CurrentForm->FormName = $this->FormName;
 
+		// Check field name 'assetgroup_id' first before field var 'x_assetgroup_id'
+		$val = $CurrentForm->hasValue("assetgroup_id") ? $CurrentForm->getValue("assetgroup_id") : $CurrentForm->getValue("x_assetgroup_id");
+		if (!$this->assetgroup_id->IsDetailKey) {
+			if (IsApi() && $val == NULL)
+				$this->assetgroup_id->Visible = FALSE; // Disable update for API request
+			else
+				$this->assetgroup_id->setFormValue($val);
+		}
+		if ($CurrentForm->hasValue("o_assetgroup_id"))
+			$this->assetgroup_id->setOldValue($CurrentForm->getValue("o_assetgroup_id"));
+
+		// Check field name 'Description' first before field var 'x_Description'
+		$val = $CurrentForm->hasValue("Description") ? $CurrentForm->getValue("Description") : $CurrentForm->getValue("x_Description");
+		if (!$this->Description->IsDetailKey) {
+			if (IsApi() && $val == NULL)
+				$this->Description->Visible = FALSE; // Disable update for API request
+			else
+				$this->Description->setFormValue($val);
+		}
+		if ($CurrentForm->hasValue("o_Description"))
+			$this->Description->setOldValue($CurrentForm->getValue("o_Description"));
+
+		// Check field name 'Code' first before field var 'x_Code'
+		$val = $CurrentForm->hasValue("Code") ? $CurrentForm->getValue("Code") : $CurrentForm->getValue("x_Code");
+		if (!$this->Code->IsDetailKey) {
+			if (IsApi() && $val == NULL)
+				$this->Code->Visible = FALSE; // Disable update for API request
+			else
+				$this->Code->setFormValue($val);
+		}
+		if ($CurrentForm->hasValue("o_Code"))
+			$this->Code->setOldValue($CurrentForm->getValue("o_Code"));
+
 		// Check field name 'id' first before field var 'x_id'
 		$val = $CurrentForm->hasValue("id") ? $CurrentForm->getValue("id") : $CurrentForm->getValue("x_id");
 		if (!$this->id->IsDetailKey && !$this->isGridAdd() && !$this->isAdd())
 			$this->id->setFormValue($val);
-
-		// Check field name 'hohead_id' first before field var 'x_hohead_id'
-		$val = $CurrentForm->hasValue("hohead_id") ? $CurrentForm->getValue("hohead_id") : $CurrentForm->getValue("x_hohead_id");
-		if (!$this->hohead_id->IsDetailKey) {
-			if (IsApi() && $val == NULL)
-				$this->hohead_id->Visible = FALSE; // Disable update for API request
-			else
-				$this->hohead_id->setFormValue($val);
-		}
-		if ($CurrentForm->hasValue("o_hohead_id"))
-			$this->hohead_id->setOldValue($CurrentForm->getValue("o_hohead_id"));
-
-		// Check field name 'asset_id' first before field var 'x_asset_id'
-		$val = $CurrentForm->hasValue("asset_id") ? $CurrentForm->getValue("asset_id") : $CurrentForm->getValue("x_asset_id");
-		if (!$this->asset_id->IsDetailKey) {
-			if (IsApi() && $val == NULL)
-				$this->asset_id->Visible = FALSE; // Disable update for API request
-			else
-				$this->asset_id->setFormValue($val);
-		}
-		if ($CurrentForm->hasValue("o_asset_id"))
-			$this->asset_id->setOldValue($CurrentForm->getValue("o_asset_id"));
 	}
 
 	// Restore form values
@@ -1588,8 +1629,9 @@ class t104_ho1_detail_grid extends t104_ho1_detail
 		global $CurrentForm;
 		if (!$this->isGridAdd() && !$this->isAdd())
 			$this->id->CurrentValue = $this->id->FormValue;
-		$this->hohead_id->CurrentValue = $this->hohead_id->FormValue;
-		$this->asset_id->CurrentValue = $this->asset_id->FormValue;
+		$this->assetgroup_id->CurrentValue = $this->assetgroup_id->FormValue;
+		$this->Description->CurrentValue = $this->Description->FormValue;
+		$this->Code->CurrentValue = $this->Code->FormValue;
 	}
 
 	// Load recordset
@@ -1655,8 +1697,9 @@ class t104_ho1_detail_grid extends t104_ho1_detail
 		if (!$rs || $rs->EOF)
 			return;
 		$this->id->setDbValue($row['id']);
-		$this->hohead_id->setDbValue($row['hohead_id']);
-		$this->asset_id->setDbValue($row['asset_id']);
+		$this->assetgroup_id->setDbValue($row['assetgroup_id']);
+		$this->Description->setDbValue($row['Description']);
+		$this->Code->setDbValue($row['Code']);
 	}
 
 	// Return a row with default values
@@ -1665,8 +1708,9 @@ class t104_ho1_detail_grid extends t104_ho1_detail
 		$this->loadDefaultValues();
 		$row = [];
 		$row['id'] = $this->id->CurrentValue;
-		$row['hohead_id'] = $this->hohead_id->CurrentValue;
-		$row['asset_id'] = $this->asset_id->CurrentValue;
+		$row['assetgroup_id'] = $this->assetgroup_id->CurrentValue;
+		$row['Description'] = $this->Description->CurrentValue;
+		$row['Code'] = $this->Code->CurrentValue;
 		return $row;
 	}
 
@@ -1715,8 +1759,9 @@ class t104_ho1_detail_grid extends t104_ho1_detail
 
 		// Common render codes for all row types
 		// id
-		// hohead_id
-		// asset_id
+		// assetgroup_id
+		// Description
+		// Code
 
 		if ($this->RowType == ROWTYPE_VIEW) { // View row
 
@@ -1724,108 +1769,230 @@ class t104_ho1_detail_grid extends t104_ho1_detail
 			$this->id->ViewValue = $this->id->CurrentValue;
 			$this->id->ViewCustomAttributes = "";
 
-			// hohead_id
-			$this->hohead_id->ViewValue = $this->hohead_id->CurrentValue;
-			$this->hohead_id->ViewValue = FormatNumber($this->hohead_id->ViewValue, 0, -2, -2, -2);
-			$this->hohead_id->ViewCustomAttributes = "";
+			// assetgroup_id
+			$this->assetgroup_id->ViewValue = $this->assetgroup_id->CurrentValue;
+			$curVal = strval($this->assetgroup_id->CurrentValue);
+			if ($curVal != "") {
+				$this->assetgroup_id->ViewValue = $this->assetgroup_id->lookupCacheOption($curVal);
+				if ($this->assetgroup_id->ViewValue === NULL) { // Lookup from database
+					$filterWrk = "`id`" . SearchString("=", $curVal, DATATYPE_NUMBER, "");
+					$sqlWrk = $this->assetgroup_id->Lookup->getSql(FALSE, $filterWrk, '', $this);
+					$rswrk = Conn()->execute($sqlWrk);
+					if ($rswrk && !$rswrk->EOF) { // Lookup values found
+						$arwrk = [];
+						$arwrk[1] = $rswrk->fields('df');
+						$arwrk[2] = $rswrk->fields('df2');
+						$arwrk[3] = FormatNumber($rswrk->fields('df3'), 0, -2, -2, -2);
+						$arwrk[4] = FormatNumber($rswrk->fields('df4'), 2, -2, -2, -2);
+						$this->assetgroup_id->ViewValue = $this->assetgroup_id->displayValue($arwrk);
+						$rswrk->Close();
+					} else {
+						$this->assetgroup_id->ViewValue = $this->assetgroup_id->CurrentValue;
+					}
+				}
+			} else {
+				$this->assetgroup_id->ViewValue = NULL;
+			}
+			$this->assetgroup_id->ViewCustomAttributes = "";
 
-			// asset_id
-			$this->asset_id->ViewValue = $this->asset_id->CurrentValue;
-			$this->asset_id->ViewValue = FormatNumber($this->asset_id->ViewValue, 0, -2, -2, -2);
-			$this->asset_id->ViewCustomAttributes = "";
+			// Description
+			$this->Description->ViewValue = $this->Description->CurrentValue;
+			$this->Description->ViewCustomAttributes = "";
 
-			// id
-			$this->id->LinkCustomAttributes = "";
-			$this->id->HrefValue = "";
-			$this->id->TooltipValue = "";
+			// Code
+			$this->Code->ViewValue = $this->Code->CurrentValue;
+			$this->Code->ViewCustomAttributes = "";
 
-			// hohead_id
-			$this->hohead_id->LinkCustomAttributes = "";
-			$this->hohead_id->HrefValue = "";
-			$this->hohead_id->TooltipValue = "";
+			// assetgroup_id
+			$this->assetgroup_id->LinkCustomAttributes = "";
+			$this->assetgroup_id->HrefValue = "";
+			$this->assetgroup_id->TooltipValue = "";
 
-			// asset_id
-			$this->asset_id->LinkCustomAttributes = "";
-			$this->asset_id->HrefValue = "";
-			$this->asset_id->TooltipValue = "";
+			// Description
+			$this->Description->LinkCustomAttributes = "";
+			$this->Description->HrefValue = "";
+			$this->Description->TooltipValue = "";
+
+			// Code
+			$this->Code->LinkCustomAttributes = "";
+			$this->Code->HrefValue = "";
+			$this->Code->TooltipValue = "";
 		} elseif ($this->RowType == ROWTYPE_ADD) { // Add row
 
-			// id
-			// hohead_id
-
-			$this->hohead_id->EditAttrs["class"] = "form-control";
-			$this->hohead_id->EditCustomAttributes = "";
-			if ($this->hohead_id->getSessionValue() != "") {
-				$this->hohead_id->CurrentValue = $this->hohead_id->getSessionValue();
-				$this->hohead_id->OldValue = $this->hohead_id->CurrentValue;
-				$this->hohead_id->ViewValue = $this->hohead_id->CurrentValue;
-				$this->hohead_id->ViewValue = FormatNumber($this->hohead_id->ViewValue, 0, -2, -2, -2);
-				$this->hohead_id->ViewCustomAttributes = "";
+			// assetgroup_id
+			$this->assetgroup_id->EditAttrs["class"] = "form-control";
+			$this->assetgroup_id->EditCustomAttributes = "";
+			if ($this->assetgroup_id->getSessionValue() != "") {
+				$this->assetgroup_id->CurrentValue = $this->assetgroup_id->getSessionValue();
+				$this->assetgroup_id->OldValue = $this->assetgroup_id->CurrentValue;
+				$this->assetgroup_id->ViewValue = $this->assetgroup_id->CurrentValue;
+				$curVal = strval($this->assetgroup_id->CurrentValue);
+				if ($curVal != "") {
+					$this->assetgroup_id->ViewValue = $this->assetgroup_id->lookupCacheOption($curVal);
+					if ($this->assetgroup_id->ViewValue === NULL) { // Lookup from database
+						$filterWrk = "`id`" . SearchString("=", $curVal, DATATYPE_NUMBER, "");
+						$sqlWrk = $this->assetgroup_id->Lookup->getSql(FALSE, $filterWrk, '', $this);
+						$rswrk = Conn()->execute($sqlWrk);
+						if ($rswrk && !$rswrk->EOF) { // Lookup values found
+							$arwrk = [];
+							$arwrk[1] = $rswrk->fields('df');
+							$arwrk[2] = $rswrk->fields('df2');
+							$arwrk[3] = FormatNumber($rswrk->fields('df3'), 0, -2, -2, -2);
+							$arwrk[4] = FormatNumber($rswrk->fields('df4'), 2, -2, -2, -2);
+							$this->assetgroup_id->ViewValue = $this->assetgroup_id->displayValue($arwrk);
+							$rswrk->Close();
+						} else {
+							$this->assetgroup_id->ViewValue = $this->assetgroup_id->CurrentValue;
+						}
+					}
+				} else {
+					$this->assetgroup_id->ViewValue = NULL;
+				}
+				$this->assetgroup_id->ViewCustomAttributes = "";
 			} else {
-				$this->hohead_id->EditValue = HtmlEncode($this->hohead_id->CurrentValue);
-				$this->hohead_id->PlaceHolder = RemoveHtml($this->hohead_id->caption());
+				$this->assetgroup_id->EditValue = HtmlEncode($this->assetgroup_id->CurrentValue);
+				$curVal = strval($this->assetgroup_id->CurrentValue);
+				if ($curVal != "") {
+					$this->assetgroup_id->EditValue = $this->assetgroup_id->lookupCacheOption($curVal);
+					if ($this->assetgroup_id->EditValue === NULL) { // Lookup from database
+						$filterWrk = "`id`" . SearchString("=", $curVal, DATATYPE_NUMBER, "");
+						$sqlWrk = $this->assetgroup_id->Lookup->getSql(FALSE, $filterWrk, '', $this);
+						$rswrk = Conn()->execute($sqlWrk);
+						if ($rswrk && !$rswrk->EOF) { // Lookup values found
+							$arwrk = [];
+							$arwrk[1] = HtmlEncode($rswrk->fields('df'));
+							$arwrk[2] = HtmlEncode($rswrk->fields('df2'));
+							$arwrk[3] = HtmlEncode(FormatNumber($rswrk->fields('df3'), 0, -2, -2, -2));
+							$arwrk[4] = HtmlEncode(FormatNumber($rswrk->fields('df4'), 2, -2, -2, -2));
+							$this->assetgroup_id->EditValue = $this->assetgroup_id->displayValue($arwrk);
+							$rswrk->Close();
+						} else {
+							$this->assetgroup_id->EditValue = HtmlEncode($this->assetgroup_id->CurrentValue);
+						}
+					}
+				} else {
+					$this->assetgroup_id->EditValue = NULL;
+				}
+				$this->assetgroup_id->PlaceHolder = RemoveHtml($this->assetgroup_id->caption());
 			}
 
-			// asset_id
-			$this->asset_id->EditAttrs["class"] = "form-control";
-			$this->asset_id->EditCustomAttributes = "";
-			$this->asset_id->EditValue = HtmlEncode($this->asset_id->CurrentValue);
-			$this->asset_id->PlaceHolder = RemoveHtml($this->asset_id->caption());
+			// Description
+			$this->Description->EditAttrs["class"] = "form-control";
+			$this->Description->EditCustomAttributes = "";
+			if (!$this->Description->Raw)
+				$this->Description->CurrentValue = HtmlDecode($this->Description->CurrentValue);
+			$this->Description->EditValue = HtmlEncode($this->Description->CurrentValue);
+			$this->Description->PlaceHolder = RemoveHtml($this->Description->caption());
+
+			// Code
+			$this->Code->EditAttrs["class"] = "form-control";
+			$this->Code->EditCustomAttributes = "";
+			if (!$this->Code->Raw)
+				$this->Code->CurrentValue = HtmlDecode($this->Code->CurrentValue);
+			$this->Code->EditValue = HtmlEncode($this->Code->CurrentValue);
+			$this->Code->PlaceHolder = RemoveHtml($this->Code->caption());
 
 			// Add refer script
-			// id
+			// assetgroup_id
 
-			$this->id->LinkCustomAttributes = "";
-			$this->id->HrefValue = "";
+			$this->assetgroup_id->LinkCustomAttributes = "";
+			$this->assetgroup_id->HrefValue = "";
 
-			// hohead_id
-			$this->hohead_id->LinkCustomAttributes = "";
-			$this->hohead_id->HrefValue = "";
+			// Description
+			$this->Description->LinkCustomAttributes = "";
+			$this->Description->HrefValue = "";
 
-			// asset_id
-			$this->asset_id->LinkCustomAttributes = "";
-			$this->asset_id->HrefValue = "";
+			// Code
+			$this->Code->LinkCustomAttributes = "";
+			$this->Code->HrefValue = "";
 		} elseif ($this->RowType == ROWTYPE_EDIT) { // Edit row
 
-			// id
-			$this->id->EditAttrs["class"] = "form-control";
-			$this->id->EditCustomAttributes = "";
-			$this->id->EditValue = $this->id->CurrentValue;
-			$this->id->ViewCustomAttributes = "";
-
-			// hohead_id
-			$this->hohead_id->EditAttrs["class"] = "form-control";
-			$this->hohead_id->EditCustomAttributes = "";
-			if ($this->hohead_id->getSessionValue() != "") {
-				$this->hohead_id->CurrentValue = $this->hohead_id->getSessionValue();
-				$this->hohead_id->OldValue = $this->hohead_id->CurrentValue;
-				$this->hohead_id->ViewValue = $this->hohead_id->CurrentValue;
-				$this->hohead_id->ViewValue = FormatNumber($this->hohead_id->ViewValue, 0, -2, -2, -2);
-				$this->hohead_id->ViewCustomAttributes = "";
+			// assetgroup_id
+			$this->assetgroup_id->EditAttrs["class"] = "form-control";
+			$this->assetgroup_id->EditCustomAttributes = "";
+			if ($this->assetgroup_id->getSessionValue() != "") {
+				$this->assetgroup_id->CurrentValue = $this->assetgroup_id->getSessionValue();
+				$this->assetgroup_id->OldValue = $this->assetgroup_id->CurrentValue;
+				$this->assetgroup_id->ViewValue = $this->assetgroup_id->CurrentValue;
+				$curVal = strval($this->assetgroup_id->CurrentValue);
+				if ($curVal != "") {
+					$this->assetgroup_id->ViewValue = $this->assetgroup_id->lookupCacheOption($curVal);
+					if ($this->assetgroup_id->ViewValue === NULL) { // Lookup from database
+						$filterWrk = "`id`" . SearchString("=", $curVal, DATATYPE_NUMBER, "");
+						$sqlWrk = $this->assetgroup_id->Lookup->getSql(FALSE, $filterWrk, '', $this);
+						$rswrk = Conn()->execute($sqlWrk);
+						if ($rswrk && !$rswrk->EOF) { // Lookup values found
+							$arwrk = [];
+							$arwrk[1] = $rswrk->fields('df');
+							$arwrk[2] = $rswrk->fields('df2');
+							$arwrk[3] = FormatNumber($rswrk->fields('df3'), 0, -2, -2, -2);
+							$arwrk[4] = FormatNumber($rswrk->fields('df4'), 2, -2, -2, -2);
+							$this->assetgroup_id->ViewValue = $this->assetgroup_id->displayValue($arwrk);
+							$rswrk->Close();
+						} else {
+							$this->assetgroup_id->ViewValue = $this->assetgroup_id->CurrentValue;
+						}
+					}
+				} else {
+					$this->assetgroup_id->ViewValue = NULL;
+				}
+				$this->assetgroup_id->ViewCustomAttributes = "";
 			} else {
-				$this->hohead_id->EditValue = HtmlEncode($this->hohead_id->CurrentValue);
-				$this->hohead_id->PlaceHolder = RemoveHtml($this->hohead_id->caption());
+				$this->assetgroup_id->EditValue = HtmlEncode($this->assetgroup_id->CurrentValue);
+				$curVal = strval($this->assetgroup_id->CurrentValue);
+				if ($curVal != "") {
+					$this->assetgroup_id->EditValue = $this->assetgroup_id->lookupCacheOption($curVal);
+					if ($this->assetgroup_id->EditValue === NULL) { // Lookup from database
+						$filterWrk = "`id`" . SearchString("=", $curVal, DATATYPE_NUMBER, "");
+						$sqlWrk = $this->assetgroup_id->Lookup->getSql(FALSE, $filterWrk, '', $this);
+						$rswrk = Conn()->execute($sqlWrk);
+						if ($rswrk && !$rswrk->EOF) { // Lookup values found
+							$arwrk = [];
+							$arwrk[1] = HtmlEncode($rswrk->fields('df'));
+							$arwrk[2] = HtmlEncode($rswrk->fields('df2'));
+							$arwrk[3] = HtmlEncode(FormatNumber($rswrk->fields('df3'), 0, -2, -2, -2));
+							$arwrk[4] = HtmlEncode(FormatNumber($rswrk->fields('df4'), 2, -2, -2, -2));
+							$this->assetgroup_id->EditValue = $this->assetgroup_id->displayValue($arwrk);
+							$rswrk->Close();
+						} else {
+							$this->assetgroup_id->EditValue = HtmlEncode($this->assetgroup_id->CurrentValue);
+						}
+					}
+				} else {
+					$this->assetgroup_id->EditValue = NULL;
+				}
+				$this->assetgroup_id->PlaceHolder = RemoveHtml($this->assetgroup_id->caption());
 			}
 
-			// asset_id
-			$this->asset_id->EditAttrs["class"] = "form-control";
-			$this->asset_id->EditCustomAttributes = "";
-			$this->asset_id->EditValue = HtmlEncode($this->asset_id->CurrentValue);
-			$this->asset_id->PlaceHolder = RemoveHtml($this->asset_id->caption());
+			// Description
+			$this->Description->EditAttrs["class"] = "form-control";
+			$this->Description->EditCustomAttributes = "";
+			if (!$this->Description->Raw)
+				$this->Description->CurrentValue = HtmlDecode($this->Description->CurrentValue);
+			$this->Description->EditValue = HtmlEncode($this->Description->CurrentValue);
+			$this->Description->PlaceHolder = RemoveHtml($this->Description->caption());
+
+			// Code
+			$this->Code->EditAttrs["class"] = "form-control";
+			$this->Code->EditCustomAttributes = "";
+			if (!$this->Code->Raw)
+				$this->Code->CurrentValue = HtmlDecode($this->Code->CurrentValue);
+			$this->Code->EditValue = HtmlEncode($this->Code->CurrentValue);
+			$this->Code->PlaceHolder = RemoveHtml($this->Code->caption());
 
 			// Edit refer script
-			// id
+			// assetgroup_id
 
-			$this->id->LinkCustomAttributes = "";
-			$this->id->HrefValue = "";
+			$this->assetgroup_id->LinkCustomAttributes = "";
+			$this->assetgroup_id->HrefValue = "";
 
-			// hohead_id
-			$this->hohead_id->LinkCustomAttributes = "";
-			$this->hohead_id->HrefValue = "";
+			// Description
+			$this->Description->LinkCustomAttributes = "";
+			$this->Description->HrefValue = "";
 
-			// asset_id
-			$this->asset_id->LinkCustomAttributes = "";
-			$this->asset_id->HrefValue = "";
+			// Code
+			$this->Code->LinkCustomAttributes = "";
+			$this->Code->HrefValue = "";
 		}
 		if ($this->RowType == ROWTYPE_ADD || $this->RowType == ROWTYPE_EDIT || $this->RowType == ROWTYPE_SEARCH) // Add/Edit/Search row
 			$this->setupFieldTitles();
@@ -1843,26 +2010,23 @@ class t104_ho1_detail_grid extends t104_ho1_detail
 		// Check if validation required
 		if (!Config("SERVER_VALIDATE"))
 			return ($FormError == "");
-		if ($this->id->Required) {
-			if (!$this->id->IsDetailKey && $this->id->FormValue != NULL && $this->id->FormValue == "") {
-				AddMessage($FormError, str_replace("%s", $this->id->caption(), $this->id->RequiredErrorMessage));
+		if ($this->assetgroup_id->Required) {
+			if (!$this->assetgroup_id->IsDetailKey && $this->assetgroup_id->FormValue != NULL && $this->assetgroup_id->FormValue == "") {
+				AddMessage($FormError, str_replace("%s", $this->assetgroup_id->caption(), $this->assetgroup_id->RequiredErrorMessage));
 			}
 		}
-		if ($this->hohead_id->Required) {
-			if (!$this->hohead_id->IsDetailKey && $this->hohead_id->FormValue != NULL && $this->hohead_id->FormValue == "") {
-				AddMessage($FormError, str_replace("%s", $this->hohead_id->caption(), $this->hohead_id->RequiredErrorMessage));
+		if (!CheckInteger($this->assetgroup_id->FormValue)) {
+			AddMessage($FormError, $this->assetgroup_id->errorMessage());
+		}
+		if ($this->Description->Required) {
+			if (!$this->Description->IsDetailKey && $this->Description->FormValue != NULL && $this->Description->FormValue == "") {
+				AddMessage($FormError, str_replace("%s", $this->Description->caption(), $this->Description->RequiredErrorMessage));
 			}
 		}
-		if (!CheckInteger($this->hohead_id->FormValue)) {
-			AddMessage($FormError, $this->hohead_id->errorMessage());
-		}
-		if ($this->asset_id->Required) {
-			if (!$this->asset_id->IsDetailKey && $this->asset_id->FormValue != NULL && $this->asset_id->FormValue == "") {
-				AddMessage($FormError, str_replace("%s", $this->asset_id->caption(), $this->asset_id->RequiredErrorMessage));
+		if ($this->Code->Required) {
+			if (!$this->Code->IsDetailKey && $this->Code->FormValue != NULL && $this->Code->FormValue == "") {
+				AddMessage($FormError, str_replace("%s", $this->Code->caption(), $this->Code->RequiredErrorMessage));
 			}
-		}
-		if (!CheckInteger($this->asset_id->FormValue)) {
-			AddMessage($FormError, $this->asset_id->errorMessage());
 		}
 
 		// Return validate result
@@ -1987,30 +2151,33 @@ class t104_ho1_detail_grid extends t104_ho1_detail
 			$this->loadDbValues($rsold);
 			$rsnew = [];
 
-			// hohead_id
-			$this->hohead_id->setDbValueDef($rsnew, $this->hohead_id->CurrentValue, 0, $this->hohead_id->ReadOnly);
+			// assetgroup_id
+			$this->assetgroup_id->setDbValueDef($rsnew, $this->assetgroup_id->CurrentValue, 0, $this->assetgroup_id->ReadOnly);
 
-			// asset_id
-			$this->asset_id->setDbValueDef($rsnew, $this->asset_id->CurrentValue, 0, $this->asset_id->ReadOnly);
+			// Description
+			$this->Description->setDbValueDef($rsnew, $this->Description->CurrentValue, "", $this->Description->ReadOnly);
 
-			// Check referential integrity for master table 't103_ho1_head'
+			// Code
+			$this->Code->setDbValueDef($rsnew, $this->Code->CurrentValue, "", $this->Code->ReadOnly);
+
+			// Check referential integrity for master table 't005_assetgroup'
 			$validMasterRecord = TRUE;
-			$masterFilter = $this->sqlMasterFilter_t103_ho1_head();
-			$keyValue = isset($rsnew['hohead_id']) ? $rsnew['hohead_id'] : $rsold['hohead_id'];
+			$masterFilter = $this->sqlMasterFilter_t005_assetgroup();
+			$keyValue = isset($rsnew['assetgroup_id']) ? $rsnew['assetgroup_id'] : $rsold['assetgroup_id'];
 			if (strval($keyValue) != "") {
 				$masterFilter = str_replace("@id@", AdjustSql($keyValue), $masterFilter);
 			} else {
 				$validMasterRecord = FALSE;
 			}
 			if ($validMasterRecord) {
-				if (!isset($GLOBALS["t103_ho1_head"]))
-					$GLOBALS["t103_ho1_head"] = new t103_ho1_head();
-				$rsmaster = $GLOBALS["t103_ho1_head"]->loadRs($masterFilter);
+				if (!isset($GLOBALS["t005_assetgroup"]))
+					$GLOBALS["t005_assetgroup"] = new t005_assetgroup();
+				$rsmaster = $GLOBALS["t005_assetgroup"]->loadRs($masterFilter);
 				$validMasterRecord = ($rsmaster && !$rsmaster->EOF);
 				$rsmaster->close();
 			}
 			if (!$validMasterRecord) {
-				$relatedRecordMsg = str_replace("%t", "t103_ho1_head", $Language->phrase("RelatedRecordRequired"));
+				$relatedRecordMsg = str_replace("%t", "t005_assetgroup", $Language->phrase("RelatedRecordRequired"));
 				$this->setFailureMessage($relatedRecordMsg);
 				$rs->close();
 				return FALSE;
@@ -2078,27 +2245,27 @@ class t104_ho1_detail_grid extends t104_ho1_detail
 		global $Language, $Security;
 
 		// Set up foreign key field value from Session
-			if ($this->getCurrentMasterTable() == "t103_ho1_head") {
-				$this->hohead_id->CurrentValue = $this->hohead_id->getSessionValue();
+			if ($this->getCurrentMasterTable() == "t005_assetgroup") {
+				$this->assetgroup_id->CurrentValue = $this->assetgroup_id->getSessionValue();
 			}
 
-		// Check referential integrity for master table 't104_ho1_detail'
+		// Check referential integrity for master table 't007_assettype'
 		$validMasterRecord = TRUE;
-		$masterFilter = $this->sqlMasterFilter_t103_ho1_head();
-		if (strval($this->hohead_id->CurrentValue) != "") {
-			$masterFilter = str_replace("@id@", AdjustSql($this->hohead_id->CurrentValue, "DB"), $masterFilter);
+		$masterFilter = $this->sqlMasterFilter_t005_assetgroup();
+		if (strval($this->assetgroup_id->CurrentValue) != "") {
+			$masterFilter = str_replace("@id@", AdjustSql($this->assetgroup_id->CurrentValue, "DB"), $masterFilter);
 		} else {
 			$validMasterRecord = FALSE;
 		}
 		if ($validMasterRecord) {
-			if (!isset($GLOBALS["t103_ho1_head"]))
-				$GLOBALS["t103_ho1_head"] = new t103_ho1_head();
-			$rsmaster = $GLOBALS["t103_ho1_head"]->loadRs($masterFilter);
+			if (!isset($GLOBALS["t005_assetgroup"]))
+				$GLOBALS["t005_assetgroup"] = new t005_assetgroup();
+			$rsmaster = $GLOBALS["t005_assetgroup"]->loadRs($masterFilter);
 			$validMasterRecord = ($rsmaster && !$rsmaster->EOF);
 			$rsmaster->close();
 		}
 		if (!$validMasterRecord) {
-			$relatedRecordMsg = str_replace("%t", "t103_ho1_head", $Language->phrase("RelatedRecordRequired"));
+			$relatedRecordMsg = str_replace("%t", "t005_assetgroup", $Language->phrase("RelatedRecordRequired"));
 			$this->setFailureMessage($relatedRecordMsg);
 			return FALSE;
 		}
@@ -2110,11 +2277,14 @@ class t104_ho1_detail_grid extends t104_ho1_detail
 		}
 		$rsnew = [];
 
-		// hohead_id
-		$this->hohead_id->setDbValueDef($rsnew, $this->hohead_id->CurrentValue, 0, FALSE);
+		// assetgroup_id
+		$this->assetgroup_id->setDbValueDef($rsnew, $this->assetgroup_id->CurrentValue, 0, FALSE);
 
-		// asset_id
-		$this->asset_id->setDbValueDef($rsnew, $this->asset_id->CurrentValue, 0, FALSE);
+		// Description
+		$this->Description->setDbValueDef($rsnew, $this->Description->CurrentValue, "", FALSE);
+
+		// Code
+		$this->Code->setDbValueDef($rsnew, $this->Code->CurrentValue, "", FALSE);
 
 		// Call Row Inserting event
 		$rs = ($rsold) ? $rsold->fields : NULL;
@@ -2162,9 +2332,9 @@ class t104_ho1_detail_grid extends t104_ho1_detail
 
 		// Hide foreign keys
 		$masterTblVar = $this->getCurrentMasterTable();
-		if ($masterTblVar == "t103_ho1_head") {
-			$this->hohead_id->Visible = FALSE;
-			if ($GLOBALS["t103_ho1_head"]->EventCancelled)
+		if ($masterTblVar == "t005_assetgroup") {
+			$this->assetgroup_id->Visible = FALSE;
+			if ($GLOBALS["t005_assetgroup"]->EventCancelled)
 				$this->EventCancelled = TRUE;
 		}
 		$this->DbMasterFilter = $this->getMasterFilter(); // Get master filter
@@ -2185,6 +2355,8 @@ class t104_ho1_detail_grid extends t104_ho1_detail
 
 			// Set up lookup SQL and connection
 			switch ($fld->FieldVar) {
+				case "x_assetgroup_id":
+					break;
 				default:
 					$lookupFilter = "";
 					break;
@@ -2205,6 +2377,12 @@ class t104_ho1_detail_grid extends t104_ho1_detail
 
 					// Format the field values
 					switch ($fld->FieldVar) {
+						case "x_assetgroup_id":
+							$row[3] = FormatNumber($row[3], 0, -2, -2, -2);
+							$row['df3'] = $row[3];
+							$row[4] = FormatNumber($row[4], 2, -2, -2, -2);
+							$row['df4'] = $row[4];
+							break;
 					}
 					$ar[strval($row[0])] = $row;
 					$rs->moveNext();

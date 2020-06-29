@@ -54,9 +54,12 @@ loadjs.ready("head", function() {
 		elm = this.getElements("x" + infix + "_id");
 		if (elm && !ew.checkInteger(elm.value))
 			return this.onError(elm, "<?php echo JsEncode($t005_assetgroup_search->id->errorMessage()) ?>");
-		elm = this.getElements("x" + infix + "_EconomicalLifeTime");
+		elm = this.getElements("x" + infix + "_EstimatedLife");
 		if (elm && !ew.checkInteger(elm.value))
-			return this.onError(elm, "<?php echo JsEncode($t005_assetgroup_search->EconomicalLifeTime->errorMessage()) ?>");
+			return this.onError(elm, "<?php echo JsEncode($t005_assetgroup_search->EstimatedLife->errorMessage()) ?>");
+		elm = this.getElements("x" + infix + "_SLN");
+		if (elm && !ew.checkNumber(elm.value))
+			return this.onError(elm, "<?php echo JsEncode($t005_assetgroup_search->SLN->errorMessage()) ?>");
 
 		// Call Form_CustomValidate event
 		if (!this.Form_CustomValidate(fobj))
@@ -113,6 +116,21 @@ $t005_assetgroup_search->showMessage();
 		</div></div>
 	</div>
 <?php } ?>
+<?php if ($t005_assetgroup_search->Code->Visible) { // Code ?>
+	<div id="r_Code" class="form-group row">
+		<label for="x_Code" class="<?php echo $t005_assetgroup_search->LeftColumnClass ?>"><span id="elh_t005_assetgroup_Code"><?php echo $t005_assetgroup_search->Code->caption() ?></span>
+		<span class="ew-search-operator">
+<?php echo $Language->phrase("LIKE") ?>
+<input type="hidden" name="z_Code" id="z_Code" value="LIKE">
+</span>
+		</label>
+		<div class="<?php echo $t005_assetgroup_search->RightColumnClass ?>"><div <?php echo $t005_assetgroup_search->Code->cellAttributes() ?>>
+			<span id="el_t005_assetgroup_Code" class="ew-search-field">
+<input type="text" data-table="t005_assetgroup" data-field="x_Code" name="x_Code" id="x_Code" size="2" maxlength="5" placeholder="<?php echo HtmlEncode($t005_assetgroup_search->Code->getPlaceHolder()) ?>" value="<?php echo $t005_assetgroup_search->Code->EditValue ?>"<?php echo $t005_assetgroup_search->Code->editAttributes() ?>>
+</span>
+		</div></div>
+	</div>
+<?php } ?>
 <?php if ($t005_assetgroup_search->Description->Visible) { // Description ?>
 	<div id="r_Description" class="form-group row">
 		<label for="x_Description" class="<?php echo $t005_assetgroup_search->LeftColumnClass ?>"><span id="elh_t005_assetgroup_Description"><?php echo $t005_assetgroup_search->Description->caption() ?></span>
@@ -128,17 +146,32 @@ $t005_assetgroup_search->showMessage();
 		</div></div>
 	</div>
 <?php } ?>
-<?php if ($t005_assetgroup_search->EconomicalLifeTime->Visible) { // EconomicalLifeTime ?>
-	<div id="r_EconomicalLifeTime" class="form-group row">
-		<label for="x_EconomicalLifeTime" class="<?php echo $t005_assetgroup_search->LeftColumnClass ?>"><span id="elh_t005_assetgroup_EconomicalLifeTime"><?php echo $t005_assetgroup_search->EconomicalLifeTime->caption() ?></span>
+<?php if ($t005_assetgroup_search->EstimatedLife->Visible) { // EstimatedLife ?>
+	<div id="r_EstimatedLife" class="form-group row">
+		<label for="x_EstimatedLife" class="<?php echo $t005_assetgroup_search->LeftColumnClass ?>"><span id="elh_t005_assetgroup_EstimatedLife"><?php echo $t005_assetgroup_search->EstimatedLife->caption() ?></span>
 		<span class="ew-search-operator">
 <?php echo $Language->phrase("=") ?>
-<input type="hidden" name="z_EconomicalLifeTime" id="z_EconomicalLifeTime" value="=">
+<input type="hidden" name="z_EstimatedLife" id="z_EstimatedLife" value="=">
 </span>
 		</label>
-		<div class="<?php echo $t005_assetgroup_search->RightColumnClass ?>"><div <?php echo $t005_assetgroup_search->EconomicalLifeTime->cellAttributes() ?>>
-			<span id="el_t005_assetgroup_EconomicalLifeTime" class="ew-search-field">
-<input type="text" data-table="t005_assetgroup" data-field="x_EconomicalLifeTime" name="x_EconomicalLifeTime" id="x_EconomicalLifeTime" size="2" maxlength="4" placeholder="<?php echo HtmlEncode($t005_assetgroup_search->EconomicalLifeTime->getPlaceHolder()) ?>" value="<?php echo $t005_assetgroup_search->EconomicalLifeTime->EditValue ?>"<?php echo $t005_assetgroup_search->EconomicalLifeTime->editAttributes() ?>>
+		<div class="<?php echo $t005_assetgroup_search->RightColumnClass ?>"><div <?php echo $t005_assetgroup_search->EstimatedLife->cellAttributes() ?>>
+			<span id="el_t005_assetgroup_EstimatedLife" class="ew-search-field">
+<input type="text" data-table="t005_assetgroup" data-field="x_EstimatedLife" name="x_EstimatedLife" id="x_EstimatedLife" size="2" maxlength="4" placeholder="<?php echo HtmlEncode($t005_assetgroup_search->EstimatedLife->getPlaceHolder()) ?>" value="<?php echo $t005_assetgroup_search->EstimatedLife->EditValue ?>"<?php echo $t005_assetgroup_search->EstimatedLife->editAttributes() ?>>
+</span>
+		</div></div>
+	</div>
+<?php } ?>
+<?php if ($t005_assetgroup_search->SLN->Visible) { // SLN ?>
+	<div id="r_SLN" class="form-group row">
+		<label for="x_SLN" class="<?php echo $t005_assetgroup_search->LeftColumnClass ?>"><span id="elh_t005_assetgroup_SLN"><?php echo $t005_assetgroup_search->SLN->caption() ?></span>
+		<span class="ew-search-operator">
+<?php echo $Language->phrase("=") ?>
+<input type="hidden" name="z_SLN" id="z_SLN" value="=">
+</span>
+		</label>
+		<div class="<?php echo $t005_assetgroup_search->RightColumnClass ?>"><div <?php echo $t005_assetgroup_search->SLN->cellAttributes() ?>>
+			<span id="el_t005_assetgroup_SLN" class="ew-search-field">
+<input type="text" data-table="t005_assetgroup" data-field="x_SLN" name="x_SLN" id="x_SLN" size="2" maxlength="4" placeholder="<?php echo HtmlEncode($t005_assetgroup_search->SLN->getPlaceHolder()) ?>" value="<?php echo $t005_assetgroup_search->SLN->EditValue ?>"<?php echo $t005_assetgroup_search->SLN->editAttributes() ?>>
 </span>
 		</div></div>
 	</div>

@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1:3307
--- Generation Time: Jun 20, 2020 at 06:32 PM
+-- Generation Time: Jun 29, 2020 at 08:03 AM
 -- Server version: 10.4.8-MariaDB
 -- PHP Version: 7.3.11
 
@@ -39,8 +39,8 @@ CREATE TABLE `t001_property` (
 --
 
 INSERT INTO `t001_property` (`id`, `Property`, `TemplateFile`) VALUES
-(4, 'Aston Bojonegoro City Hotel', 'ASSET HANDOVER FORM - ABCH.xlsx'),
-(5, 'Favehotel Sudirman Bojonegoro', 'ASSET HANDOVER FORM - FSB.xlsx'),
+(4, 'Aston Bojonegoro City Hotel', 'ASSET HANDOVER ABCH - FORM'),
+(5, 'Favehotel Sudirman Bojonegoro', 'ASSET HANDOVER FSB - FORM'),
 (6, 'Rumah Dinas General Manager', '-');
 
 -- --------------------------------------------------------
@@ -93,7 +93,8 @@ INSERT INTO `t003_signature` (`id`, `Signature`, `JobTitle`) VALUES
 (13, 'Ricky', 'Front Office Manager'),
 (14, 'Roga', 'Chief Engineering'),
 (15, 'Ronald', 'Director of Sales'),
-(16, 'Intan Noor Azizah', 'Financial Controller');
+(16, 'Intan Noor Azizah', 'Financial Controller'),
+(17, 'General Manager', 'General Manager');
 
 -- --------------------------------------------------------
 
@@ -149,18 +150,20 @@ INSERT INTO `t004_asset` (`id`, `property_id`, `department_id`, `signature_id`, 
 
 CREATE TABLE `t005_assetgroup` (
   `id` int(11) NOT NULL,
+  `Code` varchar(5) NOT NULL,
   `Description` varchar(255) NOT NULL,
-  `EconomicalLifeTime` tinyint(4) NOT NULL DEFAULT 5
+  `EstimatedLife` tinyint(4) NOT NULL DEFAULT 5,
+  `SLN` float(4,2) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Dumping data for table `t005_assetgroup`
 --
 
-INSERT INTO `t005_assetgroup` (`id`, `Description`, `EconomicalLifeTime`) VALUES
-(1, 'Office Equipment', 5),
-(2, 'Kitchen Equipment', 10),
-(3, 'Data Test', 2);
+INSERT INTO `t005_assetgroup` (`id`, `Code`, `Description`, `EstimatedLife`, `SLN`) VALUES
+(1, 'B1', 'Bangunan', 20, 5.00),
+(2, 'K1', 'Kelompok I', 4, 25.00),
+(3, 'K2', 'Kelompok II', 8, 12.50);
 
 -- --------------------------------------------------------
 
@@ -199,6 +202,40 @@ INSERT INTO `t006_assetdepreciation` (`id`, `asset_id`, `ListOfYears`, `NumberOf
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `t007_assettype`
+--
+
+CREATE TABLE `t007_assettype` (
+  `id` int(11) NOT NULL,
+  `assetgroup_id` int(11) NOT NULL,
+  `Description` varchar(50) NOT NULL,
+  `Code` varchar(3) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `t007_assettype`
+--
+
+INSERT INTO `t007_assettype` (`id`, `assetgroup_id`, `Description`, `Code`) VALUES
+(1, 1, 'Tanah', 'TNH'),
+(2, 1, 'Bangunan', 'BGN'),
+(3, 2, 'IT', '011'),
+(4, 2, 'Furniture 1', '021'),
+(5, 2, 'Electronic 1', '031'),
+(6, 2, 'Kitchen Equipment 1', '041'),
+(7, 2, 'Tableware', '051'),
+(8, 2, 'Banquet', '061'),
+(9, 2, 'Other Equipment 1', '071'),
+(10, 3, 'Furniture 2', '022'),
+(11, 3, 'Electronic 2', '032'),
+(12, 3, 'Kitchen Equipment 2', '042'),
+(13, 3, 'Other Equipment 2', '072'),
+(14, 3, 'Vehicle 1', '0V1'),
+(15, 3, 'Vehicle 2', '0V2');
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `t101_ho_head`
 --
 
@@ -226,7 +263,9 @@ CREATE TABLE `t101_ho_head` (
 
 INSERT INTO `t101_ho_head` (`id`, `property_id`, `TransactionNo`, `TransactionDate`, `TransactionType`, `HandedOverTo`, `CodeNoTo`, `DepartmentTo`, `HandedOverBy`, `CodeNoBy`, `DepartmentBy`, `Sign1`, `Sign2`, `Sign3`, `Sign4`) VALUES
 (1, 4, '0001', '2020-05-23', 0, 16, '0001', 16, 9, '0001', 8, 9, 16, 9, 16),
-(2, 4, '0002', '2020-06-17', 0, 16, '0002', 16, 9, '0002', 8, 9, 16, 9, 9);
+(2, 4, '0002', '2020-06-17', 0, 16, '0002', 16, 9, '0002', 8, 9, 16, 9, 9),
+(3, 4, '0003', '2014-06-21', 0, 16, '0003', 16, 9, '0003', 8, 9, 16, 16, 16),
+(4, 4, '0004', '2020-06-25', 0, 10, '0004', 15, 9, '0004', 8, 9, 9, 16, 16);
 
 -- --------------------------------------------------------
 
@@ -246,25 +285,51 @@ CREATE TABLE `t102_ho_detail` (
 
 INSERT INTO `t102_ho_detail` (`id`, `hohead_id`, `asset_id`) VALUES
 (1, 1, 2),
-(2, 2, 3);
+(2, 2, 3),
+(3, 3, 20),
+(4, 4, 9),
+(5, 4, 10),
+(6, 4, 11);
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `t103_opname`
+-- Table structure for table `t103_ho1_head`
 --
 
-CREATE TABLE `t103_opname` (
+CREATE TABLE `t103_ho1_head` (
   `id` int(11) NOT NULL,
-  `OpnameDate` date NOT NULL,
-  `property_id` int(11) NOT NULL,
-  `location_id` int(11) NOT NULL,
-  `asset_id` int(11) NOT NULL,
-  `signature_id` int(11) NOT NULL,
-  `Actual` float(14,2) NOT NULL DEFAULT 0.00,
-  `OpnameQty` float(14,2) NOT NULL DEFAULT 0.00,
-  `Diff` float(14,2) NOT NULL DEFAULT 0.00,
-  `Remarks` text DEFAULT NULL
+  `ho_head` int(11) NOT NULL,
+  `TransactionNo` varchar(25) NOT NULL,
+  `TransactionDate` date NOT NULL,
+  `TransactionType` tinyint(4) NOT NULL,
+  `HandedOverTo` int(11) NOT NULL,
+  `CodeNoTo` varchar(25) NOT NULL COMMENT 'code number to',
+  `DepartmentTo` int(11) NOT NULL,
+  `Sign1` int(11) NOT NULL,
+  `Sign2` int(11) NOT NULL,
+  `Sign3` int(11) NOT NULL,
+  `Sign4` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `t103_ho1_head`
+--
+
+INSERT INTO `t103_ho1_head` (`id`, `ho_head`, `TransactionNo`, `TransactionDate`, `TransactionType`, `HandedOverTo`, `CodeNoTo`, `DepartmentTo`, `Sign1`, `Sign2`, `Sign3`, `Sign4`) VALUES
+(1, 1, '0001', '2020-06-23', 1, 10, '0001', 13, 16, 10, 16, 10),
+(2, 2, '0002', '2020-06-25', 1, 10, '0002', 15, 16, 10, 17, 10);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `t104_ho1_detail`
+--
+
+CREATE TABLE `t104_ho1_detail` (
+  `id` int(11) NOT NULL,
+  `hohead_id` int(11) NOT NULL,
+  `asset_id` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- --------------------------------------------------------
@@ -872,7 +937,175 @@ INSERT INTO `t204_audittrail` (`id`, `datetime`, `script`, `user`, `action`, `ta
 (467, '2020-06-20 23:27:01', '/simasset1/t004_assetedit.php', '4', 'U', 't004_asset', 'ProcurementCurrentCost', '20', '25000000.00', '26000000'),
 (468, '2020-06-20 23:27:17', '/simasset1/t004_assetedit.php', '4', 'U', 't004_asset', 'ProcurementCurrentCost', '20', '26000000.00', '25000000'),
 (469, '2020-06-20 23:30:25', '/simasset1/t004_assetedit.php', '4', 'U', 't004_asset', 'Salvage', '20', '7000000.00', '8000000'),
-(470, '2020-06-20 23:30:54', '/simasset1/t004_assetedit.php', '4', 'U', 't004_asset', 'Salvage', '20', '8000000.00', '7000000');
+(470, '2020-06-20 23:30:54', '/simasset1/t004_assetedit.php', '4', 'U', 't004_asset', 'Salvage', '20', '8000000.00', '7000000'),
+(471, '2020-06-21 00:28:47', '/simasset1/login.php', 'admin', 'login', '::1', '', '', '', ''),
+(472, '2020-06-21 00:36:17', '/simasset1/t101_ho_headadd.php', '4', 'A', 't101_ho_head', 'property_id', '3', '', '4'),
+(473, '2020-06-21 00:36:17', '/simasset1/t101_ho_headadd.php', '4', 'A', 't101_ho_head', 'TransactionNo', '3', '', '0003'),
+(474, '2020-06-21 00:36:17', '/simasset1/t101_ho_headadd.php', '4', 'A', 't101_ho_head', 'TransactionDate', '3', '', '2014-06-21'),
+(475, '2020-06-21 00:36:17', '/simasset1/t101_ho_headadd.php', '4', 'A', 't101_ho_head', 'TransactionType', '3', '', '0'),
+(476, '2020-06-21 00:36:17', '/simasset1/t101_ho_headadd.php', '4', 'A', 't101_ho_head', 'HandedOverTo', '3', '', '16'),
+(477, '2020-06-21 00:36:17', '/simasset1/t101_ho_headadd.php', '4', 'A', 't101_ho_head', 'CodeNoTo', '3', '', '0003'),
+(478, '2020-06-21 00:36:17', '/simasset1/t101_ho_headadd.php', '4', 'A', 't101_ho_head', 'DepartmentTo', '3', '', '16'),
+(479, '2020-06-21 00:36:17', '/simasset1/t101_ho_headadd.php', '4', 'A', 't101_ho_head', 'HandedOverBy', '3', '', '9'),
+(480, '2020-06-21 00:36:17', '/simasset1/t101_ho_headadd.php', '4', 'A', 't101_ho_head', 'CodeNoBy', '3', '', '0003'),
+(481, '2020-06-21 00:36:17', '/simasset1/t101_ho_headadd.php', '4', 'A', 't101_ho_head', 'DepartmentBy', '3', '', '8'),
+(482, '2020-06-21 00:36:17', '/simasset1/t101_ho_headadd.php', '4', 'A', 't101_ho_head', 'Sign1', '3', '', '9'),
+(483, '2020-06-21 00:36:17', '/simasset1/t101_ho_headadd.php', '4', 'A', 't101_ho_head', 'Sign2', '3', '', '16'),
+(484, '2020-06-21 00:36:17', '/simasset1/t101_ho_headadd.php', '4', 'A', 't101_ho_head', 'Sign3', '3', '', '16'),
+(485, '2020-06-21 00:36:17', '/simasset1/t101_ho_headadd.php', '4', 'A', 't101_ho_head', 'Sign4', '3', '', '16'),
+(486, '2020-06-21 00:36:17', '/simasset1/t101_ho_headadd.php', '4', 'A', 't101_ho_head', 'id', '3', '', '3'),
+(487, '2020-06-21 00:36:17', '/simasset1/t101_ho_headadd.php', '4', '*** Batch insert begin ***', 't102_ho_detail', '', '', '', ''),
+(488, '2020-06-21 00:36:17', '/simasset1/t101_ho_headadd.php', '4', 'A', 't102_ho_detail', 'asset_id', '3', '', '20'),
+(489, '2020-06-21 00:36:17', '/simasset1/t101_ho_headadd.php', '4', 'A', 't102_ho_detail', 'hohead_id', '3', '', '3'),
+(490, '2020-06-21 00:36:17', '/simasset1/t101_ho_headadd.php', '4', 'A', 't102_ho_detail', 'id', '3', '', '3'),
+(491, '2020-06-21 00:36:17', '/simasset1/t101_ho_headadd.php', '4', '*** Batch insert successful ***', 't102_ho_detail', '', '', '', ''),
+(492, '2020-06-22 14:05:36', '/simasset1/login.php', 'admin', 'login', '::1', '', '', '', ''),
+(493, '2020-06-22 20:22:28', '/simasset1/login.php', 'admin', 'login', '::1', '', '', '', ''),
+(494, '2020-06-23 13:03:03', '/simasset1/login.php', 'admin', 'login', '::1', '', '', '', ''),
+(495, '2020-06-23 13:15:16', '/simasset1/t103_ho1_headadd.php', '4', 'A', 't103_ho1_head', 'ho_head', '1', '', '1'),
+(496, '2020-06-23 13:15:16', '/simasset1/t103_ho1_headadd.php', '4', 'A', 't103_ho1_head', 'TransactionNo', '1', '', '0001'),
+(497, '2020-06-23 13:15:16', '/simasset1/t103_ho1_headadd.php', '4', 'A', 't103_ho1_head', 'TransactionDate', '1', '', '2020-06-23'),
+(498, '2020-06-23 13:15:16', '/simasset1/t103_ho1_headadd.php', '4', 'A', 't103_ho1_head', 'TransactionType', '1', '', '1'),
+(499, '2020-06-23 13:15:16', '/simasset1/t103_ho1_headadd.php', '4', 'A', 't103_ho1_head', 'HandedOverTo', '1', '', '10'),
+(500, '2020-06-23 13:15:16', '/simasset1/t103_ho1_headadd.php', '4', 'A', 't103_ho1_head', 'CodeNoTo', '1', '', '0001'),
+(501, '2020-06-23 13:15:16', '/simasset1/t103_ho1_headadd.php', '4', 'A', 't103_ho1_head', 'DepartmentTo', '1', '', '13'),
+(502, '2020-06-23 13:15:16', '/simasset1/t103_ho1_headadd.php', '4', 'A', 't103_ho1_head', 'Sign1', '1', '', '16'),
+(503, '2020-06-23 13:15:16', '/simasset1/t103_ho1_headadd.php', '4', 'A', 't103_ho1_head', 'Sign2', '1', '', '10'),
+(504, '2020-06-23 13:15:16', '/simasset1/t103_ho1_headadd.php', '4', 'A', 't103_ho1_head', 'Sign3', '1', '', '16'),
+(505, '2020-06-23 13:15:16', '/simasset1/t103_ho1_headadd.php', '4', 'A', 't103_ho1_head', 'Sign4', '1', '', '10'),
+(506, '2020-06-23 13:15:16', '/simasset1/t103_ho1_headadd.php', '4', 'A', 't103_ho1_head', 'id', '1', '', '1'),
+(507, '2020-06-24 13:34:13', '/simasset1/login.php', 'admin', 'login', '::1', '', '', '', ''),
+(508, '2020-06-25 08:32:25', '/simasset1/login.php', 'admin', 'login', '::1', '', '', '', ''),
+(509, '2020-06-25 08:47:36', '/simasset1/api/index.php', '4', 'A', 't003_signature', 'Signature', '17', '', 'General Manager'),
+(510, '2020-06-25 08:47:36', '/simasset1/api/index.php', '4', 'A', 't003_signature', 'JobTitle', '17', '', 'General Manager'),
+(511, '2020-06-25 08:47:36', '/simasset1/api/index.php', '4', 'A', 't003_signature', 'id', '17', '', '17'),
+(512, '2020-06-25 08:47:45', '/simasset1/t103_ho1_headadd.php', '4', 'A', 't103_ho1_head', 'ho_head', '2', '', '2'),
+(513, '2020-06-25 08:47:45', '/simasset1/t103_ho1_headadd.php', '4', 'A', 't103_ho1_head', 'TransactionNo', '2', '', '0002'),
+(514, '2020-06-25 08:47:45', '/simasset1/t103_ho1_headadd.php', '4', 'A', 't103_ho1_head', 'TransactionDate', '2', '', '2020-06-25'),
+(515, '2020-06-25 08:47:45', '/simasset1/t103_ho1_headadd.php', '4', 'A', 't103_ho1_head', 'TransactionType', '2', '', '1'),
+(516, '2020-06-25 08:47:45', '/simasset1/t103_ho1_headadd.php', '4', 'A', 't103_ho1_head', 'HandedOverTo', '2', '', '10'),
+(517, '2020-06-25 08:47:45', '/simasset1/t103_ho1_headadd.php', '4', 'A', 't103_ho1_head', 'CodeNoTo', '2', '', '0002'),
+(518, '2020-06-25 08:47:45', '/simasset1/t103_ho1_headadd.php', '4', 'A', 't103_ho1_head', 'DepartmentTo', '2', '', '15'),
+(519, '2020-06-25 08:47:45', '/simasset1/t103_ho1_headadd.php', '4', 'A', 't103_ho1_head', 'Sign1', '2', '', '16'),
+(520, '2020-06-25 08:47:45', '/simasset1/t103_ho1_headadd.php', '4', 'A', 't103_ho1_head', 'Sign2', '2', '', '10'),
+(521, '2020-06-25 08:47:45', '/simasset1/t103_ho1_headadd.php', '4', 'A', 't103_ho1_head', 'Sign3', '2', '', '17'),
+(522, '2020-06-25 08:47:45', '/simasset1/t103_ho1_headadd.php', '4', 'A', 't103_ho1_head', 'Sign4', '2', '', '10'),
+(523, '2020-06-25 08:47:45', '/simasset1/t103_ho1_headadd.php', '4', 'A', 't103_ho1_head', 'id', '2', '', '2'),
+(524, '2020-06-25 09:04:13', '/simasset1/logout.php', 'admin', 'logout', '::1', '', '', '', ''),
+(525, '2020-06-25 09:05:06', '/simasset1/login.php', 'admin', 'login', '::1', '', '', '', ''),
+(526, '2020-06-25 09:06:41', '/simasset1/t001_propertyedit.php', '4', 'U', 't001_property', 'Property', '4', 'Aston Bojonegoro City Hotel', 'Aston Bojonegoro City Hotel x'),
+(527, '2020-06-25 09:06:49', '/simasset1/t001_propertyedit.php', '4', 'U', 't001_property', 'Property', '4', 'Aston Bojonegoro City Hotel x', 'Aston Bojonegoro City Hotel'),
+(528, '2020-06-25 10:11:34', '/simasset1/t101_ho_headadd.php', '4', 'A', 't101_ho_head', 'property_id', '4', '', '4'),
+(529, '2020-06-25 10:11:34', '/simasset1/t101_ho_headadd.php', '4', 'A', 't101_ho_head', 'TransactionNo', '4', '', '0004'),
+(530, '2020-06-25 10:11:34', '/simasset1/t101_ho_headadd.php', '4', 'A', 't101_ho_head', 'TransactionDate', '4', '', '2020-06-25'),
+(531, '2020-06-25 10:11:34', '/simasset1/t101_ho_headadd.php', '4', 'A', 't101_ho_head', 'TransactionType', '4', '', '0'),
+(532, '2020-06-25 10:11:34', '/simasset1/t101_ho_headadd.php', '4', 'A', 't101_ho_head', 'HandedOverTo', '4', '', '10'),
+(533, '2020-06-25 10:11:34', '/simasset1/t101_ho_headadd.php', '4', 'A', 't101_ho_head', 'CodeNoTo', '4', '', '0004'),
+(534, '2020-06-25 10:11:34', '/simasset1/t101_ho_headadd.php', '4', 'A', 't101_ho_head', 'DepartmentTo', '4', '', '15'),
+(535, '2020-06-25 10:11:34', '/simasset1/t101_ho_headadd.php', '4', 'A', 't101_ho_head', 'HandedOverBy', '4', '', '9'),
+(536, '2020-06-25 10:11:34', '/simasset1/t101_ho_headadd.php', '4', 'A', 't101_ho_head', 'CodeNoBy', '4', '', '0004'),
+(537, '2020-06-25 10:11:34', '/simasset1/t101_ho_headadd.php', '4', 'A', 't101_ho_head', 'DepartmentBy', '4', '', '8'),
+(538, '2020-06-25 10:11:34', '/simasset1/t101_ho_headadd.php', '4', 'A', 't101_ho_head', 'Sign1', '4', '', '9'),
+(539, '2020-06-25 10:11:34', '/simasset1/t101_ho_headadd.php', '4', 'A', 't101_ho_head', 'Sign2', '4', '', '9'),
+(540, '2020-06-25 10:11:34', '/simasset1/t101_ho_headadd.php', '4', 'A', 't101_ho_head', 'Sign3', '4', '', '16'),
+(541, '2020-06-25 10:11:34', '/simasset1/t101_ho_headadd.php', '4', 'A', 't101_ho_head', 'Sign4', '4', '', '16'),
+(542, '2020-06-25 10:11:34', '/simasset1/t101_ho_headadd.php', '4', 'A', 't101_ho_head', 'id', '4', '', '4'),
+(543, '2020-06-25 10:11:34', '/simasset1/t101_ho_headadd.php', '4', '*** Batch insert begin ***', 't102_ho_detail', '', '', '', ''),
+(544, '2020-06-25 10:11:34', '/simasset1/t101_ho_headadd.php', '4', 'A', 't102_ho_detail', 'asset_id', '4', '', '9'),
+(545, '2020-06-25 10:11:34', '/simasset1/t101_ho_headadd.php', '4', 'A', 't102_ho_detail', 'hohead_id', '4', '', '4'),
+(546, '2020-06-25 10:11:34', '/simasset1/t101_ho_headadd.php', '4', 'A', 't102_ho_detail', 'id', '4', '', '4'),
+(547, '2020-06-25 10:11:34', '/simasset1/t101_ho_headadd.php', '4', 'A', 't102_ho_detail', 'asset_id', '5', '', '10'),
+(548, '2020-06-25 10:11:34', '/simasset1/t101_ho_headadd.php', '4', 'A', 't102_ho_detail', 'hohead_id', '5', '', '4'),
+(549, '2020-06-25 10:11:34', '/simasset1/t101_ho_headadd.php', '4', 'A', 't102_ho_detail', 'id', '5', '', '5'),
+(550, '2020-06-25 10:11:34', '/simasset1/t101_ho_headadd.php', '4', 'A', 't102_ho_detail', 'asset_id', '6', '', '11'),
+(551, '2020-06-25 10:11:34', '/simasset1/t101_ho_headadd.php', '4', 'A', 't102_ho_detail', 'hohead_id', '6', '', '4'),
+(552, '2020-06-25 10:11:34', '/simasset1/t101_ho_headadd.php', '4', 'A', 't102_ho_detail', 'id', '6', '', '6'),
+(553, '2020-06-25 10:11:34', '/simasset1/t101_ho_headadd.php', '4', '*** Batch insert successful ***', 't102_ho_detail', '', '', '', ''),
+(554, '2020-06-25 10:43:27', '/simasset1/login.php', 'admin', 'login', '::1', '', '', '', ''),
+(555, '2020-06-27 07:13:42', '/simasset1/login.php', 'admin', 'login', '::1', '', '', '', ''),
+(556, '2020-06-27 08:37:34', '/simasset1/logout.php', 'admin', 'logout', '::1', '', '', '', ''),
+(557, '2020-06-27 08:37:43', '/simasset1/login.php', 'admin', 'login', '::1', '', '', '', ''),
+(558, '2020-06-29 12:31:20', '/simasset1/login.php', 'admin', 'login', '::1', '', '', '', ''),
+(559, '2020-06-29 12:45:31', '/simasset1/t005_assetgrouplist.php', '4', '*** Batch update begin ***', 't005_assetgroup', '', '', '', ''),
+(560, '2020-06-29 12:45:31', '/simasset1/t005_assetgrouplist.php', '4', 'U', 't005_assetgroup', 'Code', '1', '', 'B1'),
+(561, '2020-06-29 12:45:31', '/simasset1/t005_assetgrouplist.php', '4', 'U', 't005_assetgroup', 'Description', '1', 'Office Equipment', 'Bangunan'),
+(562, '2020-06-29 12:45:31', '/simasset1/t005_assetgrouplist.php', '4', 'U', 't005_assetgroup', 'EstimatedLife', '1', '5', '20'),
+(563, '2020-06-29 12:45:31', '/simasset1/t005_assetgrouplist.php', '4', 'U', 't005_assetgroup', 'SLN', '1', '0.00', '5'),
+(564, '2020-06-29 12:45:31', '/simasset1/t005_assetgrouplist.php', '4', 'U', 't005_assetgroup', 'Code', '2', '', 'K1'),
+(565, '2020-06-29 12:45:31', '/simasset1/t005_assetgrouplist.php', '4', 'U', 't005_assetgroup', 'Description', '2', 'Kitchen Equipment', 'Kelompok I'),
+(566, '2020-06-29 12:45:31', '/simasset1/t005_assetgrouplist.php', '4', 'U', 't005_assetgroup', 'EstimatedLife', '2', '10', '4'),
+(567, '2020-06-29 12:45:31', '/simasset1/t005_assetgrouplist.php', '4', 'U', 't005_assetgroup', 'SLN', '2', '0.00', '25'),
+(568, '2020-06-29 12:45:31', '/simasset1/t005_assetgrouplist.php', '4', 'U', 't005_assetgroup', 'Code', '3', '', 'K2'),
+(569, '2020-06-29 12:45:31', '/simasset1/t005_assetgrouplist.php', '4', 'U', 't005_assetgroup', 'Description', '3', 'Data Test', 'Kelompok II'),
+(570, '2020-06-29 12:45:31', '/simasset1/t005_assetgrouplist.php', '4', 'U', 't005_assetgroup', 'EstimatedLife', '3', '2', '8'),
+(571, '2020-06-29 12:45:31', '/simasset1/t005_assetgrouplist.php', '4', 'U', 't005_assetgroup', 'SLN', '3', '0.00', '12.5'),
+(572, '2020-06-29 12:45:31', '/simasset1/t005_assetgrouplist.php', '4', '*** Batch update successful ***', 't005_assetgroup', '', '', '', ''),
+(573, '2020-06-29 12:52:15', '/simasset1/t005_assetgroupedit.php', '4', '*** Batch update begin ***', 't007_assettype', '', '', '', ''),
+(574, '2020-06-29 12:52:15', '/simasset1/t005_assetgroupedit.php', '4', 'A', 't007_assettype', 'assetgroup_id', '1', '', '1'),
+(575, '2020-06-29 12:52:15', '/simasset1/t005_assetgroupedit.php', '4', 'A', 't007_assettype', 'Description', '1', '', 'Tanah'),
+(576, '2020-06-29 12:52:15', '/simasset1/t005_assetgroupedit.php', '4', 'A', 't007_assettype', 'Code', '1', '', 'TNH'),
+(577, '2020-06-29 12:52:15', '/simasset1/t005_assetgroupedit.php', '4', 'A', 't007_assettype', 'id', '1', '', '1'),
+(578, '2020-06-29 12:52:15', '/simasset1/t005_assetgroupedit.php', '4', 'A', 't007_assettype', 'assetgroup_id', '2', '', '1'),
+(579, '2020-06-29 12:52:15', '/simasset1/t005_assetgroupedit.php', '4', 'A', 't007_assettype', 'Description', '2', '', 'Bangunan'),
+(580, '2020-06-29 12:52:15', '/simasset1/t005_assetgroupedit.php', '4', 'A', 't007_assettype', 'Code', '2', '', 'BGN'),
+(581, '2020-06-29 12:52:15', '/simasset1/t005_assetgroupedit.php', '4', 'A', 't007_assettype', 'id', '2', '', '2'),
+(582, '2020-06-29 12:52:15', '/simasset1/t005_assetgroupedit.php', '4', '*** Batch update successful ***', 't007_assettype', '', '', '', ''),
+(583, '2020-06-29 12:56:31', '/simasset1/t007_assettypeadd.php', '4', 'A', 't007_assettype', 'assetgroup_id', '3', '', '2'),
+(584, '2020-06-29 12:56:31', '/simasset1/t007_assettypeadd.php', '4', 'A', 't007_assettype', 'Description', '3', '', 'IT'),
+(585, '2020-06-29 12:56:31', '/simasset1/t007_assettypeadd.php', '4', 'A', 't007_assettype', 'Code', '3', '', '011'),
+(586, '2020-06-29 12:56:31', '/simasset1/t007_assettypeadd.php', '4', 'A', 't007_assettype', 'id', '3', '', '3'),
+(587, '2020-06-29 12:59:41', '/simasset1/t005_assetgroupedit.php', '4', '*** Batch update begin ***', 't007_assettype', '', '', '', ''),
+(588, '2020-06-29 12:59:41', '/simasset1/t005_assetgroupedit.php', '4', 'A', 't007_assettype', 'assetgroup_id', '4', '', '2'),
+(589, '2020-06-29 12:59:41', '/simasset1/t005_assetgroupedit.php', '4', 'A', 't007_assettype', 'Description', '4', '', 'Furniture 1'),
+(590, '2020-06-29 12:59:41', '/simasset1/t005_assetgroupedit.php', '4', 'A', 't007_assettype', 'Code', '4', '', '021'),
+(591, '2020-06-29 12:59:41', '/simasset1/t005_assetgroupedit.php', '4', 'A', 't007_assettype', 'id', '4', '', '4'),
+(592, '2020-06-29 12:59:41', '/simasset1/t005_assetgroupedit.php', '4', 'A', 't007_assettype', 'assetgroup_id', '5', '', '2'),
+(593, '2020-06-29 12:59:41', '/simasset1/t005_assetgroupedit.php', '4', 'A', 't007_assettype', 'Description', '5', '', 'Electronic 1'),
+(594, '2020-06-29 12:59:41', '/simasset1/t005_assetgroupedit.php', '4', 'A', 't007_assettype', 'Code', '5', '', '031'),
+(595, '2020-06-29 12:59:41', '/simasset1/t005_assetgroupedit.php', '4', 'A', 't007_assettype', 'id', '5', '', '5'),
+(596, '2020-06-29 12:59:41', '/simasset1/t005_assetgroupedit.php', '4', 'A', 't007_assettype', 'assetgroup_id', '6', '', '2'),
+(597, '2020-06-29 12:59:41', '/simasset1/t005_assetgroupedit.php', '4', 'A', 't007_assettype', 'Description', '6', '', 'Kitchen Equipment 1'),
+(598, '2020-06-29 12:59:41', '/simasset1/t005_assetgroupedit.php', '4', 'A', 't007_assettype', 'Code', '6', '', '041'),
+(599, '2020-06-29 12:59:41', '/simasset1/t005_assetgroupedit.php', '4', 'A', 't007_assettype', 'id', '6', '', '6'),
+(600, '2020-06-29 12:59:41', '/simasset1/t005_assetgroupedit.php', '4', 'A', 't007_assettype', 'assetgroup_id', '7', '', '2'),
+(601, '2020-06-29 12:59:41', '/simasset1/t005_assetgroupedit.php', '4', 'A', 't007_assettype', 'Description', '7', '', 'Tableware'),
+(602, '2020-06-29 12:59:41', '/simasset1/t005_assetgroupedit.php', '4', 'A', 't007_assettype', 'Code', '7', '', '051'),
+(603, '2020-06-29 12:59:41', '/simasset1/t005_assetgroupedit.php', '4', 'A', 't007_assettype', 'id', '7', '', '7'),
+(604, '2020-06-29 12:59:41', '/simasset1/t005_assetgroupedit.php', '4', 'A', 't007_assettype', 'assetgroup_id', '8', '', '2'),
+(605, '2020-06-29 12:59:41', '/simasset1/t005_assetgroupedit.php', '4', 'A', 't007_assettype', 'Description', '8', '', 'Banquet'),
+(606, '2020-06-29 12:59:41', '/simasset1/t005_assetgroupedit.php', '4', 'A', 't007_assettype', 'Code', '8', '', '061'),
+(607, '2020-06-29 12:59:41', '/simasset1/t005_assetgroupedit.php', '4', 'A', 't007_assettype', 'id', '8', '', '8'),
+(608, '2020-06-29 12:59:41', '/simasset1/t005_assetgroupedit.php', '4', 'A', 't007_assettype', 'assetgroup_id', '9', '', '2'),
+(609, '2020-06-29 12:59:41', '/simasset1/t005_assetgroupedit.php', '4', 'A', 't007_assettype', 'Description', '9', '', 'Other Equipment 1'),
+(610, '2020-06-29 12:59:41', '/simasset1/t005_assetgroupedit.php', '4', 'A', 't007_assettype', 'Code', '9', '', '071'),
+(611, '2020-06-29 12:59:41', '/simasset1/t005_assetgroupedit.php', '4', 'A', 't007_assettype', 'id', '9', '', '9'),
+(612, '2020-06-29 12:59:41', '/simasset1/t005_assetgroupedit.php', '4', '*** Batch update successful ***', 't007_assettype', '', '', '', ''),
+(613, '2020-06-29 13:00:21', '/simasset1/t007_assettypeadd.php', '4', 'A', 't007_assettype', 'assetgroup_id', '10', '', '3'),
+(614, '2020-06-29 13:00:21', '/simasset1/t007_assettypeadd.php', '4', 'A', 't007_assettype', 'Description', '10', '', 'Furniture 2'),
+(615, '2020-06-29 13:00:21', '/simasset1/t007_assettypeadd.php', '4', 'A', 't007_assettype', 'Code', '10', '', '022'),
+(616, '2020-06-29 13:00:21', '/simasset1/t007_assettypeadd.php', '4', 'A', 't007_assettype', 'id', '10', '', '10'),
+(617, '2020-06-29 13:00:37', '/simasset1/t007_assettypeadd.php', '4', 'A', 't007_assettype', 'assetgroup_id', '11', '', '3'),
+(618, '2020-06-29 13:00:37', '/simasset1/t007_assettypeadd.php', '4', 'A', 't007_assettype', 'Description', '11', '', 'Electronic 2'),
+(619, '2020-06-29 13:00:37', '/simasset1/t007_assettypeadd.php', '4', 'A', 't007_assettype', 'Code', '11', '', '032'),
+(620, '2020-06-29 13:00:37', '/simasset1/t007_assettypeadd.php', '4', 'A', 't007_assettype', 'id', '11', '', '11'),
+(621, '2020-06-29 13:01:44', '/simasset1/t005_assetgroupedit.php', '4', '*** Batch update begin ***', 't007_assettype', '', '', '', ''),
+(622, '2020-06-29 13:01:44', '/simasset1/t005_assetgroupedit.php', '4', 'A', 't007_assettype', 'assetgroup_id', '12', '', '3'),
+(623, '2020-06-29 13:01:44', '/simasset1/t005_assetgroupedit.php', '4', 'A', 't007_assettype', 'Description', '12', '', 'Kitchen Equipment 2'),
+(624, '2020-06-29 13:01:44', '/simasset1/t005_assetgroupedit.php', '4', 'A', 't007_assettype', 'Code', '12', '', '042'),
+(625, '2020-06-29 13:01:44', '/simasset1/t005_assetgroupedit.php', '4', 'A', 't007_assettype', 'id', '12', '', '12'),
+(626, '2020-06-29 13:01:44', '/simasset1/t005_assetgroupedit.php', '4', 'A', 't007_assettype', 'assetgroup_id', '13', '', '3'),
+(627, '2020-06-29 13:01:44', '/simasset1/t005_assetgroupedit.php', '4', 'A', 't007_assettype', 'Description', '13', '', 'Other Equipment 2'),
+(628, '2020-06-29 13:01:44', '/simasset1/t005_assetgroupedit.php', '4', 'A', 't007_assettype', 'Code', '13', '', '072'),
+(629, '2020-06-29 13:01:44', '/simasset1/t005_assetgroupedit.php', '4', 'A', 't007_assettype', 'id', '13', '', '13'),
+(630, '2020-06-29 13:01:44', '/simasset1/t005_assetgroupedit.php', '4', 'A', 't007_assettype', 'assetgroup_id', '14', '', '3'),
+(631, '2020-06-29 13:01:44', '/simasset1/t005_assetgroupedit.php', '4', 'A', 't007_assettype', 'Description', '14', '', 'Vehicle 1'),
+(632, '2020-06-29 13:01:44', '/simasset1/t005_assetgroupedit.php', '4', 'A', 't007_assettype', 'Code', '14', '', '0V1'),
+(633, '2020-06-29 13:01:44', '/simasset1/t005_assetgroupedit.php', '4', 'A', 't007_assettype', 'id', '14', '', '14'),
+(634, '2020-06-29 13:01:44', '/simasset1/t005_assetgroupedit.php', '4', 'A', 't007_assettype', 'assetgroup_id', '15', '', '3'),
+(635, '2020-06-29 13:01:44', '/simasset1/t005_assetgroupedit.php', '4', 'A', 't007_assettype', 'Description', '15', '', 'Vehicle 2'),
+(636, '2020-06-29 13:01:44', '/simasset1/t005_assetgroupedit.php', '4', 'A', 't007_assettype', 'Code', '15', '', '0V2'),
+(637, '2020-06-29 13:01:44', '/simasset1/t005_assetgroupedit.php', '4', 'A', 't007_assettype', 'id', '15', '', '15'),
+(638, '2020-06-29 13:01:44', '/simasset1/t005_assetgroupedit.php', '4', '*** Batch update successful ***', 't007_assettype', '', '', '', '');
 
 -- --------------------------------------------------------
 
@@ -928,6 +1161,12 @@ ALTER TABLE `t006_assetdepreciation`
   ADD PRIMARY KEY (`id`);
 
 --
+-- Indexes for table `t007_assettype`
+--
+ALTER TABLE `t007_assettype`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- Indexes for table `t101_ho_head`
 --
 ALTER TABLE `t101_ho_head`
@@ -940,9 +1179,15 @@ ALTER TABLE `t102_ho_detail`
   ADD PRIMARY KEY (`id`);
 
 --
--- Indexes for table `t103_opname`
+-- Indexes for table `t103_ho1_head`
 --
-ALTER TABLE `t103_opname`
+ALTER TABLE `t103_ho1_head`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `t104_ho1_detail`
+--
+ALTER TABLE `t104_ho1_detail`
   ADD PRIMARY KEY (`id`);
 
 --
@@ -996,7 +1241,7 @@ ALTER TABLE `t002_department`
 -- AUTO_INCREMENT for table `t003_signature`
 --
 ALTER TABLE `t003_signature`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=18;
 
 --
 -- AUTO_INCREMENT for table `t004_asset`
@@ -1017,21 +1262,33 @@ ALTER TABLE `t006_assetdepreciation`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=30;
 
 --
+-- AUTO_INCREMENT for table `t007_assettype`
+--
+ALTER TABLE `t007_assettype`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
+
+--
 -- AUTO_INCREMENT for table `t101_ho_head`
 --
 ALTER TABLE `t101_ho_head`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT for table `t102_ho_detail`
 --
 ALTER TABLE `t102_ho_detail`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+
+--
+-- AUTO_INCREMENT for table `t103_ho1_head`
+--
+ALTER TABLE `t103_ho1_head`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
--- AUTO_INCREMENT for table `t103_opname`
+-- AUTO_INCREMENT for table `t104_ho1_detail`
 --
-ALTER TABLE `t103_opname`
+ALTER TABLE `t104_ho1_detail`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
@@ -1044,7 +1301,7 @@ ALTER TABLE `t201_users`
 -- AUTO_INCREMENT for table `t204_audittrail`
 --
 ALTER TABLE `t204_audittrail`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=471;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=639;
 
 --
 -- AUTO_INCREMENT for table `t205_parameter`

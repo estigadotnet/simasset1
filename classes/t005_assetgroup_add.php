@@ -691,8 +691,10 @@ class t005_assetgroup_add extends t005_assetgroup
 		$CurrentForm = new HttpForm();
 		$this->CurrentAction = Param("action"); // Set up current action
 		$this->id->Visible = FALSE;
+		$this->Code->setVisibility();
 		$this->Description->setVisibility();
-		$this->EconomicalLifeTime->setVisibility();
+		$this->EstimatedLife->setVisibility();
+		$this->SLN->setVisibility();
 		$this->hideFieldsForAddEdit();
 
 		// Do not use lookup cache
@@ -762,6 +764,9 @@ class t005_assetgroup_add extends t005_assetgroup
 			$this->loadFormValues(); // Load form values
 		}
 
+		// Set up detail parameters
+		$this->setupDetailParms();
+
 		// Validate form if post back
 		if ($postBack) {
 			if (!$this->validateForm()) {
@@ -785,13 +790,19 @@ class t005_assetgroup_add extends t005_assetgroup
 						$this->setFailureMessage($Language->phrase("NoRecord")); // No record found
 					$this->terminate("t005_assetgrouplist.php"); // No matching record, return to list
 				}
+
+				// Set up detail parameters
+				$this->setupDetailParms();
 				break;
 			case "insert": // Add new record
 				$this->SendEmail = TRUE; // Send email on add success
 				if ($this->addRow($this->OldRecordset)) { // Add successful
 					if ($this->getSuccessMessage() == "")
 						$this->setSuccessMessage($Language->phrase("AddSuccess")); // Set up success message
-					$returnUrl = $this->getReturnUrl();
+					if ($this->getCurrentDetailTable() != "") // Master/detail add
+						$returnUrl = $this->getDetailUrl();
+					else
+						$returnUrl = $this->getReturnUrl();
 					if (GetPageName($returnUrl) == "t005_assetgrouplist.php")
 						$returnUrl = $this->addMasterUrl($returnUrl); // List page, return to List page with correct master key if necessary
 					elseif (GetPageName($returnUrl) == "t005_assetgroupview.php")
@@ -808,6 +819,9 @@ class t005_assetgroup_add extends t005_assetgroup
 				} else {
 					$this->EventCancelled = TRUE; // Event cancelled
 					$this->restoreFormValues(); // Add failed, restore form values
+
+					// Set up detail parameters
+					$this->setupDetailParms();
 				}
 		}
 
@@ -833,9 +847,13 @@ class t005_assetgroup_add extends t005_assetgroup
 	{
 		$this->id->CurrentValue = NULL;
 		$this->id->OldValue = $this->id->CurrentValue;
+		$this->Code->CurrentValue = NULL;
+		$this->Code->OldValue = $this->Code->CurrentValue;
 		$this->Description->CurrentValue = NULL;
 		$this->Description->OldValue = $this->Description->CurrentValue;
-		$this->EconomicalLifeTime->CurrentValue = 5;
+		$this->EstimatedLife->CurrentValue = 5;
+		$this->SLN->CurrentValue = NULL;
+		$this->SLN->OldValue = $this->SLN->CurrentValue;
 	}
 
 	// Load form values
@@ -844,6 +862,15 @@ class t005_assetgroup_add extends t005_assetgroup
 
 		// Load from form
 		global $CurrentForm;
+
+		// Check field name 'Code' first before field var 'x_Code'
+		$val = $CurrentForm->hasValue("Code") ? $CurrentForm->getValue("Code") : $CurrentForm->getValue("x_Code");
+		if (!$this->Code->IsDetailKey) {
+			if (IsApi() && $val == NULL)
+				$this->Code->Visible = FALSE; // Disable update for API request
+			else
+				$this->Code->setFormValue($val);
+		}
 
 		// Check field name 'Description' first before field var 'x_Description'
 		$val = $CurrentForm->hasValue("Description") ? $CurrentForm->getValue("Description") : $CurrentForm->getValue("x_Description");
@@ -854,13 +881,22 @@ class t005_assetgroup_add extends t005_assetgroup
 				$this->Description->setFormValue($val);
 		}
 
-		// Check field name 'EconomicalLifeTime' first before field var 'x_EconomicalLifeTime'
-		$val = $CurrentForm->hasValue("EconomicalLifeTime") ? $CurrentForm->getValue("EconomicalLifeTime") : $CurrentForm->getValue("x_EconomicalLifeTime");
-		if (!$this->EconomicalLifeTime->IsDetailKey) {
+		// Check field name 'EstimatedLife' first before field var 'x_EstimatedLife'
+		$val = $CurrentForm->hasValue("EstimatedLife") ? $CurrentForm->getValue("EstimatedLife") : $CurrentForm->getValue("x_EstimatedLife");
+		if (!$this->EstimatedLife->IsDetailKey) {
 			if (IsApi() && $val == NULL)
-				$this->EconomicalLifeTime->Visible = FALSE; // Disable update for API request
+				$this->EstimatedLife->Visible = FALSE; // Disable update for API request
 			else
-				$this->EconomicalLifeTime->setFormValue($val);
+				$this->EstimatedLife->setFormValue($val);
+		}
+
+		// Check field name 'SLN' first before field var 'x_SLN'
+		$val = $CurrentForm->hasValue("SLN") ? $CurrentForm->getValue("SLN") : $CurrentForm->getValue("x_SLN");
+		if (!$this->SLN->IsDetailKey) {
+			if (IsApi() && $val == NULL)
+				$this->SLN->Visible = FALSE; // Disable update for API request
+			else
+				$this->SLN->setFormValue($val);
 		}
 
 		// Check field name 'id' first before field var 'x_id'
@@ -871,8 +907,10 @@ class t005_assetgroup_add extends t005_assetgroup
 	public function restoreFormValues()
 	{
 		global $CurrentForm;
+		$this->Code->CurrentValue = $this->Code->FormValue;
 		$this->Description->CurrentValue = $this->Description->FormValue;
-		$this->EconomicalLifeTime->CurrentValue = $this->EconomicalLifeTime->FormValue;
+		$this->EstimatedLife->CurrentValue = $this->EstimatedLife->FormValue;
+		$this->SLN->CurrentValue = $this->SLN->FormValue;
 	}
 
 	// Load row based on key values
@@ -911,8 +949,10 @@ class t005_assetgroup_add extends t005_assetgroup
 		if (!$rs || $rs->EOF)
 			return;
 		$this->id->setDbValue($row['id']);
+		$this->Code->setDbValue($row['Code']);
 		$this->Description->setDbValue($row['Description']);
-		$this->EconomicalLifeTime->setDbValue($row['EconomicalLifeTime']);
+		$this->EstimatedLife->setDbValue($row['EstimatedLife']);
+		$this->SLN->setDbValue($row['SLN']);
 	}
 
 	// Return a row with default values
@@ -921,8 +961,10 @@ class t005_assetgroup_add extends t005_assetgroup
 		$this->loadDefaultValues();
 		$row = [];
 		$row['id'] = $this->id->CurrentValue;
+		$row['Code'] = $this->Code->CurrentValue;
 		$row['Description'] = $this->Description->CurrentValue;
-		$row['EconomicalLifeTime'] = $this->EconomicalLifeTime->CurrentValue;
+		$row['EstimatedLife'] = $this->EstimatedLife->CurrentValue;
+		$row['SLN'] = $this->SLN->CurrentValue;
 		return $row;
 	}
 
@@ -955,14 +997,20 @@ class t005_assetgroup_add extends t005_assetgroup
 		global $Security, $Language, $CurrentLanguage;
 
 		// Initialize URLs
-		// Call Row_Rendering event
+		// Convert decimal values if posted back
 
+		if ($this->SLN->FormValue == $this->SLN->CurrentValue && is_numeric(ConvertToFloatString($this->SLN->CurrentValue)))
+			$this->SLN->CurrentValue = ConvertToFloatString($this->SLN->CurrentValue);
+
+		// Call Row_Rendering event
 		$this->Row_Rendering();
 
 		// Common render codes for all row types
 		// id
+		// Code
 		// Description
-		// EconomicalLifeTime
+		// EstimatedLife
+		// SLN
 
 		if ($this->RowType == ROWTYPE_VIEW) { // View row
 
@@ -970,26 +1018,54 @@ class t005_assetgroup_add extends t005_assetgroup
 			$this->id->ViewValue = $this->id->CurrentValue;
 			$this->id->ViewCustomAttributes = "";
 
+			// Code
+			$this->Code->ViewValue = $this->Code->CurrentValue;
+			$this->Code->ViewCustomAttributes = "";
+
 			// Description
 			$this->Description->ViewValue = $this->Description->CurrentValue;
 			$this->Description->ViewCustomAttributes = "";
 
-			// EconomicalLifeTime
-			$this->EconomicalLifeTime->ViewValue = $this->EconomicalLifeTime->CurrentValue;
-			$this->EconomicalLifeTime->ViewValue = FormatNumber($this->EconomicalLifeTime->ViewValue, 0, -2, -2, -2);
-			$this->EconomicalLifeTime->CellCssStyle .= "text-align: right;";
-			$this->EconomicalLifeTime->ViewCustomAttributes = "";
+			// EstimatedLife
+			$this->EstimatedLife->ViewValue = $this->EstimatedLife->CurrentValue;
+			$this->EstimatedLife->ViewValue = FormatNumber($this->EstimatedLife->ViewValue, 0, -2, -2, -2);
+			$this->EstimatedLife->CellCssStyle .= "text-align: right;";
+			$this->EstimatedLife->ViewCustomAttributes = "";
+
+			// SLN
+			$this->SLN->ViewValue = $this->SLN->CurrentValue;
+			$this->SLN->ViewValue = FormatNumber($this->SLN->ViewValue, 2, -2, -2, -2);
+			$this->SLN->CellCssStyle .= "text-align: right;";
+			$this->SLN->ViewCustomAttributes = "";
+
+			// Code
+			$this->Code->LinkCustomAttributes = "";
+			$this->Code->HrefValue = "";
+			$this->Code->TooltipValue = "";
 
 			// Description
 			$this->Description->LinkCustomAttributes = "";
 			$this->Description->HrefValue = "";
 			$this->Description->TooltipValue = "";
 
-			// EconomicalLifeTime
-			$this->EconomicalLifeTime->LinkCustomAttributes = "";
-			$this->EconomicalLifeTime->HrefValue = "";
-			$this->EconomicalLifeTime->TooltipValue = "";
+			// EstimatedLife
+			$this->EstimatedLife->LinkCustomAttributes = "";
+			$this->EstimatedLife->HrefValue = "";
+			$this->EstimatedLife->TooltipValue = "";
+
+			// SLN
+			$this->SLN->LinkCustomAttributes = "";
+			$this->SLN->HrefValue = "";
+			$this->SLN->TooltipValue = "";
 		} elseif ($this->RowType == ROWTYPE_ADD) { // Add row
+
+			// Code
+			$this->Code->EditAttrs["class"] = "form-control";
+			$this->Code->EditCustomAttributes = "";
+			if (!$this->Code->Raw)
+				$this->Code->CurrentValue = HtmlDecode($this->Code->CurrentValue);
+			$this->Code->EditValue = HtmlEncode($this->Code->CurrentValue);
+			$this->Code->PlaceHolder = RemoveHtml($this->Code->caption());
 
 			// Description
 			$this->Description->EditAttrs["class"] = "form-control";
@@ -999,21 +1075,38 @@ class t005_assetgroup_add extends t005_assetgroup
 			$this->Description->EditValue = HtmlEncode($this->Description->CurrentValue);
 			$this->Description->PlaceHolder = RemoveHtml($this->Description->caption());
 
-			// EconomicalLifeTime
-			$this->EconomicalLifeTime->EditAttrs["class"] = "form-control";
-			$this->EconomicalLifeTime->EditCustomAttributes = "";
-			$this->EconomicalLifeTime->EditValue = HtmlEncode($this->EconomicalLifeTime->CurrentValue);
-			$this->EconomicalLifeTime->PlaceHolder = RemoveHtml($this->EconomicalLifeTime->caption());
+			// EstimatedLife
+			$this->EstimatedLife->EditAttrs["class"] = "form-control";
+			$this->EstimatedLife->EditCustomAttributes = "";
+			$this->EstimatedLife->EditValue = HtmlEncode($this->EstimatedLife->CurrentValue);
+			$this->EstimatedLife->PlaceHolder = RemoveHtml($this->EstimatedLife->caption());
+
+			// SLN
+			$this->SLN->EditAttrs["class"] = "form-control";
+			$this->SLN->EditCustomAttributes = "";
+			$this->SLN->EditValue = HtmlEncode($this->SLN->CurrentValue);
+			$this->SLN->PlaceHolder = RemoveHtml($this->SLN->caption());
+			if (strval($this->SLN->EditValue) != "" && is_numeric($this->SLN->EditValue))
+				$this->SLN->EditValue = FormatNumber($this->SLN->EditValue, -2, -2, -2, -2);
+			
 
 			// Add refer script
-			// Description
+			// Code
 
+			$this->Code->LinkCustomAttributes = "";
+			$this->Code->HrefValue = "";
+
+			// Description
 			$this->Description->LinkCustomAttributes = "";
 			$this->Description->HrefValue = "";
 
-			// EconomicalLifeTime
-			$this->EconomicalLifeTime->LinkCustomAttributes = "";
-			$this->EconomicalLifeTime->HrefValue = "";
+			// EstimatedLife
+			$this->EstimatedLife->LinkCustomAttributes = "";
+			$this->EstimatedLife->HrefValue = "";
+
+			// SLN
+			$this->SLN->LinkCustomAttributes = "";
+			$this->SLN->HrefValue = "";
 		}
 		if ($this->RowType == ROWTYPE_ADD || $this->RowType == ROWTYPE_EDIT || $this->RowType == ROWTYPE_SEARCH) // Add/Edit/Search row
 			$this->setupFieldTitles();
@@ -1034,18 +1127,39 @@ class t005_assetgroup_add extends t005_assetgroup
 		// Check if validation required
 		if (!Config("SERVER_VALIDATE"))
 			return ($FormError == "");
+		if ($this->Code->Required) {
+			if (!$this->Code->IsDetailKey && $this->Code->FormValue != NULL && $this->Code->FormValue == "") {
+				AddMessage($FormError, str_replace("%s", $this->Code->caption(), $this->Code->RequiredErrorMessage));
+			}
+		}
 		if ($this->Description->Required) {
 			if (!$this->Description->IsDetailKey && $this->Description->FormValue != NULL && $this->Description->FormValue == "") {
 				AddMessage($FormError, str_replace("%s", $this->Description->caption(), $this->Description->RequiredErrorMessage));
 			}
 		}
-		if ($this->EconomicalLifeTime->Required) {
-			if (!$this->EconomicalLifeTime->IsDetailKey && $this->EconomicalLifeTime->FormValue != NULL && $this->EconomicalLifeTime->FormValue == "") {
-				AddMessage($FormError, str_replace("%s", $this->EconomicalLifeTime->caption(), $this->EconomicalLifeTime->RequiredErrorMessage));
+		if ($this->EstimatedLife->Required) {
+			if (!$this->EstimatedLife->IsDetailKey && $this->EstimatedLife->FormValue != NULL && $this->EstimatedLife->FormValue == "") {
+				AddMessage($FormError, str_replace("%s", $this->EstimatedLife->caption(), $this->EstimatedLife->RequiredErrorMessage));
 			}
 		}
-		if (!CheckInteger($this->EconomicalLifeTime->FormValue)) {
-			AddMessage($FormError, $this->EconomicalLifeTime->errorMessage());
+		if (!CheckInteger($this->EstimatedLife->FormValue)) {
+			AddMessage($FormError, $this->EstimatedLife->errorMessage());
+		}
+		if ($this->SLN->Required) {
+			if (!$this->SLN->IsDetailKey && $this->SLN->FormValue != NULL && $this->SLN->FormValue == "") {
+				AddMessage($FormError, str_replace("%s", $this->SLN->caption(), $this->SLN->RequiredErrorMessage));
+			}
+		}
+		if (!CheckNumber($this->SLN->FormValue)) {
+			AddMessage($FormError, $this->SLN->errorMessage());
+		}
+
+		// Validate detail grid
+		$detailTblVar = explode(",", $this->getCurrentDetailTable());
+		if (in_array("t007_assettype", $detailTblVar) && $GLOBALS["t007_assettype"]->DetailAdd) {
+			if (!isset($GLOBALS["t007_assettype_grid"]))
+				$GLOBALS["t007_assettype_grid"] = new t007_assettype_grid(); // Get detail page object
+			$GLOBALS["t007_assettype_grid"]->validateGridForm();
 		}
 
 		// Return validate result
@@ -1066,17 +1180,27 @@ class t005_assetgroup_add extends t005_assetgroup
 		global $Language, $Security;
 		$conn = $this->getConnection();
 
+		// Begin transaction
+		if ($this->getCurrentDetailTable() != "")
+			$conn->beginTrans();
+
 		// Load db values from rsold
 		$this->loadDbValues($rsold);
 		if ($rsold) {
 		}
 		$rsnew = [];
 
+		// Code
+		$this->Code->setDbValueDef($rsnew, $this->Code->CurrentValue, "", FALSE);
+
 		// Description
 		$this->Description->setDbValueDef($rsnew, $this->Description->CurrentValue, "", FALSE);
 
-		// EconomicalLifeTime
-		$this->EconomicalLifeTime->setDbValueDef($rsnew, $this->EconomicalLifeTime->CurrentValue, 0, strval($this->EconomicalLifeTime->CurrentValue) == "");
+		// EstimatedLife
+		$this->EstimatedLife->setDbValueDef($rsnew, $this->EstimatedLife->CurrentValue, 0, strval($this->EstimatedLife->CurrentValue) == "");
+
+		// SLN
+		$this->SLN->setDbValueDef($rsnew, $this->SLN->CurrentValue, 0, FALSE);
 
 		// Call Row Inserting event
 		$rs = ($rsold) ? $rsold->fields : NULL;
@@ -1099,6 +1223,31 @@ class t005_assetgroup_add extends t005_assetgroup
 			}
 			$addRow = FALSE;
 		}
+
+		// Add detail records
+		if ($addRow) {
+			$detailTblVar = explode(",", $this->getCurrentDetailTable());
+			if (in_array("t007_assettype", $detailTblVar) && $GLOBALS["t007_assettype"]->DetailAdd) {
+				$GLOBALS["t007_assettype"]->assetgroup_id->setSessionValue($this->id->CurrentValue); // Set master key
+				if (!isset($GLOBALS["t007_assettype_grid"]))
+					$GLOBALS["t007_assettype_grid"] = new t007_assettype_grid(); // Get detail page object
+				$Security->loadCurrentUserLevel($this->ProjectID . "t007_assettype"); // Load user level of detail table
+				$addRow = $GLOBALS["t007_assettype_grid"]->gridInsert();
+				$Security->loadCurrentUserLevel($this->ProjectID . $this->TableName); // Restore user level of master table
+				if (!$addRow) {
+					$GLOBALS["t007_assettype"]->assetgroup_id->setSessionValue(""); // Clear master key if insert failed
+				}
+			}
+		}
+
+		// Commit/Rollback transaction
+		if ($this->getCurrentDetailTable() != "") {
+			if ($addRow) {
+				$conn->commitTrans(); // Commit transaction
+			} else {
+				$conn->rollbackTrans(); // Rollback transaction
+			}
+		}
 		if ($addRow) {
 
 			// Call Row Inserted event
@@ -1116,6 +1265,40 @@ class t005_assetgroup_add extends t005_assetgroup
 			WriteJson(["success" => TRUE, $this->TableVar => $row]);
 		}
 		return $addRow;
+	}
+
+	// Set up detail parms based on QueryString
+	protected function setupDetailParms()
+	{
+
+		// Get the keys for master table
+		$detailTblVar = Get(Config("TABLE_SHOW_DETAIL"));
+		if ($detailTblVar !== NULL) {
+			$this->setCurrentDetailTable($detailTblVar);
+		} else {
+			$detailTblVar = $this->getCurrentDetailTable();
+		}
+		if ($detailTblVar != "") {
+			$detailTblVar = explode(",", $detailTblVar);
+			if (in_array("t007_assettype", $detailTblVar)) {
+				if (!isset($GLOBALS["t007_assettype_grid"]))
+					$GLOBALS["t007_assettype_grid"] = new t007_assettype_grid();
+				if ($GLOBALS["t007_assettype_grid"]->DetailAdd) {
+					if ($this->CopyRecord)
+						$GLOBALS["t007_assettype_grid"]->CurrentMode = "copy";
+					else
+						$GLOBALS["t007_assettype_grid"]->CurrentMode = "add";
+					$GLOBALS["t007_assettype_grid"]->CurrentAction = "gridadd";
+
+					// Save current master table to detail table
+					$GLOBALS["t007_assettype_grid"]->setCurrentMasterTable($this->TableVar);
+					$GLOBALS["t007_assettype_grid"]->setStartRecordNumber(1);
+					$GLOBALS["t007_assettype_grid"]->assetgroup_id->IsDetailKey = TRUE;
+					$GLOBALS["t007_assettype_grid"]->assetgroup_id->CurrentValue = $this->id->CurrentValue;
+					$GLOBALS["t007_assettype_grid"]->assetgroup_id->setSessionValue($GLOBALS["t007_assettype_grid"]->assetgroup_id->CurrentValue);
+				}
+			}
+		}
 	}
 
 	// Set up Breadcrumb

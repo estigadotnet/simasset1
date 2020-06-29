@@ -4,7 +4,7 @@ namespace PHPMaker2020\p_simasset1;
 /**
  * Page class
  */
-class t005_assetgroup_list extends t005_assetgroup
+class t007_assettype_list extends t007_assettype
 {
 
 	// Page ID
@@ -14,13 +14,13 @@ class t005_assetgroup_list extends t005_assetgroup
 	public $ProjectID = "{E1C6E322-15B9-474C-85CF-A99378A9BC2B}";
 
 	// Table name
-	public $TableName = 't005_assetgroup';
+	public $TableName = 't007_assettype';
 
 	// Page object name
-	public $PageObjName = "t005_assetgroup_list";
+	public $PageObjName = "t007_assettype_list";
 
 	// Grid form hidden field names
-	public $FormName = "ft005_assetgrouplist";
+	public $FormName = "ft007_assettypelist";
 	public $FormActionName = "k_action";
 	public $FormKeyName = "k_key";
 	public $FormOldKeyName = "k_oldkey";
@@ -389,10 +389,10 @@ class t005_assetgroup_list extends t005_assetgroup
 		// Parent constuctor
 		parent::__construct();
 
-		// Table object (t005_assetgroup)
-		if (!isset($GLOBALS["t005_assetgroup"]) || get_class($GLOBALS["t005_assetgroup"]) == PROJECT_NAMESPACE . "t005_assetgroup") {
-			$GLOBALS["t005_assetgroup"] = &$this;
-			$GLOBALS["Table"] = &$GLOBALS["t005_assetgroup"];
+		// Table object (t007_assettype)
+		if (!isset($GLOBALS["t007_assettype"]) || get_class($GLOBALS["t007_assettype"]) == PROJECT_NAMESPACE . "t007_assettype") {
+			$GLOBALS["t007_assettype"] = &$this;
+			$GLOBALS["Table"] = &$GLOBALS["t007_assettype"];
 		}
 
 		// Initialize URLs
@@ -403,12 +403,16 @@ class t005_assetgroup_list extends t005_assetgroup
 		$this->ExportHtmlUrl = $this->pageUrl() . "export=html";
 		$this->ExportXmlUrl = $this->pageUrl() . "export=xml";
 		$this->ExportCsvUrl = $this->pageUrl() . "export=csv";
-		$this->AddUrl = "t005_assetgroupadd.php?" . Config("TABLE_SHOW_DETAIL") . "=";
+		$this->AddUrl = "t007_assettypeadd.php";
 		$this->InlineAddUrl = $this->pageUrl() . "action=add";
 		$this->GridAddUrl = $this->pageUrl() . "action=gridadd";
 		$this->GridEditUrl = $this->pageUrl() . "action=gridedit";
-		$this->MultiDeleteUrl = "t005_assetgroupdelete.php";
-		$this->MultiUpdateUrl = "t005_assetgroupupdate.php";
+		$this->MultiDeleteUrl = "t007_assettypedelete.php";
+		$this->MultiUpdateUrl = "t007_assettypeupdate.php";
+
+		// Table object (t005_assetgroup)
+		if (!isset($GLOBALS['t005_assetgroup']))
+			$GLOBALS['t005_assetgroup'] = new t005_assetgroup();
 
 		// Table object (t201_users)
 		if (!isset($GLOBALS['t201_users']))
@@ -420,7 +424,7 @@ class t005_assetgroup_list extends t005_assetgroup
 
 		// Table name (for backward compatibility only)
 		if (!defined(PROJECT_NAMESPACE . "TABLE_NAME"))
-			define(PROJECT_NAMESPACE . "TABLE_NAME", 't005_assetgroup');
+			define(PROJECT_NAMESPACE . "TABLE_NAME", 't007_assettype');
 
 		// Start timer
 		if (!isset($GLOBALS["DebugTimer"]))
@@ -460,7 +464,7 @@ class t005_assetgroup_list extends t005_assetgroup
 
 		// Filter options
 		$this->FilterOptions = new ListOptions("div");
-		$this->FilterOptions->TagClassName = "ew-filter-option ft005_assetgrouplistsrch";
+		$this->FilterOptions->TagClassName = "ew-filter-option ft007_assettypelistsrch";
 
 		// List actions
 		$this->ListActions = new ListActions();
@@ -478,14 +482,14 @@ class t005_assetgroup_list extends t005_assetgroup
 		Page_Unloaded();
 
 		// Export
-		global $t005_assetgroup;
+		global $t007_assettype;
 		if ($this->CustomExport && $this->CustomExport == $this->Export && array_key_exists($this->CustomExport, Config("EXPORT_CLASSES"))) {
 				$content = ob_get_contents();
 			if ($ExportFileName == "")
 				$ExportFileName = $this->TableVar;
 			$class = PROJECT_NAMESPACE . Config("EXPORT_CLASSES." . $this->CustomExport);
 			if (class_exists($class)) {
-				$doc = new $class($t005_assetgroup);
+				$doc = new $class($t007_assettype);
 				$doc->Text = @$content;
 				if ($this->isExport("email"))
 					echo $this->exportEmail($doc->Text);
@@ -835,10 +839,9 @@ class t005_assetgroup_list extends t005_assetgroup
 		// Setup export options
 		$this->setupExportOptions();
 		$this->id->Visible = FALSE;
-		$this->Code->setVisibility();
+		$this->assetgroup_id->setVisibility();
 		$this->Description->setVisibility();
-		$this->EstimatedLife->setVisibility();
-		$this->SLN->setVisibility();
+		$this->Code->setVisibility();
 		$this->hideFieldsForAddEdit();
 
 		// Global Page Loading event (in userfn*.php)
@@ -856,6 +859,9 @@ class t005_assetgroup_list extends t005_assetgroup
 		// Create Token
 		$this->createToken();
 
+		// Set up master detail parameters
+		$this->setupMasterParms();
+
 		// Setup other options
 		$this->setupOtherOptions();
 
@@ -872,8 +878,9 @@ class t005_assetgroup_list extends t005_assetgroup
 		}
 
 		// Set up lookup cache
-		// Search filters
+		$this->setupLookupOptions($this->assetgroup_id);
 
+		// Search filters
 		$srchAdvanced = ""; // Advanced search filter
 		$srchBasic = ""; // Basic search filter
 		$filter = "";
@@ -908,6 +915,14 @@ class t005_assetgroup_list extends t005_assetgroup
 				if ($this->isGridEdit())
 					$this->gridEditMode();
 
+				// Switch to inline edit mode
+				if ($this->isEdit())
+					$this->inlineEditMode();
+
+				// Switch to inline add mode
+				if ($this->isAdd() || $this->isCopy())
+					$this->inlineAddMode();
+
 				// Switch to grid add mode
 				if ($this->isGridAdd())
 					$this->gridAddMode();
@@ -929,6 +944,14 @@ class t005_assetgroup_list extends t005_assetgroup
 							$this->gridEditMode(); // Stay in Grid edit mode
 						}
 					}
+
+					// Inline Update
+					if (($this->isUpdate() || $this->isOverwrite()) && @$_SESSION[SESSION_INLINE_MODE] == "edit")
+						$this->inlineUpdate();
+
+					// Insert Inline
+					if ($this->isInsert() && @$_SESSION[SESSION_INLINE_MODE] == "add")
+						$this->inlineInsert();
 
 					// Grid Insert
 					if ($this->isGridInsert() && @$_SESSION[SESSION_INLINE_MODE] == "gridadd") {
@@ -1055,8 +1078,28 @@ class t005_assetgroup_list extends t005_assetgroup
 		$filter = "";
 		if (!$Security->canList())
 			$filter = "(0=1)"; // Filter all records
+
+		// Restore master/detail filter
+		$this->DbMasterFilter = $this->getMasterFilter(); // Restore master filter
+		$this->DbDetailFilter = $this->getDetailFilter(); // Restore detail filter
 		AddFilter($filter, $this->DbDetailFilter);
 		AddFilter($filter, $this->SearchWhere);
+
+		// Load master record
+		if ($this->CurrentMode != "add" && $this->getMasterFilter() != "" && $this->getCurrentMasterTable() == "t005_assetgroup") {
+			global $t005_assetgroup;
+			$rsmaster = $t005_assetgroup->loadRs($this->DbMasterFilter);
+			$this->MasterRecordExists = ($rsmaster && !$rsmaster->EOF);
+			if (!$this->MasterRecordExists) {
+				$this->setFailureMessage($Language->phrase("NoRecord")); // Set no record found
+				$this->terminate("t005_assetgrouplist.php"); // Return to master page
+			} else {
+				$t005_assetgroup->loadListRowValues($rsmaster);
+				$t005_assetgroup->RowType = ROWTYPE_MASTER; // Master row
+				$t005_assetgroup->renderListRow();
+				$rsmaster->close();
+			}
+		}
 
 		// Set up filter
 		if ($this->Command == "json") {
@@ -1156,7 +1199,7 @@ class t005_assetgroup_list extends t005_assetgroup
 	// Exit inline mode
 	protected function clearInlineMode()
 	{
-		$this->SLN->FormValue = ""; // Clear form value
+		$this->setKey("id", ""); // Clear inline edit key
 		$this->LastAction = $this->CurrentAction; // Save last action
 		$this->CurrentAction = ""; // Clear action
 		$_SESSION[SESSION_INLINE_MODE] = ""; // Clear inline mode
@@ -1176,6 +1219,119 @@ class t005_assetgroup_list extends t005_assetgroup
 		$this->CurrentAction = "gridedit";
 		$_SESSION[SESSION_INLINE_MODE] = "gridedit";
 		$this->hideFieldsForAddEdit();
+	}
+
+	// Switch to Inline Edit mode
+	protected function inlineEditMode()
+	{
+		global $Security, $Language;
+		if (!$Security->canEdit())
+			return FALSE; // Edit not allowed
+		$inlineEdit = TRUE;
+		if (Get("id") !== NULL) {
+			$this->id->setQueryStringValue(Get("id"));
+		} else {
+			$inlineEdit = FALSE;
+		}
+		if ($inlineEdit) {
+			if ($this->loadRow()) {
+				$this->setKey("id", $this->id->CurrentValue); // Set up inline edit key
+				$_SESSION[SESSION_INLINE_MODE] = "edit"; // Enable inline edit
+			}
+		}
+		return TRUE;
+	}
+
+	// Perform update to Inline Edit record
+	protected function inlineUpdate()
+	{
+		global $Language, $CurrentForm, $FormError;
+		$CurrentForm->Index = 1;
+		$this->loadFormValues(); // Get form values
+
+		// Validate form
+		$inlineUpdate = TRUE;
+		if (!$this->validateForm()) {
+			$inlineUpdate = FALSE; // Form error, reset action
+			$this->setFailureMessage($FormError);
+		} else {
+			$inlineUpdate = FALSE;
+			$rowkey = strval($CurrentForm->getValue($this->FormKeyName));
+			if ($this->setupKeyValues($rowkey)) { // Set up key values
+				if ($this->checkInlineEditKey()) { // Check key
+					$this->SendEmail = TRUE; // Send email on update success
+					$inlineUpdate = $this->editRow(); // Update record
+				} else {
+					$inlineUpdate = FALSE;
+				}
+			}
+		}
+		if ($inlineUpdate) { // Update success
+			if ($this->getSuccessMessage() == "")
+				$this->setSuccessMessage($Language->phrase("UpdateSuccess")); // Set up success message
+			$this->clearInlineMode(); // Clear inline edit mode
+		} else {
+			if ($this->getFailureMessage() == "")
+				$this->setFailureMessage($Language->phrase("UpdateFailed")); // Set update failed message
+			$this->EventCancelled = TRUE; // Cancel event
+			$this->CurrentAction = "edit"; // Stay in edit mode
+		}
+	}
+
+	// Check Inline Edit key
+	public function checkInlineEditKey()
+	{
+		if ($this->EventCancelled)
+			$this->id->OldValue = $this->id->DbValue;
+		$val = $this->id->OldValue !== NULL ? $this->id->OldValue : $this->id->CurrentValue;
+		if (strval($this->getKey("id")) != strval($val))
+			return FALSE;
+		return TRUE;
+	}
+
+	// Switch to Inline Add mode
+	protected function inlineAddMode()
+	{
+		global $Security, $Language;
+		if (!$Security->canAdd())
+			return FALSE; // Add not allowed
+		if ($this->isCopy()) {
+			if (Get("id") !== NULL) {
+				$this->id->setQueryStringValue(Get("id"));
+				$this->setKey("id", $this->id->CurrentValue); // Set up key
+			} else {
+				$this->setKey("id", ""); // Clear key
+				$this->CurrentAction = "add";
+			}
+		}
+		$_SESSION[SESSION_INLINE_MODE] = "add"; // Enable inline add
+		return TRUE;
+	}
+
+	// Perform update to Inline Add/Copy record
+	protected function inlineInsert()
+	{
+		global $Language, $CurrentForm, $FormError;
+		$this->loadOldRecord(); // Load old record
+		$CurrentForm->Index = 0;
+		$this->loadFormValues(); // Get form values
+
+		// Validate form
+		if (!$this->validateForm()) {
+			$this->setFailureMessage($FormError); // Set validation error message
+			$this->EventCancelled = TRUE; // Set event cancelled
+			$this->CurrentAction = "add"; // Stay in add mode
+			return;
+		}
+		$this->SendEmail = TRUE; // Send email on add success
+		if ($this->addRow($this->OldRecordset)) { // Add record
+			if ($this->getSuccessMessage() == "")
+				$this->setSuccessMessage($Language->phrase("AddSuccess")); // Set up add success message
+			$this->clearInlineMode(); // Clear inline add mode
+		} else { // Add failed
+			$this->EventCancelled = TRUE; // Set event cancelled
+			$this->CurrentAction = "add"; // Stay in add mode
+		}
 	}
 
 	// Perform update to grid
@@ -1431,13 +1587,11 @@ class t005_assetgroup_list extends t005_assetgroup
 	public function emptyRow()
 	{
 		global $CurrentForm;
-		if ($CurrentForm->hasValue("x_Code") && $CurrentForm->hasValue("o_Code") && $this->Code->CurrentValue != $this->Code->OldValue)
+		if ($CurrentForm->hasValue("x_assetgroup_id") && $CurrentForm->hasValue("o_assetgroup_id") && $this->assetgroup_id->CurrentValue != $this->assetgroup_id->OldValue)
 			return FALSE;
 		if ($CurrentForm->hasValue("x_Description") && $CurrentForm->hasValue("o_Description") && $this->Description->CurrentValue != $this->Description->OldValue)
 			return FALSE;
-		if ($CurrentForm->hasValue("x_EstimatedLife") && $CurrentForm->hasValue("o_EstimatedLife") && $this->EstimatedLife->CurrentValue != $this->EstimatedLife->OldValue)
-			return FALSE;
-		if ($CurrentForm->hasValue("x_SLN") && $CurrentForm->hasValue("o_SLN") && $this->SLN->CurrentValue != $this->SLN->OldValue)
+		if ($CurrentForm->hasValue("x_Code") && $CurrentForm->hasValue("o_Code") && $this->Code->CurrentValue != $this->Code->OldValue)
 			return FALSE;
 		return TRUE;
 	}
@@ -1522,10 +1676,9 @@ class t005_assetgroup_list extends t005_assetgroup
 		$filterList = "";
 		$savedFilterList = "";
 		$filterList = Concat($filterList, $this->id->AdvancedSearch->toJson(), ","); // Field id
-		$filterList = Concat($filterList, $this->Code->AdvancedSearch->toJson(), ","); // Field Code
+		$filterList = Concat($filterList, $this->assetgroup_id->AdvancedSearch->toJson(), ","); // Field assetgroup_id
 		$filterList = Concat($filterList, $this->Description->AdvancedSearch->toJson(), ","); // Field Description
-		$filterList = Concat($filterList, $this->EstimatedLife->AdvancedSearch->toJson(), ","); // Field EstimatedLife
-		$filterList = Concat($filterList, $this->SLN->AdvancedSearch->toJson(), ","); // Field SLN
+		$filterList = Concat($filterList, $this->Code->AdvancedSearch->toJson(), ","); // Field Code
 
 		// Return filter list in JSON
 		if ($filterList != "")
@@ -1541,7 +1694,7 @@ class t005_assetgroup_list extends t005_assetgroup
 		global $UserProfile;
 		if (Post("ajax") == "savefilters") { // Save filter request (Ajax)
 			$filters = Post("filters");
-			$UserProfile->setSearchFilters(CurrentUserName(), "ft005_assetgrouplistsrch", $filters);
+			$UserProfile->setSearchFilters(CurrentUserName(), "ft007_assettypelistsrch", $filters);
 			WriteJson([["success" => TRUE]]); // Success
 			return TRUE;
 		} elseif (Post("cmd") == "resetfilter") {
@@ -1568,13 +1721,13 @@ class t005_assetgroup_list extends t005_assetgroup
 		$this->id->AdvancedSearch->SearchOperator2 = @$filter["w_id"];
 		$this->id->AdvancedSearch->save();
 
-		// Field Code
-		$this->Code->AdvancedSearch->SearchValue = @$filter["x_Code"];
-		$this->Code->AdvancedSearch->SearchOperator = @$filter["z_Code"];
-		$this->Code->AdvancedSearch->SearchCondition = @$filter["v_Code"];
-		$this->Code->AdvancedSearch->SearchValue2 = @$filter["y_Code"];
-		$this->Code->AdvancedSearch->SearchOperator2 = @$filter["w_Code"];
-		$this->Code->AdvancedSearch->save();
+		// Field assetgroup_id
+		$this->assetgroup_id->AdvancedSearch->SearchValue = @$filter["x_assetgroup_id"];
+		$this->assetgroup_id->AdvancedSearch->SearchOperator = @$filter["z_assetgroup_id"];
+		$this->assetgroup_id->AdvancedSearch->SearchCondition = @$filter["v_assetgroup_id"];
+		$this->assetgroup_id->AdvancedSearch->SearchValue2 = @$filter["y_assetgroup_id"];
+		$this->assetgroup_id->AdvancedSearch->SearchOperator2 = @$filter["w_assetgroup_id"];
+		$this->assetgroup_id->AdvancedSearch->save();
 
 		// Field Description
 		$this->Description->AdvancedSearch->SearchValue = @$filter["x_Description"];
@@ -1584,21 +1737,13 @@ class t005_assetgroup_list extends t005_assetgroup
 		$this->Description->AdvancedSearch->SearchOperator2 = @$filter["w_Description"];
 		$this->Description->AdvancedSearch->save();
 
-		// Field EstimatedLife
-		$this->EstimatedLife->AdvancedSearch->SearchValue = @$filter["x_EstimatedLife"];
-		$this->EstimatedLife->AdvancedSearch->SearchOperator = @$filter["z_EstimatedLife"];
-		$this->EstimatedLife->AdvancedSearch->SearchCondition = @$filter["v_EstimatedLife"];
-		$this->EstimatedLife->AdvancedSearch->SearchValue2 = @$filter["y_EstimatedLife"];
-		$this->EstimatedLife->AdvancedSearch->SearchOperator2 = @$filter["w_EstimatedLife"];
-		$this->EstimatedLife->AdvancedSearch->save();
-
-		// Field SLN
-		$this->SLN->AdvancedSearch->SearchValue = @$filter["x_SLN"];
-		$this->SLN->AdvancedSearch->SearchOperator = @$filter["z_SLN"];
-		$this->SLN->AdvancedSearch->SearchCondition = @$filter["v_SLN"];
-		$this->SLN->AdvancedSearch->SearchValue2 = @$filter["y_SLN"];
-		$this->SLN->AdvancedSearch->SearchOperator2 = @$filter["w_SLN"];
-		$this->SLN->AdvancedSearch->save();
+		// Field Code
+		$this->Code->AdvancedSearch->SearchValue = @$filter["x_Code"];
+		$this->Code->AdvancedSearch->SearchOperator = @$filter["z_Code"];
+		$this->Code->AdvancedSearch->SearchCondition = @$filter["v_Code"];
+		$this->Code->AdvancedSearch->SearchValue2 = @$filter["y_Code"];
+		$this->Code->AdvancedSearch->SearchOperator2 = @$filter["w_Code"];
+		$this->Code->AdvancedSearch->save();
 	}
 
 	// Advanced search WHERE clause based on QueryString
@@ -1609,10 +1754,9 @@ class t005_assetgroup_list extends t005_assetgroup
 		if (!$Security->canSearch())
 			return "";
 		$this->buildSearchSql($where, $this->id, $default, FALSE); // id
-		$this->buildSearchSql($where, $this->Code, $default, FALSE); // Code
+		$this->buildSearchSql($where, $this->assetgroup_id, $default, FALSE); // assetgroup_id
 		$this->buildSearchSql($where, $this->Description, $default, FALSE); // Description
-		$this->buildSearchSql($where, $this->EstimatedLife, $default, FALSE); // EstimatedLife
-		$this->buildSearchSql($where, $this->SLN, $default, FALSE); // SLN
+		$this->buildSearchSql($where, $this->Code, $default, FALSE); // Code
 
 		// Set up search parm
 		if (!$default && $where != "" && in_array($this->Command, ["", "reset", "resetall"])) {
@@ -1620,10 +1764,9 @@ class t005_assetgroup_list extends t005_assetgroup
 		}
 		if (!$default && $this->Command == "search") {
 			$this->id->AdvancedSearch->save(); // id
-			$this->Code->AdvancedSearch->save(); // Code
+			$this->assetgroup_id->AdvancedSearch->save(); // assetgroup_id
 			$this->Description->AdvancedSearch->save(); // Description
-			$this->EstimatedLife->AdvancedSearch->save(); // EstimatedLife
-			$this->SLN->AdvancedSearch->save(); // SLN
+			$this->Code->AdvancedSearch->save(); // Code
 		}
 		return $where;
 	}
@@ -1685,13 +1828,11 @@ class t005_assetgroup_list extends t005_assetgroup
 	{
 		if ($this->id->AdvancedSearch->issetSession())
 			return TRUE;
-		if ($this->Code->AdvancedSearch->issetSession())
+		if ($this->assetgroup_id->AdvancedSearch->issetSession())
 			return TRUE;
 		if ($this->Description->AdvancedSearch->issetSession())
 			return TRUE;
-		if ($this->EstimatedLife->AdvancedSearch->issetSession())
-			return TRUE;
-		if ($this->SLN->AdvancedSearch->issetSession())
+		if ($this->Code->AdvancedSearch->issetSession())
 			return TRUE;
 		return FALSE;
 	}
@@ -1718,10 +1859,9 @@ class t005_assetgroup_list extends t005_assetgroup
 	protected function resetAdvancedSearchParms()
 	{
 		$this->id->AdvancedSearch->unsetSession();
-		$this->Code->AdvancedSearch->unsetSession();
+		$this->assetgroup_id->AdvancedSearch->unsetSession();
 		$this->Description->AdvancedSearch->unsetSession();
-		$this->EstimatedLife->AdvancedSearch->unsetSession();
-		$this->SLN->AdvancedSearch->unsetSession();
+		$this->Code->AdvancedSearch->unsetSession();
 	}
 
 	// Restore all search parameters
@@ -1731,10 +1871,9 @@ class t005_assetgroup_list extends t005_assetgroup
 
 		// Restore advanced search values
 		$this->id->AdvancedSearch->load();
-		$this->Code->AdvancedSearch->load();
+		$this->assetgroup_id->AdvancedSearch->load();
 		$this->Description->AdvancedSearch->load();
-		$this->EstimatedLife->AdvancedSearch->load();
-		$this->SLN->AdvancedSearch->load();
+		$this->Code->AdvancedSearch->load();
 	}
 
 	// Set up sort parameters
@@ -1748,10 +1887,9 @@ class t005_assetgroup_list extends t005_assetgroup
 		if (Get("order") !== NULL) {
 			$this->CurrentOrder = Get("order");
 			$this->CurrentOrderType = Get("ordertype", "");
-			$this->updateSort($this->Code, $ctrl); // Code
+			$this->updateSort($this->assetgroup_id, $ctrl); // assetgroup_id
 			$this->updateSort($this->Description, $ctrl); // Description
-			$this->updateSort($this->EstimatedLife, $ctrl); // EstimatedLife
-			$this->updateSort($this->SLN, $ctrl); // SLN
+			$this->updateSort($this->Code, $ctrl); // Code
 			$this->setStartRecordNumber(1); // Reset start position
 		}
 	}
@@ -1783,14 +1921,21 @@ class t005_assetgroup_list extends t005_assetgroup
 			if ($this->Command == "reset" || $this->Command == "resetall")
 				$this->resetSearchParms();
 
+			// Reset master/detail keys
+			if ($this->Command == "resetall") {
+				$this->setCurrentMasterTable(""); // Clear master table
+				$this->DbMasterFilter = "";
+				$this->DbDetailFilter = "";
+				$this->assetgroup_id->setSessionValue("");
+			}
+
 			// Reset sorting order
 			if ($this->Command == "resetsort") {
 				$orderBy = "";
 				$this->setSessionOrderBy($orderBy);
-				$this->Code->setSort("");
+				$this->assetgroup_id->setSort("");
 				$this->Description->setSort("");
-				$this->EstimatedLife->setSort("");
-				$this->SLN->setSort("");
+				$this->Code->setSort("");
 			}
 
 			// Reset start position
@@ -1841,29 +1986,6 @@ class t005_assetgroup_list extends t005_assetgroup
 		$item->CssClass = "text-nowrap";
 		$item->Visible = $Security->canDelete();
 		$item->OnLeft = TRUE;
-
-		// "detail_t007_assettype"
-		$item = &$this->ListOptions->add("detail_t007_assettype");
-		$item->CssClass = "text-nowrap";
-		$item->Visible = $Security->allowList(CurrentProjectID() . 't007_assettype') && !$this->ShowMultipleDetails;
-		$item->OnLeft = TRUE;
-		$item->ShowInButtonGroup = FALSE;
-		if (!isset($GLOBALS["t007_assettype_grid"]))
-			$GLOBALS["t007_assettype_grid"] = new t007_assettype_grid();
-
-		// Multiple details
-		if ($this->ShowMultipleDetails) {
-			$item = &$this->ListOptions->add("details");
-			$item->CssClass = "text-nowrap";
-			$item->Visible = $this->ShowMultipleDetails;
-			$item->OnLeft = TRUE;
-			$item->ShowInButtonGroup = FALSE;
-		}
-
-		// Set up detail pages
-		$pages = new SubPages();
-		$pages->add("t007_assettype");
-		$this->DetailPages = $pages;
 
 		// List actions
 		$item = &$this->ListOptions->add("listactions");
@@ -1953,6 +2075,31 @@ class t005_assetgroup_list extends t005_assetgroup
 		$opt = $this->ListOptions["sequence"];
 		$opt->Body = FormatSequenceNumber($this->RecordCount);
 
+		// "copy"
+		$opt = $this->ListOptions["copy"];
+		if ($this->isInlineAddRow() || $this->isInlineCopyRow()) { // Inline Add/Copy
+			$this->ListOptions->CustomItem = "copy"; // Show copy column only
+			$cancelurl = $this->addMasterUrl($this->pageUrl() . "action=cancel");
+			$opt->Body = "<div" . (($opt->OnLeft) ? " class=\"text-right\"" : "") . ">" .
+				"<a class=\"ew-grid-link ew-inline-insert\" title=\"" . HtmlTitle($Language->phrase("InsertLink")) . "\" data-caption=\"" . HtmlTitle($Language->phrase("InsertLink")) . "\" href=\"#\" onclick=\"return ew.forms(this).submit('" . $this->pageName() . "');\">" . $Language->phrase("InsertLink") . "</a>&nbsp;" .
+				"<a class=\"ew-grid-link ew-inline-cancel\" title=\"" . HtmlTitle($Language->phrase("CancelLink")) . "\" data-caption=\"" . HtmlTitle($Language->phrase("CancelLink")) . "\" href=\"" . $cancelurl . "\">" . $Language->phrase("CancelLink") . "</a>" .
+				"<input type=\"hidden\" name=\"action\" id=\"action\" value=\"insert\"></div>";
+			return;
+		}
+
+		// "edit"
+		$opt = $this->ListOptions["edit"];
+		if ($this->isInlineEditRow()) { // Inline-Edit
+			$this->ListOptions->CustomItem = "edit"; // Show edit column only
+			$cancelurl = $this->addMasterUrl($this->pageUrl() . "action=cancel");
+				$opt->Body = "<div" . (($opt->OnLeft) ? " class=\"text-right\"" : "") . ">" .
+					"<a class=\"ew-grid-link ew-inline-update\" title=\"" . HtmlTitle($Language->phrase("UpdateLink")) . "\" data-caption=\"" . HtmlTitle($Language->phrase("UpdateLink")) . "\" href=\"#\" onclick=\"return ew.forms(this).submit('" . UrlAddHash($this->pageName(), "r" . $this->RowCount . "_" . $this->TableVar) . "');\">" . $Language->phrase("UpdateLink") . "</a>&nbsp;" .
+					"<a class=\"ew-grid-link ew-inline-cancel\" title=\"" . HtmlTitle($Language->phrase("CancelLink")) . "\" data-caption=\"" . HtmlTitle($Language->phrase("CancelLink")) . "\" href=\"" . $cancelurl . "\">" . $Language->phrase("CancelLink") . "</a>" .
+					"<input type=\"hidden\" name=\"action\" id=\"action\" value=\"update\"></div>";
+			$opt->Body .= "<input type=\"hidden\" name=\"k" . $this->RowIndex . "_key\" id=\"k" . $this->RowIndex . "_key\" value=\"" . HtmlEncode($this->id->CurrentValue) . "\">";
+			return;
+		}
+
 		// "view"
 		$opt = $this->ListOptions["view"];
 		$viewcaption = HtmlTitle($Language->phrase("ViewLink"));
@@ -1960,7 +2107,7 @@ class t005_assetgroup_list extends t005_assetgroup
 			if (IsMobile())
 				$opt->Body = "<a class=\"ew-row-link ew-view\" title=\"" . $viewcaption . "\" data-caption=\"" . $viewcaption . "\" href=\"" . HtmlEncode($this->ViewUrl) . "\">" . $Language->phrase("ViewLink") . "</a>";
 			else
-				$opt->Body = "<a class=\"ew-row-link ew-view\" title=\"" . $viewcaption . "\" data-table=\"t005_assetgroup\" data-caption=\"" . $viewcaption . "\" href=\"#\" onclick=\"return ew.modalDialogShow({lnk:this,url:'" . HtmlEncode($this->ViewUrl) . "',btn:null});\">" . $Language->phrase("ViewLink") . "</a>";
+				$opt->Body = "<a class=\"ew-row-link ew-view\" title=\"" . $viewcaption . "\" data-table=\"t007_assettype\" data-caption=\"" . $viewcaption . "\" href=\"#\" onclick=\"return ew.modalDialogShow({lnk:this,url:'" . HtmlEncode($this->ViewUrl) . "',btn:null});\">" . $Language->phrase("ViewLink") . "</a>";
 		} else {
 			$opt->Body = "";
 		}
@@ -1972,7 +2119,8 @@ class t005_assetgroup_list extends t005_assetgroup
 			if (IsMobile())
 				$opt->Body = "<a class=\"ew-row-link ew-edit\" title=\"" . $editcaption . "\" data-caption=\"" . $editcaption . "\" href=\"" . HtmlEncode($this->EditUrl) . "\">" . $Language->phrase("EditLink") . "</a>";
 			else
-				$opt->Body = "<a class=\"ew-row-link ew-edit\" title=\"" . $editcaption . "\" data-table=\"t005_assetgroup\" data-caption=\"" . $editcaption . "\" href=\"#\" onclick=\"return ew.modalDialogShow({lnk:this,btn:'SaveBtn',url:'" . HtmlEncode($this->EditUrl) . "'});\">" . $Language->phrase("EditLink") . "</a>";
+				$opt->Body = "<a class=\"ew-row-link ew-edit\" title=\"" . $editcaption . "\" data-table=\"t007_assettype\" data-caption=\"" . $editcaption . "\" href=\"#\" onclick=\"return ew.modalDialogShow({lnk:this,btn:'SaveBtn',url:'" . HtmlEncode($this->EditUrl) . "'});\">" . $Language->phrase("EditLink") . "</a>";
+			$opt->Body .= "<a class=\"ew-row-link ew-inline-edit\" title=\"" . HtmlTitle($Language->phrase("InlineEditLink")) . "\" data-caption=\"" . HtmlTitle($Language->phrase("InlineEditLink")) . "\" href=\"" . HtmlEncode(UrlAddHash($this->InlineEditUrl, "r" . $this->RowCount . "_" . $this->TableVar)) . "\">" . $Language->phrase("InlineEditLink") . "</a>";
 		} else {
 			$opt->Body = "";
 		}
@@ -1984,7 +2132,8 @@ class t005_assetgroup_list extends t005_assetgroup
 			if (IsMobile())
 				$opt->Body = "<a class=\"ew-row-link ew-copy\" title=\"" . $copycaption . "\" data-caption=\"" . $copycaption . "\" href=\"" . HtmlEncode($this->CopyUrl) . "\">" . $Language->phrase("CopyLink") . "</a>";
 			else
-				$opt->Body = "<a class=\"ew-row-link ew-copy\" title=\"" . $copycaption . "\" data-table=\"t005_assetgroup\" data-caption=\"" . $copycaption . "\" href=\"#\" onclick=\"return ew.modalDialogShow({lnk:this,btn:'AddBtn',url:'" . HtmlEncode($this->CopyUrl) . "'});\">" . $Language->phrase("CopyLink") . "</a>";
+				$opt->Body = "<a class=\"ew-row-link ew-copy\" title=\"" . $copycaption . "\" data-table=\"t007_assettype\" data-caption=\"" . $copycaption . "\" href=\"#\" onclick=\"return ew.modalDialogShow({lnk:this,btn:'AddBtn',url:'" . HtmlEncode($this->CopyUrl) . "'});\">" . $Language->phrase("CopyLink") . "</a>";
+			$opt->Body .= "<a class=\"ew-row-link ew-inline-copy\" title=\"" . HtmlTitle($Language->phrase("InlineCopyLink")) . "\" data-caption=\"" . HtmlTitle($Language->phrase("InlineCopyLink")) . "\" href=\"" . HtmlEncode($this->InlineCopyUrl) . "\">" . $Language->phrase("InlineCopyLink") . "</a>";
 		} else {
 			$opt->Body = "";
 		}
@@ -2024,71 +2173,6 @@ class t005_assetgroup_list extends t005_assetgroup
 				$opt->Visible = TRUE;
 			}
 		}
-		$detailViewTblVar = "";
-		$detailCopyTblVar = "";
-		$detailEditTblVar = "";
-
-		// "detail_t007_assettype"
-		$opt = $this->ListOptions["detail_t007_assettype"];
-		if ($Security->allowList(CurrentProjectID() . 't007_assettype')) {
-			$body = $Language->phrase("DetailLink") . $Language->TablePhrase("t007_assettype", "TblCaption");
-			$body = "<a class=\"btn btn-default ew-row-link ew-detail\" data-action=\"list\" href=\"" . HtmlEncode("t007_assettypelist.php?" . Config("TABLE_SHOW_MASTER") . "=t005_assetgroup&fk_id=" . urlencode(strval($this->id->CurrentValue)) . "") . "\">" . $body . "</a>";
-			$links = "";
-			if ($GLOBALS["t007_assettype_grid"]->DetailView && $Security->canView() && $Security->allowView(CurrentProjectID() . 't005_assetgroup')) {
-				$caption = $Language->phrase("MasterDetailViewLink");
-				$url = $this->getViewUrl(Config("TABLE_SHOW_DETAIL") . "=t007_assettype");
-				$links .= "<li><a class=\"dropdown-item ew-row-link ew-detail-view\" data-action=\"view\" data-caption=\"" . HtmlTitle($caption) . "\" href=\"" . HtmlEncode($url) . "\">" . HtmlImageAndText($caption) . "</a></li>";
-				if ($detailViewTblVar != "")
-					$detailViewTblVar .= ",";
-				$detailViewTblVar .= "t007_assettype";
-			}
-			if ($GLOBALS["t007_assettype_grid"]->DetailEdit && $Security->canEdit() && $Security->allowEdit(CurrentProjectID() . 't005_assetgroup')) {
-				$caption = $Language->phrase("MasterDetailEditLink");
-				$url = $this->getEditUrl(Config("TABLE_SHOW_DETAIL") . "=t007_assettype");
-				$links .= "<li><a class=\"dropdown-item ew-row-link ew-detail-edit\" data-action=\"edit\" data-caption=\"" . HtmlTitle($caption) . "\" href=\"" . HtmlEncode($url) . "\">" . HtmlImageAndText($caption) . "</a></li>";
-				if ($detailEditTblVar != "")
-					$detailEditTblVar .= ",";
-				$detailEditTblVar .= "t007_assettype";
-			}
-			if ($GLOBALS["t007_assettype_grid"]->DetailAdd && $Security->canAdd() && $Security->allowAdd(CurrentProjectID() . 't005_assetgroup')) {
-				$caption = $Language->phrase("MasterDetailCopyLink");
-				$url = $this->getCopyUrl(Config("TABLE_SHOW_DETAIL") . "=t007_assettype");
-				$links .= "<li><a class=\"dropdown-item ew-row-link ew-detail-copy\" data-action=\"add\" data-caption=\"" . HtmlTitle($caption) . "\" href=\"" . HtmlEncode($url) . "\">" . HtmlImageAndText($caption) . "</a></li>";
-				if ($detailCopyTblVar != "")
-					$detailCopyTblVar .= ",";
-				$detailCopyTblVar .= "t007_assettype";
-			}
-			if ($links != "") {
-				$body .= "<button class=\"dropdown-toggle btn btn-default ew-detail\" data-toggle=\"dropdown\"></button>";
-				$body .= "<ul class=\"dropdown-menu\">". $links . "</ul>";
-			}
-			$body = "<div class=\"btn-group btn-group-sm ew-btn-group\">" . $body . "</div>";
-			$opt->Body = $body;
-			if ($this->ShowMultipleDetails)
-				$opt->Visible = FALSE;
-		}
-		if ($this->ShowMultipleDetails) {
-			$body = "<div class=\"btn-group btn-group-sm ew-btn-group\">";
-			$links = "";
-			if ($detailViewTblVar != "") {
-				$links .= "<li><a class=\"dropdown-item ew-row-link ew-detail-view\" data-action=\"view\" data-caption=\"" . HtmlTitle($Language->phrase("MasterDetailViewLink")) . "\" href=\"" . HtmlEncode($this->getViewUrl(Config("TABLE_SHOW_DETAIL") . "=" . $detailViewTblVar)) . "\">" . HtmlImageAndText($Language->phrase("MasterDetailViewLink")) . "</a></li>";
-			}
-			if ($detailEditTblVar != "") {
-				$links .= "<li><a class=\"dropdown-item ew-row-link ew-detail-edit\" data-action=\"edit\" data-caption=\"" . HtmlTitle($Language->phrase("MasterDetailEditLink")) . "\" href=\"" . HtmlEncode($this->getEditUrl(Config("TABLE_SHOW_DETAIL") . "=" . $detailEditTblVar)) . "\">" . HtmlImageAndText($Language->phrase("MasterDetailEditLink")) . "</a></li>";
-			}
-			if ($detailCopyTblVar != "") {
-				$links .= "<li><a class=\"dropdown-item ew-row-link ew-detail-copy\" data-action=\"add\" data-caption=\"" . HtmlTitle($Language->phrase("MasterDetailCopyLink")) . "\" href=\"" . HtmlEncode($this->GetCopyUrl(Config("TABLE_SHOW_DETAIL") . "=" . $detailCopyTblVar)) . "\">" . HtmlImageAndText($Language->phrase("MasterDetailCopyLink")) . "</a></li>";
-			}
-			if ($links != "") {
-				$body .= "<button class=\"dropdown-toggle btn btn-default ew-master-detail\" title=\"" . HtmlTitle($Language->phrase("MultipleMasterDetails")) . "\" data-toggle=\"dropdown\">" . $Language->phrase("MultipleMasterDetails") . "</button>";
-				$body .= "<ul class=\"dropdown-menu ew-menu\">". $links . "</ul>";
-			}
-			$body .= "</div>";
-
-			// Multiple details
-			$opt = $this->ListOptions["details"];
-			$opt->Body = $body;
-		}
 
 		// "checkbox"
 		$opt = $this->ListOptions["checkbox"];
@@ -2115,42 +2199,16 @@ class t005_assetgroup_list extends t005_assetgroup
 		if (IsMobile())
 			$item->Body = "<a class=\"ew-add-edit ew-add\" title=\"" . $addcaption . "\" data-caption=\"" . $addcaption . "\" href=\"" . HtmlEncode($this->AddUrl) . "\">" . $Language->phrase("AddLink") . "</a>";
 		else
-			$item->Body = "<a class=\"ew-add-edit ew-add\" title=\"" . $addcaption . "\" data-table=\"t005_assetgroup\" data-caption=\"" . $addcaption . "\" href=\"#\" onclick=\"return ew.modalDialogShow({lnk:this,btn:'AddBtn',url:'" . HtmlEncode($this->AddUrl) . "'});\">" . $Language->phrase("AddLink") . "</a>";
+			$item->Body = "<a class=\"ew-add-edit ew-add\" title=\"" . $addcaption . "\" data-table=\"t007_assettype\" data-caption=\"" . $addcaption . "\" href=\"#\" onclick=\"return ew.modalDialogShow({lnk:this,btn:'AddBtn',url:'" . HtmlEncode($this->AddUrl) . "'});\">" . $Language->phrase("AddLink") . "</a>";
 		$item->Visible = $this->AddUrl != "" && $Security->canAdd();
+
+		// Inline Add
+		$item = &$option->add("inlineadd");
+		$item->Body = "<a class=\"ew-add-edit ew-inline-add\" title=\"" . HtmlTitle($Language->phrase("InlineAddLink")) . "\" data-caption=\"" . HtmlTitle($Language->phrase("InlineAddLink")) . "\" href=\"" . HtmlEncode($this->InlineAddUrl) . "\">" .$Language->phrase("InlineAddLink") . "</a>";
+		$item->Visible = $this->InlineAddUrl != "" && $Security->canAdd();
 		$item = &$option->add("gridadd");
 		$item->Body = "<a class=\"ew-add-edit ew-grid-add\" title=\"" . HtmlTitle($Language->phrase("GridAddLink")) . "\" data-caption=\"" . HtmlTitle($Language->phrase("GridAddLink")) . "\" href=\"" . HtmlEncode($this->GridAddUrl) . "\">" . $Language->phrase("GridAddLink") . "</a>";
 		$item->Visible = $this->GridAddUrl != "" && $Security->canAdd();
-		$option = $options["detail"];
-		$detailTableLink = "";
-		$item = &$option->add("detailadd_t007_assettype");
-		$url = $this->getAddUrl(Config("TABLE_SHOW_DETAIL") . "=t007_assettype");
-		if (!isset($GLOBALS["t007_assettype"]))
-			$GLOBALS["t007_assettype"] = new t007_assettype();
-		$caption = $Language->phrase("Add") . "&nbsp;" . $this->tableCaption() . "/" . $GLOBALS["t007_assettype"]->tableCaption();
-		$item->Body = "<a class=\"ew-detail-add-group ew-detail-add\" title=\"" . HtmlTitle($caption) . "\" data-caption=\"" . HtmlTitle($caption) . "\" href=\"" . HtmlEncode($url) . "\">" . $caption . "</a>";
-		$item->Visible = ($GLOBALS["t007_assettype"]->DetailAdd && $Security->allowAdd(CurrentProjectID() . 't005_assetgroup') && $Security->canAdd());
-		if ($item->Visible) {
-			if ($detailTableLink != "")
-				$detailTableLink .= ",";
-			$detailTableLink .= "t007_assettype";
-		}
-
-		// Add multiple details
-		if ($this->ShowMultipleDetails) {
-			$item = &$option->add("detailsadd");
-			$url = $this->getAddUrl(Config("TABLE_SHOW_DETAIL") . "=" . $detailTableLink);
-			$caption = $Language->phrase("AddMasterDetailLink");
-			$item->Body = "<a class=\"ew-detail-add-group ew-detail-add\" title=\"" . HtmlTitle($caption) . "\" data-caption=\"" . HtmlTitle($caption) . "\" href=\"" . HtmlEncode($url) . "\">" . $caption . "</a>";
-			$item->Visible = $detailTableLink != "" && $Security->canAdd();
-
-			// Hide single master/detail items
-			$ar = explode(",", $detailTableLink);
-			$cnt = count($ar);
-			for ($i = 0; $i < $cnt; $i++) {
-				if ($item = $option["detailadd_" . $ar[$i]])
-					$item->Visible = FALSE;
-			}
-		}
 
 		// Add grid edit
 		$option = $options["addedit"];
@@ -2175,10 +2233,10 @@ class t005_assetgroup_list extends t005_assetgroup
 
 		// Filter button
 		$item = &$this->FilterOptions->add("savecurrentfilter");
-		$item->Body = "<a class=\"ew-save-filter\" data-form=\"ft005_assetgrouplistsrch\" href=\"#\" onclick=\"return false;\">" . $Language->phrase("SaveCurrentFilter") . "</a>";
+		$item->Body = "<a class=\"ew-save-filter\" data-form=\"ft007_assettypelistsrch\" href=\"#\" onclick=\"return false;\">" . $Language->phrase("SaveCurrentFilter") . "</a>";
 		$item->Visible = TRUE;
 		$item = &$this->FilterOptions->add("deletefilter");
-		$item->Body = "<a class=\"ew-delete-filter\" data-form=\"ft005_assetgrouplistsrch\" href=\"#\" onclick=\"return false;\">" . $Language->phrase("DeleteFilter") . "</a>";
+		$item->Body = "<a class=\"ew-delete-filter\" data-form=\"ft007_assettypelistsrch\" href=\"#\" onclick=\"return false;\">" . $Language->phrase("DeleteFilter") . "</a>";
 		$item->Visible = TRUE;
 		$this->FilterOptions->UseDropDownButton = TRUE;
 		$this->FilterOptions->UseButtonGroup = !$this->FilterOptions->UseDropDownButton;
@@ -2204,7 +2262,7 @@ class t005_assetgroup_list extends t005_assetgroup
 					$item = &$option->add("custom_" . $listaction->Action);
 					$caption = $listaction->Caption;
 					$icon = ($listaction->Icon != "") ? "<i class=\"" . HtmlEncode($listaction->Icon) . "\" data-caption=\"" . HtmlEncode($caption) . "\"></i> " . $caption : $caption;
-					$item->Body = "<a class=\"ew-action ew-list-action\" title=\"" . HtmlEncode($caption) . "\" data-caption=\"" . HtmlEncode($caption) . "\" href=\"#\" onclick=\"return ew.submitAction(event,jQuery.extend({f:document.ft005_assetgrouplist}," . $listaction->toJson(TRUE) . "));\">" . $icon . "</a>";
+					$item->Body = "<a class=\"ew-action ew-list-action\" title=\"" . HtmlEncode($caption) . "\" data-caption=\"" . HtmlEncode($caption) . "\" href=\"#\" onclick=\"return ew.submitAction(event,jQuery.extend({f:document.ft007_assettypelist}," . $listaction->toJson(TRUE) . "));\">" . $icon . "</a>";
 					$item->Visible = $listaction->Allow;
 				}
 			}
@@ -2366,14 +2424,12 @@ class t005_assetgroup_list extends t005_assetgroup
 	{
 		$this->id->CurrentValue = NULL;
 		$this->id->OldValue = $this->id->CurrentValue;
-		$this->Code->CurrentValue = NULL;
-		$this->Code->OldValue = $this->Code->CurrentValue;
+		$this->assetgroup_id->CurrentValue = NULL;
+		$this->assetgroup_id->OldValue = $this->assetgroup_id->CurrentValue;
 		$this->Description->CurrentValue = NULL;
 		$this->Description->OldValue = $this->Description->CurrentValue;
-		$this->EstimatedLife->CurrentValue = 5;
-		$this->EstimatedLife->OldValue = $this->EstimatedLife->CurrentValue;
-		$this->SLN->CurrentValue = NULL;
-		$this->SLN->OldValue = $this->SLN->CurrentValue;
+		$this->Code->CurrentValue = NULL;
+		$this->Code->OldValue = $this->Code->CurrentValue;
 	}
 
 	// Load search values for validation
@@ -2390,10 +2446,10 @@ class t005_assetgroup_list extends t005_assetgroup
 				$this->Command = "search";
 		}
 
-		// Code
-		if (!$this->isAddOrEdit() && $this->Code->AdvancedSearch->get()) {
+		// assetgroup_id
+		if (!$this->isAddOrEdit() && $this->assetgroup_id->AdvancedSearch->get()) {
 			$got = TRUE;
-			if (($this->Code->AdvancedSearch->SearchValue != "" || $this->Code->AdvancedSearch->SearchValue2 != "") && $this->Command == "")
+			if (($this->assetgroup_id->AdvancedSearch->SearchValue != "" || $this->assetgroup_id->AdvancedSearch->SearchValue2 != "") && $this->Command == "")
 				$this->Command = "search";
 		}
 
@@ -2404,17 +2460,10 @@ class t005_assetgroup_list extends t005_assetgroup
 				$this->Command = "search";
 		}
 
-		// EstimatedLife
-		if (!$this->isAddOrEdit() && $this->EstimatedLife->AdvancedSearch->get()) {
+		// Code
+		if (!$this->isAddOrEdit() && $this->Code->AdvancedSearch->get()) {
 			$got = TRUE;
-			if (($this->EstimatedLife->AdvancedSearch->SearchValue != "" || $this->EstimatedLife->AdvancedSearch->SearchValue2 != "") && $this->Command == "")
-				$this->Command = "search";
-		}
-
-		// SLN
-		if (!$this->isAddOrEdit() && $this->SLN->AdvancedSearch->get()) {
-			$got = TRUE;
-			if (($this->SLN->AdvancedSearch->SearchValue != "" || $this->SLN->AdvancedSearch->SearchValue2 != "") && $this->Command == "")
+			if (($this->Code->AdvancedSearch->SearchValue != "" || $this->Code->AdvancedSearch->SearchValue2 != "") && $this->Command == "")
 				$this->Command = "search";
 		}
 		return $got;
@@ -2427,16 +2476,16 @@ class t005_assetgroup_list extends t005_assetgroup
 		// Load from form
 		global $CurrentForm;
 
-		// Check field name 'Code' first before field var 'x_Code'
-		$val = $CurrentForm->hasValue("Code") ? $CurrentForm->getValue("Code") : $CurrentForm->getValue("x_Code");
-		if (!$this->Code->IsDetailKey) {
+		// Check field name 'assetgroup_id' first before field var 'x_assetgroup_id'
+		$val = $CurrentForm->hasValue("assetgroup_id") ? $CurrentForm->getValue("assetgroup_id") : $CurrentForm->getValue("x_assetgroup_id");
+		if (!$this->assetgroup_id->IsDetailKey) {
 			if (IsApi() && $val == NULL)
-				$this->Code->Visible = FALSE; // Disable update for API request
+				$this->assetgroup_id->Visible = FALSE; // Disable update for API request
 			else
-				$this->Code->setFormValue($val);
+				$this->assetgroup_id->setFormValue($val);
 		}
-		if ($CurrentForm->hasValue("o_Code"))
-			$this->Code->setOldValue($CurrentForm->getValue("o_Code"));
+		if ($CurrentForm->hasValue("o_assetgroup_id"))
+			$this->assetgroup_id->setOldValue($CurrentForm->getValue("o_assetgroup_id"));
 
 		// Check field name 'Description' first before field var 'x_Description'
 		$val = $CurrentForm->hasValue("Description") ? $CurrentForm->getValue("Description") : $CurrentForm->getValue("x_Description");
@@ -2449,27 +2498,16 @@ class t005_assetgroup_list extends t005_assetgroup
 		if ($CurrentForm->hasValue("o_Description"))
 			$this->Description->setOldValue($CurrentForm->getValue("o_Description"));
 
-		// Check field name 'EstimatedLife' first before field var 'x_EstimatedLife'
-		$val = $CurrentForm->hasValue("EstimatedLife") ? $CurrentForm->getValue("EstimatedLife") : $CurrentForm->getValue("x_EstimatedLife");
-		if (!$this->EstimatedLife->IsDetailKey) {
+		// Check field name 'Code' first before field var 'x_Code'
+		$val = $CurrentForm->hasValue("Code") ? $CurrentForm->getValue("Code") : $CurrentForm->getValue("x_Code");
+		if (!$this->Code->IsDetailKey) {
 			if (IsApi() && $val == NULL)
-				$this->EstimatedLife->Visible = FALSE; // Disable update for API request
+				$this->Code->Visible = FALSE; // Disable update for API request
 			else
-				$this->EstimatedLife->setFormValue($val);
+				$this->Code->setFormValue($val);
 		}
-		if ($CurrentForm->hasValue("o_EstimatedLife"))
-			$this->EstimatedLife->setOldValue($CurrentForm->getValue("o_EstimatedLife"));
-
-		// Check field name 'SLN' first before field var 'x_SLN'
-		$val = $CurrentForm->hasValue("SLN") ? $CurrentForm->getValue("SLN") : $CurrentForm->getValue("x_SLN");
-		if (!$this->SLN->IsDetailKey) {
-			if (IsApi() && $val == NULL)
-				$this->SLN->Visible = FALSE; // Disable update for API request
-			else
-				$this->SLN->setFormValue($val);
-		}
-		if ($CurrentForm->hasValue("o_SLN"))
-			$this->SLN->setOldValue($CurrentForm->getValue("o_SLN"));
+		if ($CurrentForm->hasValue("o_Code"))
+			$this->Code->setOldValue($CurrentForm->getValue("o_Code"));
 
 		// Check field name 'id' first before field var 'x_id'
 		$val = $CurrentForm->hasValue("id") ? $CurrentForm->getValue("id") : $CurrentForm->getValue("x_id");
@@ -2483,10 +2521,9 @@ class t005_assetgroup_list extends t005_assetgroup
 		global $CurrentForm;
 		if (!$this->isGridAdd() && !$this->isAdd())
 			$this->id->CurrentValue = $this->id->FormValue;
-		$this->Code->CurrentValue = $this->Code->FormValue;
+		$this->assetgroup_id->CurrentValue = $this->assetgroup_id->FormValue;
 		$this->Description->CurrentValue = $this->Description->FormValue;
-		$this->EstimatedLife->CurrentValue = $this->EstimatedLife->FormValue;
-		$this->SLN->CurrentValue = $this->SLN->FormValue;
+		$this->Code->CurrentValue = $this->Code->FormValue;
 	}
 
 	// Load recordset
@@ -2554,10 +2591,9 @@ class t005_assetgroup_list extends t005_assetgroup
 		if (!$rs || $rs->EOF)
 			return;
 		$this->id->setDbValue($row['id']);
-		$this->Code->setDbValue($row['Code']);
+		$this->assetgroup_id->setDbValue($row['assetgroup_id']);
 		$this->Description->setDbValue($row['Description']);
-		$this->EstimatedLife->setDbValue($row['EstimatedLife']);
-		$this->SLN->setDbValue($row['SLN']);
+		$this->Code->setDbValue($row['Code']);
 	}
 
 	// Return a row with default values
@@ -2566,10 +2602,9 @@ class t005_assetgroup_list extends t005_assetgroup
 		$this->loadDefaultValues();
 		$row = [];
 		$row['id'] = $this->id->CurrentValue;
-		$row['Code'] = $this->Code->CurrentValue;
+		$row['assetgroup_id'] = $this->assetgroup_id->CurrentValue;
 		$row['Description'] = $this->Description->CurrentValue;
-		$row['EstimatedLife'] = $this->EstimatedLife->CurrentValue;
-		$row['SLN'] = $this->SLN->CurrentValue;
+		$row['Code'] = $this->Code->CurrentValue;
 		return $row;
 	}
 
@@ -2609,19 +2644,14 @@ class t005_assetgroup_list extends t005_assetgroup
 		$this->InlineCopyUrl = $this->getInlineCopyUrl();
 		$this->DeleteUrl = $this->getDeleteUrl();
 
-		// Convert decimal values if posted back
-		if ($this->SLN->FormValue == $this->SLN->CurrentValue && is_numeric(ConvertToFloatString($this->SLN->CurrentValue)))
-			$this->SLN->CurrentValue = ConvertToFloatString($this->SLN->CurrentValue);
-
 		// Call Row_Rendering event
 		$this->Row_Rendering();
 
 		// Common render codes for all row types
 		// id
-		// Code
+		// assetgroup_id
 		// Description
-		// EstimatedLife
-		// SLN
+		// Code
 
 		if ($this->RowType == ROWTYPE_VIEW) { // View row
 
@@ -2629,54 +2659,112 @@ class t005_assetgroup_list extends t005_assetgroup
 			$this->id->ViewValue = $this->id->CurrentValue;
 			$this->id->ViewCustomAttributes = "";
 
-			// Code
-			$this->Code->ViewValue = $this->Code->CurrentValue;
-			$this->Code->ViewCustomAttributes = "";
+			// assetgroup_id
+			$this->assetgroup_id->ViewValue = $this->assetgroup_id->CurrentValue;
+			$curVal = strval($this->assetgroup_id->CurrentValue);
+			if ($curVal != "") {
+				$this->assetgroup_id->ViewValue = $this->assetgroup_id->lookupCacheOption($curVal);
+				if ($this->assetgroup_id->ViewValue === NULL) { // Lookup from database
+					$filterWrk = "`id`" . SearchString("=", $curVal, DATATYPE_NUMBER, "");
+					$sqlWrk = $this->assetgroup_id->Lookup->getSql(FALSE, $filterWrk, '', $this);
+					$rswrk = Conn()->execute($sqlWrk);
+					if ($rswrk && !$rswrk->EOF) { // Lookup values found
+						$arwrk = [];
+						$arwrk[1] = $rswrk->fields('df');
+						$arwrk[2] = $rswrk->fields('df2');
+						$arwrk[3] = FormatNumber($rswrk->fields('df3'), 0, -2, -2, -2);
+						$arwrk[4] = FormatNumber($rswrk->fields('df4'), 2, -2, -2, -2);
+						$this->assetgroup_id->ViewValue = $this->assetgroup_id->displayValue($arwrk);
+						$rswrk->Close();
+					} else {
+						$this->assetgroup_id->ViewValue = $this->assetgroup_id->CurrentValue;
+					}
+				}
+			} else {
+				$this->assetgroup_id->ViewValue = NULL;
+			}
+			$this->assetgroup_id->ViewCustomAttributes = "";
 
 			// Description
 			$this->Description->ViewValue = $this->Description->CurrentValue;
 			$this->Description->ViewCustomAttributes = "";
 
-			// EstimatedLife
-			$this->EstimatedLife->ViewValue = $this->EstimatedLife->CurrentValue;
-			$this->EstimatedLife->ViewValue = FormatNumber($this->EstimatedLife->ViewValue, 0, -2, -2, -2);
-			$this->EstimatedLife->CellCssStyle .= "text-align: right;";
-			$this->EstimatedLife->ViewCustomAttributes = "";
-
-			// SLN
-			$this->SLN->ViewValue = $this->SLN->CurrentValue;
-			$this->SLN->ViewValue = FormatNumber($this->SLN->ViewValue, 2, -2, -2, -2);
-			$this->SLN->CellCssStyle .= "text-align: right;";
-			$this->SLN->ViewCustomAttributes = "";
-
 			// Code
-			$this->Code->LinkCustomAttributes = "";
-			$this->Code->HrefValue = "";
-			$this->Code->TooltipValue = "";
+			$this->Code->ViewValue = $this->Code->CurrentValue;
+			$this->Code->ViewCustomAttributes = "";
+
+			// assetgroup_id
+			$this->assetgroup_id->LinkCustomAttributes = "";
+			$this->assetgroup_id->HrefValue = "";
+			$this->assetgroup_id->TooltipValue = "";
 
 			// Description
 			$this->Description->LinkCustomAttributes = "";
 			$this->Description->HrefValue = "";
 			$this->Description->TooltipValue = "";
 
-			// EstimatedLife
-			$this->EstimatedLife->LinkCustomAttributes = "";
-			$this->EstimatedLife->HrefValue = "";
-			$this->EstimatedLife->TooltipValue = "";
-
-			// SLN
-			$this->SLN->LinkCustomAttributes = "";
-			$this->SLN->HrefValue = "";
-			$this->SLN->TooltipValue = "";
+			// Code
+			$this->Code->LinkCustomAttributes = "";
+			$this->Code->HrefValue = "";
+			$this->Code->TooltipValue = "";
 		} elseif ($this->RowType == ROWTYPE_ADD) { // Add row
 
-			// Code
-			$this->Code->EditAttrs["class"] = "form-control";
-			$this->Code->EditCustomAttributes = "";
-			if (!$this->Code->Raw)
-				$this->Code->CurrentValue = HtmlDecode($this->Code->CurrentValue);
-			$this->Code->EditValue = HtmlEncode($this->Code->CurrentValue);
-			$this->Code->PlaceHolder = RemoveHtml($this->Code->caption());
+			// assetgroup_id
+			$this->assetgroup_id->EditAttrs["class"] = "form-control";
+			$this->assetgroup_id->EditCustomAttributes = "";
+			if ($this->assetgroup_id->getSessionValue() != "") {
+				$this->assetgroup_id->CurrentValue = $this->assetgroup_id->getSessionValue();
+				$this->assetgroup_id->OldValue = $this->assetgroup_id->CurrentValue;
+				$this->assetgroup_id->ViewValue = $this->assetgroup_id->CurrentValue;
+				$curVal = strval($this->assetgroup_id->CurrentValue);
+				if ($curVal != "") {
+					$this->assetgroup_id->ViewValue = $this->assetgroup_id->lookupCacheOption($curVal);
+					if ($this->assetgroup_id->ViewValue === NULL) { // Lookup from database
+						$filterWrk = "`id`" . SearchString("=", $curVal, DATATYPE_NUMBER, "");
+						$sqlWrk = $this->assetgroup_id->Lookup->getSql(FALSE, $filterWrk, '', $this);
+						$rswrk = Conn()->execute($sqlWrk);
+						if ($rswrk && !$rswrk->EOF) { // Lookup values found
+							$arwrk = [];
+							$arwrk[1] = $rswrk->fields('df');
+							$arwrk[2] = $rswrk->fields('df2');
+							$arwrk[3] = FormatNumber($rswrk->fields('df3'), 0, -2, -2, -2);
+							$arwrk[4] = FormatNumber($rswrk->fields('df4'), 2, -2, -2, -2);
+							$this->assetgroup_id->ViewValue = $this->assetgroup_id->displayValue($arwrk);
+							$rswrk->Close();
+						} else {
+							$this->assetgroup_id->ViewValue = $this->assetgroup_id->CurrentValue;
+						}
+					}
+				} else {
+					$this->assetgroup_id->ViewValue = NULL;
+				}
+				$this->assetgroup_id->ViewCustomAttributes = "";
+			} else {
+				$this->assetgroup_id->EditValue = HtmlEncode($this->assetgroup_id->CurrentValue);
+				$curVal = strval($this->assetgroup_id->CurrentValue);
+				if ($curVal != "") {
+					$this->assetgroup_id->EditValue = $this->assetgroup_id->lookupCacheOption($curVal);
+					if ($this->assetgroup_id->EditValue === NULL) { // Lookup from database
+						$filterWrk = "`id`" . SearchString("=", $curVal, DATATYPE_NUMBER, "");
+						$sqlWrk = $this->assetgroup_id->Lookup->getSql(FALSE, $filterWrk, '', $this);
+						$rswrk = Conn()->execute($sqlWrk);
+						if ($rswrk && !$rswrk->EOF) { // Lookup values found
+							$arwrk = [];
+							$arwrk[1] = HtmlEncode($rswrk->fields('df'));
+							$arwrk[2] = HtmlEncode($rswrk->fields('df2'));
+							$arwrk[3] = HtmlEncode(FormatNumber($rswrk->fields('df3'), 0, -2, -2, -2));
+							$arwrk[4] = HtmlEncode(FormatNumber($rswrk->fields('df4'), 2, -2, -2, -2));
+							$this->assetgroup_id->EditValue = $this->assetgroup_id->displayValue($arwrk);
+							$rswrk->Close();
+						} else {
+							$this->assetgroup_id->EditValue = HtmlEncode($this->assetgroup_id->CurrentValue);
+						}
+					}
+				} else {
+					$this->assetgroup_id->EditValue = NULL;
+				}
+				$this->assetgroup_id->PlaceHolder = RemoveHtml($this->assetgroup_id->caption());
+			}
 
 			// Description
 			$this->Description->EditAttrs["class"] = "form-control";
@@ -2686,49 +2774,85 @@ class t005_assetgroup_list extends t005_assetgroup
 			$this->Description->EditValue = HtmlEncode($this->Description->CurrentValue);
 			$this->Description->PlaceHolder = RemoveHtml($this->Description->caption());
 
-			// EstimatedLife
-			$this->EstimatedLife->EditAttrs["class"] = "form-control";
-			$this->EstimatedLife->EditCustomAttributes = "";
-			$this->EstimatedLife->EditValue = HtmlEncode($this->EstimatedLife->CurrentValue);
-			$this->EstimatedLife->PlaceHolder = RemoveHtml($this->EstimatedLife->caption());
-
-			// SLN
-			$this->SLN->EditAttrs["class"] = "form-control";
-			$this->SLN->EditCustomAttributes = "";
-			$this->SLN->EditValue = HtmlEncode($this->SLN->CurrentValue);
-			$this->SLN->PlaceHolder = RemoveHtml($this->SLN->caption());
-			if (strval($this->SLN->EditValue) != "" && is_numeric($this->SLN->EditValue)) {
-				$this->SLN->EditValue = FormatNumber($this->SLN->EditValue, -2, -2, -2, -2);
-				$this->SLN->OldValue = $this->SLN->EditValue;
-			}
-			
+			// Code
+			$this->Code->EditAttrs["class"] = "form-control";
+			$this->Code->EditCustomAttributes = "";
+			if (!$this->Code->Raw)
+				$this->Code->CurrentValue = HtmlDecode($this->Code->CurrentValue);
+			$this->Code->EditValue = HtmlEncode($this->Code->CurrentValue);
+			$this->Code->PlaceHolder = RemoveHtml($this->Code->caption());
 
 			// Add refer script
-			// Code
+			// assetgroup_id
 
-			$this->Code->LinkCustomAttributes = "";
-			$this->Code->HrefValue = "";
+			$this->assetgroup_id->LinkCustomAttributes = "";
+			$this->assetgroup_id->HrefValue = "";
 
 			// Description
 			$this->Description->LinkCustomAttributes = "";
 			$this->Description->HrefValue = "";
 
-			// EstimatedLife
-			$this->EstimatedLife->LinkCustomAttributes = "";
-			$this->EstimatedLife->HrefValue = "";
-
-			// SLN
-			$this->SLN->LinkCustomAttributes = "";
-			$this->SLN->HrefValue = "";
+			// Code
+			$this->Code->LinkCustomAttributes = "";
+			$this->Code->HrefValue = "";
 		} elseif ($this->RowType == ROWTYPE_EDIT) { // Edit row
 
-			// Code
-			$this->Code->EditAttrs["class"] = "form-control";
-			$this->Code->EditCustomAttributes = "";
-			if (!$this->Code->Raw)
-				$this->Code->CurrentValue = HtmlDecode($this->Code->CurrentValue);
-			$this->Code->EditValue = HtmlEncode($this->Code->CurrentValue);
-			$this->Code->PlaceHolder = RemoveHtml($this->Code->caption());
+			// assetgroup_id
+			$this->assetgroup_id->EditAttrs["class"] = "form-control";
+			$this->assetgroup_id->EditCustomAttributes = "";
+			if ($this->assetgroup_id->getSessionValue() != "") {
+				$this->assetgroup_id->CurrentValue = $this->assetgroup_id->getSessionValue();
+				$this->assetgroup_id->OldValue = $this->assetgroup_id->CurrentValue;
+				$this->assetgroup_id->ViewValue = $this->assetgroup_id->CurrentValue;
+				$curVal = strval($this->assetgroup_id->CurrentValue);
+				if ($curVal != "") {
+					$this->assetgroup_id->ViewValue = $this->assetgroup_id->lookupCacheOption($curVal);
+					if ($this->assetgroup_id->ViewValue === NULL) { // Lookup from database
+						$filterWrk = "`id`" . SearchString("=", $curVal, DATATYPE_NUMBER, "");
+						$sqlWrk = $this->assetgroup_id->Lookup->getSql(FALSE, $filterWrk, '', $this);
+						$rswrk = Conn()->execute($sqlWrk);
+						if ($rswrk && !$rswrk->EOF) { // Lookup values found
+							$arwrk = [];
+							$arwrk[1] = $rswrk->fields('df');
+							$arwrk[2] = $rswrk->fields('df2');
+							$arwrk[3] = FormatNumber($rswrk->fields('df3'), 0, -2, -2, -2);
+							$arwrk[4] = FormatNumber($rswrk->fields('df4'), 2, -2, -2, -2);
+							$this->assetgroup_id->ViewValue = $this->assetgroup_id->displayValue($arwrk);
+							$rswrk->Close();
+						} else {
+							$this->assetgroup_id->ViewValue = $this->assetgroup_id->CurrentValue;
+						}
+					}
+				} else {
+					$this->assetgroup_id->ViewValue = NULL;
+				}
+				$this->assetgroup_id->ViewCustomAttributes = "";
+			} else {
+				$this->assetgroup_id->EditValue = HtmlEncode($this->assetgroup_id->CurrentValue);
+				$curVal = strval($this->assetgroup_id->CurrentValue);
+				if ($curVal != "") {
+					$this->assetgroup_id->EditValue = $this->assetgroup_id->lookupCacheOption($curVal);
+					if ($this->assetgroup_id->EditValue === NULL) { // Lookup from database
+						$filterWrk = "`id`" . SearchString("=", $curVal, DATATYPE_NUMBER, "");
+						$sqlWrk = $this->assetgroup_id->Lookup->getSql(FALSE, $filterWrk, '', $this);
+						$rswrk = Conn()->execute($sqlWrk);
+						if ($rswrk && !$rswrk->EOF) { // Lookup values found
+							$arwrk = [];
+							$arwrk[1] = HtmlEncode($rswrk->fields('df'));
+							$arwrk[2] = HtmlEncode($rswrk->fields('df2'));
+							$arwrk[3] = HtmlEncode(FormatNumber($rswrk->fields('df3'), 0, -2, -2, -2));
+							$arwrk[4] = HtmlEncode(FormatNumber($rswrk->fields('df4'), 2, -2, -2, -2));
+							$this->assetgroup_id->EditValue = $this->assetgroup_id->displayValue($arwrk);
+							$rswrk->Close();
+						} else {
+							$this->assetgroup_id->EditValue = HtmlEncode($this->assetgroup_id->CurrentValue);
+						}
+					}
+				} else {
+					$this->assetgroup_id->EditValue = NULL;
+				}
+				$this->assetgroup_id->PlaceHolder = RemoveHtml($this->assetgroup_id->caption());
+			}
 
 			// Description
 			$this->Description->EditAttrs["class"] = "form-control";
@@ -2738,40 +2862,27 @@ class t005_assetgroup_list extends t005_assetgroup
 			$this->Description->EditValue = HtmlEncode($this->Description->CurrentValue);
 			$this->Description->PlaceHolder = RemoveHtml($this->Description->caption());
 
-			// EstimatedLife
-			$this->EstimatedLife->EditAttrs["class"] = "form-control";
-			$this->EstimatedLife->EditCustomAttributes = "";
-			$this->EstimatedLife->EditValue = HtmlEncode($this->EstimatedLife->CurrentValue);
-			$this->EstimatedLife->PlaceHolder = RemoveHtml($this->EstimatedLife->caption());
-
-			// SLN
-			$this->SLN->EditAttrs["class"] = "form-control";
-			$this->SLN->EditCustomAttributes = "";
-			$this->SLN->EditValue = HtmlEncode($this->SLN->CurrentValue);
-			$this->SLN->PlaceHolder = RemoveHtml($this->SLN->caption());
-			if (strval($this->SLN->EditValue) != "" && is_numeric($this->SLN->EditValue)) {
-				$this->SLN->EditValue = FormatNumber($this->SLN->EditValue, -2, -2, -2, -2);
-				$this->SLN->OldValue = $this->SLN->EditValue;
-			}
-			
+			// Code
+			$this->Code->EditAttrs["class"] = "form-control";
+			$this->Code->EditCustomAttributes = "";
+			if (!$this->Code->Raw)
+				$this->Code->CurrentValue = HtmlDecode($this->Code->CurrentValue);
+			$this->Code->EditValue = HtmlEncode($this->Code->CurrentValue);
+			$this->Code->PlaceHolder = RemoveHtml($this->Code->caption());
 
 			// Edit refer script
-			// Code
+			// assetgroup_id
 
-			$this->Code->LinkCustomAttributes = "";
-			$this->Code->HrefValue = "";
+			$this->assetgroup_id->LinkCustomAttributes = "";
+			$this->assetgroup_id->HrefValue = "";
 
 			// Description
 			$this->Description->LinkCustomAttributes = "";
 			$this->Description->HrefValue = "";
 
-			// EstimatedLife
-			$this->EstimatedLife->LinkCustomAttributes = "";
-			$this->EstimatedLife->HrefValue = "";
-
-			// SLN
-			$this->SLN->LinkCustomAttributes = "";
-			$this->SLN->HrefValue = "";
+			// Code
+			$this->Code->LinkCustomAttributes = "";
+			$this->Code->HrefValue = "";
 		}
 		if ($this->RowType == ROWTYPE_ADD || $this->RowType == ROWTYPE_EDIT || $this->RowType == ROWTYPE_SEARCH) // Add/Edit/Search row
 			$this->setupFieldTitles();
@@ -2816,31 +2927,23 @@ class t005_assetgroup_list extends t005_assetgroup
 		// Check if validation required
 		if (!Config("SERVER_VALIDATE"))
 			return ($FormError == "");
-		if ($this->Code->Required) {
-			if (!$this->Code->IsDetailKey && $this->Code->FormValue != NULL && $this->Code->FormValue == "") {
-				AddMessage($FormError, str_replace("%s", $this->Code->caption(), $this->Code->RequiredErrorMessage));
+		if ($this->assetgroup_id->Required) {
+			if (!$this->assetgroup_id->IsDetailKey && $this->assetgroup_id->FormValue != NULL && $this->assetgroup_id->FormValue == "") {
+				AddMessage($FormError, str_replace("%s", $this->assetgroup_id->caption(), $this->assetgroup_id->RequiredErrorMessage));
 			}
+		}
+		if (!CheckInteger($this->assetgroup_id->FormValue)) {
+			AddMessage($FormError, $this->assetgroup_id->errorMessage());
 		}
 		if ($this->Description->Required) {
 			if (!$this->Description->IsDetailKey && $this->Description->FormValue != NULL && $this->Description->FormValue == "") {
 				AddMessage($FormError, str_replace("%s", $this->Description->caption(), $this->Description->RequiredErrorMessage));
 			}
 		}
-		if ($this->EstimatedLife->Required) {
-			if (!$this->EstimatedLife->IsDetailKey && $this->EstimatedLife->FormValue != NULL && $this->EstimatedLife->FormValue == "") {
-				AddMessage($FormError, str_replace("%s", $this->EstimatedLife->caption(), $this->EstimatedLife->RequiredErrorMessage));
+		if ($this->Code->Required) {
+			if (!$this->Code->IsDetailKey && $this->Code->FormValue != NULL && $this->Code->FormValue == "") {
+				AddMessage($FormError, str_replace("%s", $this->Code->caption(), $this->Code->RequiredErrorMessage));
 			}
-		}
-		if (!CheckInteger($this->EstimatedLife->FormValue)) {
-			AddMessage($FormError, $this->EstimatedLife->errorMessage());
-		}
-		if ($this->SLN->Required) {
-			if (!$this->SLN->IsDetailKey && $this->SLN->FormValue != NULL && $this->SLN->FormValue == "") {
-				AddMessage($FormError, str_replace("%s", $this->SLN->caption(), $this->SLN->RequiredErrorMessage));
-			}
-		}
-		if (!CheckNumber($this->SLN->FormValue)) {
-			AddMessage($FormError, $this->SLN->errorMessage());
 		}
 
 		// Return validate result
@@ -2965,17 +3068,37 @@ class t005_assetgroup_list extends t005_assetgroup
 			$this->loadDbValues($rsold);
 			$rsnew = [];
 
-			// Code
-			$this->Code->setDbValueDef($rsnew, $this->Code->CurrentValue, "", $this->Code->ReadOnly);
+			// assetgroup_id
+			$this->assetgroup_id->setDbValueDef($rsnew, $this->assetgroup_id->CurrentValue, 0, $this->assetgroup_id->ReadOnly);
 
 			// Description
 			$this->Description->setDbValueDef($rsnew, $this->Description->CurrentValue, "", $this->Description->ReadOnly);
 
-			// EstimatedLife
-			$this->EstimatedLife->setDbValueDef($rsnew, $this->EstimatedLife->CurrentValue, 0, $this->EstimatedLife->ReadOnly);
+			// Code
+			$this->Code->setDbValueDef($rsnew, $this->Code->CurrentValue, "", $this->Code->ReadOnly);
 
-			// SLN
-			$this->SLN->setDbValueDef($rsnew, $this->SLN->CurrentValue, 0, $this->SLN->ReadOnly);
+			// Check referential integrity for master table 't005_assetgroup'
+			$validMasterRecord = TRUE;
+			$masterFilter = $this->sqlMasterFilter_t005_assetgroup();
+			$keyValue = isset($rsnew['assetgroup_id']) ? $rsnew['assetgroup_id'] : $rsold['assetgroup_id'];
+			if (strval($keyValue) != "") {
+				$masterFilter = str_replace("@id@", AdjustSql($keyValue), $masterFilter);
+			} else {
+				$validMasterRecord = FALSE;
+			}
+			if ($validMasterRecord) {
+				if (!isset($GLOBALS["t005_assetgroup"]))
+					$GLOBALS["t005_assetgroup"] = new t005_assetgroup();
+				$rsmaster = $GLOBALS["t005_assetgroup"]->loadRs($masterFilter);
+				$validMasterRecord = ($rsmaster && !$rsmaster->EOF);
+				$rsmaster->close();
+			}
+			if (!$validMasterRecord) {
+				$relatedRecordMsg = str_replace("%t", "t005_assetgroup", $Language->phrase("RelatedRecordRequired"));
+				$this->setFailureMessage($relatedRecordMsg);
+				$rs->close();
+				return FALSE;
+			}
 
 			// Call Row Updating event
 			$updateRow = $this->Row_Updating($rsold, $rsnew);
@@ -3053,10 +3176,9 @@ class t005_assetgroup_list extends t005_assetgroup
 		if (!$rs)
 			return "";
 		$hash = "";
-		$hash .= GetFieldHash($rs->fields('Code')); // Code
+		$hash .= GetFieldHash($rs->fields('assetgroup_id')); // assetgroup_id
 		$hash .= GetFieldHash($rs->fields('Description')); // Description
-		$hash .= GetFieldHash($rs->fields('EstimatedLife')); // EstimatedLife
-		$hash .= GetFieldHash($rs->fields('SLN')); // SLN
+		$hash .= GetFieldHash($rs->fields('Code')); // Code
 		return md5($hash);
 	}
 
@@ -3064,6 +3186,27 @@ class t005_assetgroup_list extends t005_assetgroup
 	protected function addRow($rsold = NULL)
 	{
 		global $Language, $Security;
+
+		// Check referential integrity for master table 't007_assettype'
+		$validMasterRecord = TRUE;
+		$masterFilter = $this->sqlMasterFilter_t005_assetgroup();
+		if (strval($this->assetgroup_id->CurrentValue) != "") {
+			$masterFilter = str_replace("@id@", AdjustSql($this->assetgroup_id->CurrentValue, "DB"), $masterFilter);
+		} else {
+			$validMasterRecord = FALSE;
+		}
+		if ($validMasterRecord) {
+			if (!isset($GLOBALS["t005_assetgroup"]))
+				$GLOBALS["t005_assetgroup"] = new t005_assetgroup();
+			$rsmaster = $GLOBALS["t005_assetgroup"]->loadRs($masterFilter);
+			$validMasterRecord = ($rsmaster && !$rsmaster->EOF);
+			$rsmaster->close();
+		}
+		if (!$validMasterRecord) {
+			$relatedRecordMsg = str_replace("%t", "t005_assetgroup", $Language->phrase("RelatedRecordRequired"));
+			$this->setFailureMessage($relatedRecordMsg);
+			return FALSE;
+		}
 		$conn = $this->getConnection();
 
 		// Load db values from rsold
@@ -3072,17 +3215,14 @@ class t005_assetgroup_list extends t005_assetgroup
 		}
 		$rsnew = [];
 
-		// Code
-		$this->Code->setDbValueDef($rsnew, $this->Code->CurrentValue, "", FALSE);
+		// assetgroup_id
+		$this->assetgroup_id->setDbValueDef($rsnew, $this->assetgroup_id->CurrentValue, 0, FALSE);
 
 		// Description
 		$this->Description->setDbValueDef($rsnew, $this->Description->CurrentValue, "", FALSE);
 
-		// EstimatedLife
-		$this->EstimatedLife->setDbValueDef($rsnew, $this->EstimatedLife->CurrentValue, 0, strval($this->EstimatedLife->CurrentValue) == "");
-
-		// SLN
-		$this->SLN->setDbValueDef($rsnew, $this->SLN->CurrentValue, 0, FALSE);
+		// Code
+		$this->Code->setDbValueDef($rsnew, $this->Code->CurrentValue, "", FALSE);
 
 		// Call Row Inserting event
 		$rs = ($rsold) ? $rsold->fields : NULL;
@@ -3128,10 +3268,9 @@ class t005_assetgroup_list extends t005_assetgroup
 	public function loadAdvancedSearch()
 	{
 		$this->id->AdvancedSearch->load();
-		$this->Code->AdvancedSearch->load();
+		$this->assetgroup_id->AdvancedSearch->load();
 		$this->Description->AdvancedSearch->load();
-		$this->EstimatedLife->AdvancedSearch->load();
-		$this->SLN->AdvancedSearch->load();
+		$this->Code->AdvancedSearch->load();
 	}
 
 	// Get export HTML tag
@@ -3140,17 +3279,17 @@ class t005_assetgroup_list extends t005_assetgroup
 		global $Language;
 		if (SameText($type, "excel")) {
 			if ($custom)
-				return "<a href=\"#\" class=\"ew-export-link ew-excel\" title=\"" . HtmlEncode($Language->phrase("ExportToExcelText")) . "\" data-caption=\"" . HtmlEncode($Language->phrase("ExportToExcelText")) . "\" onclick=\"return ew.export(document.ft005_assetgrouplist, '" . $this->ExportExcelUrl . "', 'excel', true);\">" . $Language->phrase("ExportToExcel") . "</a>";
+				return "<a href=\"#\" class=\"ew-export-link ew-excel\" title=\"" . HtmlEncode($Language->phrase("ExportToExcelText")) . "\" data-caption=\"" . HtmlEncode($Language->phrase("ExportToExcelText")) . "\" onclick=\"return ew.export(document.ft007_assettypelist, '" . $this->ExportExcelUrl . "', 'excel', true);\">" . $Language->phrase("ExportToExcel") . "</a>";
 			else
 				return "<a href=\"" . $this->ExportExcelUrl . "\" class=\"ew-export-link ew-excel\" title=\"" . HtmlEncode($Language->phrase("ExportToExcelText")) . "\" data-caption=\"" . HtmlEncode($Language->phrase("ExportToExcelText")) . "\">" . $Language->phrase("ExportToExcel") . "</a>";
 		} elseif (SameText($type, "word")) {
 			if ($custom)
-				return "<a href=\"#\" class=\"ew-export-link ew-word\" title=\"" . HtmlEncode($Language->phrase("ExportToWordText")) . "\" data-caption=\"" . HtmlEncode($Language->phrase("ExportToWordText")) . "\" onclick=\"return ew.export(document.ft005_assetgrouplist, '" . $this->ExportWordUrl . "', 'word', true);\">" . $Language->phrase("ExportToWord") . "</a>";
+				return "<a href=\"#\" class=\"ew-export-link ew-word\" title=\"" . HtmlEncode($Language->phrase("ExportToWordText")) . "\" data-caption=\"" . HtmlEncode($Language->phrase("ExportToWordText")) . "\" onclick=\"return ew.export(document.ft007_assettypelist, '" . $this->ExportWordUrl . "', 'word', true);\">" . $Language->phrase("ExportToWord") . "</a>";
 			else
 				return "<a href=\"" . $this->ExportWordUrl . "\" class=\"ew-export-link ew-word\" title=\"" . HtmlEncode($Language->phrase("ExportToWordText")) . "\" data-caption=\"" . HtmlEncode($Language->phrase("ExportToWordText")) . "\">" . $Language->phrase("ExportToWord") . "</a>";
 		} elseif (SameText($type, "pdf")) {
 			if ($custom)
-				return "<a href=\"#\" class=\"ew-export-link ew-pdf\" title=\"" . HtmlEncode($Language->phrase("ExportToPDFText")) . "\" data-caption=\"" . HtmlEncode($Language->phrase("ExportToPDFText")) . "\" onclick=\"return ew.export(document.ft005_assetgrouplist, '" . $this->ExportPdfUrl . "', 'pdf', true);\">" . $Language->phrase("ExportToPDF") . "</a>";
+				return "<a href=\"#\" class=\"ew-export-link ew-pdf\" title=\"" . HtmlEncode($Language->phrase("ExportToPDFText")) . "\" data-caption=\"" . HtmlEncode($Language->phrase("ExportToPDFText")) . "\" onclick=\"return ew.export(document.ft007_assettypelist, '" . $this->ExportPdfUrl . "', 'pdf', true);\">" . $Language->phrase("ExportToPDF") . "</a>";
 			else
 				return "<a href=\"" . $this->ExportPdfUrl . "\" class=\"ew-export-link ew-pdf\" title=\"" . HtmlEncode($Language->phrase("ExportToPDFText")) . "\" data-caption=\"" . HtmlEncode($Language->phrase("ExportToPDFText")) . "\">" . $Language->phrase("ExportToPDF") . "</a>";
 		} elseif (SameText($type, "html")) {
@@ -3161,7 +3300,7 @@ class t005_assetgroup_list extends t005_assetgroup
 			return "<a href=\"" . $this->ExportCsvUrl . "\" class=\"ew-export-link ew-csv\" title=\"" . HtmlEncode($Language->phrase("ExportToCsvText")) . "\" data-caption=\"" . HtmlEncode($Language->phrase("ExportToCsvText")) . "\">" . $Language->phrase("ExportToCsv") . "</a>";
 		} elseif (SameText($type, "email")) {
 			$url = $custom ? ",url:'" . $this->pageUrl() . "export=email&amp;custom=1'" : "";
-			return '<button id="emf_t005_assetgroup" class="ew-export-link ew-email" title="' . $Language->phrase("ExportToEmailText") . '" data-caption="' . $Language->phrase("ExportToEmailText") . '" onclick="ew.emailDialogShow({lnk:\'emf_t005_assetgroup\', hdr:ew.language.phrase(\'ExportToEmailText\'), f:document.ft005_assetgrouplist, sel:false' . $url . '});">' . $Language->phrase("ExportToEmail") . '</button>';
+			return '<button id="emf_t007_assettype" class="ew-export-link ew-email" title="' . $Language->phrase("ExportToEmailText") . '" data-caption="' . $Language->phrase("ExportToEmailText") . '" onclick="ew.emailDialogShow({lnk:\'emf_t007_assettype\', hdr:ew.language.phrase(\'ExportToEmailText\'), f:document.ft007_assettypelist, sel:false' . $url . '});">' . $Language->phrase("ExportToEmail") . '</button>';
 		} elseif (SameText($type, "print")) {
 			return "<a href=\"" . $this->ExportPrintUrl . "\" class=\"ew-export-link ew-print\" title=\"" . HtmlEncode($Language->phrase("PrinterFriendlyText")) . "\" data-caption=\"" . HtmlEncode($Language->phrase("PrinterFriendlyText")) . "\">" . $Language->phrase("PrinterFriendly") . "</a>";
 		}
@@ -3240,9 +3379,9 @@ class t005_assetgroup_list extends t005_assetgroup
 		// Advanced search button
 		$item = &$this->SearchOptions->add("advancedsearch");
 		if (IsMobile())
-			$item->Body = "<a class=\"btn btn-default ew-advanced-search\" title=\"" . $Language->phrase("AdvancedSearch") . "\" data-caption=\"" . $Language->phrase("AdvancedSearch") . "\" href=\"t005_assetgroupsrch.php\">" . $Language->phrase("AdvancedSearchBtn") . "</a>";
+			$item->Body = "<a class=\"btn btn-default ew-advanced-search\" title=\"" . $Language->phrase("AdvancedSearch") . "\" data-caption=\"" . $Language->phrase("AdvancedSearch") . "\" href=\"t007_assettypesrch.php\">" . $Language->phrase("AdvancedSearchBtn") . "</a>";
 		else
-			$item->Body = "<a class=\"btn btn-default ew-advanced-search\" title=\"" . $Language->phrase("AdvancedSearch") . "\" data-table=\"t005_assetgroup\" data-caption=\"" . $Language->phrase("AdvancedSearch") . "\" href=\"#\" onclick=\"return ew.modalDialogShow({lnk:this,btn:'SearchBtn',url:'t005_assetgroupsrch.php'});\">" . $Language->phrase("AdvancedSearchBtn") . "</a>";
+			$item->Body = "<a class=\"btn btn-default ew-advanced-search\" title=\"" . $Language->phrase("AdvancedSearch") . "\" data-table=\"t007_assettype\" data-caption=\"" . $Language->phrase("AdvancedSearch") . "\" href=\"#\" onclick=\"return ew.modalDialogShow({lnk:this,btn:'SearchBtn',url:'t007_assettypesrch.php'});\">" . $Language->phrase("AdvancedSearchBtn") . "</a>";
 		$item->Visible = TRUE;
 
 		// Button group for search
@@ -3323,6 +3462,26 @@ class t005_assetgroup_list extends t005_assetgroup
 
 		// Call Page Exporting server event
 		$this->ExportDoc->ExportCustom = !$this->Page_Exporting();
+
+		// Export master record
+		if (Config("EXPORT_MASTER_RECORD") && $this->getMasterFilter() != "" && $this->getCurrentMasterTable() == "t005_assetgroup") {
+			global $t005_assetgroup;
+			if (!isset($t005_assetgroup))
+				$t005_assetgroup = new t005_assetgroup();
+			$rsmaster = $t005_assetgroup->loadRs($this->DbMasterFilter); // Load master record
+			if ($rsmaster && !$rsmaster->EOF) {
+				$exportStyle = $doc->Style;
+				$doc->setStyle("v"); // Change to vertical
+				if (!$this->isExport("csv") || Config("EXPORT_MASTER_RECORD_FOR_CSV")) {
+					$doc->Table = &$t005_assetgroup;
+					$t005_assetgroup->exportDocument($doc, $rsmaster);
+					$doc->exportEmptyRow();
+					$doc->Table = &$this;
+				}
+				$doc->setStyle($exportStyle); // Restore
+				$rsmaster->close();
+			}
+		}
 		$header = $this->PageHeader;
 		$this->Page_DataRendering($header);
 		$doc->Text .= $header;
@@ -3368,6 +3527,78 @@ class t005_assetgroup_list extends t005_assetgroup
 		}
 	}
 
+	// Set up master/detail based on QueryString
+	protected function setupMasterParms()
+	{
+		$validMaster = FALSE;
+
+		// Get the keys for master table
+		if (($master = Get(Config("TABLE_SHOW_MASTER"), Get(Config("TABLE_MASTER")))) !== NULL) {
+			$masterTblVar = $master;
+			if ($masterTblVar == "") {
+				$validMaster = TRUE;
+				$this->DbMasterFilter = "";
+				$this->DbDetailFilter = "";
+			}
+			if ($masterTblVar == "t005_assetgroup") {
+				$validMaster = TRUE;
+				if (($parm = Get("fk_id", Get("assetgroup_id"))) !== NULL) {
+					$GLOBALS["t005_assetgroup"]->id->setQueryStringValue($parm);
+					$this->assetgroup_id->setQueryStringValue($GLOBALS["t005_assetgroup"]->id->QueryStringValue);
+					$this->assetgroup_id->setSessionValue($this->assetgroup_id->QueryStringValue);
+					if (!is_numeric($GLOBALS["t005_assetgroup"]->id->QueryStringValue))
+						$validMaster = FALSE;
+				} else {
+					$validMaster = FALSE;
+				}
+			}
+		} elseif (($master = Post(Config("TABLE_SHOW_MASTER"), Post(Config("TABLE_MASTER")))) !== NULL) {
+			$masterTblVar = $master;
+			if ($masterTblVar == "") {
+				$validMaster = TRUE;
+				$this->DbMasterFilter = "";
+				$this->DbDetailFilter = "";
+			}
+			if ($masterTblVar == "t005_assetgroup") {
+				$validMaster = TRUE;
+				if (($parm = Post("fk_id", Post("assetgroup_id"))) !== NULL) {
+					$GLOBALS["t005_assetgroup"]->id->setFormValue($parm);
+					$this->assetgroup_id->setFormValue($GLOBALS["t005_assetgroup"]->id->FormValue);
+					$this->assetgroup_id->setSessionValue($this->assetgroup_id->FormValue);
+					if (!is_numeric($GLOBALS["t005_assetgroup"]->id->FormValue))
+						$validMaster = FALSE;
+				} else {
+					$validMaster = FALSE;
+				}
+			}
+		}
+		if ($validMaster) {
+
+			// Update URL
+			$this->AddUrl = $this->addMasterUrl($this->AddUrl);
+			$this->InlineAddUrl = $this->addMasterUrl($this->InlineAddUrl);
+			$this->GridAddUrl = $this->addMasterUrl($this->GridAddUrl);
+			$this->GridEditUrl = $this->addMasterUrl($this->GridEditUrl);
+
+			// Save current master table
+			$this->setCurrentMasterTable($masterTblVar);
+
+			// Reset start record counter (new master key)
+			if (!$this->isAddOrEdit()) {
+				$this->StartRecord = 1;
+				$this->setStartRecordNumber($this->StartRecord);
+			}
+
+			// Clear previous master key from Session
+			if ($masterTblVar != "t005_assetgroup") {
+				if ($this->assetgroup_id->CurrentValue == "")
+					$this->assetgroup_id->setSessionValue("");
+			}
+		}
+		$this->DbMasterFilter = $this->getMasterFilter(); // Get master filter
+		$this->DbDetailFilter = $this->getDetailFilter(); // Get detail filter
+	}
+
 	// Set up Breadcrumb
 	protected function setupBreadcrumb()
 	{
@@ -3392,6 +3623,8 @@ class t005_assetgroup_list extends t005_assetgroup
 
 			// Set up lookup SQL and connection
 			switch ($fld->FieldVar) {
+				case "x_assetgroup_id":
+					break;
 				default:
 					$lookupFilter = "";
 					break;
@@ -3412,6 +3645,12 @@ class t005_assetgroup_list extends t005_assetgroup
 
 					// Format the field values
 					switch ($fld->FieldVar) {
+						case "x_assetgroup_id":
+							$row[3] = FormatNumber($row[3], 0, -2, -2, -2);
+							$row['df3'] = $row[3];
+							$row[4] = FormatNumber($row[4], 2, -2, -2, -2);
+							$row['df4'] = $row[4];
+							break;
 					}
 					$ar[strval($row[0])] = $row;
 					$rs->moveNext();

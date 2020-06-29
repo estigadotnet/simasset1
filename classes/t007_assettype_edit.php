@@ -4,20 +4,20 @@ namespace PHPMaker2020\p_simasset1;
 /**
  * Page class
  */
-class t104_ho1_detail_add extends t104_ho1_detail
+class t007_assettype_edit extends t007_assettype
 {
 
 	// Page ID
-	public $PageID = "add";
+	public $PageID = "edit";
 
 	// Project ID
 	public $ProjectID = "{E1C6E322-15B9-474C-85CF-A99378A9BC2B}";
 
 	// Table name
-	public $TableName = 't104_ho1_detail';
+	public $TableName = 't007_assettype';
 
 	// Page object name
-	public $PageObjName = "t104_ho1_detail_add";
+	public $PageObjName = "t007_assettype_edit";
 
 	// Audit Trail
 	public $AuditTrailOnAdd = TRUE;
@@ -349,15 +349,15 @@ class t104_ho1_detail_add extends t104_ho1_detail
 		// Parent constuctor
 		parent::__construct();
 
-		// Table object (t104_ho1_detail)
-		if (!isset($GLOBALS["t104_ho1_detail"]) || get_class($GLOBALS["t104_ho1_detail"]) == PROJECT_NAMESPACE . "t104_ho1_detail") {
-			$GLOBALS["t104_ho1_detail"] = &$this;
-			$GLOBALS["Table"] = &$GLOBALS["t104_ho1_detail"];
+		// Table object (t007_assettype)
+		if (!isset($GLOBALS["t007_assettype"]) || get_class($GLOBALS["t007_assettype"]) == PROJECT_NAMESPACE . "t007_assettype") {
+			$GLOBALS["t007_assettype"] = &$this;
+			$GLOBALS["Table"] = &$GLOBALS["t007_assettype"];
 		}
 
-		// Table object (t103_ho1_head)
-		if (!isset($GLOBALS['t103_ho1_head']))
-			$GLOBALS['t103_ho1_head'] = new t103_ho1_head();
+		// Table object (t005_assetgroup)
+		if (!isset($GLOBALS['t005_assetgroup']))
+			$GLOBALS['t005_assetgroup'] = new t005_assetgroup();
 
 		// Table object (t201_users)
 		if (!isset($GLOBALS['t201_users']))
@@ -365,11 +365,11 @@ class t104_ho1_detail_add extends t104_ho1_detail
 
 		// Page ID (for backward compatibility only)
 		if (!defined(PROJECT_NAMESPACE . "PAGE_ID"))
-			define(PROJECT_NAMESPACE . "PAGE_ID", 'add');
+			define(PROJECT_NAMESPACE . "PAGE_ID", 'edit');
 
 		// Table name (for backward compatibility only)
 		if (!defined(PROJECT_NAMESPACE . "TABLE_NAME"))
-			define(PROJECT_NAMESPACE . "TABLE_NAME", 't104_ho1_detail');
+			define(PROJECT_NAMESPACE . "TABLE_NAME", 't007_assettype');
 
 		// Start timer
 		if (!isset($GLOBALS["DebugTimer"]))
@@ -398,14 +398,14 @@ class t104_ho1_detail_add extends t104_ho1_detail
 		Page_Unloaded();
 
 		// Export
-		global $t104_ho1_detail;
+		global $t007_assettype;
 		if ($this->CustomExport && $this->CustomExport == $this->Export && array_key_exists($this->CustomExport, Config("EXPORT_CLASSES"))) {
 				$content = ob_get_contents();
 			if ($ExportFileName == "")
 				$ExportFileName = $this->TableVar;
 			$class = PROJECT_NAMESPACE . Config("EXPORT_CLASSES." . $this->CustomExport);
 			if (class_exists($class)) {
-				$doc = new $class($t104_ho1_detail);
+				$doc = new $class($t007_assettype);
 				$doc->Text = @$content;
 				if ($this->isExport("email"))
 					echo $this->exportEmail($doc->Text);
@@ -440,7 +440,7 @@ class t104_ho1_detail_add extends t104_ho1_detail
 				$pageName = GetPageName($url);
 				if ($pageName != $this->getListUrl()) { // Not List page
 					$row["caption"] = $this->getModalCaption($pageName);
-					if ($pageName == "t104_ho1_detailview.php")
+					if ($pageName == "t007_assettypeview.php")
 						$row["view"] = "1";
 				} else { // List page should not be shown as modal => error
 					$row["error"] = $this->getFailureMessage();
@@ -634,15 +634,11 @@ class t104_ho1_detail_add extends t104_ho1_detail
 		$Security->loadUserID();
 		$Security->UserID_Loaded();
 	}
-	public $FormClassName = "ew-horizontal ew-form ew-add-form";
+	public $FormClassName = "ew-horizontal ew-form ew-edit-form";
 	public $IsModal = FALSE;
 	public $IsMobileOrModal = FALSE;
-	public $DbMasterFilter = "";
-	public $DbDetailFilter = "";
-	public $StartRecord;
-	public $Priv = 0;
-	public $OldRecordset;
-	public $CopyRecord;
+	public $DbMasterFilter;
+	public $DbDetailFilter;
 
 	//
 	// Page run
@@ -662,7 +658,7 @@ class t104_ho1_detail_add extends t104_ho1_detail
 		// Security
 		if (ValidApiRequest()) { // API request
 			$this->setupApiSecurity(); // Set up API Security
-			if (!$Security->canAdd()) {
+			if (!$Security->canEdit()) {
 				SetStatus(401); // Unauthorized
 				return;
 			}
@@ -675,11 +671,11 @@ class t104_ho1_detail_add extends t104_ho1_detail
 			$Security->loadCurrentUserLevel($this->ProjectID . $this->TableName);
 			if ($Security->isLoggedIn())
 				$Security->TablePermission_Loaded();
-			if (!$Security->canAdd()) {
+			if (!$Security->canEdit()) {
 				$Security->saveLastUrl();
 				$this->setFailureMessage(DeniedMessage()); // Set no permission
 				if ($Security->canList())
-					$this->terminate(GetUrl("t104_ho1_detaillist.php"));
+					$this->terminate(GetUrl("t007_assettypelist.php"));
 				else
 					$this->terminate(GetUrl("login.php"));
 				return;
@@ -695,8 +691,9 @@ class t104_ho1_detail_add extends t104_ho1_detail
 		$CurrentForm = new HttpForm();
 		$this->CurrentAction = Param("action"); // Set up current action
 		$this->id->Visible = FALSE;
-		$this->hohead_id->setVisibility();
-		$this->asset_id->setVisibility();
+		$this->assetgroup_id->setVisibility();
+		$this->Description->setVisibility();
+		$this->Code->setVisibility();
 		$this->hideFieldsForAddEdit();
 
 		// Do not use lookup cache
@@ -718,11 +715,12 @@ class t104_ho1_detail_add extends t104_ho1_detail
 		$this->createToken();
 
 		// Set up lookup cache
-		// Check permission
+		$this->setupLookupOptions($this->assetgroup_id);
 
-		if (!$Security->canAdd()) {
+		// Check permission
+		if (!$Security->canEdit()) {
 			$this->setFailureMessage(DeniedMessage()); // No permission
-			$this->terminate("t104_ho1_detaillist.php");
+			$this->terminate("t007_assettypelist.php");
 			return;
 		}
 
@@ -730,103 +728,133 @@ class t104_ho1_detail_add extends t104_ho1_detail
 		if ($this->IsModal)
 			$SkipHeaderFooter = TRUE;
 		$this->IsMobileOrModal = IsMobile() || $this->IsModal;
-		$this->FormClassName = "ew-form ew-add-form ew-horizontal";
+		$this->FormClassName = "ew-form ew-edit-form ew-horizontal";
+		$loaded = FALSE;
 		$postBack = FALSE;
 
-		// Set up current action
+		// Set up current action and primary key
 		if (IsApi()) {
-			$this->CurrentAction = "insert"; // Add record directly
-			$postBack = TRUE;
-		} elseif (Post("action") !== NULL) {
-			$this->CurrentAction = Post("action"); // Get form action
-			$postBack = TRUE;
-		} else { // Not post back
 
-			// Load key values from QueryString
-			$this->CopyRecord = TRUE;
+			// Load key values
+			$loaded = TRUE;
 			if (Get("id") !== NULL) {
 				$this->id->setQueryStringValue(Get("id"));
-				$this->setKey("id", $this->id->CurrentValue); // Set up key
+				$this->id->setOldValue($this->id->QueryStringValue);
+			} elseif (Key(0) !== NULL) {
+				$this->id->setQueryStringValue(Key(0));
+				$this->id->setOldValue($this->id->QueryStringValue);
+			} elseif (Post("id") !== NULL) {
+				$this->id->setFormValue(Post("id"));
+				$this->id->setOldValue($this->id->FormValue);
+			} elseif (Route(2) !== NULL) {
+				$this->id->setQueryStringValue(Route(2));
+				$this->id->setOldValue($this->id->QueryStringValue);
 			} else {
-				$this->setKey("id", ""); // Clear key
-				$this->CopyRecord = FALSE;
+				$loaded = FALSE; // Unable to load key
 			}
-			if ($this->CopyRecord) {
-				$this->CurrentAction = "copy"; // Copy record
+
+			// Load record
+			if ($loaded)
+				$loaded = $this->loadRow();
+			if (!$loaded) {
+				$this->setFailureMessage($Language->phrase("NoRecord")); // Set no record message
+				$this->terminate();
+				return;
+			}
+			$this->CurrentAction = "update"; // Update record directly
+			$postBack = TRUE;
+		} else {
+			if (Post("action") !== NULL) {
+				$this->CurrentAction = Post("action"); // Get action code
+				if (!$this->isShow()) // Not reload record, handle as postback
+					$postBack = TRUE;
+
+				// Load key from Form
+				if ($CurrentForm->hasValue("x_id")) {
+					$this->id->setFormValue($CurrentForm->getValue("x_id"));
+				}
 			} else {
-				$this->CurrentAction = "show"; // Display blank record
+				$this->CurrentAction = "show"; // Default action is display
+
+				// Load key from QueryString / Route
+				$loadByQuery = FALSE;
+				if (Get("id") !== NULL) {
+					$this->id->setQueryStringValue(Get("id"));
+					$loadByQuery = TRUE;
+				} elseif (Route(2) !== NULL) {
+					$this->id->setQueryStringValue(Route(2));
+					$loadByQuery = TRUE;
+				} else {
+					$this->id->CurrentValue = NULL;
+				}
 			}
+
+			// Set up master detail parameters
+			$this->setupMasterParms();
+
+			// Load current record
+			$loaded = $this->loadRow();
 		}
 
-		// Load old record / default values
-		$loaded = $this->loadOldRecord();
-
-		// Set up master/detail parameters
-		// NOTE: must be after loadOldRecord to prevent master key values overwritten
-
-		$this->setupMasterParms();
-
-		// Load form values
+		// Process form if post back
 		if ($postBack) {
-			$this->loadFormValues(); // Load form values
+			$this->loadFormValues(); // Get form values
 		}
 
 		// Validate form if post back
 		if ($postBack) {
 			if (!$this->validateForm()) {
-				$this->EventCancelled = TRUE; // Event cancelled
-				$this->restoreFormValues(); // Restore form values
 				$this->setFailureMessage($FormError);
+				$this->EventCancelled = TRUE; // Event cancelled
+				$this->restoreFormValues();
 				if (IsApi()) {
 					$this->terminate();
 					return;
 				} else {
-					$this->CurrentAction = "show"; // Form error, reset action
+					$this->CurrentAction = ""; // Form error, reset action
 				}
 			}
 		}
 
 		// Perform current action
 		switch ($this->CurrentAction) {
-			case "copy": // Copy an existing record
-				if (!$loaded) { // Record not loaded
+			case "show": // Get a record to display
+				if (!$loaded) { // Load record based on key
 					if ($this->getFailureMessage() == "")
 						$this->setFailureMessage($Language->phrase("NoRecord")); // No record found
-					$this->terminate("t104_ho1_detaillist.php"); // No matching record, return to list
+					$this->terminate("t007_assettypelist.php"); // No matching record, return to list
 				}
 				break;
-			case "insert": // Add new record
-				$this->SendEmail = TRUE; // Send email on add success
-				if ($this->addRow($this->OldRecordset)) { // Add successful
+			case "update": // Update
+				$returnUrl = $this->getReturnUrl();
+				if (GetPageName($returnUrl) == "t007_assettypelist.php")
+					$returnUrl = $this->addMasterUrl($returnUrl); // List page, return to List page with correct master key if necessary
+				$this->SendEmail = TRUE; // Send email on update success
+				if ($this->editRow()) { // Update record based on key
 					if ($this->getSuccessMessage() == "")
-						$this->setSuccessMessage($Language->phrase("AddSuccess")); // Set up success message
-					$returnUrl = $this->getReturnUrl();
-					if (GetPageName($returnUrl) == "t104_ho1_detaillist.php")
-						$returnUrl = $this->addMasterUrl($returnUrl); // List page, return to List page with correct master key if necessary
-					elseif (GetPageName($returnUrl) == "t104_ho1_detailview.php")
-						$returnUrl = $this->getViewUrl(); // View page, return to View page with keyurl directly
-					if (IsApi()) { // Return to caller
+						$this->setSuccessMessage($Language->phrase("UpdateSuccess")); // Update success
+					if (IsApi()) {
 						$this->terminate(TRUE);
 						return;
 					} else {
-						$this->terminate($returnUrl);
+						$this->terminate($returnUrl); // Return to caller
 					}
 				} elseif (IsApi()) { // API request, return
 					$this->terminate();
 					return;
+				} elseif ($this->getFailureMessage() == $Language->phrase("NoRecord")) {
+					$this->terminate($returnUrl); // Return to caller
 				} else {
 					$this->EventCancelled = TRUE; // Event cancelled
-					$this->restoreFormValues(); // Add failed, restore form values
+					$this->restoreFormValues(); // Restore form values if update failed
 				}
 		}
 
 		// Set up Breadcrumb
 		$this->setupBreadcrumb();
 
-		// Render row based on row type
-		$this->RowType = ROWTYPE_ADD; // Render add type
-
-		// Render row
+		// Render the record
+		$this->RowType = ROWTYPE_EDIT; // Render as Edit
 		$this->resetAttributes();
 		$this->renderRow();
 	}
@@ -837,17 +865,6 @@ class t104_ho1_detail_add extends t104_ho1_detail
 		global $CurrentForm, $Language;
 	}
 
-	// Load default values
-	protected function loadDefaultValues()
-	{
-		$this->id->CurrentValue = NULL;
-		$this->id->OldValue = $this->id->CurrentValue;
-		$this->hohead_id->CurrentValue = NULL;
-		$this->hohead_id->OldValue = $this->hohead_id->CurrentValue;
-		$this->asset_id->CurrentValue = NULL;
-		$this->asset_id->OldValue = $this->asset_id->CurrentValue;
-	}
-
 	// Load form values
 	protected function loadFormValues()
 	{
@@ -855,34 +872,47 @@ class t104_ho1_detail_add extends t104_ho1_detail
 		// Load from form
 		global $CurrentForm;
 
-		// Check field name 'hohead_id' first before field var 'x_hohead_id'
-		$val = $CurrentForm->hasValue("hohead_id") ? $CurrentForm->getValue("hohead_id") : $CurrentForm->getValue("x_hohead_id");
-		if (!$this->hohead_id->IsDetailKey) {
+		// Check field name 'assetgroup_id' first before field var 'x_assetgroup_id'
+		$val = $CurrentForm->hasValue("assetgroup_id") ? $CurrentForm->getValue("assetgroup_id") : $CurrentForm->getValue("x_assetgroup_id");
+		if (!$this->assetgroup_id->IsDetailKey) {
 			if (IsApi() && $val == NULL)
-				$this->hohead_id->Visible = FALSE; // Disable update for API request
+				$this->assetgroup_id->Visible = FALSE; // Disable update for API request
 			else
-				$this->hohead_id->setFormValue($val);
+				$this->assetgroup_id->setFormValue($val);
 		}
 
-		// Check field name 'asset_id' first before field var 'x_asset_id'
-		$val = $CurrentForm->hasValue("asset_id") ? $CurrentForm->getValue("asset_id") : $CurrentForm->getValue("x_asset_id");
-		if (!$this->asset_id->IsDetailKey) {
+		// Check field name 'Description' first before field var 'x_Description'
+		$val = $CurrentForm->hasValue("Description") ? $CurrentForm->getValue("Description") : $CurrentForm->getValue("x_Description");
+		if (!$this->Description->IsDetailKey) {
 			if (IsApi() && $val == NULL)
-				$this->asset_id->Visible = FALSE; // Disable update for API request
+				$this->Description->Visible = FALSE; // Disable update for API request
 			else
-				$this->asset_id->setFormValue($val);
+				$this->Description->setFormValue($val);
+		}
+
+		// Check field name 'Code' first before field var 'x_Code'
+		$val = $CurrentForm->hasValue("Code") ? $CurrentForm->getValue("Code") : $CurrentForm->getValue("x_Code");
+		if (!$this->Code->IsDetailKey) {
+			if (IsApi() && $val == NULL)
+				$this->Code->Visible = FALSE; // Disable update for API request
+			else
+				$this->Code->setFormValue($val);
 		}
 
 		// Check field name 'id' first before field var 'x_id'
 		$val = $CurrentForm->hasValue("id") ? $CurrentForm->getValue("id") : $CurrentForm->getValue("x_id");
+		if (!$this->id->IsDetailKey)
+			$this->id->setFormValue($val);
 	}
 
 	// Restore form values
 	public function restoreFormValues()
 	{
 		global $CurrentForm;
-		$this->hohead_id->CurrentValue = $this->hohead_id->FormValue;
-		$this->asset_id->CurrentValue = $this->asset_id->FormValue;
+		$this->id->CurrentValue = $this->id->FormValue;
+		$this->assetgroup_id->CurrentValue = $this->assetgroup_id->FormValue;
+		$this->Description->CurrentValue = $this->Description->FormValue;
+		$this->Code->CurrentValue = $this->Code->FormValue;
 	}
 
 	// Load row based on key values
@@ -921,18 +951,19 @@ class t104_ho1_detail_add extends t104_ho1_detail
 		if (!$rs || $rs->EOF)
 			return;
 		$this->id->setDbValue($row['id']);
-		$this->hohead_id->setDbValue($row['hohead_id']);
-		$this->asset_id->setDbValue($row['asset_id']);
+		$this->assetgroup_id->setDbValue($row['assetgroup_id']);
+		$this->Description->setDbValue($row['Description']);
+		$this->Code->setDbValue($row['Code']);
 	}
 
 	// Return a row with default values
 	protected function newRow()
 	{
-		$this->loadDefaultValues();
 		$row = [];
-		$row['id'] = $this->id->CurrentValue;
-		$row['hohead_id'] = $this->hohead_id->CurrentValue;
-		$row['asset_id'] = $this->asset_id->CurrentValue;
+		$row['id'] = NULL;
+		$row['assetgroup_id'] = NULL;
+		$row['Description'] = NULL;
+		$row['Code'] = NULL;
 		return $row;
 	}
 
@@ -971,8 +1002,9 @@ class t104_ho1_detail_add extends t104_ho1_detail
 
 		// Common render codes for all row types
 		// id
-		// hohead_id
-		// asset_id
+		// assetgroup_id
+		// Description
+		// Code
 
 		if ($this->RowType == ROWTYPE_VIEW) { // View row
 
@@ -980,55 +1012,141 @@ class t104_ho1_detail_add extends t104_ho1_detail
 			$this->id->ViewValue = $this->id->CurrentValue;
 			$this->id->ViewCustomAttributes = "";
 
-			// hohead_id
-			$this->hohead_id->ViewValue = $this->hohead_id->CurrentValue;
-			$this->hohead_id->ViewValue = FormatNumber($this->hohead_id->ViewValue, 0, -2, -2, -2);
-			$this->hohead_id->ViewCustomAttributes = "";
-
-			// asset_id
-			$this->asset_id->ViewValue = $this->asset_id->CurrentValue;
-			$this->asset_id->ViewValue = FormatNumber($this->asset_id->ViewValue, 0, -2, -2, -2);
-			$this->asset_id->ViewCustomAttributes = "";
-
-			// hohead_id
-			$this->hohead_id->LinkCustomAttributes = "";
-			$this->hohead_id->HrefValue = "";
-			$this->hohead_id->TooltipValue = "";
-
-			// asset_id
-			$this->asset_id->LinkCustomAttributes = "";
-			$this->asset_id->HrefValue = "";
-			$this->asset_id->TooltipValue = "";
-		} elseif ($this->RowType == ROWTYPE_ADD) { // Add row
-
-			// hohead_id
-			$this->hohead_id->EditAttrs["class"] = "form-control";
-			$this->hohead_id->EditCustomAttributes = "";
-			if ($this->hohead_id->getSessionValue() != "") {
-				$this->hohead_id->CurrentValue = $this->hohead_id->getSessionValue();
-				$this->hohead_id->ViewValue = $this->hohead_id->CurrentValue;
-				$this->hohead_id->ViewValue = FormatNumber($this->hohead_id->ViewValue, 0, -2, -2, -2);
-				$this->hohead_id->ViewCustomAttributes = "";
+			// assetgroup_id
+			$this->assetgroup_id->ViewValue = $this->assetgroup_id->CurrentValue;
+			$curVal = strval($this->assetgroup_id->CurrentValue);
+			if ($curVal != "") {
+				$this->assetgroup_id->ViewValue = $this->assetgroup_id->lookupCacheOption($curVal);
+				if ($this->assetgroup_id->ViewValue === NULL) { // Lookup from database
+					$filterWrk = "`id`" . SearchString("=", $curVal, DATATYPE_NUMBER, "");
+					$sqlWrk = $this->assetgroup_id->Lookup->getSql(FALSE, $filterWrk, '', $this);
+					$rswrk = Conn()->execute($sqlWrk);
+					if ($rswrk && !$rswrk->EOF) { // Lookup values found
+						$arwrk = [];
+						$arwrk[1] = $rswrk->fields('df');
+						$arwrk[2] = $rswrk->fields('df2');
+						$arwrk[3] = FormatNumber($rswrk->fields('df3'), 0, -2, -2, -2);
+						$arwrk[4] = FormatNumber($rswrk->fields('df4'), 2, -2, -2, -2);
+						$this->assetgroup_id->ViewValue = $this->assetgroup_id->displayValue($arwrk);
+						$rswrk->Close();
+					} else {
+						$this->assetgroup_id->ViewValue = $this->assetgroup_id->CurrentValue;
+					}
+				}
 			} else {
-				$this->hohead_id->EditValue = HtmlEncode($this->hohead_id->CurrentValue);
-				$this->hohead_id->PlaceHolder = RemoveHtml($this->hohead_id->caption());
+				$this->assetgroup_id->ViewValue = NULL;
+			}
+			$this->assetgroup_id->ViewCustomAttributes = "";
+
+			// Description
+			$this->Description->ViewValue = $this->Description->CurrentValue;
+			$this->Description->ViewCustomAttributes = "";
+
+			// Code
+			$this->Code->ViewValue = $this->Code->CurrentValue;
+			$this->Code->ViewCustomAttributes = "";
+
+			// assetgroup_id
+			$this->assetgroup_id->LinkCustomAttributes = "";
+			$this->assetgroup_id->HrefValue = "";
+			$this->assetgroup_id->TooltipValue = "";
+
+			// Description
+			$this->Description->LinkCustomAttributes = "";
+			$this->Description->HrefValue = "";
+			$this->Description->TooltipValue = "";
+
+			// Code
+			$this->Code->LinkCustomAttributes = "";
+			$this->Code->HrefValue = "";
+			$this->Code->TooltipValue = "";
+		} elseif ($this->RowType == ROWTYPE_EDIT) { // Edit row
+
+			// assetgroup_id
+			$this->assetgroup_id->EditAttrs["class"] = "form-control";
+			$this->assetgroup_id->EditCustomAttributes = "";
+			if ($this->assetgroup_id->getSessionValue() != "") {
+				$this->assetgroup_id->CurrentValue = $this->assetgroup_id->getSessionValue();
+				$this->assetgroup_id->ViewValue = $this->assetgroup_id->CurrentValue;
+				$curVal = strval($this->assetgroup_id->CurrentValue);
+				if ($curVal != "") {
+					$this->assetgroup_id->ViewValue = $this->assetgroup_id->lookupCacheOption($curVal);
+					if ($this->assetgroup_id->ViewValue === NULL) { // Lookup from database
+						$filterWrk = "`id`" . SearchString("=", $curVal, DATATYPE_NUMBER, "");
+						$sqlWrk = $this->assetgroup_id->Lookup->getSql(FALSE, $filterWrk, '', $this);
+						$rswrk = Conn()->execute($sqlWrk);
+						if ($rswrk && !$rswrk->EOF) { // Lookup values found
+							$arwrk = [];
+							$arwrk[1] = $rswrk->fields('df');
+							$arwrk[2] = $rswrk->fields('df2');
+							$arwrk[3] = FormatNumber($rswrk->fields('df3'), 0, -2, -2, -2);
+							$arwrk[4] = FormatNumber($rswrk->fields('df4'), 2, -2, -2, -2);
+							$this->assetgroup_id->ViewValue = $this->assetgroup_id->displayValue($arwrk);
+							$rswrk->Close();
+						} else {
+							$this->assetgroup_id->ViewValue = $this->assetgroup_id->CurrentValue;
+						}
+					}
+				} else {
+					$this->assetgroup_id->ViewValue = NULL;
+				}
+				$this->assetgroup_id->ViewCustomAttributes = "";
+			} else {
+				$this->assetgroup_id->EditValue = HtmlEncode($this->assetgroup_id->CurrentValue);
+				$curVal = strval($this->assetgroup_id->CurrentValue);
+				if ($curVal != "") {
+					$this->assetgroup_id->EditValue = $this->assetgroup_id->lookupCacheOption($curVal);
+					if ($this->assetgroup_id->EditValue === NULL) { // Lookup from database
+						$filterWrk = "`id`" . SearchString("=", $curVal, DATATYPE_NUMBER, "");
+						$sqlWrk = $this->assetgroup_id->Lookup->getSql(FALSE, $filterWrk, '', $this);
+						$rswrk = Conn()->execute($sqlWrk);
+						if ($rswrk && !$rswrk->EOF) { // Lookup values found
+							$arwrk = [];
+							$arwrk[1] = HtmlEncode($rswrk->fields('df'));
+							$arwrk[2] = HtmlEncode($rswrk->fields('df2'));
+							$arwrk[3] = HtmlEncode(FormatNumber($rswrk->fields('df3'), 0, -2, -2, -2));
+							$arwrk[4] = HtmlEncode(FormatNumber($rswrk->fields('df4'), 2, -2, -2, -2));
+							$this->assetgroup_id->EditValue = $this->assetgroup_id->displayValue($arwrk);
+							$rswrk->Close();
+						} else {
+							$this->assetgroup_id->EditValue = HtmlEncode($this->assetgroup_id->CurrentValue);
+						}
+					}
+				} else {
+					$this->assetgroup_id->EditValue = NULL;
+				}
+				$this->assetgroup_id->PlaceHolder = RemoveHtml($this->assetgroup_id->caption());
 			}
 
-			// asset_id
-			$this->asset_id->EditAttrs["class"] = "form-control";
-			$this->asset_id->EditCustomAttributes = "";
-			$this->asset_id->EditValue = HtmlEncode($this->asset_id->CurrentValue);
-			$this->asset_id->PlaceHolder = RemoveHtml($this->asset_id->caption());
+			// Description
+			$this->Description->EditAttrs["class"] = "form-control";
+			$this->Description->EditCustomAttributes = "";
+			if (!$this->Description->Raw)
+				$this->Description->CurrentValue = HtmlDecode($this->Description->CurrentValue);
+			$this->Description->EditValue = HtmlEncode($this->Description->CurrentValue);
+			$this->Description->PlaceHolder = RemoveHtml($this->Description->caption());
 
-			// Add refer script
-			// hohead_id
+			// Code
+			$this->Code->EditAttrs["class"] = "form-control";
+			$this->Code->EditCustomAttributes = "";
+			if (!$this->Code->Raw)
+				$this->Code->CurrentValue = HtmlDecode($this->Code->CurrentValue);
+			$this->Code->EditValue = HtmlEncode($this->Code->CurrentValue);
+			$this->Code->PlaceHolder = RemoveHtml($this->Code->caption());
 
-			$this->hohead_id->LinkCustomAttributes = "";
-			$this->hohead_id->HrefValue = "";
+			// Edit refer script
+			// assetgroup_id
 
-			// asset_id
-			$this->asset_id->LinkCustomAttributes = "";
-			$this->asset_id->HrefValue = "";
+			$this->assetgroup_id->LinkCustomAttributes = "";
+			$this->assetgroup_id->HrefValue = "";
+
+			// Description
+			$this->Description->LinkCustomAttributes = "";
+			$this->Description->HrefValue = "";
+
+			// Code
+			$this->Code->LinkCustomAttributes = "";
+			$this->Code->HrefValue = "";
 		}
 		if ($this->RowType == ROWTYPE_ADD || $this->RowType == ROWTYPE_EDIT || $this->RowType == ROWTYPE_SEARCH) // Add/Edit/Search row
 			$this->setupFieldTitles();
@@ -1049,21 +1167,23 @@ class t104_ho1_detail_add extends t104_ho1_detail
 		// Check if validation required
 		if (!Config("SERVER_VALIDATE"))
 			return ($FormError == "");
-		if ($this->hohead_id->Required) {
-			if (!$this->hohead_id->IsDetailKey && $this->hohead_id->FormValue != NULL && $this->hohead_id->FormValue == "") {
-				AddMessage($FormError, str_replace("%s", $this->hohead_id->caption(), $this->hohead_id->RequiredErrorMessage));
+		if ($this->assetgroup_id->Required) {
+			if (!$this->assetgroup_id->IsDetailKey && $this->assetgroup_id->FormValue != NULL && $this->assetgroup_id->FormValue == "") {
+				AddMessage($FormError, str_replace("%s", $this->assetgroup_id->caption(), $this->assetgroup_id->RequiredErrorMessage));
 			}
 		}
-		if (!CheckInteger($this->hohead_id->FormValue)) {
-			AddMessage($FormError, $this->hohead_id->errorMessage());
+		if (!CheckInteger($this->assetgroup_id->FormValue)) {
+			AddMessage($FormError, $this->assetgroup_id->errorMessage());
 		}
-		if ($this->asset_id->Required) {
-			if (!$this->asset_id->IsDetailKey && $this->asset_id->FormValue != NULL && $this->asset_id->FormValue == "") {
-				AddMessage($FormError, str_replace("%s", $this->asset_id->caption(), $this->asset_id->RequiredErrorMessage));
+		if ($this->Description->Required) {
+			if (!$this->Description->IsDetailKey && $this->Description->FormValue != NULL && $this->Description->FormValue == "") {
+				AddMessage($FormError, str_replace("%s", $this->Description->caption(), $this->Description->RequiredErrorMessage));
 			}
 		}
-		if (!CheckInteger($this->asset_id->FormValue)) {
-			AddMessage($FormError, $this->asset_id->errorMessage());
+		if ($this->Code->Required) {
+			if (!$this->Code->IsDetailKey && $this->Code->FormValue != NULL && $this->Code->FormValue == "") {
+				AddMessage($FormError, str_replace("%s", $this->Code->caption(), $this->Code->RequiredErrorMessage));
+			}
 		}
 
 		// Return validate result
@@ -1078,83 +1198,116 @@ class t104_ho1_detail_add extends t104_ho1_detail
 		return $validateForm;
 	}
 
-	// Add record
-	protected function addRow($rsold = NULL)
+	// Update record based on key values
+	protected function editRow()
 	{
-		global $Language, $Security;
-
-		// Check referential integrity for master table 't104_ho1_detail'
-		$validMasterRecord = TRUE;
-		$masterFilter = $this->sqlMasterFilter_t103_ho1_head();
-		if (strval($this->hohead_id->CurrentValue) != "") {
-			$masterFilter = str_replace("@id@", AdjustSql($this->hohead_id->CurrentValue, "DB"), $masterFilter);
-		} else {
-			$validMasterRecord = FALSE;
-		}
-		if ($validMasterRecord) {
-			if (!isset($GLOBALS["t103_ho1_head"]))
-				$GLOBALS["t103_ho1_head"] = new t103_ho1_head();
-			$rsmaster = $GLOBALS["t103_ho1_head"]->loadRs($masterFilter);
-			$validMasterRecord = ($rsmaster && !$rsmaster->EOF);
-			$rsmaster->close();
-		}
-		if (!$validMasterRecord) {
-			$relatedRecordMsg = str_replace("%t", "t103_ho1_head", $Language->phrase("RelatedRecordRequired"));
-			$this->setFailureMessage($relatedRecordMsg);
-			return FALSE;
-		}
+		global $Security, $Language;
+		$oldKeyFilter = $this->getRecordFilter();
+		$filter = $this->applyUserIDFilters($oldKeyFilter);
 		$conn = $this->getConnection();
-
-		// Load db values from rsold
-		$this->loadDbValues($rsold);
-		if ($rsold) {
-		}
-		$rsnew = [];
-
-		// hohead_id
-		$this->hohead_id->setDbValueDef($rsnew, $this->hohead_id->CurrentValue, 0, FALSE);
-
-		// asset_id
-		$this->asset_id->setDbValueDef($rsnew, $this->asset_id->CurrentValue, 0, FALSE);
-
-		// Call Row Inserting event
-		$rs = ($rsold) ? $rsold->fields : NULL;
-		$insertRow = $this->Row_Inserting($rs, $rsnew);
-		if ($insertRow) {
-			$conn->raiseErrorFn = Config("ERROR_FUNC");
-			$addRow = $this->insert($rsnew);
-			$conn->raiseErrorFn = "";
-			if ($addRow) {
-			}
+		$this->CurrentFilter = $filter;
+		$sql = $this->getCurrentSql();
+		$conn->raiseErrorFn = Config("ERROR_FUNC");
+		$rs = $conn->execute($sql);
+		$conn->raiseErrorFn = "";
+		if ($rs === FALSE)
+			return FALSE;
+		if ($rs->EOF) {
+			$this->setFailureMessage($Language->phrase("NoRecord")); // Set no record message
+			$editRow = FALSE; // Update Failed
 		} else {
-			if ($this->getSuccessMessage() != "" || $this->getFailureMessage() != "") {
 
-				// Use the message, do nothing
-			} elseif ($this->CancelMessage != "") {
-				$this->setFailureMessage($this->CancelMessage);
-				$this->CancelMessage = "";
+			// Save old values
+			$rsold = &$rs->fields;
+			$this->loadDbValues($rsold);
+			$rsnew = [];
+
+			// assetgroup_id
+			$this->assetgroup_id->setDbValueDef($rsnew, $this->assetgroup_id->CurrentValue, 0, $this->assetgroup_id->ReadOnly);
+
+			// Description
+			$this->Description->setDbValueDef($rsnew, $this->Description->CurrentValue, "", $this->Description->ReadOnly);
+
+			// Code
+			$this->Code->setDbValueDef($rsnew, $this->Code->CurrentValue, "", $this->Code->ReadOnly);
+
+			// Check referential integrity for master table 't005_assetgroup'
+			$validMasterRecord = TRUE;
+			$masterFilter = $this->sqlMasterFilter_t005_assetgroup();
+			$keyValue = isset($rsnew['assetgroup_id']) ? $rsnew['assetgroup_id'] : $rsold['assetgroup_id'];
+			if (strval($keyValue) != "") {
+				$masterFilter = str_replace("@id@", AdjustSql($keyValue), $masterFilter);
 			} else {
-				$this->setFailureMessage($Language->phrase("InsertCancelled"));
+				$validMasterRecord = FALSE;
 			}
-			$addRow = FALSE;
-		}
-		if ($addRow) {
+			if ($validMasterRecord) {
+				if (!isset($GLOBALS["t005_assetgroup"]))
+					$GLOBALS["t005_assetgroup"] = new t005_assetgroup();
+				$rsmaster = $GLOBALS["t005_assetgroup"]->loadRs($masterFilter);
+				$validMasterRecord = ($rsmaster && !$rsmaster->EOF);
+				$rsmaster->close();
+			}
+			if (!$validMasterRecord) {
+				$relatedRecordMsg = str_replace("%t", "t005_assetgroup", $Language->phrase("RelatedRecordRequired"));
+				$this->setFailureMessage($relatedRecordMsg);
+				$rs->close();
+				return FALSE;
+			}
 
-			// Call Row Inserted event
-			$rs = ($rsold) ? $rsold->fields : NULL;
-			$this->Row_Inserted($rs, $rsnew);
+			// Call Row Updating event
+			$updateRow = $this->Row_Updating($rsold, $rsnew);
+
+			// Check for duplicate key when key changed
+			if ($updateRow) {
+				$newKeyFilter = $this->getRecordFilter($rsnew);
+				if ($newKeyFilter != $oldKeyFilter) {
+					$rsChk = $this->loadRs($newKeyFilter);
+					if ($rsChk && !$rsChk->EOF) {
+						$keyErrMsg = str_replace("%f", $newKeyFilter, $Language->phrase("DupKey"));
+						$this->setFailureMessage($keyErrMsg);
+						$rsChk->close();
+						$updateRow = FALSE;
+					}
+				}
+			}
+			if ($updateRow) {
+				$conn->raiseErrorFn = Config("ERROR_FUNC");
+				if (count($rsnew) > 0)
+					$editRow = $this->update($rsnew, "", $rsold);
+				else
+					$editRow = TRUE; // No field to update
+				$conn->raiseErrorFn = "";
+				if ($editRow) {
+				}
+			} else {
+				if ($this->getSuccessMessage() != "" || $this->getFailureMessage() != "") {
+
+					// Use the message, do nothing
+				} elseif ($this->CancelMessage != "") {
+					$this->setFailureMessage($this->CancelMessage);
+					$this->CancelMessage = "";
+				} else {
+					$this->setFailureMessage($Language->phrase("UpdateCancelled"));
+				}
+				$editRow = FALSE;
+			}
 		}
+
+		// Call Row_Updated event
+		if ($editRow)
+			$this->Row_Updated($rsold, $rsnew);
+		$rs->close();
 
 		// Clean upload path if any
-		if ($addRow) {
+		if ($editRow) {
 		}
 
 		// Write JSON for API request
-		if (IsApi() && $addRow) {
+		if (IsApi() && $editRow) {
 			$row = $this->getRecordsFromRecordset([$rsnew], TRUE);
 			WriteJson(["success" => TRUE, $this->TableVar => $row]);
 		}
-		return $addRow;
+		return $editRow;
 	}
 
 	// Set up master/detail based on QueryString
@@ -1170,13 +1323,13 @@ class t104_ho1_detail_add extends t104_ho1_detail
 				$this->DbMasterFilter = "";
 				$this->DbDetailFilter = "";
 			}
-			if ($masterTblVar == "t103_ho1_head") {
+			if ($masterTblVar == "t005_assetgroup") {
 				$validMaster = TRUE;
-				if (($parm = Get("fk_id", Get("hohead_id"))) !== NULL) {
-					$GLOBALS["t103_ho1_head"]->id->setQueryStringValue($parm);
-					$this->hohead_id->setQueryStringValue($GLOBALS["t103_ho1_head"]->id->QueryStringValue);
-					$this->hohead_id->setSessionValue($this->hohead_id->QueryStringValue);
-					if (!is_numeric($GLOBALS["t103_ho1_head"]->id->QueryStringValue))
+				if (($parm = Get("fk_id", Get("assetgroup_id"))) !== NULL) {
+					$GLOBALS["t005_assetgroup"]->id->setQueryStringValue($parm);
+					$this->assetgroup_id->setQueryStringValue($GLOBALS["t005_assetgroup"]->id->QueryStringValue);
+					$this->assetgroup_id->setSessionValue($this->assetgroup_id->QueryStringValue);
+					if (!is_numeric($GLOBALS["t005_assetgroup"]->id->QueryStringValue))
 						$validMaster = FALSE;
 				} else {
 					$validMaster = FALSE;
@@ -1189,13 +1342,13 @@ class t104_ho1_detail_add extends t104_ho1_detail
 				$this->DbMasterFilter = "";
 				$this->DbDetailFilter = "";
 			}
-			if ($masterTblVar == "t103_ho1_head") {
+			if ($masterTblVar == "t005_assetgroup") {
 				$validMaster = TRUE;
-				if (($parm = Post("fk_id", Post("hohead_id"))) !== NULL) {
-					$GLOBALS["t103_ho1_head"]->id->setFormValue($parm);
-					$this->hohead_id->setFormValue($GLOBALS["t103_ho1_head"]->id->FormValue);
-					$this->hohead_id->setSessionValue($this->hohead_id->FormValue);
-					if (!is_numeric($GLOBALS["t103_ho1_head"]->id->FormValue))
+				if (($parm = Post("fk_id", Post("assetgroup_id"))) !== NULL) {
+					$GLOBALS["t005_assetgroup"]->id->setFormValue($parm);
+					$this->assetgroup_id->setFormValue($GLOBALS["t005_assetgroup"]->id->FormValue);
+					$this->assetgroup_id->setSessionValue($this->assetgroup_id->FormValue);
+					if (!is_numeric($GLOBALS["t005_assetgroup"]->id->FormValue))
 						$validMaster = FALSE;
 				} else {
 					$validMaster = FALSE;
@@ -1206,6 +1359,7 @@ class t104_ho1_detail_add extends t104_ho1_detail
 
 			// Save current master table
 			$this->setCurrentMasterTable($masterTblVar);
+			$this->setSessionWhere($this->getDetailFilter());
 
 			// Reset start record counter (new master key)
 			if (!$this->isAddOrEdit()) {
@@ -1214,9 +1368,9 @@ class t104_ho1_detail_add extends t104_ho1_detail
 			}
 
 			// Clear previous master key from Session
-			if ($masterTblVar != "t103_ho1_head") {
-				if ($this->hohead_id->CurrentValue == "")
-					$this->hohead_id->setSessionValue("");
+			if ($masterTblVar != "t005_assetgroup") {
+				if ($this->assetgroup_id->CurrentValue == "")
+					$this->assetgroup_id->setSessionValue("");
 			}
 		}
 		$this->DbMasterFilter = $this->getMasterFilter(); // Get master filter
@@ -1229,9 +1383,9 @@ class t104_ho1_detail_add extends t104_ho1_detail
 		global $Breadcrumb, $Language;
 		$Breadcrumb = new Breadcrumb();
 		$url = substr(CurrentUrl(), strrpos(CurrentUrl(), "/")+1);
-		$Breadcrumb->add("list", $this->TableVar, $this->addMasterUrl("t104_ho1_detaillist.php"), "", $this->TableVar, TRUE);
-		$pageId = ($this->isCopy()) ? "Copy" : "Add";
-		$Breadcrumb->add("add", $pageId, $url);
+		$Breadcrumb->add("list", $this->TableVar, $this->addMasterUrl("t007_assettypelist.php"), "", $this->TableVar, TRUE);
+		$pageId = "edit";
+		$Breadcrumb->add("edit", $pageId, $url);
 	}
 
 	// Setup lookup options
@@ -1248,6 +1402,8 @@ class t104_ho1_detail_add extends t104_ho1_detail
 
 			// Set up lookup SQL and connection
 			switch ($fld->FieldVar) {
+				case "x_assetgroup_id":
+					break;
 				default:
 					$lookupFilter = "";
 					break;
@@ -1268,6 +1424,12 @@ class t104_ho1_detail_add extends t104_ho1_detail
 
 					// Format the field values
 					switch ($fld->FieldVar) {
+						case "x_assetgroup_id":
+							$row[3] = FormatNumber($row[3], 0, -2, -2, -2);
+							$row['df3'] = $row[3];
+							$row[4] = FormatNumber($row[4], 2, -2, -2, -2);
+							$row['df4'] = $row[4];
+							break;
 					}
 					$ar[strval($row[0])] = $row;
 					$rs->moveNext();
@@ -1276,6 +1438,44 @@ class t104_ho1_detail_add extends t104_ho1_detail
 					$rs->close();
 				$fld->Lookup->Options = $ar;
 			}
+		}
+	}
+
+	// Set up starting record parameters
+	public function setupStartRecord()
+	{
+		if ($this->DisplayRecords == 0)
+			return;
+		if ($this->isPageRequest()) { // Validate request
+			$startRec = Get(Config("TABLE_START_REC"));
+			$pageNo = Get(Config("TABLE_PAGE_NO"));
+			if ($pageNo !== NULL) { // Check for "pageno" parameter first
+				if (is_numeric($pageNo)) {
+					$this->StartRecord = ($pageNo - 1) * $this->DisplayRecords + 1;
+					if ($this->StartRecord <= 0) {
+						$this->StartRecord = 1;
+					} elseif ($this->StartRecord >= (int)(($this->TotalRecords - 1)/$this->DisplayRecords) * $this->DisplayRecords + 1) {
+						$this->StartRecord = (int)(($this->TotalRecords - 1)/$this->DisplayRecords) * $this->DisplayRecords + 1;
+					}
+					$this->setStartRecordNumber($this->StartRecord);
+				}
+			} elseif ($startRec !== NULL) { // Check for "start" parameter
+				$this->StartRecord = $startRec;
+				$this->setStartRecordNumber($this->StartRecord);
+			}
+		}
+		$this->StartRecord = $this->getStartRecordNumber();
+
+		// Check if correct start record counter
+		if (!is_numeric($this->StartRecord) || $this->StartRecord == "") { // Avoid invalid start record counter
+			$this->StartRecord = 1; // Reset start record counter
+			$this->setStartRecordNumber($this->StartRecord);
+		} elseif ($this->StartRecord > $this->TotalRecords) { // Avoid starting record > total records
+			$this->StartRecord = (int)(($this->TotalRecords - 1)/$this->DisplayRecords) * $this->DisplayRecords + 1; // Point to last page first record
+			$this->setStartRecordNumber($this->StartRecord);
+		} elseif (($this->StartRecord - 1) % $this->DisplayRecords != 0) {
+			$this->StartRecord = (int)(($this->StartRecord - 1)/$this->DisplayRecords) * $this->DisplayRecords + 1; // Point to page boundary
+			$this->setStartRecordNumber($this->StartRecord);
 		}
 	}
 

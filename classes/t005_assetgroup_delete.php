@@ -593,8 +593,10 @@ class t005_assetgroup_delete extends t005_assetgroup
 		}
 		$this->CurrentAction = Param("action"); // Set up current action
 		$this->id->Visible = FALSE;
+		$this->Code->setVisibility();
 		$this->Description->setVisibility();
-		$this->EconomicalLifeTime->setVisibility();
+		$this->EstimatedLife->setVisibility();
+		$this->SLN->setVisibility();
 		$this->hideFieldsForAddEdit();
 
 		// Do not use lookup cache
@@ -741,8 +743,10 @@ class t005_assetgroup_delete extends t005_assetgroup
 		if (!$rs || $rs->EOF)
 			return;
 		$this->id->setDbValue($row['id']);
+		$this->Code->setDbValue($row['Code']);
 		$this->Description->setDbValue($row['Description']);
-		$this->EconomicalLifeTime->setDbValue($row['EconomicalLifeTime']);
+		$this->EstimatedLife->setDbValue($row['EstimatedLife']);
+		$this->SLN->setDbValue($row['SLN']);
 	}
 
 	// Return a row with default values
@@ -750,8 +754,10 @@ class t005_assetgroup_delete extends t005_assetgroup
 	{
 		$row = [];
 		$row['id'] = NULL;
+		$row['Code'] = NULL;
 		$row['Description'] = NULL;
-		$row['EconomicalLifeTime'] = NULL;
+		$row['EstimatedLife'] = NULL;
+		$row['SLN'] = NULL;
 		return $row;
 	}
 
@@ -761,14 +767,20 @@ class t005_assetgroup_delete extends t005_assetgroup
 		global $Security, $Language, $CurrentLanguage;
 
 		// Initialize URLs
-		// Call Row_Rendering event
+		// Convert decimal values if posted back
 
+		if ($this->SLN->FormValue == $this->SLN->CurrentValue && is_numeric(ConvertToFloatString($this->SLN->CurrentValue)))
+			$this->SLN->CurrentValue = ConvertToFloatString($this->SLN->CurrentValue);
+
+		// Call Row_Rendering event
 		$this->Row_Rendering();
 
 		// Common render codes for all row types
 		// id
+		// Code
 		// Description
-		// EconomicalLifeTime
+		// EstimatedLife
+		// SLN
 
 		if ($this->RowType == ROWTYPE_VIEW) { // View row
 
@@ -776,25 +788,45 @@ class t005_assetgroup_delete extends t005_assetgroup
 			$this->id->ViewValue = $this->id->CurrentValue;
 			$this->id->ViewCustomAttributes = "";
 
+			// Code
+			$this->Code->ViewValue = $this->Code->CurrentValue;
+			$this->Code->ViewCustomAttributes = "";
+
 			// Description
 			$this->Description->ViewValue = $this->Description->CurrentValue;
 			$this->Description->ViewCustomAttributes = "";
 
-			// EconomicalLifeTime
-			$this->EconomicalLifeTime->ViewValue = $this->EconomicalLifeTime->CurrentValue;
-			$this->EconomicalLifeTime->ViewValue = FormatNumber($this->EconomicalLifeTime->ViewValue, 0, -2, -2, -2);
-			$this->EconomicalLifeTime->CellCssStyle .= "text-align: right;";
-			$this->EconomicalLifeTime->ViewCustomAttributes = "";
+			// EstimatedLife
+			$this->EstimatedLife->ViewValue = $this->EstimatedLife->CurrentValue;
+			$this->EstimatedLife->ViewValue = FormatNumber($this->EstimatedLife->ViewValue, 0, -2, -2, -2);
+			$this->EstimatedLife->CellCssStyle .= "text-align: right;";
+			$this->EstimatedLife->ViewCustomAttributes = "";
+
+			// SLN
+			$this->SLN->ViewValue = $this->SLN->CurrentValue;
+			$this->SLN->ViewValue = FormatNumber($this->SLN->ViewValue, 2, -2, -2, -2);
+			$this->SLN->CellCssStyle .= "text-align: right;";
+			$this->SLN->ViewCustomAttributes = "";
+
+			// Code
+			$this->Code->LinkCustomAttributes = "";
+			$this->Code->HrefValue = "";
+			$this->Code->TooltipValue = "";
 
 			// Description
 			$this->Description->LinkCustomAttributes = "";
 			$this->Description->HrefValue = "";
 			$this->Description->TooltipValue = "";
 
-			// EconomicalLifeTime
-			$this->EconomicalLifeTime->LinkCustomAttributes = "";
-			$this->EconomicalLifeTime->HrefValue = "";
-			$this->EconomicalLifeTime->TooltipValue = "";
+			// EstimatedLife
+			$this->EstimatedLife->LinkCustomAttributes = "";
+			$this->EstimatedLife->HrefValue = "";
+			$this->EstimatedLife->TooltipValue = "";
+
+			// SLN
+			$this->SLN->LinkCustomAttributes = "";
+			$this->SLN->HrefValue = "";
+			$this->SLN->TooltipValue = "";
 		}
 
 		// Call Row Rendered event

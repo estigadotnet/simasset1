@@ -30,7 +30,7 @@ create view v101_ho as
         `n`.`Description` AS `Group`,
         `h`.`ProcurementDate` AS `ProcurementDate`,
         `h`.`ProcurementCurrentCost` AS `ProcurementCurrentCost`,
-        `n`.`EconomicalLifeTime` AS `Economical Life Time (in Year)`,
+        `n`.`EstimatedLife` AS `Estimated Life (in Year)`,
         `h`.`Salvage` AS `Salvage`,
         `h`.`Qty` AS `Qty`,
         `h`.`Remarks` AS `Remarks`,

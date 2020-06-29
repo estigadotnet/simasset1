@@ -56,19 +56,32 @@ loadjs.ready("head", function() {
 		for (var i = startcnt; i <= rowcnt; i++) {
 			var infix = ($k[0]) ? String(i) : "";
 			$fobj.data("rowindex", infix);
+			<?php if ($t005_assetgroup_add->Code->Required) { ?>
+				elm = this.getElements("x" + infix + "_Code");
+				if (elm && !ew.isHidden(elm) && !ew.hasValue(elm))
+					return this.onError(elm, "<?php echo JsEncode(str_replace("%s", $t005_assetgroup_add->Code->caption(), $t005_assetgroup_add->Code->RequiredErrorMessage)) ?>");
+			<?php } ?>
 			<?php if ($t005_assetgroup_add->Description->Required) { ?>
 				elm = this.getElements("x" + infix + "_Description");
 				if (elm && !ew.isHidden(elm) && !ew.hasValue(elm))
 					return this.onError(elm, "<?php echo JsEncode(str_replace("%s", $t005_assetgroup_add->Description->caption(), $t005_assetgroup_add->Description->RequiredErrorMessage)) ?>");
 			<?php } ?>
-			<?php if ($t005_assetgroup_add->EconomicalLifeTime->Required) { ?>
-				elm = this.getElements("x" + infix + "_EconomicalLifeTime");
+			<?php if ($t005_assetgroup_add->EstimatedLife->Required) { ?>
+				elm = this.getElements("x" + infix + "_EstimatedLife");
 				if (elm && !ew.isHidden(elm) && !ew.hasValue(elm))
-					return this.onError(elm, "<?php echo JsEncode(str_replace("%s", $t005_assetgroup_add->EconomicalLifeTime->caption(), $t005_assetgroup_add->EconomicalLifeTime->RequiredErrorMessage)) ?>");
+					return this.onError(elm, "<?php echo JsEncode(str_replace("%s", $t005_assetgroup_add->EstimatedLife->caption(), $t005_assetgroup_add->EstimatedLife->RequiredErrorMessage)) ?>");
 			<?php } ?>
-				elm = this.getElements("x" + infix + "_EconomicalLifeTime");
+				elm = this.getElements("x" + infix + "_EstimatedLife");
 				if (elm && !ew.checkInteger(elm.value))
-					return this.onError(elm, "<?php echo JsEncode($t005_assetgroup_add->EconomicalLifeTime->errorMessage()) ?>");
+					return this.onError(elm, "<?php echo JsEncode($t005_assetgroup_add->EstimatedLife->errorMessage()) ?>");
+			<?php if ($t005_assetgroup_add->SLN->Required) { ?>
+				elm = this.getElements("x" + infix + "_SLN");
+				if (elm && !ew.isHidden(elm) && !ew.hasValue(elm))
+					return this.onError(elm, "<?php echo JsEncode(str_replace("%s", $t005_assetgroup_add->SLN->caption(), $t005_assetgroup_add->SLN->RequiredErrorMessage)) ?>");
+			<?php } ?>
+				elm = this.getElements("x" + infix + "_SLN");
+				if (elm && !ew.checkNumber(elm.value))
+					return this.onError(elm, "<?php echo JsEncode($t005_assetgroup_add->SLN->errorMessage()) ?>");
 
 				// Call Form_CustomValidate event
 				if (!this.Form_CustomValidate(fobj))
@@ -120,6 +133,16 @@ $t005_assetgroup_add->showMessage();
 <input type="hidden" name="action" id="action" value="insert">
 <input type="hidden" name="modal" value="<?php echo (int)$t005_assetgroup_add->IsModal ?>">
 <div class="ew-add-div"><!-- page* -->
+<?php if ($t005_assetgroup_add->Code->Visible) { // Code ?>
+	<div id="r_Code" class="form-group row">
+		<label id="elh_t005_assetgroup_Code" for="x_Code" class="<?php echo $t005_assetgroup_add->LeftColumnClass ?>"><?php echo $t005_assetgroup_add->Code->caption() ?><?php echo $t005_assetgroup_add->Code->Required ? $Language->phrase("FieldRequiredIndicator") : "" ?></label>
+		<div class="<?php echo $t005_assetgroup_add->RightColumnClass ?>"><div <?php echo $t005_assetgroup_add->Code->cellAttributes() ?>>
+<span id="el_t005_assetgroup_Code">
+<input type="text" data-table="t005_assetgroup" data-field="x_Code" name="x_Code" id="x_Code" size="2" maxlength="5" placeholder="<?php echo HtmlEncode($t005_assetgroup_add->Code->getPlaceHolder()) ?>" value="<?php echo $t005_assetgroup_add->Code->EditValue ?>"<?php echo $t005_assetgroup_add->Code->editAttributes() ?>>
+</span>
+<?php echo $t005_assetgroup_add->Code->CustomMsg ?></div></div>
+	</div>
+<?php } ?>
 <?php if ($t005_assetgroup_add->Description->Visible) { // Description ?>
 	<div id="r_Description" class="form-group row">
 		<label id="elh_t005_assetgroup_Description" for="x_Description" class="<?php echo $t005_assetgroup_add->LeftColumnClass ?>"><?php echo $t005_assetgroup_add->Description->caption() ?><?php echo $t005_assetgroup_add->Description->Required ? $Language->phrase("FieldRequiredIndicator") : "" ?></label>
@@ -130,17 +153,35 @@ $t005_assetgroup_add->showMessage();
 <?php echo $t005_assetgroup_add->Description->CustomMsg ?></div></div>
 	</div>
 <?php } ?>
-<?php if ($t005_assetgroup_add->EconomicalLifeTime->Visible) { // EconomicalLifeTime ?>
-	<div id="r_EconomicalLifeTime" class="form-group row">
-		<label id="elh_t005_assetgroup_EconomicalLifeTime" for="x_EconomicalLifeTime" class="<?php echo $t005_assetgroup_add->LeftColumnClass ?>"><?php echo $t005_assetgroup_add->EconomicalLifeTime->caption() ?><?php echo $t005_assetgroup_add->EconomicalLifeTime->Required ? $Language->phrase("FieldRequiredIndicator") : "" ?></label>
-		<div class="<?php echo $t005_assetgroup_add->RightColumnClass ?>"><div <?php echo $t005_assetgroup_add->EconomicalLifeTime->cellAttributes() ?>>
-<span id="el_t005_assetgroup_EconomicalLifeTime">
-<input type="text" data-table="t005_assetgroup" data-field="x_EconomicalLifeTime" name="x_EconomicalLifeTime" id="x_EconomicalLifeTime" size="2" maxlength="4" placeholder="<?php echo HtmlEncode($t005_assetgroup_add->EconomicalLifeTime->getPlaceHolder()) ?>" value="<?php echo $t005_assetgroup_add->EconomicalLifeTime->EditValue ?>"<?php echo $t005_assetgroup_add->EconomicalLifeTime->editAttributes() ?>>
+<?php if ($t005_assetgroup_add->EstimatedLife->Visible) { // EstimatedLife ?>
+	<div id="r_EstimatedLife" class="form-group row">
+		<label id="elh_t005_assetgroup_EstimatedLife" for="x_EstimatedLife" class="<?php echo $t005_assetgroup_add->LeftColumnClass ?>"><?php echo $t005_assetgroup_add->EstimatedLife->caption() ?><?php echo $t005_assetgroup_add->EstimatedLife->Required ? $Language->phrase("FieldRequiredIndicator") : "" ?></label>
+		<div class="<?php echo $t005_assetgroup_add->RightColumnClass ?>"><div <?php echo $t005_assetgroup_add->EstimatedLife->cellAttributes() ?>>
+<span id="el_t005_assetgroup_EstimatedLife">
+<input type="text" data-table="t005_assetgroup" data-field="x_EstimatedLife" name="x_EstimatedLife" id="x_EstimatedLife" size="2" maxlength="4" placeholder="<?php echo HtmlEncode($t005_assetgroup_add->EstimatedLife->getPlaceHolder()) ?>" value="<?php echo $t005_assetgroup_add->EstimatedLife->EditValue ?>"<?php echo $t005_assetgroup_add->EstimatedLife->editAttributes() ?>>
 </span>
-<?php echo $t005_assetgroup_add->EconomicalLifeTime->CustomMsg ?></div></div>
+<?php echo $t005_assetgroup_add->EstimatedLife->CustomMsg ?></div></div>
+	</div>
+<?php } ?>
+<?php if ($t005_assetgroup_add->SLN->Visible) { // SLN ?>
+	<div id="r_SLN" class="form-group row">
+		<label id="elh_t005_assetgroup_SLN" for="x_SLN" class="<?php echo $t005_assetgroup_add->LeftColumnClass ?>"><?php echo $t005_assetgroup_add->SLN->caption() ?><?php echo $t005_assetgroup_add->SLN->Required ? $Language->phrase("FieldRequiredIndicator") : "" ?></label>
+		<div class="<?php echo $t005_assetgroup_add->RightColumnClass ?>"><div <?php echo $t005_assetgroup_add->SLN->cellAttributes() ?>>
+<span id="el_t005_assetgroup_SLN">
+<input type="text" data-table="t005_assetgroup" data-field="x_SLN" name="x_SLN" id="x_SLN" size="2" maxlength="4" placeholder="<?php echo HtmlEncode($t005_assetgroup_add->SLN->getPlaceHolder()) ?>" value="<?php echo $t005_assetgroup_add->SLN->EditValue ?>"<?php echo $t005_assetgroup_add->SLN->editAttributes() ?>>
+</span>
+<?php echo $t005_assetgroup_add->SLN->CustomMsg ?></div></div>
 	</div>
 <?php } ?>
 </div><!-- /page* -->
+<?php
+	if (in_array("t007_assettype", explode(",", $t005_assetgroup->getCurrentDetailTable())) && $t007_assettype->DetailAdd) {
+?>
+<?php if ($t005_assetgroup->getCurrentDetailTable() != "") { ?>
+<h4 class="ew-detail-caption"><?php echo $Language->tablePhrase("t007_assettype", "TblCaption") ?></h4>
+<?php } ?>
+<?php include_once "t007_assettypegrid.php" ?>
+<?php } ?>
 <?php if (!$t005_assetgroup_add->IsModal) { ?>
 <div class="form-group row"><!-- buttons .form-group -->
 	<div class="<?php echo $t005_assetgroup_add->OffsetColumnClass ?>"><!-- buttons offset -->

@@ -34,8 +34,10 @@ class t005_assetgroup extends DbTable
 
 	// Fields
 	public $id;
+	public $Code;
 	public $Description;
-	public $EconomicalLifeTime;
+	public $EstimatedLife;
+	public $SLN;
 
 	// Constructor
 	public function __construct()
@@ -74,9 +76,17 @@ class t005_assetgroup extends DbTable
 		$this->id = new DbField('t005_assetgroup', 't005_assetgroup', 'x_id', 'id', '`id`', '`id`', 3, 11, -1, FALSE, '`id`', FALSE, FALSE, FALSE, 'FORMATTED TEXT', 'NO');
 		$this->id->IsAutoIncrement = TRUE; // Autoincrement field
 		$this->id->IsPrimaryKey = TRUE; // Primary key field
+		$this->id->IsForeignKey = TRUE; // Foreign key field
 		$this->id->Sortable = TRUE; // Allow sort
 		$this->id->DefaultErrorMessage = $Language->phrase("IncorrectInteger");
 		$this->fields['id'] = &$this->id;
+
+		// Code
+		$this->Code = new DbField('t005_assetgroup', 't005_assetgroup', 'x_Code', 'Code', '`Code`', '`Code`', 200, 5, -1, FALSE, '`Code`', FALSE, FALSE, FALSE, 'FORMATTED TEXT', 'TEXT');
+		$this->Code->Nullable = FALSE; // NOT NULL field
+		$this->Code->Required = TRUE; // Required field
+		$this->Code->Sortable = TRUE; // Allow sort
+		$this->fields['Code'] = &$this->Code;
 
 		// Description
 		$this->Description = new DbField('t005_assetgroup', 't005_assetgroup', 'x_Description', 'Description', '`Description`', '`Description`', 200, 255, -1, FALSE, '`Description`', FALSE, FALSE, FALSE, 'FORMATTED TEXT', 'TEXT');
@@ -85,12 +95,20 @@ class t005_assetgroup extends DbTable
 		$this->Description->Sortable = TRUE; // Allow sort
 		$this->fields['Description'] = &$this->Description;
 
-		// EconomicalLifeTime
-		$this->EconomicalLifeTime = new DbField('t005_assetgroup', 't005_assetgroup', 'x_EconomicalLifeTime', 'EconomicalLifeTime', '`EconomicalLifeTime`', '`EconomicalLifeTime`', 16, 4, -1, FALSE, '`EconomicalLifeTime`', FALSE, FALSE, FALSE, 'FORMATTED TEXT', 'TEXT');
-		$this->EconomicalLifeTime->Nullable = FALSE; // NOT NULL field
-		$this->EconomicalLifeTime->Sortable = TRUE; // Allow sort
-		$this->EconomicalLifeTime->DefaultErrorMessage = $Language->phrase("IncorrectInteger");
-		$this->fields['EconomicalLifeTime'] = &$this->EconomicalLifeTime;
+		// EstimatedLife
+		$this->EstimatedLife = new DbField('t005_assetgroup', 't005_assetgroup', 'x_EstimatedLife', 'EstimatedLife', '`EstimatedLife`', '`EstimatedLife`', 16, 4, -1, FALSE, '`EstimatedLife`', FALSE, FALSE, FALSE, 'FORMATTED TEXT', 'TEXT');
+		$this->EstimatedLife->Nullable = FALSE; // NOT NULL field
+		$this->EstimatedLife->Sortable = TRUE; // Allow sort
+		$this->EstimatedLife->DefaultErrorMessage = $Language->phrase("IncorrectInteger");
+		$this->fields['EstimatedLife'] = &$this->EstimatedLife;
+
+		// SLN
+		$this->SLN = new DbField('t005_assetgroup', 't005_assetgroup', 'x_SLN', 'SLN', '`SLN`', '`SLN`', 4, 4, -1, FALSE, '`SLN`', FALSE, FALSE, FALSE, 'FORMATTED TEXT', 'TEXT');
+		$this->SLN->Nullable = FALSE; // NOT NULL field
+		$this->SLN->Required = TRUE; // Required field
+		$this->SLN->Sortable = TRUE; // Allow sort
+		$this->SLN->DefaultErrorMessage = $Language->phrase("IncorrectFloat");
+		$this->fields['SLN'] = &$this->SLN;
 	}
 
 	// Field Visibility
@@ -140,6 +158,31 @@ class t005_assetgroup extends DbTable
 			if (!$ctrl)
 				$fld->setSort("");
 		}
+	}
+
+	// Current detail table name
+	public function getCurrentDetailTable()
+	{
+		return @$_SESSION[PROJECT_NAME . "_" . $this->TableVar . "_" . Config("TABLE_DETAIL_TABLE")];
+	}
+	public function setCurrentDetailTable($v)
+	{
+		$_SESSION[PROJECT_NAME . "_" . $this->TableVar . "_" . Config("TABLE_DETAIL_TABLE")] = $v;
+	}
+
+	// Get detail url
+	public function getDetailUrl()
+	{
+
+		// Detail url
+		$detailUrl = "";
+		if ($this->getCurrentDetailTable() == "t007_assettype") {
+			$detailUrl = $GLOBALS["t007_assettype"]->getListUrl() . "?" . Config("TABLE_SHOW_MASTER") . "=" . $this->TableVar;
+			$detailUrl .= "&fk_id=" . urlencode($this->id->CurrentValue);
+		}
+		if ($detailUrl == "")
+			$detailUrl = "t005_assetgrouplist.php";
+		return $detailUrl;
 	}
 
 	// Table level SQL
@@ -422,6 +465,37 @@ class t005_assetgroup extends DbTable
 	public function update(&$rs, $where = "", $rsold = NULL, $curfilter = TRUE)
 	{
 		$conn = $this->getConnection();
+
+		// Cascade Update detail table 't007_assettype'
+		$cascadeUpdate = FALSE;
+		$rscascade = [];
+		if ($rsold && (isset($rs['id']) && $rsold['id'] != $rs['id'])) { // Update detail field 'assetgroup_id'
+			$cascadeUpdate = TRUE;
+			$rscascade['assetgroup_id'] = $rs['id'];
+		}
+		if ($cascadeUpdate) {
+			if (!isset($GLOBALS["t007_assettype"]))
+				$GLOBALS["t007_assettype"] = new t007_assettype();
+			$rswrk = $GLOBALS["t007_assettype"]->loadRs("`assetgroup_id` = " . QuotedValue($rsold['id'], DATATYPE_NUMBER, 'DB'));
+			while ($rswrk && !$rswrk->EOF) {
+				$rskey = [];
+				$fldname = 'id';
+				$rskey[$fldname] = $rswrk->fields[$fldname];
+				$rsdtlold = &$rswrk->fields;
+				$rsdtlnew = array_merge($rsdtlold, $rscascade);
+
+				// Call Row_Updating event
+				$success = $GLOBALS["t007_assettype"]->Row_Updating($rsdtlold, $rsdtlnew);
+				if ($success)
+					$success = $GLOBALS["t007_assettype"]->update($rscascade, $rskey, $rswrk->fields);
+				if (!$success)
+					return FALSE;
+
+				// Call Row_Updated event
+				$GLOBALS["t007_assettype"]->Row_Updated($rsdtlold, $rsdtlnew);
+				$rswrk->moveNext();
+			}
+		}
 		$success = $conn->execute($this->updateSql($rs, $where, $curfilter));
 		if ($success && $this->AuditTrailOnEdit && $rsold) {
 			$rsaudit = $rs;
@@ -457,6 +531,32 @@ class t005_assetgroup extends DbTable
 	{
 		$success = TRUE;
 		$conn = $this->getConnection();
+
+		// Cascade delete detail table 't007_assettype'
+		if (!isset($GLOBALS["t007_assettype"]))
+			$GLOBALS["t007_assettype"] = new t007_assettype();
+		$rscascade = $GLOBALS["t007_assettype"]->loadRs("`assetgroup_id` = " . QuotedValue($rs['id'], DATATYPE_NUMBER, "DB"));
+		$dtlrows = ($rscascade) ? $rscascade->getRows() : [];
+
+		// Call Row Deleting event
+		foreach ($dtlrows as $dtlrow) {
+			$success = $GLOBALS["t007_assettype"]->Row_Deleting($dtlrow);
+			if (!$success)
+				break;
+		}
+		if ($success) {
+			foreach ($dtlrows as $dtlrow) {
+				$success = $GLOBALS["t007_assettype"]->delete($dtlrow); // Delete
+				if (!$success)
+					break;
+			}
+		}
+
+		// Call Row Deleted event
+		if ($success) {
+			foreach ($dtlrows as $dtlrow)
+				$GLOBALS["t007_assettype"]->Row_Deleted($dtlrow);
+		}
 		if ($success)
 			$success = $conn->execute($this->deleteSql($rs, $where, $curfilter));
 		if ($success && $this->AuditTrailOnDelete)
@@ -471,8 +571,10 @@ class t005_assetgroup extends DbTable
 			return;
 		$row = is_array($rs) ? $rs : $rs->fields;
 		$this->id->DbValue = $row['id'];
+		$this->Code->DbValue = $row['Code'];
 		$this->Description->DbValue = $row['Description'];
-		$this->EconomicalLifeTime->DbValue = $row['EconomicalLifeTime'];
+		$this->EstimatedLife->DbValue = $row['EstimatedLife'];
+		$this->SLN->DbValue = $row['SLN'];
 	}
 
 	// Delete uploaded files
@@ -566,7 +668,10 @@ class t005_assetgroup extends DbTable
 	// Edit URL
 	public function getEditUrl($parm = "")
 	{
-		$url = $this->keyUrl("t005_assetgroupedit.php", $this->getUrlParm($parm));
+		if ($parm != "")
+			$url = $this->keyUrl("t005_assetgroupedit.php", $this->getUrlParm($parm));
+		else
+			$url = $this->keyUrl("t005_assetgroupedit.php", $this->getUrlParm(Config("TABLE_SHOW_DETAIL") . "="));
 		return $this->addMasterUrl($url);
 	}
 
@@ -580,7 +685,10 @@ class t005_assetgroup extends DbTable
 	// Copy URL
 	public function getCopyUrl($parm = "")
 	{
-		$url = $this->keyUrl("t005_assetgroupadd.php", $this->getUrlParm($parm));
+		if ($parm != "")
+			$url = $this->keyUrl("t005_assetgroupadd.php", $this->getUrlParm($parm));
+		else
+			$url = $this->keyUrl("t005_assetgroupadd.php", $this->getUrlParm(Config("TABLE_SHOW_DETAIL") . "="));
 		return $this->addMasterUrl($url);
 	}
 
@@ -704,8 +812,10 @@ class t005_assetgroup extends DbTable
 	public function loadListRowValues(&$rs)
 	{
 		$this->id->setDbValue($rs->fields('id'));
+		$this->Code->setDbValue($rs->fields('Code'));
 		$this->Description->setDbValue($rs->fields('Description'));
-		$this->EconomicalLifeTime->setDbValue($rs->fields('EconomicalLifeTime'));
+		$this->EstimatedLife->setDbValue($rs->fields('EstimatedLife'));
+		$this->SLN->setDbValue($rs->fields('SLN'));
 	}
 
 	// Render list row values
@@ -718,37 +828,59 @@ class t005_assetgroup extends DbTable
 
 		// Common render codes
 		// id
+		// Code
 		// Description
-		// EconomicalLifeTime
+		// EstimatedLife
+		// SLN
 		// id
 
 		$this->id->ViewValue = $this->id->CurrentValue;
 		$this->id->ViewCustomAttributes = "";
 
+		// Code
+		$this->Code->ViewValue = $this->Code->CurrentValue;
+		$this->Code->ViewCustomAttributes = "";
+
 		// Description
 		$this->Description->ViewValue = $this->Description->CurrentValue;
 		$this->Description->ViewCustomAttributes = "";
 
-		// EconomicalLifeTime
-		$this->EconomicalLifeTime->ViewValue = $this->EconomicalLifeTime->CurrentValue;
-		$this->EconomicalLifeTime->ViewValue = FormatNumber($this->EconomicalLifeTime->ViewValue, 0, -2, -2, -2);
-		$this->EconomicalLifeTime->CellCssStyle .= "text-align: right;";
-		$this->EconomicalLifeTime->ViewCustomAttributes = "";
+		// EstimatedLife
+		$this->EstimatedLife->ViewValue = $this->EstimatedLife->CurrentValue;
+		$this->EstimatedLife->ViewValue = FormatNumber($this->EstimatedLife->ViewValue, 0, -2, -2, -2);
+		$this->EstimatedLife->CellCssStyle .= "text-align: right;";
+		$this->EstimatedLife->ViewCustomAttributes = "";
+
+		// SLN
+		$this->SLN->ViewValue = $this->SLN->CurrentValue;
+		$this->SLN->ViewValue = FormatNumber($this->SLN->ViewValue, 2, -2, -2, -2);
+		$this->SLN->CellCssStyle .= "text-align: right;";
+		$this->SLN->ViewCustomAttributes = "";
 
 		// id
 		$this->id->LinkCustomAttributes = "";
 		$this->id->HrefValue = "";
 		$this->id->TooltipValue = "";
 
+		// Code
+		$this->Code->LinkCustomAttributes = "";
+		$this->Code->HrefValue = "";
+		$this->Code->TooltipValue = "";
+
 		// Description
 		$this->Description->LinkCustomAttributes = "";
 		$this->Description->HrefValue = "";
 		$this->Description->TooltipValue = "";
 
-		// EconomicalLifeTime
-		$this->EconomicalLifeTime->LinkCustomAttributes = "";
-		$this->EconomicalLifeTime->HrefValue = "";
-		$this->EconomicalLifeTime->TooltipValue = "";
+		// EstimatedLife
+		$this->EstimatedLife->LinkCustomAttributes = "";
+		$this->EstimatedLife->HrefValue = "";
+		$this->EstimatedLife->TooltipValue = "";
+
+		// SLN
+		$this->SLN->LinkCustomAttributes = "";
+		$this->SLN->HrefValue = "";
+		$this->SLN->TooltipValue = "";
 
 		// Call Row Rendered event
 		$this->Row_Rendered();
@@ -771,6 +903,14 @@ class t005_assetgroup extends DbTable
 		$this->id->EditValue = $this->id->CurrentValue;
 		$this->id->ViewCustomAttributes = "";
 
+		// Code
+		$this->Code->EditAttrs["class"] = "form-control";
+		$this->Code->EditCustomAttributes = "";
+		if (!$this->Code->Raw)
+			$this->Code->CurrentValue = HtmlDecode($this->Code->CurrentValue);
+		$this->Code->EditValue = $this->Code->CurrentValue;
+		$this->Code->PlaceHolder = RemoveHtml($this->Code->caption());
+
 		// Description
 		$this->Description->EditAttrs["class"] = "form-control";
 		$this->Description->EditCustomAttributes = "";
@@ -779,11 +919,20 @@ class t005_assetgroup extends DbTable
 		$this->Description->EditValue = $this->Description->CurrentValue;
 		$this->Description->PlaceHolder = RemoveHtml($this->Description->caption());
 
-		// EconomicalLifeTime
-		$this->EconomicalLifeTime->EditAttrs["class"] = "form-control";
-		$this->EconomicalLifeTime->EditCustomAttributes = "";
-		$this->EconomicalLifeTime->EditValue = $this->EconomicalLifeTime->CurrentValue;
-		$this->EconomicalLifeTime->PlaceHolder = RemoveHtml($this->EconomicalLifeTime->caption());
+		// EstimatedLife
+		$this->EstimatedLife->EditAttrs["class"] = "form-control";
+		$this->EstimatedLife->EditCustomAttributes = "";
+		$this->EstimatedLife->EditValue = $this->EstimatedLife->CurrentValue;
+		$this->EstimatedLife->PlaceHolder = RemoveHtml($this->EstimatedLife->caption());
+
+		// SLN
+		$this->SLN->EditAttrs["class"] = "form-control";
+		$this->SLN->EditCustomAttributes = "";
+		$this->SLN->EditValue = $this->SLN->CurrentValue;
+		$this->SLN->PlaceHolder = RemoveHtml($this->SLN->caption());
+		if (strval($this->SLN->EditValue) != "" && is_numeric($this->SLN->EditValue))
+			$this->SLN->EditValue = FormatNumber($this->SLN->EditValue, -2, -2, -2, -2);
+		
 
 		// Call Row Rendered event
 		$this->Row_Rendered();
@@ -814,12 +963,16 @@ class t005_assetgroup extends DbTable
 			if ($doc->Horizontal) { // Horizontal format, write header
 				$doc->beginExportRow();
 				if ($exportPageType == "view") {
+					$doc->exportCaption($this->Code);
 					$doc->exportCaption($this->Description);
-					$doc->exportCaption($this->EconomicalLifeTime);
+					$doc->exportCaption($this->EstimatedLife);
+					$doc->exportCaption($this->SLN);
 				} else {
 					$doc->exportCaption($this->id);
+					$doc->exportCaption($this->Code);
 					$doc->exportCaption($this->Description);
-					$doc->exportCaption($this->EconomicalLifeTime);
+					$doc->exportCaption($this->EstimatedLife);
+					$doc->exportCaption($this->SLN);
 				}
 				$doc->endExportRow();
 			}
@@ -851,12 +1004,16 @@ class t005_assetgroup extends DbTable
 				if (!$doc->ExportCustom) {
 					$doc->beginExportRow($rowCnt); // Allow CSS styles if enabled
 					if ($exportPageType == "view") {
+						$doc->exportField($this->Code);
 						$doc->exportField($this->Description);
-						$doc->exportField($this->EconomicalLifeTime);
+						$doc->exportField($this->EstimatedLife);
+						$doc->exportField($this->SLN);
 					} else {
 						$doc->exportField($this->id);
+						$doc->exportField($this->Code);
 						$doc->exportField($this->Description);
-						$doc->exportField($this->EconomicalLifeTime);
+						$doc->exportField($this->EstimatedLife);
+						$doc->exportField($this->SLN);
 					}
 					$doc->endExportRow($rowCnt);
 				}

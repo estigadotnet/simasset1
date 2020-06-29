@@ -61,19 +61,32 @@ loadjs.ready("head", function() {
 			var checkrow = (gridinsert) ? !this.emptyRow(infix) : true;
 			if (checkrow) {
 				addcnt++;
+			<?php if ($t005_assetgroup_list->Code->Required) { ?>
+				elm = this.getElements("x" + infix + "_Code");
+				if (elm && !ew.isHidden(elm) && !ew.hasValue(elm))
+					return this.onError(elm, "<?php echo JsEncode(str_replace("%s", $t005_assetgroup_list->Code->caption(), $t005_assetgroup_list->Code->RequiredErrorMessage)) ?>");
+			<?php } ?>
 			<?php if ($t005_assetgroup_list->Description->Required) { ?>
 				elm = this.getElements("x" + infix + "_Description");
 				if (elm && !ew.isHidden(elm) && !ew.hasValue(elm))
 					return this.onError(elm, "<?php echo JsEncode(str_replace("%s", $t005_assetgroup_list->Description->caption(), $t005_assetgroup_list->Description->RequiredErrorMessage)) ?>");
 			<?php } ?>
-			<?php if ($t005_assetgroup_list->EconomicalLifeTime->Required) { ?>
-				elm = this.getElements("x" + infix + "_EconomicalLifeTime");
+			<?php if ($t005_assetgroup_list->EstimatedLife->Required) { ?>
+				elm = this.getElements("x" + infix + "_EstimatedLife");
 				if (elm && !ew.isHidden(elm) && !ew.hasValue(elm))
-					return this.onError(elm, "<?php echo JsEncode(str_replace("%s", $t005_assetgroup_list->EconomicalLifeTime->caption(), $t005_assetgroup_list->EconomicalLifeTime->RequiredErrorMessage)) ?>");
+					return this.onError(elm, "<?php echo JsEncode(str_replace("%s", $t005_assetgroup_list->EstimatedLife->caption(), $t005_assetgroup_list->EstimatedLife->RequiredErrorMessage)) ?>");
 			<?php } ?>
-				elm = this.getElements("x" + infix + "_EconomicalLifeTime");
+				elm = this.getElements("x" + infix + "_EstimatedLife");
 				if (elm && !ew.checkInteger(elm.value))
-					return this.onError(elm, "<?php echo JsEncode($t005_assetgroup_list->EconomicalLifeTime->errorMessage()) ?>");
+					return this.onError(elm, "<?php echo JsEncode($t005_assetgroup_list->EstimatedLife->errorMessage()) ?>");
+			<?php if ($t005_assetgroup_list->SLN->Required) { ?>
+				elm = this.getElements("x" + infix + "_SLN");
+				if (elm && !ew.isHidden(elm) && !ew.hasValue(elm))
+					return this.onError(elm, "<?php echo JsEncode(str_replace("%s", $t005_assetgroup_list->SLN->caption(), $t005_assetgroup_list->SLN->RequiredErrorMessage)) ?>");
+			<?php } ?>
+				elm = this.getElements("x" + infix + "_SLN");
+				if (elm && !ew.checkNumber(elm.value))
+					return this.onError(elm, "<?php echo JsEncode($t005_assetgroup_list->SLN->errorMessage()) ?>");
 
 				// Call Form_CustomValidate event
 				if (!this.Form_CustomValidate(fobj))
@@ -90,8 +103,10 @@ loadjs.ready("head", function() {
 	// Check empty row
 	ft005_assetgrouplist.emptyRow = function(infix) {
 		var fobj = this._form;
+		if (ew.valueChanged(fobj, infix, "Code", false)) return false;
 		if (ew.valueChanged(fobj, infix, "Description", false)) return false;
-		if (ew.valueChanged(fobj, infix, "EconomicalLifeTime", false)) return false;
+		if (ew.valueChanged(fobj, infix, "EstimatedLife", false)) return false;
+		if (ew.valueChanged(fobj, infix, "SLN", false)) return false;
 		return true;
 	}
 
@@ -177,6 +192,15 @@ $t005_assetgroup_list->renderListOptions();
 // Render list options (header, left)
 $t005_assetgroup_list->ListOptions->render("header", "left");
 ?>
+<?php if ($t005_assetgroup_list->Code->Visible) { // Code ?>
+	<?php if ($t005_assetgroup_list->SortUrl($t005_assetgroup_list->Code) == "") { ?>
+		<th data-name="Code" class="<?php echo $t005_assetgroup_list->Code->headerCellClass() ?>"><div id="elh_t005_assetgroup_Code" class="t005_assetgroup_Code"><div class="ew-table-header-caption"><?php echo $t005_assetgroup_list->Code->caption() ?></div></div></th>
+	<?php } else { ?>
+		<th data-name="Code" class="<?php echo $t005_assetgroup_list->Code->headerCellClass() ?>"><div class="ew-pointer" onclick="ew.sort(event, '<?php echo $t005_assetgroup_list->SortUrl($t005_assetgroup_list->Code) ?>', 2);"><div id="elh_t005_assetgroup_Code" class="t005_assetgroup_Code">
+			<div class="ew-table-header-btn"><span class="ew-table-header-caption"><?php echo $t005_assetgroup_list->Code->caption() ?></span><span class="ew-table-header-sort"><?php if ($t005_assetgroup_list->Code->getSort() == "ASC") { ?><i class="fas fa-sort-up"></i><?php } elseif ($t005_assetgroup_list->Code->getSort() == "DESC") { ?><i class="fas fa-sort-down"></i><?php } ?></span></div>
+		</div></div></th>
+	<?php } ?>
+<?php } ?>
 <?php if ($t005_assetgroup_list->Description->Visible) { // Description ?>
 	<?php if ($t005_assetgroup_list->SortUrl($t005_assetgroup_list->Description) == "") { ?>
 		<th data-name="Description" class="<?php echo $t005_assetgroup_list->Description->headerCellClass() ?>"><div id="elh_t005_assetgroup_Description" class="t005_assetgroup_Description"><div class="ew-table-header-caption"><?php echo $t005_assetgroup_list->Description->caption() ?></div></div></th>
@@ -186,12 +210,21 @@ $t005_assetgroup_list->ListOptions->render("header", "left");
 		</div></div></th>
 	<?php } ?>
 <?php } ?>
-<?php if ($t005_assetgroup_list->EconomicalLifeTime->Visible) { // EconomicalLifeTime ?>
-	<?php if ($t005_assetgroup_list->SortUrl($t005_assetgroup_list->EconomicalLifeTime) == "") { ?>
-		<th data-name="EconomicalLifeTime" class="<?php echo $t005_assetgroup_list->EconomicalLifeTime->headerCellClass() ?>"><div id="elh_t005_assetgroup_EconomicalLifeTime" class="t005_assetgroup_EconomicalLifeTime"><div class="ew-table-header-caption"><?php echo $t005_assetgroup_list->EconomicalLifeTime->caption() ?></div></div></th>
+<?php if ($t005_assetgroup_list->EstimatedLife->Visible) { // EstimatedLife ?>
+	<?php if ($t005_assetgroup_list->SortUrl($t005_assetgroup_list->EstimatedLife) == "") { ?>
+		<th data-name="EstimatedLife" class="<?php echo $t005_assetgroup_list->EstimatedLife->headerCellClass() ?>"><div id="elh_t005_assetgroup_EstimatedLife" class="t005_assetgroup_EstimatedLife"><div class="ew-table-header-caption"><?php echo $t005_assetgroup_list->EstimatedLife->caption() ?></div></div></th>
 	<?php } else { ?>
-		<th data-name="EconomicalLifeTime" class="<?php echo $t005_assetgroup_list->EconomicalLifeTime->headerCellClass() ?>"><div class="ew-pointer" onclick="ew.sort(event, '<?php echo $t005_assetgroup_list->SortUrl($t005_assetgroup_list->EconomicalLifeTime) ?>', 2);"><div id="elh_t005_assetgroup_EconomicalLifeTime" class="t005_assetgroup_EconomicalLifeTime">
-			<div class="ew-table-header-btn"><span class="ew-table-header-caption"><?php echo $t005_assetgroup_list->EconomicalLifeTime->caption() ?></span><span class="ew-table-header-sort"><?php if ($t005_assetgroup_list->EconomicalLifeTime->getSort() == "ASC") { ?><i class="fas fa-sort-up"></i><?php } elseif ($t005_assetgroup_list->EconomicalLifeTime->getSort() == "DESC") { ?><i class="fas fa-sort-down"></i><?php } ?></span></div>
+		<th data-name="EstimatedLife" class="<?php echo $t005_assetgroup_list->EstimatedLife->headerCellClass() ?>"><div class="ew-pointer" onclick="ew.sort(event, '<?php echo $t005_assetgroup_list->SortUrl($t005_assetgroup_list->EstimatedLife) ?>', 2);"><div id="elh_t005_assetgroup_EstimatedLife" class="t005_assetgroup_EstimatedLife">
+			<div class="ew-table-header-btn"><span class="ew-table-header-caption"><?php echo $t005_assetgroup_list->EstimatedLife->caption() ?></span><span class="ew-table-header-sort"><?php if ($t005_assetgroup_list->EstimatedLife->getSort() == "ASC") { ?><i class="fas fa-sort-up"></i><?php } elseif ($t005_assetgroup_list->EstimatedLife->getSort() == "DESC") { ?><i class="fas fa-sort-down"></i><?php } ?></span></div>
+		</div></div></th>
+	<?php } ?>
+<?php } ?>
+<?php if ($t005_assetgroup_list->SLN->Visible) { // SLN ?>
+	<?php if ($t005_assetgroup_list->SortUrl($t005_assetgroup_list->SLN) == "") { ?>
+		<th data-name="SLN" class="<?php echo $t005_assetgroup_list->SLN->headerCellClass() ?>"><div id="elh_t005_assetgroup_SLN" class="t005_assetgroup_SLN"><div class="ew-table-header-caption"><?php echo $t005_assetgroup_list->SLN->caption() ?></div></div></th>
+	<?php } else { ?>
+		<th data-name="SLN" class="<?php echo $t005_assetgroup_list->SLN->headerCellClass() ?>"><div class="ew-pointer" onclick="ew.sort(event, '<?php echo $t005_assetgroup_list->SortUrl($t005_assetgroup_list->SLN) ?>', 2);"><div id="elh_t005_assetgroup_SLN" class="t005_assetgroup_SLN">
+			<div class="ew-table-header-btn"><span class="ew-table-header-caption"><?php echo $t005_assetgroup_list->SLN->caption() ?></span><span class="ew-table-header-sort"><?php if ($t005_assetgroup_list->SLN->getSort() == "ASC") { ?><i class="fas fa-sort-up"></i><?php } elseif ($t005_assetgroup_list->SLN->getSort() == "DESC") { ?><i class="fas fa-sort-down"></i><?php } ?></span></div>
 		</div></div></th>
 	<?php } ?>
 <?php } ?>
@@ -303,6 +336,33 @@ while ($t005_assetgroup_list->RecordCount < $t005_assetgroup_list->StopRecord) {
 // Render list options (body, left)
 $t005_assetgroup_list->ListOptions->render("body", "left", $t005_assetgroup_list->RowCount);
 ?>
+	<?php if ($t005_assetgroup_list->Code->Visible) { // Code ?>
+		<td data-name="Code" <?php echo $t005_assetgroup_list->Code->cellAttributes() ?>>
+<?php if ($t005_assetgroup->RowType == ROWTYPE_ADD) { // Add record ?>
+<span id="el<?php echo $t005_assetgroup_list->RowCount ?>_t005_assetgroup_Code" class="form-group">
+<input type="text" data-table="t005_assetgroup" data-field="x_Code" name="x<?php echo $t005_assetgroup_list->RowIndex ?>_Code" id="x<?php echo $t005_assetgroup_list->RowIndex ?>_Code" size="2" maxlength="5" placeholder="<?php echo HtmlEncode($t005_assetgroup_list->Code->getPlaceHolder()) ?>" value="<?php echo $t005_assetgroup_list->Code->EditValue ?>"<?php echo $t005_assetgroup_list->Code->editAttributes() ?>>
+</span>
+<input type="hidden" data-table="t005_assetgroup" data-field="x_Code" name="o<?php echo $t005_assetgroup_list->RowIndex ?>_Code" id="o<?php echo $t005_assetgroup_list->RowIndex ?>_Code" value="<?php echo HtmlEncode($t005_assetgroup_list->Code->OldValue) ?>">
+<?php } ?>
+<?php if ($t005_assetgroup->RowType == ROWTYPE_EDIT) { // Edit record ?>
+<span id="el<?php echo $t005_assetgroup_list->RowCount ?>_t005_assetgroup_Code" class="form-group">
+<input type="text" data-table="t005_assetgroup" data-field="x_Code" name="x<?php echo $t005_assetgroup_list->RowIndex ?>_Code" id="x<?php echo $t005_assetgroup_list->RowIndex ?>_Code" size="2" maxlength="5" placeholder="<?php echo HtmlEncode($t005_assetgroup_list->Code->getPlaceHolder()) ?>" value="<?php echo $t005_assetgroup_list->Code->EditValue ?>"<?php echo $t005_assetgroup_list->Code->editAttributes() ?>>
+</span>
+<?php } ?>
+<?php if ($t005_assetgroup->RowType == ROWTYPE_VIEW) { // View record ?>
+<span id="el<?php echo $t005_assetgroup_list->RowCount ?>_t005_assetgroup_Code">
+<span<?php echo $t005_assetgroup_list->Code->viewAttributes() ?>><?php echo $t005_assetgroup_list->Code->getViewValue() ?></span>
+</span>
+<?php } ?>
+</td>
+	<?php } ?>
+<?php if ($t005_assetgroup->RowType == ROWTYPE_ADD) { // Add record ?>
+<input type="hidden" data-table="t005_assetgroup" data-field="x_id" name="x<?php echo $t005_assetgroup_list->RowIndex ?>_id" id="x<?php echo $t005_assetgroup_list->RowIndex ?>_id" value="<?php echo HtmlEncode($t005_assetgroup_list->id->CurrentValue) ?>">
+<input type="hidden" data-table="t005_assetgroup" data-field="x_id" name="o<?php echo $t005_assetgroup_list->RowIndex ?>_id" id="o<?php echo $t005_assetgroup_list->RowIndex ?>_id" value="<?php echo HtmlEncode($t005_assetgroup_list->id->OldValue) ?>">
+<?php } ?>
+<?php if ($t005_assetgroup->RowType == ROWTYPE_EDIT || $t005_assetgroup->CurrentMode == "edit") { ?>
+<input type="hidden" data-table="t005_assetgroup" data-field="x_id" name="x<?php echo $t005_assetgroup_list->RowIndex ?>_id" id="x<?php echo $t005_assetgroup_list->RowIndex ?>_id" value="<?php echo HtmlEncode($t005_assetgroup_list->id->CurrentValue) ?>">
+<?php } ?>
 	<?php if ($t005_assetgroup_list->Description->Visible) { // Description ?>
 		<td data-name="Description" <?php echo $t005_assetgroup_list->Description->cellAttributes() ?>>
 <?php if ($t005_assetgroup->RowType == ROWTYPE_ADD) { // Add record ?>
@@ -323,29 +383,42 @@ $t005_assetgroup_list->ListOptions->render("body", "left", $t005_assetgroup_list
 <?php } ?>
 </td>
 	<?php } ?>
+	<?php if ($t005_assetgroup_list->EstimatedLife->Visible) { // EstimatedLife ?>
+		<td data-name="EstimatedLife" <?php echo $t005_assetgroup_list->EstimatedLife->cellAttributes() ?>>
 <?php if ($t005_assetgroup->RowType == ROWTYPE_ADD) { // Add record ?>
-<input type="hidden" data-table="t005_assetgroup" data-field="x_id" name="x<?php echo $t005_assetgroup_list->RowIndex ?>_id" id="x<?php echo $t005_assetgroup_list->RowIndex ?>_id" value="<?php echo HtmlEncode($t005_assetgroup_list->id->CurrentValue) ?>">
-<input type="hidden" data-table="t005_assetgroup" data-field="x_id" name="o<?php echo $t005_assetgroup_list->RowIndex ?>_id" id="o<?php echo $t005_assetgroup_list->RowIndex ?>_id" value="<?php echo HtmlEncode($t005_assetgroup_list->id->OldValue) ?>">
-<?php } ?>
-<?php if ($t005_assetgroup->RowType == ROWTYPE_EDIT || $t005_assetgroup->CurrentMode == "edit") { ?>
-<input type="hidden" data-table="t005_assetgroup" data-field="x_id" name="x<?php echo $t005_assetgroup_list->RowIndex ?>_id" id="x<?php echo $t005_assetgroup_list->RowIndex ?>_id" value="<?php echo HtmlEncode($t005_assetgroup_list->id->CurrentValue) ?>">
-<?php } ?>
-	<?php if ($t005_assetgroup_list->EconomicalLifeTime->Visible) { // EconomicalLifeTime ?>
-		<td data-name="EconomicalLifeTime" <?php echo $t005_assetgroup_list->EconomicalLifeTime->cellAttributes() ?>>
-<?php if ($t005_assetgroup->RowType == ROWTYPE_ADD) { // Add record ?>
-<span id="el<?php echo $t005_assetgroup_list->RowCount ?>_t005_assetgroup_EconomicalLifeTime" class="form-group">
-<input type="text" data-table="t005_assetgroup" data-field="x_EconomicalLifeTime" name="x<?php echo $t005_assetgroup_list->RowIndex ?>_EconomicalLifeTime" id="x<?php echo $t005_assetgroup_list->RowIndex ?>_EconomicalLifeTime" size="2" maxlength="4" placeholder="<?php echo HtmlEncode($t005_assetgroup_list->EconomicalLifeTime->getPlaceHolder()) ?>" value="<?php echo $t005_assetgroup_list->EconomicalLifeTime->EditValue ?>"<?php echo $t005_assetgroup_list->EconomicalLifeTime->editAttributes() ?>>
+<span id="el<?php echo $t005_assetgroup_list->RowCount ?>_t005_assetgroup_EstimatedLife" class="form-group">
+<input type="text" data-table="t005_assetgroup" data-field="x_EstimatedLife" name="x<?php echo $t005_assetgroup_list->RowIndex ?>_EstimatedLife" id="x<?php echo $t005_assetgroup_list->RowIndex ?>_EstimatedLife" size="2" maxlength="4" placeholder="<?php echo HtmlEncode($t005_assetgroup_list->EstimatedLife->getPlaceHolder()) ?>" value="<?php echo $t005_assetgroup_list->EstimatedLife->EditValue ?>"<?php echo $t005_assetgroup_list->EstimatedLife->editAttributes() ?>>
 </span>
-<input type="hidden" data-table="t005_assetgroup" data-field="x_EconomicalLifeTime" name="o<?php echo $t005_assetgroup_list->RowIndex ?>_EconomicalLifeTime" id="o<?php echo $t005_assetgroup_list->RowIndex ?>_EconomicalLifeTime" value="<?php echo HtmlEncode($t005_assetgroup_list->EconomicalLifeTime->OldValue) ?>">
+<input type="hidden" data-table="t005_assetgroup" data-field="x_EstimatedLife" name="o<?php echo $t005_assetgroup_list->RowIndex ?>_EstimatedLife" id="o<?php echo $t005_assetgroup_list->RowIndex ?>_EstimatedLife" value="<?php echo HtmlEncode($t005_assetgroup_list->EstimatedLife->OldValue) ?>">
 <?php } ?>
 <?php if ($t005_assetgroup->RowType == ROWTYPE_EDIT) { // Edit record ?>
-<span id="el<?php echo $t005_assetgroup_list->RowCount ?>_t005_assetgroup_EconomicalLifeTime" class="form-group">
-<input type="text" data-table="t005_assetgroup" data-field="x_EconomicalLifeTime" name="x<?php echo $t005_assetgroup_list->RowIndex ?>_EconomicalLifeTime" id="x<?php echo $t005_assetgroup_list->RowIndex ?>_EconomicalLifeTime" size="2" maxlength="4" placeholder="<?php echo HtmlEncode($t005_assetgroup_list->EconomicalLifeTime->getPlaceHolder()) ?>" value="<?php echo $t005_assetgroup_list->EconomicalLifeTime->EditValue ?>"<?php echo $t005_assetgroup_list->EconomicalLifeTime->editAttributes() ?>>
+<span id="el<?php echo $t005_assetgroup_list->RowCount ?>_t005_assetgroup_EstimatedLife" class="form-group">
+<input type="text" data-table="t005_assetgroup" data-field="x_EstimatedLife" name="x<?php echo $t005_assetgroup_list->RowIndex ?>_EstimatedLife" id="x<?php echo $t005_assetgroup_list->RowIndex ?>_EstimatedLife" size="2" maxlength="4" placeholder="<?php echo HtmlEncode($t005_assetgroup_list->EstimatedLife->getPlaceHolder()) ?>" value="<?php echo $t005_assetgroup_list->EstimatedLife->EditValue ?>"<?php echo $t005_assetgroup_list->EstimatedLife->editAttributes() ?>>
 </span>
 <?php } ?>
 <?php if ($t005_assetgroup->RowType == ROWTYPE_VIEW) { // View record ?>
-<span id="el<?php echo $t005_assetgroup_list->RowCount ?>_t005_assetgroup_EconomicalLifeTime">
-<span<?php echo $t005_assetgroup_list->EconomicalLifeTime->viewAttributes() ?>><?php echo $t005_assetgroup_list->EconomicalLifeTime->getViewValue() ?></span>
+<span id="el<?php echo $t005_assetgroup_list->RowCount ?>_t005_assetgroup_EstimatedLife">
+<span<?php echo $t005_assetgroup_list->EstimatedLife->viewAttributes() ?>><?php echo $t005_assetgroup_list->EstimatedLife->getViewValue() ?></span>
+</span>
+<?php } ?>
+</td>
+	<?php } ?>
+	<?php if ($t005_assetgroup_list->SLN->Visible) { // SLN ?>
+		<td data-name="SLN" <?php echo $t005_assetgroup_list->SLN->cellAttributes() ?>>
+<?php if ($t005_assetgroup->RowType == ROWTYPE_ADD) { // Add record ?>
+<span id="el<?php echo $t005_assetgroup_list->RowCount ?>_t005_assetgroup_SLN" class="form-group">
+<input type="text" data-table="t005_assetgroup" data-field="x_SLN" name="x<?php echo $t005_assetgroup_list->RowIndex ?>_SLN" id="x<?php echo $t005_assetgroup_list->RowIndex ?>_SLN" size="2" maxlength="4" placeholder="<?php echo HtmlEncode($t005_assetgroup_list->SLN->getPlaceHolder()) ?>" value="<?php echo $t005_assetgroup_list->SLN->EditValue ?>"<?php echo $t005_assetgroup_list->SLN->editAttributes() ?>>
+</span>
+<input type="hidden" data-table="t005_assetgroup" data-field="x_SLN" name="o<?php echo $t005_assetgroup_list->RowIndex ?>_SLN" id="o<?php echo $t005_assetgroup_list->RowIndex ?>_SLN" value="<?php echo HtmlEncode($t005_assetgroup_list->SLN->OldValue) ?>">
+<?php } ?>
+<?php if ($t005_assetgroup->RowType == ROWTYPE_EDIT) { // Edit record ?>
+<span id="el<?php echo $t005_assetgroup_list->RowCount ?>_t005_assetgroup_SLN" class="form-group">
+<input type="text" data-table="t005_assetgroup" data-field="x_SLN" name="x<?php echo $t005_assetgroup_list->RowIndex ?>_SLN" id="x<?php echo $t005_assetgroup_list->RowIndex ?>_SLN" size="2" maxlength="4" placeholder="<?php echo HtmlEncode($t005_assetgroup_list->SLN->getPlaceHolder()) ?>" value="<?php echo $t005_assetgroup_list->SLN->EditValue ?>"<?php echo $t005_assetgroup_list->SLN->editAttributes() ?>>
+</span>
+<?php } ?>
+<?php if ($t005_assetgroup->RowType == ROWTYPE_VIEW) { // View record ?>
+<span id="el<?php echo $t005_assetgroup_list->RowCount ?>_t005_assetgroup_SLN">
+<span<?php echo $t005_assetgroup_list->SLN->viewAttributes() ?>><?php echo $t005_assetgroup_list->SLN->getViewValue() ?></span>
 </span>
 <?php } ?>
 </td>
@@ -395,6 +468,14 @@ loadjs.ready(["ft005_assetgrouplist", "load"], function() {
 // Render list options (body, left)
 $t005_assetgroup_list->ListOptions->render("body", "left", $t005_assetgroup_list->RowIndex);
 ?>
+	<?php if ($t005_assetgroup_list->Code->Visible) { // Code ?>
+		<td data-name="Code">
+<span id="el$rowindex$_t005_assetgroup_Code" class="form-group t005_assetgroup_Code">
+<input type="text" data-table="t005_assetgroup" data-field="x_Code" name="x<?php echo $t005_assetgroup_list->RowIndex ?>_Code" id="x<?php echo $t005_assetgroup_list->RowIndex ?>_Code" size="2" maxlength="5" placeholder="<?php echo HtmlEncode($t005_assetgroup_list->Code->getPlaceHolder()) ?>" value="<?php echo $t005_assetgroup_list->Code->EditValue ?>"<?php echo $t005_assetgroup_list->Code->editAttributes() ?>>
+</span>
+<input type="hidden" data-table="t005_assetgroup" data-field="x_Code" name="o<?php echo $t005_assetgroup_list->RowIndex ?>_Code" id="o<?php echo $t005_assetgroup_list->RowIndex ?>_Code" value="<?php echo HtmlEncode($t005_assetgroup_list->Code->OldValue) ?>">
+</td>
+	<?php } ?>
 	<?php if ($t005_assetgroup_list->Description->Visible) { // Description ?>
 		<td data-name="Description">
 <span id="el$rowindex$_t005_assetgroup_Description" class="form-group t005_assetgroup_Description">
@@ -403,12 +484,20 @@ $t005_assetgroup_list->ListOptions->render("body", "left", $t005_assetgroup_list
 <input type="hidden" data-table="t005_assetgroup" data-field="x_Description" name="o<?php echo $t005_assetgroup_list->RowIndex ?>_Description" id="o<?php echo $t005_assetgroup_list->RowIndex ?>_Description" value="<?php echo HtmlEncode($t005_assetgroup_list->Description->OldValue) ?>">
 </td>
 	<?php } ?>
-	<?php if ($t005_assetgroup_list->EconomicalLifeTime->Visible) { // EconomicalLifeTime ?>
-		<td data-name="EconomicalLifeTime">
-<span id="el$rowindex$_t005_assetgroup_EconomicalLifeTime" class="form-group t005_assetgroup_EconomicalLifeTime">
-<input type="text" data-table="t005_assetgroup" data-field="x_EconomicalLifeTime" name="x<?php echo $t005_assetgroup_list->RowIndex ?>_EconomicalLifeTime" id="x<?php echo $t005_assetgroup_list->RowIndex ?>_EconomicalLifeTime" size="2" maxlength="4" placeholder="<?php echo HtmlEncode($t005_assetgroup_list->EconomicalLifeTime->getPlaceHolder()) ?>" value="<?php echo $t005_assetgroup_list->EconomicalLifeTime->EditValue ?>"<?php echo $t005_assetgroup_list->EconomicalLifeTime->editAttributes() ?>>
+	<?php if ($t005_assetgroup_list->EstimatedLife->Visible) { // EstimatedLife ?>
+		<td data-name="EstimatedLife">
+<span id="el$rowindex$_t005_assetgroup_EstimatedLife" class="form-group t005_assetgroup_EstimatedLife">
+<input type="text" data-table="t005_assetgroup" data-field="x_EstimatedLife" name="x<?php echo $t005_assetgroup_list->RowIndex ?>_EstimatedLife" id="x<?php echo $t005_assetgroup_list->RowIndex ?>_EstimatedLife" size="2" maxlength="4" placeholder="<?php echo HtmlEncode($t005_assetgroup_list->EstimatedLife->getPlaceHolder()) ?>" value="<?php echo $t005_assetgroup_list->EstimatedLife->EditValue ?>"<?php echo $t005_assetgroup_list->EstimatedLife->editAttributes() ?>>
 </span>
-<input type="hidden" data-table="t005_assetgroup" data-field="x_EconomicalLifeTime" name="o<?php echo $t005_assetgroup_list->RowIndex ?>_EconomicalLifeTime" id="o<?php echo $t005_assetgroup_list->RowIndex ?>_EconomicalLifeTime" value="<?php echo HtmlEncode($t005_assetgroup_list->EconomicalLifeTime->OldValue) ?>">
+<input type="hidden" data-table="t005_assetgroup" data-field="x_EstimatedLife" name="o<?php echo $t005_assetgroup_list->RowIndex ?>_EstimatedLife" id="o<?php echo $t005_assetgroup_list->RowIndex ?>_EstimatedLife" value="<?php echo HtmlEncode($t005_assetgroup_list->EstimatedLife->OldValue) ?>">
+</td>
+	<?php } ?>
+	<?php if ($t005_assetgroup_list->SLN->Visible) { // SLN ?>
+		<td data-name="SLN">
+<span id="el$rowindex$_t005_assetgroup_SLN" class="form-group t005_assetgroup_SLN">
+<input type="text" data-table="t005_assetgroup" data-field="x_SLN" name="x<?php echo $t005_assetgroup_list->RowIndex ?>_SLN" id="x<?php echo $t005_assetgroup_list->RowIndex ?>_SLN" size="2" maxlength="4" placeholder="<?php echo HtmlEncode($t005_assetgroup_list->SLN->getPlaceHolder()) ?>" value="<?php echo $t005_assetgroup_list->SLN->EditValue ?>"<?php echo $t005_assetgroup_list->SLN->editAttributes() ?>>
+</span>
+<input type="hidden" data-table="t005_assetgroup" data-field="x_SLN" name="o<?php echo $t005_assetgroup_list->RowIndex ?>_SLN" id="o<?php echo $t005_assetgroup_list->RowIndex ?>_SLN" value="<?php echo HtmlEncode($t005_assetgroup_list->SLN->OldValue) ?>">
 </td>
 	<?php } ?>
 <?php

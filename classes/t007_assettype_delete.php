@@ -4,20 +4,20 @@ namespace PHPMaker2020\p_simasset1;
 /**
  * Page class
  */
-class t005_assetgroup_search extends t005_assetgroup
+class t007_assettype_delete extends t007_assettype
 {
 
 	// Page ID
-	public $PageID = "search";
+	public $PageID = "delete";
 
 	// Project ID
 	public $ProjectID = "{E1C6E322-15B9-474C-85CF-A99378A9BC2B}";
 
 	// Table name
-	public $TableName = 't005_assetgroup';
+	public $TableName = 't007_assettype';
 
 	// Page object name
-	public $PageObjName = "t005_assetgroup_search";
+	public $PageObjName = "t007_assettype_delete";
 
 	// Audit Trail
 	public $AuditTrailOnAdd = TRUE;
@@ -349,11 +349,15 @@ class t005_assetgroup_search extends t005_assetgroup
 		// Parent constuctor
 		parent::__construct();
 
-		// Table object (t005_assetgroup)
-		if (!isset($GLOBALS["t005_assetgroup"]) || get_class($GLOBALS["t005_assetgroup"]) == PROJECT_NAMESPACE . "t005_assetgroup") {
-			$GLOBALS["t005_assetgroup"] = &$this;
-			$GLOBALS["Table"] = &$GLOBALS["t005_assetgroup"];
+		// Table object (t007_assettype)
+		if (!isset($GLOBALS["t007_assettype"]) || get_class($GLOBALS["t007_assettype"]) == PROJECT_NAMESPACE . "t007_assettype") {
+			$GLOBALS["t007_assettype"] = &$this;
+			$GLOBALS["Table"] = &$GLOBALS["t007_assettype"];
 		}
+
+		// Table object (t005_assetgroup)
+		if (!isset($GLOBALS['t005_assetgroup']))
+			$GLOBALS['t005_assetgroup'] = new t005_assetgroup();
 
 		// Table object (t201_users)
 		if (!isset($GLOBALS['t201_users']))
@@ -361,11 +365,11 @@ class t005_assetgroup_search extends t005_assetgroup
 
 		// Page ID (for backward compatibility only)
 		if (!defined(PROJECT_NAMESPACE . "PAGE_ID"))
-			define(PROJECT_NAMESPACE . "PAGE_ID", 'search');
+			define(PROJECT_NAMESPACE . "PAGE_ID", 'delete');
 
 		// Table name (for backward compatibility only)
 		if (!defined(PROJECT_NAMESPACE . "TABLE_NAME"))
-			define(PROJECT_NAMESPACE . "TABLE_NAME", 't005_assetgroup');
+			define(PROJECT_NAMESPACE . "TABLE_NAME", 't007_assettype');
 
 		// Start timer
 		if (!isset($GLOBALS["DebugTimer"]))
@@ -394,14 +398,14 @@ class t005_assetgroup_search extends t005_assetgroup
 		Page_Unloaded();
 
 		// Export
-		global $t005_assetgroup;
+		global $t007_assettype;
 		if ($this->CustomExport && $this->CustomExport == $this->Export && array_key_exists($this->CustomExport, Config("EXPORT_CLASSES"))) {
 				$content = ob_get_contents();
 			if ($ExportFileName == "")
 				$ExportFileName = $this->TableVar;
 			$class = PROJECT_NAMESPACE . Config("EXPORT_CLASSES." . $this->CustomExport);
 			if (class_exists($class)) {
-				$doc = new $class($t005_assetgroup);
+				$doc = new $class($t007_assettype);
 				$doc->Text = @$content;
 				if ($this->isExport("email"))
 					echo $this->exportEmail($doc->Text);
@@ -429,24 +433,8 @@ class t005_assetgroup_search extends t005_assetgroup
 		if ($url != "") {
 			if (!Config("DEBUG") && ob_get_length())
 				ob_end_clean();
-
-			// Handle modal response
-			if ($this->IsModal) { // Show as modal
-				$row = ["url" => $url, "modal" => "1"];
-				$pageName = GetPageName($url);
-				if ($pageName != $this->getListUrl()) { // Not List page
-					$row["caption"] = $this->getModalCaption($pageName);
-					if ($pageName == "t005_assetgroupview.php")
-						$row["view"] = "1";
-				} else { // List page should not be shown as modal => error
-					$row["error"] = $this->getFailureMessage();
-					$this->clearFailureMessage();
-				}
-				WriteJson($row);
-			} else {
-				SaveDebugMessage();
-				AddHeader("Location", $url);
-			}
+			SaveDebugMessage();
+			AddHeader("Location", $url);
 		}
 		exit();
 	}
@@ -543,80 +531,6 @@ class t005_assetgroup_search extends t005_assetgroup
 			$this->id->Visible = FALSE;
 	}
 
-	// Lookup data
-	public function lookup()
-	{
-		global $Language, $Security;
-		if (!isset($Language))
-			$Language = new Language(Config("LANGUAGE_FOLDER"), Post("language", ""));
-
-		// Set up API request
-		if (!ValidApiRequest())
-			return FALSE;
-		$this->setupApiSecurity();
-
-		// Get lookup object
-		$fieldName = Post("field");
-		if (!array_key_exists($fieldName, $this->fields))
-			return FALSE;
-		$lookupField = $this->fields[$fieldName];
-		$lookup = $lookupField->Lookup;
-		if ($lookup === NULL)
-			return FALSE;
-		$tbl = $lookup->getTable();
-		if (!$Security->allowLookup(Config("PROJECT_ID") . $tbl->TableName)) // Lookup permission
-			return FALSE;
-
-		// Get lookup parameters
-		$lookupType = Post("ajax", "unknown");
-		$pageSize = -1;
-		$offset = -1;
-		$searchValue = "";
-		if (SameText($lookupType, "modal")) {
-			$searchValue = Post("sv", "");
-			$pageSize = Post("recperpage", 10);
-			$offset = Post("start", 0);
-		} elseif (SameText($lookupType, "autosuggest")) {
-			$searchValue = Param("q", "");
-			$pageSize = Param("n", -1);
-			$pageSize = is_numeric($pageSize) ? (int)$pageSize : -1;
-			if ($pageSize <= 0)
-				$pageSize = Config("AUTO_SUGGEST_MAX_ENTRIES");
-			$start = Param("start", -1);
-			$start = is_numeric($start) ? (int)$start : -1;
-			$page = Param("page", -1);
-			$page = is_numeric($page) ? (int)$page : -1;
-			$offset = $start >= 0 ? $start : ($page > 0 && $pageSize > 0 ? ($page - 1) * $pageSize : 0);
-		}
-		$userSelect = Decrypt(Post("s", ""));
-		$userFilter = Decrypt(Post("f", ""));
-		$userOrderBy = Decrypt(Post("o", ""));
-		$keys = Post("keys");
-		$lookup->LookupType = $lookupType; // Lookup type
-		if ($keys !== NULL) { // Selected records from modal
-			if (is_array($keys))
-				$keys = implode(Config("MULTIPLE_OPTION_SEPARATOR"), $keys);
-			$lookup->FilterFields = []; // Skip parent fields if any
-			$lookup->FilterValues[] = $keys; // Lookup values
-			$pageSize = -1; // Show all records
-		} else { // Lookup values
-			$lookup->FilterValues[] = Post("v0", Post("lookupValue", ""));
-		}
-		$cnt = is_array($lookup->FilterFields) ? count($lookup->FilterFields) : 0;
-		for ($i = 1; $i <= $cnt; $i++)
-			$lookup->FilterValues[] = Post("v" . $i, "");
-		$lookup->SearchValue = $searchValue;
-		$lookup->PageSize = $pageSize;
-		$lookup->Offset = $offset;
-		if ($userSelect != "")
-			$lookup->UserSelect = $userSelect;
-		if ($userFilter != "")
-			$lookup->UserFilter = $userFilter;
-		if ($userOrderBy != "")
-			$lookup->UserOrderBy = $userOrderBy;
-		$lookup->toJson($this); // Use settings from current page
-	}
-
 	// Set up API security
 	public function setupApiSecurity()
 	{
@@ -630,9 +544,14 @@ class t005_assetgroup_search extends t005_assetgroup
 		$Security->loadUserID();
 		$Security->UserID_Loaded();
 	}
-	public $FormClassName = "ew-horizontal ew-form ew-search-form";
-	public $IsModal = FALSE;
-	public $IsMobileOrModal = FALSE;
+	public $DbMasterFilter = "";
+	public $DbDetailFilter = "";
+	public $StartRecord;
+	public $TotalRecords = 0;
+	public $RecordCount;
+	public $RecKeys = [];
+	public $StartRowCount = 1;
+	public $RowCount = 0;
 
 	//
 	// Page run
@@ -640,11 +559,7 @@ class t005_assetgroup_search extends t005_assetgroup
 
 	public function run()
 	{
-		global $ExportType, $CustomExportType, $ExportFileName, $UserProfile, $Language, $Security, $CurrentForm,
-			$SearchError, $SkipHeaderFooter;
-
-		// Is modal
-		$this->IsModal = (Param("modal") == "1");
+		global $ExportType, $CustomExportType, $ExportFileName, $UserProfile, $Language, $Security, $CurrentForm;
 
 		// User profile
 		$UserProfile = new UserProfile();
@@ -652,6 +567,10 @@ class t005_assetgroup_search extends t005_assetgroup
 		// Security
 		if (ValidApiRequest()) { // API request
 			$this->setupApiSecurity(); // Set up API Security
+			if (!$Security->canDelete()) {
+				SetStatus(401); // Unauthorized
+				return;
+			}
 		} else {
 			$Security = new AdvancedSecurity();
 			if (!$Security->isLoggedIn())
@@ -661,11 +580,11 @@ class t005_assetgroup_search extends t005_assetgroup
 			$Security->loadCurrentUserLevel($this->ProjectID . $this->TableName);
 			if ($Security->isLoggedIn())
 				$Security->TablePermission_Loaded();
-			if (!$Security->canSearch()) {
+			if (!$Security->canDelete()) {
 				$Security->saveLastUrl();
 				$this->setFailureMessage(DeniedMessage()); // Set no permission
 				if ($Security->canList())
-					$this->terminate(GetUrl("t005_assetgrouplist.php"));
+					$this->terminate(GetUrl("t007_assettypelist.php"));
 				else
 					$this->terminate(GetUrl("login.php"));
 				return;
@@ -676,15 +595,11 @@ class t005_assetgroup_search extends t005_assetgroup
 				$Security->UserID_Loaded();
 			}
 		}
-
-		// Create form object
-		$CurrentForm = new HttpForm();
 		$this->CurrentAction = Param("action"); // Set up current action
-		$this->id->setVisibility();
-		$this->Code->setVisibility();
+		$this->id->Visible = FALSE;
+		$this->assetgroup_id->setVisibility();
 		$this->Description->setVisibility();
-		$this->EstimatedLife->setVisibility();
-		$this->SLN->setVisibility();
+		$this->Code->setVisibility();
 		$this->hideFieldsForAddEdit();
 
 		// Do not use lookup cache
@@ -706,138 +621,149 @@ class t005_assetgroup_search extends t005_assetgroup
 		$this->createToken();
 
 		// Set up lookup cache
-		// Set up Breadcrumb
+		$this->setupLookupOptions($this->assetgroup_id);
 
+		// Check permission
+		if (!$Security->canDelete()) {
+			$this->setFailureMessage(DeniedMessage()); // No permission
+			$this->terminate("t007_assettypelist.php");
+			return;
+		}
+
+		// Set up master/detail parameters
+		$this->setupMasterParms();
+
+		// Set up Breadcrumb
 		$this->setupBreadcrumb();
 
-		// Check modal
-		if ($this->IsModal)
-			$SkipHeaderFooter = TRUE;
-		$this->IsMobileOrModal = IsMobile() || $this->IsModal;
-		if ($this->isPageRequest()) { // Validate request
+		// Load key parameters
+		$this->RecKeys = $this->getRecordKeys(); // Load record keys
+		$filter = $this->getFilterFromRecordKeys();
+		if ($filter == "") {
+			$this->terminate("t007_assettypelist.php"); // Prevent SQL injection, return to list
+			return;
+		}
 
-			// Get action
+		// Set up filter (WHERE Clause)
+		$this->CurrentFilter = $filter;
+
+		// Get action
+		if (IsApi()) {
+			$this->CurrentAction = "delete"; // Delete record directly
+		} elseif (Post("action") !== NULL) {
 			$this->CurrentAction = Post("action");
-			if ($this->isSearch()) {
-
-				// Build search string for advanced search, remove blank field
-				$this->loadSearchValues(); // Get search values
-				if ($this->validateSearch()) {
-					$srchStr = $this->buildAdvancedSearch();
-				} else {
-					$srchStr = "";
-					$this->setFailureMessage($SearchError);
-				}
-				if ($srchStr != "") {
-					$srchStr = $this->getUrlParm($srchStr);
-					$srchStr = "t005_assetgrouplist.php" . "?" . $srchStr;
-					$this->terminate($srchStr); // Go to list page
-				}
-			}
-		}
-
-		// Restore search settings from Session
-		if ($SearchError == "")
-			$this->loadAdvancedSearch();
-
-		// Render row for search
-		$this->RowType = ROWTYPE_SEARCH;
-		$this->resetAttributes();
-		$this->renderRow();
-	}
-
-	// Build advanced search
-	protected function buildAdvancedSearch()
-	{
-		$srchUrl = "";
-		$this->buildSearchUrl($srchUrl, $this->id); // id
-		$this->buildSearchUrl($srchUrl, $this->Code); // Code
-		$this->buildSearchUrl($srchUrl, $this->Description); // Description
-		$this->buildSearchUrl($srchUrl, $this->EstimatedLife); // EstimatedLife
-		$this->buildSearchUrl($srchUrl, $this->SLN); // SLN
-		if ($srchUrl != "")
-			$srchUrl .= "&";
-		$srchUrl .= "cmd=search";
-		return $srchUrl;
-	}
-
-	// Build search URL
-	protected function buildSearchUrl(&$url, &$fld, $oprOnly = FALSE)
-	{
-		global $CurrentForm;
-		$wrk = "";
-		$fldParm = $fld->Param;
-		$fldVal = $CurrentForm->getValue("x_$fldParm");
-		$fldOpr = $CurrentForm->getValue("z_$fldParm");
-		$fldCond = $CurrentForm->getValue("v_$fldParm");
-		$fldVal2 = $CurrentForm->getValue("y_$fldParm");
-		$fldOpr2 = $CurrentForm->getValue("w_$fldParm");
-		if (is_array($fldVal))
-			$fldVal = implode(Config("MULTIPLE_OPTION_SEPARATOR"), $fldVal);
-		if (is_array($fldVal2))
-			$fldVal2 = implode(Config("MULTIPLE_OPTION_SEPARATOR"), $fldVal2);
-		$fldOpr = strtoupper(trim($fldOpr));
-		$fldDataType = ($fld->IsVirtual) ? DATATYPE_STRING : $fld->DataType;
-		if ($fldOpr == "BETWEEN") {
-			$isValidValue = ($fldDataType != DATATYPE_NUMBER) ||
-				($fldDataType == DATATYPE_NUMBER && $this->searchValueIsNumeric($fld, $fldVal) && $this->searchValueIsNumeric($fld, $fldVal2));
-			if ($fldVal != "" && $fldVal2 != "" && $isValidValue) {
-				$wrk = "x_" . $fldParm . "=" . urlencode($fldVal) .
-					"&y_" . $fldParm . "=" . urlencode($fldVal2) .
-					"&z_" . $fldParm . "=" . urlencode($fldOpr);
-			}
+		} elseif (Get("action") == "1") {
+			$this->CurrentAction = "delete"; // Delete record directly
 		} else {
-			$isValidValue = ($fldDataType != DATATYPE_NUMBER) ||
-				($fldDataType == DATATYPE_NUMBER && $this->searchValueIsNumeric($fld, $fldVal));
-			if ($fldVal != "" && $isValidValue && IsValidOperator($fldOpr, $fldDataType)) {
-				$wrk = "x_" . $fldParm . "=" . urlencode($fldVal) .
-					"&z_" . $fldParm . "=" . urlencode($fldOpr);
-			} elseif ($fldOpr == "IS NULL" || $fldOpr == "IS NOT NULL" || ($fldOpr != "" && $oprOnly && IsValidOperator($fldOpr, $fldDataType))) {
-				$wrk = "z_" . $fldParm . "=" . urlencode($fldOpr);
-			}
-			$isValidValue = ($fldDataType != DATATYPE_NUMBER) ||
-				($fldDataType == DATATYPE_NUMBER && $this->searchValueIsNumeric($fld, $fldVal2));
-			if ($fldVal2 != "" && $isValidValue && IsValidOperator($fldOpr2, $fldDataType)) {
-				if ($wrk != "")
-					$wrk .= "&v_" . $fldParm . "=" . urlencode($fldCond) . "&";
-				$wrk .= "y_" . $fldParm . "=" . urlencode($fldVal2) .
-					"&w_" . $fldParm . "=" . urlencode($fldOpr2);
-			} elseif ($fldOpr2 == "IS NULL" || $fldOpr2 == "IS NOT NULL" || ($fldOpr2 != "" && $oprOnly && IsValidOperator($fldOpr2, $fldDataType))) {
-				if ($wrk != "")
-					$wrk .= "&v_" . $fldParm . "=" . urlencode($fldCond) . "&";
-				$wrk .= "w_" . $fldParm . "=" . urlencode($fldOpr2);
+			$this->CurrentAction = "delete"; // Delete record directly
+		}
+		if ($this->isDelete()) {
+			$this->SendEmail = TRUE; // Send email on delete success
+			if ($this->deleteRows()) { // Delete rows
+				if ($this->getSuccessMessage() == "")
+					$this->setSuccessMessage($Language->phrase("DeleteSuccess")); // Set up success message
+				if (IsApi()) {
+					$this->terminate(TRUE);
+					return;
+				} else {
+					$this->terminate($this->getReturnUrl()); // Return to caller
+				}
+			} else { // Delete failed
+				if (IsApi()) {
+					$this->terminate();
+					return;
+				}
+				$this->terminate($this->getReturnUrl()); // Return to caller
 			}
 		}
-		if ($wrk != "") {
-			if ($url != "")
-				$url .= "&";
-			$url .= $wrk;
+		if ($this->isShow()) { // Load records for display
+			if ($this->Recordset = $this->loadRecordset())
+				$this->TotalRecords = $this->Recordset->RecordCount(); // Get record count
+			if ($this->TotalRecords <= 0) { // No record found, exit
+				if ($this->Recordset)
+					$this->Recordset->close();
+				$this->terminate("t007_assettypelist.php"); // Return to list
+			}
 		}
 	}
-	protected function searchValueIsNumeric($fld, $value)
+
+	// Load recordset
+	public function loadRecordset($offset = -1, $rowcnt = -1)
 	{
-		if (IsFloatFormat($fld->Type))
-			$value = ConvertToFloatString($value);
-		return is_numeric($value);
+
+		// Load List page SQL
+		$sql = $this->getListSql();
+		$conn = $this->getConnection();
+
+		// Load recordset
+		$dbtype = GetConnectionType($this->Dbid);
+		if ($this->UseSelectLimit) {
+			$conn->raiseErrorFn = Config("ERROR_FUNC");
+			if ($dbtype == "MSSQL") {
+				$rs = $conn->selectLimit($sql, $rowcnt, $offset, ["_hasOrderBy" => trim($this->getOrderBy()) || trim($this->getSessionOrderBy())]);
+			} else {
+				$rs = $conn->selectLimit($sql, $rowcnt, $offset);
+			}
+			$conn->raiseErrorFn = "";
+		} else {
+			$rs = LoadRecordset($sql, $conn);
+		}
+
+		// Call Recordset Selected event
+		$this->Recordset_Selected($rs);
+		return $rs;
 	}
 
-	// Load search values for validation
-	protected function loadSearchValues()
+	// Load row based on key values
+	public function loadRow()
 	{
+		global $Security, $Language;
+		$filter = $this->getRecordFilter();
 
-		// Load search values
-		$got = FALSE;
-		if ($this->id->AdvancedSearch->post())
-			$got = TRUE;
-		if ($this->Code->AdvancedSearch->post())
-			$got = TRUE;
-		if ($this->Description->AdvancedSearch->post())
-			$got = TRUE;
-		if ($this->EstimatedLife->AdvancedSearch->post())
-			$got = TRUE;
-		if ($this->SLN->AdvancedSearch->post())
-			$got = TRUE;
-		return $got;
+		// Call Row Selecting event
+		$this->Row_Selecting($filter);
+
+		// Load SQL based on filter
+		$this->CurrentFilter = $filter;
+		$sql = $this->getCurrentSql();
+		$conn = $this->getConnection();
+		$res = FALSE;
+		$rs = LoadRecordset($sql, $conn);
+		if ($rs && !$rs->EOF) {
+			$res = TRUE;
+			$this->loadRowValues($rs); // Load row values
+			$rs->close();
+		}
+		return $res;
+	}
+
+	// Load row values from recordset
+	public function loadRowValues($rs = NULL)
+	{
+		if ($rs && !$rs->EOF)
+			$row = $rs->fields;
+		else
+			$row = $this->newRow();
+
+		// Call Row Selected event
+		$this->Row_Selected($row);
+		if (!$rs || $rs->EOF)
+			return;
+		$this->id->setDbValue($row['id']);
+		$this->assetgroup_id->setDbValue($row['assetgroup_id']);
+		$this->Description->setDbValue($row['Description']);
+		$this->Code->setDbValue($row['Code']);
+	}
+
+	// Return a row with default values
+	protected function newRow()
+	{
+		$row = [];
+		$row['id'] = NULL;
+		$row['assetgroup_id'] = NULL;
+		$row['Description'] = NULL;
+		$row['Code'] = NULL;
+		return $row;
 	}
 
 	// Render row values based on field settings
@@ -846,20 +772,15 @@ class t005_assetgroup_search extends t005_assetgroup
 		global $Security, $Language, $CurrentLanguage;
 
 		// Initialize URLs
-		// Convert decimal values if posted back
-
-		if ($this->SLN->FormValue == $this->SLN->CurrentValue && is_numeric(ConvertToFloatString($this->SLN->CurrentValue)))
-			$this->SLN->CurrentValue = ConvertToFloatString($this->SLN->CurrentValue);
-
 		// Call Row_Rendering event
+
 		$this->Row_Rendering();
 
 		// Common render codes for all row types
 		// id
-		// Code
+		// assetgroup_id
 		// Description
-		// EstimatedLife
-		// SLN
+		// Code
 
 		if ($this->RowType == ROWTYPE_VIEW) { // View row
 
@@ -867,135 +788,221 @@ class t005_assetgroup_search extends t005_assetgroup
 			$this->id->ViewValue = $this->id->CurrentValue;
 			$this->id->ViewCustomAttributes = "";
 
-			// Code
-			$this->Code->ViewValue = $this->Code->CurrentValue;
-			$this->Code->ViewCustomAttributes = "";
+			// assetgroup_id
+			$this->assetgroup_id->ViewValue = $this->assetgroup_id->CurrentValue;
+			$curVal = strval($this->assetgroup_id->CurrentValue);
+			if ($curVal != "") {
+				$this->assetgroup_id->ViewValue = $this->assetgroup_id->lookupCacheOption($curVal);
+				if ($this->assetgroup_id->ViewValue === NULL) { // Lookup from database
+					$filterWrk = "`id`" . SearchString("=", $curVal, DATATYPE_NUMBER, "");
+					$sqlWrk = $this->assetgroup_id->Lookup->getSql(FALSE, $filterWrk, '', $this);
+					$rswrk = Conn()->execute($sqlWrk);
+					if ($rswrk && !$rswrk->EOF) { // Lookup values found
+						$arwrk = [];
+						$arwrk[1] = $rswrk->fields('df');
+						$arwrk[2] = $rswrk->fields('df2');
+						$arwrk[3] = FormatNumber($rswrk->fields('df3'), 0, -2, -2, -2);
+						$arwrk[4] = FormatNumber($rswrk->fields('df4'), 2, -2, -2, -2);
+						$this->assetgroup_id->ViewValue = $this->assetgroup_id->displayValue($arwrk);
+						$rswrk->Close();
+					} else {
+						$this->assetgroup_id->ViewValue = $this->assetgroup_id->CurrentValue;
+					}
+				}
+			} else {
+				$this->assetgroup_id->ViewValue = NULL;
+			}
+			$this->assetgroup_id->ViewCustomAttributes = "";
 
 			// Description
 			$this->Description->ViewValue = $this->Description->CurrentValue;
 			$this->Description->ViewCustomAttributes = "";
 
-			// EstimatedLife
-			$this->EstimatedLife->ViewValue = $this->EstimatedLife->CurrentValue;
-			$this->EstimatedLife->ViewValue = FormatNumber($this->EstimatedLife->ViewValue, 0, -2, -2, -2);
-			$this->EstimatedLife->CellCssStyle .= "text-align: right;";
-			$this->EstimatedLife->ViewCustomAttributes = "";
-
-			// SLN
-			$this->SLN->ViewValue = $this->SLN->CurrentValue;
-			$this->SLN->ViewValue = FormatNumber($this->SLN->ViewValue, 2, -2, -2, -2);
-			$this->SLN->CellCssStyle .= "text-align: right;";
-			$this->SLN->ViewCustomAttributes = "";
-
-			// id
-			$this->id->LinkCustomAttributes = "";
-			$this->id->HrefValue = "";
-			$this->id->TooltipValue = "";
-
 			// Code
-			$this->Code->LinkCustomAttributes = "";
-			$this->Code->HrefValue = "";
-			$this->Code->TooltipValue = "";
+			$this->Code->ViewValue = $this->Code->CurrentValue;
+			$this->Code->ViewCustomAttributes = "";
+
+			// assetgroup_id
+			$this->assetgroup_id->LinkCustomAttributes = "";
+			$this->assetgroup_id->HrefValue = "";
+			$this->assetgroup_id->TooltipValue = "";
 
 			// Description
 			$this->Description->LinkCustomAttributes = "";
 			$this->Description->HrefValue = "";
 			$this->Description->TooltipValue = "";
 
-			// EstimatedLife
-			$this->EstimatedLife->LinkCustomAttributes = "";
-			$this->EstimatedLife->HrefValue = "";
-			$this->EstimatedLife->TooltipValue = "";
-
-			// SLN
-			$this->SLN->LinkCustomAttributes = "";
-			$this->SLN->HrefValue = "";
-			$this->SLN->TooltipValue = "";
-		} elseif ($this->RowType == ROWTYPE_SEARCH) { // Search row
-
-			// id
-			$this->id->EditAttrs["class"] = "form-control";
-			$this->id->EditCustomAttributes = "";
-			$this->id->EditValue = HtmlEncode($this->id->AdvancedSearch->SearchValue);
-			$this->id->PlaceHolder = RemoveHtml($this->id->caption());
-
 			// Code
-			$this->Code->EditAttrs["class"] = "form-control";
-			$this->Code->EditCustomAttributes = "";
-			if (!$this->Code->Raw)
-				$this->Code->AdvancedSearch->SearchValue = HtmlDecode($this->Code->AdvancedSearch->SearchValue);
-			$this->Code->EditValue = HtmlEncode($this->Code->AdvancedSearch->SearchValue);
-			$this->Code->PlaceHolder = RemoveHtml($this->Code->caption());
-
-			// Description
-			$this->Description->EditAttrs["class"] = "form-control";
-			$this->Description->EditCustomAttributes = "";
-			if (!$this->Description->Raw)
-				$this->Description->AdvancedSearch->SearchValue = HtmlDecode($this->Description->AdvancedSearch->SearchValue);
-			$this->Description->EditValue = HtmlEncode($this->Description->AdvancedSearch->SearchValue);
-			$this->Description->PlaceHolder = RemoveHtml($this->Description->caption());
-
-			// EstimatedLife
-			$this->EstimatedLife->EditAttrs["class"] = "form-control";
-			$this->EstimatedLife->EditCustomAttributes = "";
-			$this->EstimatedLife->EditValue = HtmlEncode($this->EstimatedLife->AdvancedSearch->SearchValue);
-			$this->EstimatedLife->PlaceHolder = RemoveHtml($this->EstimatedLife->caption());
-
-			// SLN
-			$this->SLN->EditAttrs["class"] = "form-control";
-			$this->SLN->EditCustomAttributes = "";
-			$this->SLN->EditValue = HtmlEncode($this->SLN->AdvancedSearch->SearchValue);
-			$this->SLN->PlaceHolder = RemoveHtml($this->SLN->caption());
+			$this->Code->LinkCustomAttributes = "";
+			$this->Code->HrefValue = "";
+			$this->Code->TooltipValue = "";
 		}
-		if ($this->RowType == ROWTYPE_ADD || $this->RowType == ROWTYPE_EDIT || $this->RowType == ROWTYPE_SEARCH) // Add/Edit/Search row
-			$this->setupFieldTitles();
 
 		// Call Row Rendered event
 		if ($this->RowType != ROWTYPE_AGGREGATEINIT)
 			$this->Row_Rendered();
 	}
 
-	// Validate search
-	protected function validateSearch()
+	// Delete records based on current filter
+	protected function deleteRows()
 	{
-		global $SearchError;
-
-		// Initialize
-		$SearchError = "";
-
-		// Check if validation required
-		if (!Config("SERVER_VALIDATE"))
-			return TRUE;
-		if (!CheckInteger($this->id->AdvancedSearch->SearchValue)) {
-			AddMessage($SearchError, $this->id->errorMessage());
+		global $Language, $Security;
+		if (!$Security->canDelete()) {
+			$this->setFailureMessage($Language->phrase("NoDeletePermission")); // No delete permission
+			return FALSE;
 		}
-		if (!CheckInteger($this->EstimatedLife->AdvancedSearch->SearchValue)) {
-			AddMessage($SearchError, $this->EstimatedLife->errorMessage());
+		$deleteRows = TRUE;
+		$sql = $this->getCurrentSql();
+		$conn = $this->getConnection();
+		$conn->raiseErrorFn = Config("ERROR_FUNC");
+		$rs = $conn->execute($sql);
+		$conn->raiseErrorFn = "";
+		if ($rs === FALSE) {
+			return FALSE;
+		} elseif ($rs->EOF) {
+			$this->setFailureMessage($Language->phrase("NoRecord")); // No record found
+			$rs->close();
+			return FALSE;
 		}
-		if (!CheckNumber($this->SLN->AdvancedSearch->SearchValue)) {
-			AddMessage($SearchError, $this->SLN->errorMessage());
+		$rows = ($rs) ? $rs->getRows() : [];
+		$conn->beginTrans();
+		if ($this->AuditTrailOnDelete)
+			$this->writeAuditTrailDummy($Language->phrase("BatchDeleteBegin")); // Batch delete begin
+
+		// Clone old rows
+		$rsold = $rows;
+		if ($rs)
+			$rs->close();
+
+		// Call row deleting event
+		if ($deleteRows) {
+			foreach ($rsold as $row) {
+				$deleteRows = $this->Row_Deleting($row);
+				if (!$deleteRows)
+					break;
+			}
+		}
+		if ($deleteRows) {
+			$key = "";
+			foreach ($rsold as $row) {
+				$thisKey = "";
+				if ($thisKey != "")
+					$thisKey .= Config("COMPOSITE_KEY_SEPARATOR");
+				$thisKey .= $row['id'];
+				if (Config("DELETE_UPLOADED_FILES")) // Delete old files
+					$this->deleteUploadedFiles($row);
+				$conn->raiseErrorFn = Config("ERROR_FUNC");
+				$deleteRows = $this->delete($row); // Delete
+				$conn->raiseErrorFn = "";
+				if ($deleteRows === FALSE)
+					break;
+				if ($key != "")
+					$key .= ", ";
+				$key .= $thisKey;
+			}
+		}
+		if (!$deleteRows) {
+
+			// Set up error message
+			if ($this->getSuccessMessage() != "" || $this->getFailureMessage() != "") {
+
+				// Use the message, do nothing
+			} elseif ($this->CancelMessage != "") {
+				$this->setFailureMessage($this->CancelMessage);
+				$this->CancelMessage = "";
+			} else {
+				$this->setFailureMessage($Language->phrase("DeleteCancelled"));
+			}
+		}
+		if ($deleteRows) {
+			$conn->commitTrans(); // Commit the changes
+			if ($this->AuditTrailOnDelete)
+				$this->writeAuditTrailDummy($Language->phrase("BatchDeleteSuccess")); // Batch delete success
+		} else {
+			$conn->rollbackTrans(); // Rollback changes
+			if ($this->AuditTrailOnDelete)
+				$this->writeAuditTrailDummy($Language->phrase("BatchDeleteRollback")); // Batch delete rollback
 		}
 
-		// Return validate result
-		$validateSearch = ($SearchError == "");
-
-		// Call Form_CustomValidate event
-		$formCustomError = "";
-		$validateSearch = $validateSearch && $this->Form_CustomValidate($formCustomError);
-		if ($formCustomError != "") {
-			AddMessage($SearchError, $formCustomError);
+		// Call Row Deleted event
+		if ($deleteRows) {
+			foreach ($rsold as $row) {
+				$this->Row_Deleted($row);
+			}
 		}
-		return $validateSearch;
+
+		// Write JSON for API request (Support single row only)
+		if (IsApi() && $deleteRows) {
+			$row = $this->getRecordsFromRecordset($rsold, TRUE);
+			WriteJson(["success" => TRUE, $this->TableVar => $row]);
+		}
+		return $deleteRows;
 	}
 
-	// Load advanced search
-	public function loadAdvancedSearch()
+	// Set up master/detail based on QueryString
+	protected function setupMasterParms()
 	{
-		$this->id->AdvancedSearch->load();
-		$this->Code->AdvancedSearch->load();
-		$this->Description->AdvancedSearch->load();
-		$this->EstimatedLife->AdvancedSearch->load();
-		$this->SLN->AdvancedSearch->load();
+		$validMaster = FALSE;
+
+		// Get the keys for master table
+		if (($master = Get(Config("TABLE_SHOW_MASTER"), Get(Config("TABLE_MASTER")))) !== NULL) {
+			$masterTblVar = $master;
+			if ($masterTblVar == "") {
+				$validMaster = TRUE;
+				$this->DbMasterFilter = "";
+				$this->DbDetailFilter = "";
+			}
+			if ($masterTblVar == "t005_assetgroup") {
+				$validMaster = TRUE;
+				if (($parm = Get("fk_id", Get("assetgroup_id"))) !== NULL) {
+					$GLOBALS["t005_assetgroup"]->id->setQueryStringValue($parm);
+					$this->assetgroup_id->setQueryStringValue($GLOBALS["t005_assetgroup"]->id->QueryStringValue);
+					$this->assetgroup_id->setSessionValue($this->assetgroup_id->QueryStringValue);
+					if (!is_numeric($GLOBALS["t005_assetgroup"]->id->QueryStringValue))
+						$validMaster = FALSE;
+				} else {
+					$validMaster = FALSE;
+				}
+			}
+		} elseif (($master = Post(Config("TABLE_SHOW_MASTER"), Post(Config("TABLE_MASTER")))) !== NULL) {
+			$masterTblVar = $master;
+			if ($masterTblVar == "") {
+				$validMaster = TRUE;
+				$this->DbMasterFilter = "";
+				$this->DbDetailFilter = "";
+			}
+			if ($masterTblVar == "t005_assetgroup") {
+				$validMaster = TRUE;
+				if (($parm = Post("fk_id", Post("assetgroup_id"))) !== NULL) {
+					$GLOBALS["t005_assetgroup"]->id->setFormValue($parm);
+					$this->assetgroup_id->setFormValue($GLOBALS["t005_assetgroup"]->id->FormValue);
+					$this->assetgroup_id->setSessionValue($this->assetgroup_id->FormValue);
+					if (!is_numeric($GLOBALS["t005_assetgroup"]->id->FormValue))
+						$validMaster = FALSE;
+				} else {
+					$validMaster = FALSE;
+				}
+			}
+		}
+		if ($validMaster) {
+
+			// Save current master table
+			$this->setCurrentMasterTable($masterTblVar);
+
+			// Reset start record counter (new master key)
+			if (!$this->isAddOrEdit()) {
+				$this->StartRecord = 1;
+				$this->setStartRecordNumber($this->StartRecord);
+			}
+
+			// Clear previous master key from Session
+			if ($masterTblVar != "t005_assetgroup") {
+				if ($this->assetgroup_id->CurrentValue == "")
+					$this->assetgroup_id->setSessionValue("");
+			}
+		}
+		$this->DbMasterFilter = $this->getMasterFilter(); // Get master filter
+		$this->DbDetailFilter = $this->getDetailFilter(); // Get detail filter
 	}
 
 	// Set up Breadcrumb
@@ -1004,9 +1011,9 @@ class t005_assetgroup_search extends t005_assetgroup
 		global $Breadcrumb, $Language;
 		$Breadcrumb = new Breadcrumb();
 		$url = substr(CurrentUrl(), strrpos(CurrentUrl(), "/")+1);
-		$Breadcrumb->add("list", $this->TableVar, $this->addMasterUrl("t005_assetgrouplist.php"), "", $this->TableVar, TRUE);
-		$pageId = "search";
-		$Breadcrumb->add("search", $pageId, $url);
+		$Breadcrumb->add("list", $this->TableVar, $this->addMasterUrl("t007_assettypelist.php"), "", $this->TableVar, TRUE);
+		$pageId = "delete";
+		$Breadcrumb->add("delete", $pageId, $url);
 	}
 
 	// Setup lookup options
@@ -1023,6 +1030,8 @@ class t005_assetgroup_search extends t005_assetgroup
 
 			// Set up lookup SQL and connection
 			switch ($fld->FieldVar) {
+				case "x_assetgroup_id":
+					break;
 				default:
 					$lookupFilter = "";
 					break;
@@ -1043,6 +1052,12 @@ class t005_assetgroup_search extends t005_assetgroup
 
 					// Format the field values
 					switch ($fld->FieldVar) {
+						case "x_assetgroup_id":
+							$row[3] = FormatNumber($row[3], 0, -2, -2, -2);
+							$row['df3'] = $row[3];
+							$row[4] = FormatNumber($row[4], 2, -2, -2, -2);
+							$row['df4'] = $row[4];
+							break;
 					}
 					$ar[strval($row[0])] = $row;
 					$rs->moveNext();
@@ -1112,13 +1127,6 @@ class t005_assetgroup_search extends t005_assetgroup
 		// Example:
 		//$footer = "your footer";
 
-	}
-
-	// Form Custom Validate event
-	function Form_CustomValidate(&$customError) {
-
-		// Return error message in CustomError
-		return TRUE;
 	}
 } // End class
 ?>

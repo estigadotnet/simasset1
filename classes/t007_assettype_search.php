@@ -4,7 +4,7 @@ namespace PHPMaker2020\p_simasset1;
 /**
  * Page class
  */
-class t005_assetgroup_search extends t005_assetgroup
+class t007_assettype_search extends t007_assettype
 {
 
 	// Page ID
@@ -14,10 +14,10 @@ class t005_assetgroup_search extends t005_assetgroup
 	public $ProjectID = "{E1C6E322-15B9-474C-85CF-A99378A9BC2B}";
 
 	// Table name
-	public $TableName = 't005_assetgroup';
+	public $TableName = 't007_assettype';
 
 	// Page object name
-	public $PageObjName = "t005_assetgroup_search";
+	public $PageObjName = "t007_assettype_search";
 
 	// Audit Trail
 	public $AuditTrailOnAdd = TRUE;
@@ -349,11 +349,15 @@ class t005_assetgroup_search extends t005_assetgroup
 		// Parent constuctor
 		parent::__construct();
 
-		// Table object (t005_assetgroup)
-		if (!isset($GLOBALS["t005_assetgroup"]) || get_class($GLOBALS["t005_assetgroup"]) == PROJECT_NAMESPACE . "t005_assetgroup") {
-			$GLOBALS["t005_assetgroup"] = &$this;
-			$GLOBALS["Table"] = &$GLOBALS["t005_assetgroup"];
+		// Table object (t007_assettype)
+		if (!isset($GLOBALS["t007_assettype"]) || get_class($GLOBALS["t007_assettype"]) == PROJECT_NAMESPACE . "t007_assettype") {
+			$GLOBALS["t007_assettype"] = &$this;
+			$GLOBALS["Table"] = &$GLOBALS["t007_assettype"];
 		}
+
+		// Table object (t005_assetgroup)
+		if (!isset($GLOBALS['t005_assetgroup']))
+			$GLOBALS['t005_assetgroup'] = new t005_assetgroup();
 
 		// Table object (t201_users)
 		if (!isset($GLOBALS['t201_users']))
@@ -365,7 +369,7 @@ class t005_assetgroup_search extends t005_assetgroup
 
 		// Table name (for backward compatibility only)
 		if (!defined(PROJECT_NAMESPACE . "TABLE_NAME"))
-			define(PROJECT_NAMESPACE . "TABLE_NAME", 't005_assetgroup');
+			define(PROJECT_NAMESPACE . "TABLE_NAME", 't007_assettype');
 
 		// Start timer
 		if (!isset($GLOBALS["DebugTimer"]))
@@ -394,14 +398,14 @@ class t005_assetgroup_search extends t005_assetgroup
 		Page_Unloaded();
 
 		// Export
-		global $t005_assetgroup;
+		global $t007_assettype;
 		if ($this->CustomExport && $this->CustomExport == $this->Export && array_key_exists($this->CustomExport, Config("EXPORT_CLASSES"))) {
 				$content = ob_get_contents();
 			if ($ExportFileName == "")
 				$ExportFileName = $this->TableVar;
 			$class = PROJECT_NAMESPACE . Config("EXPORT_CLASSES." . $this->CustomExport);
 			if (class_exists($class)) {
-				$doc = new $class($t005_assetgroup);
+				$doc = new $class($t007_assettype);
 				$doc->Text = @$content;
 				if ($this->isExport("email"))
 					echo $this->exportEmail($doc->Text);
@@ -436,7 +440,7 @@ class t005_assetgroup_search extends t005_assetgroup
 				$pageName = GetPageName($url);
 				if ($pageName != $this->getListUrl()) { // Not List page
 					$row["caption"] = $this->getModalCaption($pageName);
-					if ($pageName == "t005_assetgroupview.php")
+					if ($pageName == "t007_assettypeview.php")
 						$row["view"] = "1";
 				} else { // List page should not be shown as modal => error
 					$row["error"] = $this->getFailureMessage();
@@ -665,7 +669,7 @@ class t005_assetgroup_search extends t005_assetgroup
 				$Security->saveLastUrl();
 				$this->setFailureMessage(DeniedMessage()); // Set no permission
 				if ($Security->canList())
-					$this->terminate(GetUrl("t005_assetgrouplist.php"));
+					$this->terminate(GetUrl("t007_assettypelist.php"));
 				else
 					$this->terminate(GetUrl("login.php"));
 				return;
@@ -681,10 +685,9 @@ class t005_assetgroup_search extends t005_assetgroup
 		$CurrentForm = new HttpForm();
 		$this->CurrentAction = Param("action"); // Set up current action
 		$this->id->setVisibility();
-		$this->Code->setVisibility();
+		$this->assetgroup_id->setVisibility();
 		$this->Description->setVisibility();
-		$this->EstimatedLife->setVisibility();
-		$this->SLN->setVisibility();
+		$this->Code->setVisibility();
 		$this->hideFieldsForAddEdit();
 
 		// Do not use lookup cache
@@ -706,8 +709,9 @@ class t005_assetgroup_search extends t005_assetgroup
 		$this->createToken();
 
 		// Set up lookup cache
-		// Set up Breadcrumb
+		$this->setupLookupOptions($this->assetgroup_id);
 
+		// Set up Breadcrumb
 		$this->setupBreadcrumb();
 
 		// Check modal
@@ -730,7 +734,7 @@ class t005_assetgroup_search extends t005_assetgroup
 				}
 				if ($srchStr != "") {
 					$srchStr = $this->getUrlParm($srchStr);
-					$srchStr = "t005_assetgrouplist.php" . "?" . $srchStr;
+					$srchStr = "t007_assettypelist.php" . "?" . $srchStr;
 					$this->terminate($srchStr); // Go to list page
 				}
 			}
@@ -751,10 +755,9 @@ class t005_assetgroup_search extends t005_assetgroup
 	{
 		$srchUrl = "";
 		$this->buildSearchUrl($srchUrl, $this->id); // id
-		$this->buildSearchUrl($srchUrl, $this->Code); // Code
+		$this->buildSearchUrl($srchUrl, $this->assetgroup_id); // assetgroup_id
 		$this->buildSearchUrl($srchUrl, $this->Description); // Description
-		$this->buildSearchUrl($srchUrl, $this->EstimatedLife); // EstimatedLife
-		$this->buildSearchUrl($srchUrl, $this->SLN); // SLN
+		$this->buildSearchUrl($srchUrl, $this->Code); // Code
 		if ($srchUrl != "")
 			$srchUrl .= "&";
 		$srchUrl .= "cmd=search";
@@ -829,13 +832,11 @@ class t005_assetgroup_search extends t005_assetgroup
 		$got = FALSE;
 		if ($this->id->AdvancedSearch->post())
 			$got = TRUE;
-		if ($this->Code->AdvancedSearch->post())
+		if ($this->assetgroup_id->AdvancedSearch->post())
 			$got = TRUE;
 		if ($this->Description->AdvancedSearch->post())
 			$got = TRUE;
-		if ($this->EstimatedLife->AdvancedSearch->post())
-			$got = TRUE;
-		if ($this->SLN->AdvancedSearch->post())
+		if ($this->Code->AdvancedSearch->post())
 			$got = TRUE;
 		return $got;
 	}
@@ -846,20 +847,15 @@ class t005_assetgroup_search extends t005_assetgroup
 		global $Security, $Language, $CurrentLanguage;
 
 		// Initialize URLs
-		// Convert decimal values if posted back
-
-		if ($this->SLN->FormValue == $this->SLN->CurrentValue && is_numeric(ConvertToFloatString($this->SLN->CurrentValue)))
-			$this->SLN->CurrentValue = ConvertToFloatString($this->SLN->CurrentValue);
-
 		// Call Row_Rendering event
+
 		$this->Row_Rendering();
 
 		// Common render codes for all row types
 		// id
-		// Code
+		// assetgroup_id
 		// Description
-		// EstimatedLife
-		// SLN
+		// Code
 
 		if ($this->RowType == ROWTYPE_VIEW) { // View row
 
@@ -867,50 +863,59 @@ class t005_assetgroup_search extends t005_assetgroup
 			$this->id->ViewValue = $this->id->CurrentValue;
 			$this->id->ViewCustomAttributes = "";
 
-			// Code
-			$this->Code->ViewValue = $this->Code->CurrentValue;
-			$this->Code->ViewCustomAttributes = "";
+			// assetgroup_id
+			$this->assetgroup_id->ViewValue = $this->assetgroup_id->CurrentValue;
+			$curVal = strval($this->assetgroup_id->CurrentValue);
+			if ($curVal != "") {
+				$this->assetgroup_id->ViewValue = $this->assetgroup_id->lookupCacheOption($curVal);
+				if ($this->assetgroup_id->ViewValue === NULL) { // Lookup from database
+					$filterWrk = "`id`" . SearchString("=", $curVal, DATATYPE_NUMBER, "");
+					$sqlWrk = $this->assetgroup_id->Lookup->getSql(FALSE, $filterWrk, '', $this);
+					$rswrk = Conn()->execute($sqlWrk);
+					if ($rswrk && !$rswrk->EOF) { // Lookup values found
+						$arwrk = [];
+						$arwrk[1] = $rswrk->fields('df');
+						$arwrk[2] = $rswrk->fields('df2');
+						$arwrk[3] = FormatNumber($rswrk->fields('df3'), 0, -2, -2, -2);
+						$arwrk[4] = FormatNumber($rswrk->fields('df4'), 2, -2, -2, -2);
+						$this->assetgroup_id->ViewValue = $this->assetgroup_id->displayValue($arwrk);
+						$rswrk->Close();
+					} else {
+						$this->assetgroup_id->ViewValue = $this->assetgroup_id->CurrentValue;
+					}
+				}
+			} else {
+				$this->assetgroup_id->ViewValue = NULL;
+			}
+			$this->assetgroup_id->ViewCustomAttributes = "";
 
 			// Description
 			$this->Description->ViewValue = $this->Description->CurrentValue;
 			$this->Description->ViewCustomAttributes = "";
 
-			// EstimatedLife
-			$this->EstimatedLife->ViewValue = $this->EstimatedLife->CurrentValue;
-			$this->EstimatedLife->ViewValue = FormatNumber($this->EstimatedLife->ViewValue, 0, -2, -2, -2);
-			$this->EstimatedLife->CellCssStyle .= "text-align: right;";
-			$this->EstimatedLife->ViewCustomAttributes = "";
-
-			// SLN
-			$this->SLN->ViewValue = $this->SLN->CurrentValue;
-			$this->SLN->ViewValue = FormatNumber($this->SLN->ViewValue, 2, -2, -2, -2);
-			$this->SLN->CellCssStyle .= "text-align: right;";
-			$this->SLN->ViewCustomAttributes = "";
+			// Code
+			$this->Code->ViewValue = $this->Code->CurrentValue;
+			$this->Code->ViewCustomAttributes = "";
 
 			// id
 			$this->id->LinkCustomAttributes = "";
 			$this->id->HrefValue = "";
 			$this->id->TooltipValue = "";
 
-			// Code
-			$this->Code->LinkCustomAttributes = "";
-			$this->Code->HrefValue = "";
-			$this->Code->TooltipValue = "";
+			// assetgroup_id
+			$this->assetgroup_id->LinkCustomAttributes = "";
+			$this->assetgroup_id->HrefValue = "";
+			$this->assetgroup_id->TooltipValue = "";
 
 			// Description
 			$this->Description->LinkCustomAttributes = "";
 			$this->Description->HrefValue = "";
 			$this->Description->TooltipValue = "";
 
-			// EstimatedLife
-			$this->EstimatedLife->LinkCustomAttributes = "";
-			$this->EstimatedLife->HrefValue = "";
-			$this->EstimatedLife->TooltipValue = "";
-
-			// SLN
-			$this->SLN->LinkCustomAttributes = "";
-			$this->SLN->HrefValue = "";
-			$this->SLN->TooltipValue = "";
+			// Code
+			$this->Code->LinkCustomAttributes = "";
+			$this->Code->HrefValue = "";
+			$this->Code->TooltipValue = "";
 		} elseif ($this->RowType == ROWTYPE_SEARCH) { // Search row
 
 			// id
@@ -919,13 +924,33 @@ class t005_assetgroup_search extends t005_assetgroup
 			$this->id->EditValue = HtmlEncode($this->id->AdvancedSearch->SearchValue);
 			$this->id->PlaceHolder = RemoveHtml($this->id->caption());
 
-			// Code
-			$this->Code->EditAttrs["class"] = "form-control";
-			$this->Code->EditCustomAttributes = "";
-			if (!$this->Code->Raw)
-				$this->Code->AdvancedSearch->SearchValue = HtmlDecode($this->Code->AdvancedSearch->SearchValue);
-			$this->Code->EditValue = HtmlEncode($this->Code->AdvancedSearch->SearchValue);
-			$this->Code->PlaceHolder = RemoveHtml($this->Code->caption());
+			// assetgroup_id
+			$this->assetgroup_id->EditAttrs["class"] = "form-control";
+			$this->assetgroup_id->EditCustomAttributes = "";
+			$this->assetgroup_id->EditValue = HtmlEncode($this->assetgroup_id->AdvancedSearch->SearchValue);
+			$curVal = strval($this->assetgroup_id->AdvancedSearch->SearchValue);
+			if ($curVal != "") {
+				$this->assetgroup_id->EditValue = $this->assetgroup_id->lookupCacheOption($curVal);
+				if ($this->assetgroup_id->EditValue === NULL) { // Lookup from database
+					$filterWrk = "`id`" . SearchString("=", $curVal, DATATYPE_NUMBER, "");
+					$sqlWrk = $this->assetgroup_id->Lookup->getSql(FALSE, $filterWrk, '', $this);
+					$rswrk = Conn()->execute($sqlWrk);
+					if ($rswrk && !$rswrk->EOF) { // Lookup values found
+						$arwrk = [];
+						$arwrk[1] = HtmlEncode($rswrk->fields('df'));
+						$arwrk[2] = HtmlEncode($rswrk->fields('df2'));
+						$arwrk[3] = HtmlEncode(FormatNumber($rswrk->fields('df3'), 0, -2, -2, -2));
+						$arwrk[4] = HtmlEncode(FormatNumber($rswrk->fields('df4'), 2, -2, -2, -2));
+						$this->assetgroup_id->EditValue = $this->assetgroup_id->displayValue($arwrk);
+						$rswrk->Close();
+					} else {
+						$this->assetgroup_id->EditValue = HtmlEncode($this->assetgroup_id->AdvancedSearch->SearchValue);
+					}
+				}
+			} else {
+				$this->assetgroup_id->EditValue = NULL;
+			}
+			$this->assetgroup_id->PlaceHolder = RemoveHtml($this->assetgroup_id->caption());
 
 			// Description
 			$this->Description->EditAttrs["class"] = "form-control";
@@ -935,17 +960,13 @@ class t005_assetgroup_search extends t005_assetgroup
 			$this->Description->EditValue = HtmlEncode($this->Description->AdvancedSearch->SearchValue);
 			$this->Description->PlaceHolder = RemoveHtml($this->Description->caption());
 
-			// EstimatedLife
-			$this->EstimatedLife->EditAttrs["class"] = "form-control";
-			$this->EstimatedLife->EditCustomAttributes = "";
-			$this->EstimatedLife->EditValue = HtmlEncode($this->EstimatedLife->AdvancedSearch->SearchValue);
-			$this->EstimatedLife->PlaceHolder = RemoveHtml($this->EstimatedLife->caption());
-
-			// SLN
-			$this->SLN->EditAttrs["class"] = "form-control";
-			$this->SLN->EditCustomAttributes = "";
-			$this->SLN->EditValue = HtmlEncode($this->SLN->AdvancedSearch->SearchValue);
-			$this->SLN->PlaceHolder = RemoveHtml($this->SLN->caption());
+			// Code
+			$this->Code->EditAttrs["class"] = "form-control";
+			$this->Code->EditCustomAttributes = "";
+			if (!$this->Code->Raw)
+				$this->Code->AdvancedSearch->SearchValue = HtmlDecode($this->Code->AdvancedSearch->SearchValue);
+			$this->Code->EditValue = HtmlEncode($this->Code->AdvancedSearch->SearchValue);
+			$this->Code->PlaceHolder = RemoveHtml($this->Code->caption());
 		}
 		if ($this->RowType == ROWTYPE_ADD || $this->RowType == ROWTYPE_EDIT || $this->RowType == ROWTYPE_SEARCH) // Add/Edit/Search row
 			$this->setupFieldTitles();
@@ -969,11 +990,8 @@ class t005_assetgroup_search extends t005_assetgroup
 		if (!CheckInteger($this->id->AdvancedSearch->SearchValue)) {
 			AddMessage($SearchError, $this->id->errorMessage());
 		}
-		if (!CheckInteger($this->EstimatedLife->AdvancedSearch->SearchValue)) {
-			AddMessage($SearchError, $this->EstimatedLife->errorMessage());
-		}
-		if (!CheckNumber($this->SLN->AdvancedSearch->SearchValue)) {
-			AddMessage($SearchError, $this->SLN->errorMessage());
+		if (!CheckInteger($this->assetgroup_id->AdvancedSearch->SearchValue)) {
+			AddMessage($SearchError, $this->assetgroup_id->errorMessage());
 		}
 
 		// Return validate result
@@ -992,10 +1010,9 @@ class t005_assetgroup_search extends t005_assetgroup
 	public function loadAdvancedSearch()
 	{
 		$this->id->AdvancedSearch->load();
-		$this->Code->AdvancedSearch->load();
+		$this->assetgroup_id->AdvancedSearch->load();
 		$this->Description->AdvancedSearch->load();
-		$this->EstimatedLife->AdvancedSearch->load();
-		$this->SLN->AdvancedSearch->load();
+		$this->Code->AdvancedSearch->load();
 	}
 
 	// Set up Breadcrumb
@@ -1004,7 +1021,7 @@ class t005_assetgroup_search extends t005_assetgroup
 		global $Breadcrumb, $Language;
 		$Breadcrumb = new Breadcrumb();
 		$url = substr(CurrentUrl(), strrpos(CurrentUrl(), "/")+1);
-		$Breadcrumb->add("list", $this->TableVar, $this->addMasterUrl("t005_assetgrouplist.php"), "", $this->TableVar, TRUE);
+		$Breadcrumb->add("list", $this->TableVar, $this->addMasterUrl("t007_assettypelist.php"), "", $this->TableVar, TRUE);
 		$pageId = "search";
 		$Breadcrumb->add("search", $pageId, $url);
 	}
@@ -1023,6 +1040,8 @@ class t005_assetgroup_search extends t005_assetgroup
 
 			// Set up lookup SQL and connection
 			switch ($fld->FieldVar) {
+				case "x_assetgroup_id":
+					break;
 				default:
 					$lookupFilter = "";
 					break;
@@ -1043,6 +1062,12 @@ class t005_assetgroup_search extends t005_assetgroup
 
 					// Format the field values
 					switch ($fld->FieldVar) {
+						case "x_assetgroup_id":
+							$row[3] = FormatNumber($row[3], 0, -2, -2, -2);
+							$row['df3'] = $row[3];
+							$row[4] = FormatNumber($row[4], 2, -2, -2, -2);
+							$row['df4'] = $row[4];
+							break;
 					}
 					$ar[strval($row[0])] = $row;
 					$rs->moveNext();

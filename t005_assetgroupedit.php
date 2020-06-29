@@ -56,19 +56,32 @@ loadjs.ready("head", function() {
 		for (var i = startcnt; i <= rowcnt; i++) {
 			var infix = ($k[0]) ? String(i) : "";
 			$fobj.data("rowindex", infix);
+			<?php if ($t005_assetgroup_edit->Code->Required) { ?>
+				elm = this.getElements("x" + infix + "_Code");
+				if (elm && !ew.isHidden(elm) && !ew.hasValue(elm))
+					return this.onError(elm, "<?php echo JsEncode(str_replace("%s", $t005_assetgroup_edit->Code->caption(), $t005_assetgroup_edit->Code->RequiredErrorMessage)) ?>");
+			<?php } ?>
 			<?php if ($t005_assetgroup_edit->Description->Required) { ?>
 				elm = this.getElements("x" + infix + "_Description");
 				if (elm && !ew.isHidden(elm) && !ew.hasValue(elm))
 					return this.onError(elm, "<?php echo JsEncode(str_replace("%s", $t005_assetgroup_edit->Description->caption(), $t005_assetgroup_edit->Description->RequiredErrorMessage)) ?>");
 			<?php } ?>
-			<?php if ($t005_assetgroup_edit->EconomicalLifeTime->Required) { ?>
-				elm = this.getElements("x" + infix + "_EconomicalLifeTime");
+			<?php if ($t005_assetgroup_edit->EstimatedLife->Required) { ?>
+				elm = this.getElements("x" + infix + "_EstimatedLife");
 				if (elm && !ew.isHidden(elm) && !ew.hasValue(elm))
-					return this.onError(elm, "<?php echo JsEncode(str_replace("%s", $t005_assetgroup_edit->EconomicalLifeTime->caption(), $t005_assetgroup_edit->EconomicalLifeTime->RequiredErrorMessage)) ?>");
+					return this.onError(elm, "<?php echo JsEncode(str_replace("%s", $t005_assetgroup_edit->EstimatedLife->caption(), $t005_assetgroup_edit->EstimatedLife->RequiredErrorMessage)) ?>");
 			<?php } ?>
-				elm = this.getElements("x" + infix + "_EconomicalLifeTime");
+				elm = this.getElements("x" + infix + "_EstimatedLife");
 				if (elm && !ew.checkInteger(elm.value))
-					return this.onError(elm, "<?php echo JsEncode($t005_assetgroup_edit->EconomicalLifeTime->errorMessage()) ?>");
+					return this.onError(elm, "<?php echo JsEncode($t005_assetgroup_edit->EstimatedLife->errorMessage()) ?>");
+			<?php if ($t005_assetgroup_edit->SLN->Required) { ?>
+				elm = this.getElements("x" + infix + "_SLN");
+				if (elm && !ew.isHidden(elm) && !ew.hasValue(elm))
+					return this.onError(elm, "<?php echo JsEncode(str_replace("%s", $t005_assetgroup_edit->SLN->caption(), $t005_assetgroup_edit->SLN->RequiredErrorMessage)) ?>");
+			<?php } ?>
+				elm = this.getElements("x" + infix + "_SLN");
+				if (elm && !ew.checkNumber(elm.value))
+					return this.onError(elm, "<?php echo JsEncode($t005_assetgroup_edit->SLN->errorMessage()) ?>");
 
 				// Call Form_CustomValidate event
 				if (!this.Form_CustomValidate(fobj))
@@ -120,6 +133,16 @@ $t005_assetgroup_edit->showMessage();
 <input type="hidden" name="action" id="action" value="update">
 <input type="hidden" name="modal" value="<?php echo (int)$t005_assetgroup_edit->IsModal ?>">
 <div class="ew-edit-div"><!-- page* -->
+<?php if ($t005_assetgroup_edit->Code->Visible) { // Code ?>
+	<div id="r_Code" class="form-group row">
+		<label id="elh_t005_assetgroup_Code" for="x_Code" class="<?php echo $t005_assetgroup_edit->LeftColumnClass ?>"><?php echo $t005_assetgroup_edit->Code->caption() ?><?php echo $t005_assetgroup_edit->Code->Required ? $Language->phrase("FieldRequiredIndicator") : "" ?></label>
+		<div class="<?php echo $t005_assetgroup_edit->RightColumnClass ?>"><div <?php echo $t005_assetgroup_edit->Code->cellAttributes() ?>>
+<span id="el_t005_assetgroup_Code">
+<input type="text" data-table="t005_assetgroup" data-field="x_Code" name="x_Code" id="x_Code" size="2" maxlength="5" placeholder="<?php echo HtmlEncode($t005_assetgroup_edit->Code->getPlaceHolder()) ?>" value="<?php echo $t005_assetgroup_edit->Code->EditValue ?>"<?php echo $t005_assetgroup_edit->Code->editAttributes() ?>>
+</span>
+<?php echo $t005_assetgroup_edit->Code->CustomMsg ?></div></div>
+	</div>
+<?php } ?>
 <?php if ($t005_assetgroup_edit->Description->Visible) { // Description ?>
 	<div id="r_Description" class="form-group row">
 		<label id="elh_t005_assetgroup_Description" for="x_Description" class="<?php echo $t005_assetgroup_edit->LeftColumnClass ?>"><?php echo $t005_assetgroup_edit->Description->caption() ?><?php echo $t005_assetgroup_edit->Description->Required ? $Language->phrase("FieldRequiredIndicator") : "" ?></label>
@@ -130,18 +153,36 @@ $t005_assetgroup_edit->showMessage();
 <?php echo $t005_assetgroup_edit->Description->CustomMsg ?></div></div>
 	</div>
 <?php } ?>
-<?php if ($t005_assetgroup_edit->EconomicalLifeTime->Visible) { // EconomicalLifeTime ?>
-	<div id="r_EconomicalLifeTime" class="form-group row">
-		<label id="elh_t005_assetgroup_EconomicalLifeTime" for="x_EconomicalLifeTime" class="<?php echo $t005_assetgroup_edit->LeftColumnClass ?>"><?php echo $t005_assetgroup_edit->EconomicalLifeTime->caption() ?><?php echo $t005_assetgroup_edit->EconomicalLifeTime->Required ? $Language->phrase("FieldRequiredIndicator") : "" ?></label>
-		<div class="<?php echo $t005_assetgroup_edit->RightColumnClass ?>"><div <?php echo $t005_assetgroup_edit->EconomicalLifeTime->cellAttributes() ?>>
-<span id="el_t005_assetgroup_EconomicalLifeTime">
-<input type="text" data-table="t005_assetgroup" data-field="x_EconomicalLifeTime" name="x_EconomicalLifeTime" id="x_EconomicalLifeTime" size="2" maxlength="4" placeholder="<?php echo HtmlEncode($t005_assetgroup_edit->EconomicalLifeTime->getPlaceHolder()) ?>" value="<?php echo $t005_assetgroup_edit->EconomicalLifeTime->EditValue ?>"<?php echo $t005_assetgroup_edit->EconomicalLifeTime->editAttributes() ?>>
+<?php if ($t005_assetgroup_edit->EstimatedLife->Visible) { // EstimatedLife ?>
+	<div id="r_EstimatedLife" class="form-group row">
+		<label id="elh_t005_assetgroup_EstimatedLife" for="x_EstimatedLife" class="<?php echo $t005_assetgroup_edit->LeftColumnClass ?>"><?php echo $t005_assetgroup_edit->EstimatedLife->caption() ?><?php echo $t005_assetgroup_edit->EstimatedLife->Required ? $Language->phrase("FieldRequiredIndicator") : "" ?></label>
+		<div class="<?php echo $t005_assetgroup_edit->RightColumnClass ?>"><div <?php echo $t005_assetgroup_edit->EstimatedLife->cellAttributes() ?>>
+<span id="el_t005_assetgroup_EstimatedLife">
+<input type="text" data-table="t005_assetgroup" data-field="x_EstimatedLife" name="x_EstimatedLife" id="x_EstimatedLife" size="2" maxlength="4" placeholder="<?php echo HtmlEncode($t005_assetgroup_edit->EstimatedLife->getPlaceHolder()) ?>" value="<?php echo $t005_assetgroup_edit->EstimatedLife->EditValue ?>"<?php echo $t005_assetgroup_edit->EstimatedLife->editAttributes() ?>>
 </span>
-<?php echo $t005_assetgroup_edit->EconomicalLifeTime->CustomMsg ?></div></div>
+<?php echo $t005_assetgroup_edit->EstimatedLife->CustomMsg ?></div></div>
+	</div>
+<?php } ?>
+<?php if ($t005_assetgroup_edit->SLN->Visible) { // SLN ?>
+	<div id="r_SLN" class="form-group row">
+		<label id="elh_t005_assetgroup_SLN" for="x_SLN" class="<?php echo $t005_assetgroup_edit->LeftColumnClass ?>"><?php echo $t005_assetgroup_edit->SLN->caption() ?><?php echo $t005_assetgroup_edit->SLN->Required ? $Language->phrase("FieldRequiredIndicator") : "" ?></label>
+		<div class="<?php echo $t005_assetgroup_edit->RightColumnClass ?>"><div <?php echo $t005_assetgroup_edit->SLN->cellAttributes() ?>>
+<span id="el_t005_assetgroup_SLN">
+<input type="text" data-table="t005_assetgroup" data-field="x_SLN" name="x_SLN" id="x_SLN" size="2" maxlength="4" placeholder="<?php echo HtmlEncode($t005_assetgroup_edit->SLN->getPlaceHolder()) ?>" value="<?php echo $t005_assetgroup_edit->SLN->EditValue ?>"<?php echo $t005_assetgroup_edit->SLN->editAttributes() ?>>
+</span>
+<?php echo $t005_assetgroup_edit->SLN->CustomMsg ?></div></div>
 	</div>
 <?php } ?>
 </div><!-- /page* -->
 	<input type="hidden" data-table="t005_assetgroup" data-field="x_id" name="x_id" id="x_id" value="<?php echo HtmlEncode($t005_assetgroup_edit->id->CurrentValue) ?>">
+<?php
+	if (in_array("t007_assettype", explode(",", $t005_assetgroup->getCurrentDetailTable())) && $t007_assettype->DetailEdit) {
+?>
+<?php if ($t005_assetgroup->getCurrentDetailTable() != "") { ?>
+<h4 class="ew-detail-caption"><?php echo $Language->tablePhrase("t007_assettype", "TblCaption") ?></h4>
+<?php } ?>
+<?php include_once "t007_assettypegrid.php" ?>
+<?php } ?>
 <?php if (!$t005_assetgroup_edit->IsModal) { ?>
 <div class="form-group row"><!-- buttons .form-group -->
 	<div class="<?php echo $t005_assetgroup_edit->OffsetColumnClass ?>"><!-- buttons offset -->
