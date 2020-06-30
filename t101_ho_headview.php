@@ -101,32 +101,12 @@ $t101_ho_head_view->showMessage();
 </td>
 	</tr>
 <?php } ?>
-<?php if ($t101_ho_head_view->TransactionType->Visible) { // TransactionType ?>
-	<tr id="r_TransactionType">
-		<td class="<?php echo $t101_ho_head_view->TableLeftColumnClass ?>"><span id="elh_t101_ho_head_TransactionType"><?php echo $t101_ho_head_view->TransactionType->caption() ?></span></td>
-		<td data-name="TransactionType" <?php echo $t101_ho_head_view->TransactionType->cellAttributes() ?>>
-<span id="el_t101_ho_head_TransactionType">
-<span<?php echo $t101_ho_head_view->TransactionType->viewAttributes() ?>><?php echo $t101_ho_head_view->TransactionType->getViewValue() ?></span>
-</span>
-</td>
-	</tr>
-<?php } ?>
 <?php if ($t101_ho_head_view->HandedOverTo->Visible) { // HandedOverTo ?>
 	<tr id="r_HandedOverTo">
 		<td class="<?php echo $t101_ho_head_view->TableLeftColumnClass ?>"><span id="elh_t101_ho_head_HandedOverTo"><?php echo $t101_ho_head_view->HandedOverTo->caption() ?></span></td>
 		<td data-name="HandedOverTo" <?php echo $t101_ho_head_view->HandedOverTo->cellAttributes() ?>>
 <span id="el_t101_ho_head_HandedOverTo">
 <span<?php echo $t101_ho_head_view->HandedOverTo->viewAttributes() ?>><?php echo $t101_ho_head_view->HandedOverTo->getViewValue() ?></span>
-</span>
-</td>
-	</tr>
-<?php } ?>
-<?php if ($t101_ho_head_view->CodeNoTo->Visible) { // CodeNoTo ?>
-	<tr id="r_CodeNoTo">
-		<td class="<?php echo $t101_ho_head_view->TableLeftColumnClass ?>"><span id="elh_t101_ho_head_CodeNoTo"><?php echo $t101_ho_head_view->CodeNoTo->caption() ?></span></td>
-		<td data-name="CodeNoTo" <?php echo $t101_ho_head_view->CodeNoTo->cellAttributes() ?>>
-<span id="el_t101_ho_head_CodeNoTo">
-<span<?php echo $t101_ho_head_view->CodeNoTo->viewAttributes() ?>><?php echo $t101_ho_head_view->CodeNoTo->getViewValue() ?></span>
 </span>
 </td>
 	</tr>
@@ -147,16 +127,6 @@ $t101_ho_head_view->showMessage();
 		<td data-name="HandedOverBy" <?php echo $t101_ho_head_view->HandedOverBy->cellAttributes() ?>>
 <span id="el_t101_ho_head_HandedOverBy">
 <span<?php echo $t101_ho_head_view->HandedOverBy->viewAttributes() ?>><?php echo $t101_ho_head_view->HandedOverBy->getViewValue() ?></span>
-</span>
-</td>
-	</tr>
-<?php } ?>
-<?php if ($t101_ho_head_view->CodeNoBy->Visible) { // CodeNoBy ?>
-	<tr id="r_CodeNoBy">
-		<td class="<?php echo $t101_ho_head_view->TableLeftColumnClass ?>"><span id="elh_t101_ho_head_CodeNoBy"><?php echo $t101_ho_head_view->CodeNoBy->caption() ?></span></td>
-		<td data-name="CodeNoBy" <?php echo $t101_ho_head_view->CodeNoBy->cellAttributes() ?>>
-<span id="el_t101_ho_head_CodeNoBy">
-<span<?php echo $t101_ho_head_view->CodeNoBy->viewAttributes() ?>><?php echo $t101_ho_head_view->CodeNoBy->getViewValue() ?></span>
 </span>
 </td>
 	</tr>

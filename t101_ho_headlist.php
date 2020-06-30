@@ -140,30 +140,12 @@ $t101_ho_head_list->ListOptions->render("header", "left");
 		</div></div></th>
 	<?php } ?>
 <?php } ?>
-<?php if ($t101_ho_head_list->TransactionType->Visible) { // TransactionType ?>
-	<?php if ($t101_ho_head_list->SortUrl($t101_ho_head_list->TransactionType) == "") { ?>
-		<th data-name="TransactionType" class="<?php echo $t101_ho_head_list->TransactionType->headerCellClass() ?>"><div id="elh_t101_ho_head_TransactionType" class="t101_ho_head_TransactionType"><div class="ew-table-header-caption"><?php echo $t101_ho_head_list->TransactionType->caption() ?></div></div></th>
-	<?php } else { ?>
-		<th data-name="TransactionType" class="<?php echo $t101_ho_head_list->TransactionType->headerCellClass() ?>"><div class="ew-pointer" onclick="ew.sort(event, '<?php echo $t101_ho_head_list->SortUrl($t101_ho_head_list->TransactionType) ?>', 2);"><div id="elh_t101_ho_head_TransactionType" class="t101_ho_head_TransactionType">
-			<div class="ew-table-header-btn"><span class="ew-table-header-caption"><?php echo $t101_ho_head_list->TransactionType->caption() ?></span><span class="ew-table-header-sort"><?php if ($t101_ho_head_list->TransactionType->getSort() == "ASC") { ?><i class="fas fa-sort-up"></i><?php } elseif ($t101_ho_head_list->TransactionType->getSort() == "DESC") { ?><i class="fas fa-sort-down"></i><?php } ?></span></div>
-		</div></div></th>
-	<?php } ?>
-<?php } ?>
 <?php if ($t101_ho_head_list->HandedOverTo->Visible) { // HandedOverTo ?>
 	<?php if ($t101_ho_head_list->SortUrl($t101_ho_head_list->HandedOverTo) == "") { ?>
 		<th data-name="HandedOverTo" class="<?php echo $t101_ho_head_list->HandedOverTo->headerCellClass() ?>"><div id="elh_t101_ho_head_HandedOverTo" class="t101_ho_head_HandedOverTo"><div class="ew-table-header-caption"><?php echo $t101_ho_head_list->HandedOverTo->caption() ?></div></div></th>
 	<?php } else { ?>
 		<th data-name="HandedOverTo" class="<?php echo $t101_ho_head_list->HandedOverTo->headerCellClass() ?>"><div class="ew-pointer" onclick="ew.sort(event, '<?php echo $t101_ho_head_list->SortUrl($t101_ho_head_list->HandedOverTo) ?>', 2);"><div id="elh_t101_ho_head_HandedOverTo" class="t101_ho_head_HandedOverTo">
 			<div class="ew-table-header-btn"><span class="ew-table-header-caption"><?php echo $t101_ho_head_list->HandedOverTo->caption() ?></span><span class="ew-table-header-sort"><?php if ($t101_ho_head_list->HandedOverTo->getSort() == "ASC") { ?><i class="fas fa-sort-up"></i><?php } elseif ($t101_ho_head_list->HandedOverTo->getSort() == "DESC") { ?><i class="fas fa-sort-down"></i><?php } ?></span></div>
-		</div></div></th>
-	<?php } ?>
-<?php } ?>
-<?php if ($t101_ho_head_list->CodeNoTo->Visible) { // CodeNoTo ?>
-	<?php if ($t101_ho_head_list->SortUrl($t101_ho_head_list->CodeNoTo) == "") { ?>
-		<th data-name="CodeNoTo" class="<?php echo $t101_ho_head_list->CodeNoTo->headerCellClass() ?>"><div id="elh_t101_ho_head_CodeNoTo" class="t101_ho_head_CodeNoTo"><div class="ew-table-header-caption"><?php echo $t101_ho_head_list->CodeNoTo->caption() ?></div></div></th>
-	<?php } else { ?>
-		<th data-name="CodeNoTo" class="<?php echo $t101_ho_head_list->CodeNoTo->headerCellClass() ?>"><div class="ew-pointer" onclick="ew.sort(event, '<?php echo $t101_ho_head_list->SortUrl($t101_ho_head_list->CodeNoTo) ?>', 2);"><div id="elh_t101_ho_head_CodeNoTo" class="t101_ho_head_CodeNoTo">
-			<div class="ew-table-header-btn"><span class="ew-table-header-caption"><?php echo $t101_ho_head_list->CodeNoTo->caption() ?></span><span class="ew-table-header-sort"><?php if ($t101_ho_head_list->CodeNoTo->getSort() == "ASC") { ?><i class="fas fa-sort-up"></i><?php } elseif ($t101_ho_head_list->CodeNoTo->getSort() == "DESC") { ?><i class="fas fa-sort-down"></i><?php } ?></span></div>
 		</div></div></th>
 	<?php } ?>
 <?php } ?>
@@ -182,15 +164,6 @@ $t101_ho_head_list->ListOptions->render("header", "left");
 	<?php } else { ?>
 		<th data-name="HandedOverBy" class="<?php echo $t101_ho_head_list->HandedOverBy->headerCellClass() ?>"><div class="ew-pointer" onclick="ew.sort(event, '<?php echo $t101_ho_head_list->SortUrl($t101_ho_head_list->HandedOverBy) ?>', 2);"><div id="elh_t101_ho_head_HandedOverBy" class="t101_ho_head_HandedOverBy">
 			<div class="ew-table-header-btn"><span class="ew-table-header-caption"><?php echo $t101_ho_head_list->HandedOverBy->caption() ?></span><span class="ew-table-header-sort"><?php if ($t101_ho_head_list->HandedOverBy->getSort() == "ASC") { ?><i class="fas fa-sort-up"></i><?php } elseif ($t101_ho_head_list->HandedOverBy->getSort() == "DESC") { ?><i class="fas fa-sort-down"></i><?php } ?></span></div>
-		</div></div></th>
-	<?php } ?>
-<?php } ?>
-<?php if ($t101_ho_head_list->CodeNoBy->Visible) { // CodeNoBy ?>
-	<?php if ($t101_ho_head_list->SortUrl($t101_ho_head_list->CodeNoBy) == "") { ?>
-		<th data-name="CodeNoBy" class="<?php echo $t101_ho_head_list->CodeNoBy->headerCellClass() ?>"><div id="elh_t101_ho_head_CodeNoBy" class="t101_ho_head_CodeNoBy"><div class="ew-table-header-caption"><?php echo $t101_ho_head_list->CodeNoBy->caption() ?></div></div></th>
-	<?php } else { ?>
-		<th data-name="CodeNoBy" class="<?php echo $t101_ho_head_list->CodeNoBy->headerCellClass() ?>"><div class="ew-pointer" onclick="ew.sort(event, '<?php echo $t101_ho_head_list->SortUrl($t101_ho_head_list->CodeNoBy) ?>', 2);"><div id="elh_t101_ho_head_CodeNoBy" class="t101_ho_head_CodeNoBy">
-			<div class="ew-table-header-btn"><span class="ew-table-header-caption"><?php echo $t101_ho_head_list->CodeNoBy->caption() ?></span><span class="ew-table-header-sort"><?php if ($t101_ho_head_list->CodeNoBy->getSort() == "ASC") { ?><i class="fas fa-sort-up"></i><?php } elseif ($t101_ho_head_list->CodeNoBy->getSort() == "DESC") { ?><i class="fas fa-sort-down"></i><?php } ?></span></div>
 		</div></div></th>
 	<?php } ?>
 <?php } ?>
@@ -325,24 +298,10 @@ $t101_ho_head_list->ListOptions->render("body", "left", $t101_ho_head_list->RowC
 </span>
 </td>
 	<?php } ?>
-	<?php if ($t101_ho_head_list->TransactionType->Visible) { // TransactionType ?>
-		<td data-name="TransactionType" <?php echo $t101_ho_head_list->TransactionType->cellAttributes() ?>>
-<span id="el<?php echo $t101_ho_head_list->RowCount ?>_t101_ho_head_TransactionType">
-<span<?php echo $t101_ho_head_list->TransactionType->viewAttributes() ?>><?php echo $t101_ho_head_list->TransactionType->getViewValue() ?></span>
-</span>
-</td>
-	<?php } ?>
 	<?php if ($t101_ho_head_list->HandedOverTo->Visible) { // HandedOverTo ?>
 		<td data-name="HandedOverTo" <?php echo $t101_ho_head_list->HandedOverTo->cellAttributes() ?>>
 <span id="el<?php echo $t101_ho_head_list->RowCount ?>_t101_ho_head_HandedOverTo">
 <span<?php echo $t101_ho_head_list->HandedOverTo->viewAttributes() ?>><?php echo $t101_ho_head_list->HandedOverTo->getViewValue() ?></span>
-</span>
-</td>
-	<?php } ?>
-	<?php if ($t101_ho_head_list->CodeNoTo->Visible) { // CodeNoTo ?>
-		<td data-name="CodeNoTo" <?php echo $t101_ho_head_list->CodeNoTo->cellAttributes() ?>>
-<span id="el<?php echo $t101_ho_head_list->RowCount ?>_t101_ho_head_CodeNoTo">
-<span<?php echo $t101_ho_head_list->CodeNoTo->viewAttributes() ?>><?php echo $t101_ho_head_list->CodeNoTo->getViewValue() ?></span>
 </span>
 </td>
 	<?php } ?>
@@ -357,13 +316,6 @@ $t101_ho_head_list->ListOptions->render("body", "left", $t101_ho_head_list->RowC
 		<td data-name="HandedOverBy" <?php echo $t101_ho_head_list->HandedOverBy->cellAttributes() ?>>
 <span id="el<?php echo $t101_ho_head_list->RowCount ?>_t101_ho_head_HandedOverBy">
 <span<?php echo $t101_ho_head_list->HandedOverBy->viewAttributes() ?>><?php echo $t101_ho_head_list->HandedOverBy->getViewValue() ?></span>
-</span>
-</td>
-	<?php } ?>
-	<?php if ($t101_ho_head_list->CodeNoBy->Visible) { // CodeNoBy ?>
-		<td data-name="CodeNoBy" <?php echo $t101_ho_head_list->CodeNoBy->cellAttributes() ?>>
-<span id="el<?php echo $t101_ho_head_list->RowCount ?>_t101_ho_head_CodeNoBy">
-<span<?php echo $t101_ho_head_list->CodeNoBy->viewAttributes() ?>><?php echo $t101_ho_head_list->CodeNoBy->getViewValue() ?></span>
 </span>
 </td>
 	<?php } ?>

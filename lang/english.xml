@@ -907,8 +907,14 @@
     <menu id="19">
       <phrase id="menutext" value="Handover Form" />
     </menu>
+    <menu id="46">
+      <phrase id="menutext" value="Handover Form" />
+    </menu>
     <menu id="42">
       <phrase id="menutext" value="viewHandover" />
+    </menu>
+    <menu id="45">
+      <phrase id="menutext" value="viewHandover_2" />
     </menu>
     <menu id="39">
       <phrase id="menutext" value="Property to Personnel/Dept." />
@@ -941,6 +947,9 @@
       <phrase id="menutext" value="Parameter" />
     </menu>
     <table id="c101_ho">
+      <phrase id="tblcaption" value="Cetak Handover Form" />
+    </table>
+    <table id="c101_ho_2">
       <phrase id="tblcaption" value="Cetak Handover Form" />
     </table>
     <table id="c9">
@@ -1173,28 +1182,17 @@
       <field id="transactiondate">
         <phrase id="fldcaption" value="Transaction Date" />
       </field>
-      <field id="transactiontype">
-        <phrase id="fldcaption" value="Transaction Type" />
-        <phrase id="fldtagvalue1" value="0" />
-        <phrase id="fldtagcaption1" value="Owner to FC" />
-      </field>
       <field id="handedoverto">
         <phrase id="fldcaption" value="Handed Over To" />
       </field>
-      <field id="codenoto">
-        <phrase id="fldcaption" value="Code No." />
-      </field>
       <field id="departmentto">
-        <phrase id="fldcaption" value="Dept./Location/Area" />
+        <phrase id="fldcaption" value="Department" />
       </field>
       <field id="handedoverby">
         <phrase id="fldcaption" value="Handed Over By" />
       </field>
-      <field id="codenoby">
-        <phrase id="fldcaption" value="Code No." />
-      </field>
       <field id="departmentby">
-        <phrase id="fldcaption" value="Dept./Location/Area" />
+        <phrase id="fldcaption" value="Department" />
       </field>
       <field id="sign1">
         <phrase id="fldcaption" value="Sign #1" />
@@ -1445,23 +1443,14 @@
       <field id="transactiondate">
         <phrase id="fldcaption" value="Transaction Date" />
       </field>
-      <field id="transactiontype">
-        <phrase id="fldcaption" value="Transaction Type" />
-      </field>
       <field id="handedoverto">
         <phrase id="fldcaption" value="Handed Over To" />
-      </field>
-      <field id="codenoto">
-        <phrase id="fldcaption" value="Code No To" />
       </field>
       <field id="departmentto">
         <phrase id="fldcaption" value="Department To" />
       </field>
       <field id="handedoverby">
         <phrase id="fldcaption" value="Handed Over By" />
-      </field>
-      <field id="codenoby">
-        <phrase id="fldcaption" value="Code No By" />
       </field>
       <field id="departmentby">
         <phrase id="fldcaption" value="Department By" />
@@ -1561,6 +1550,114 @@
       </field>
       <field id="assetdepartment">
         <phrase id="fldcaption" value="Asset Department" />
+      </field>
+    </table>
+    <table id="v101_ho_2">
+      <phrase id="tblcaption" value="viewHandover_2" />
+      <field id="id">
+        <phrase id="fldcaption" value="id" />
+      </field>
+      <field id="property_id">
+        <phrase id="fldcaption" value="property id" />
+      </field>
+      <field id="property">
+        <phrase id="fldcaption" value="property" />
+      </field>
+      <field id="templatefile">
+        <phrase id="fldcaption" value="templatefile" />
+      </field>
+      <field id="transactionno">
+        <phrase id="fldcaption" value="transactionno" />
+      </field>
+      <field id="transactiondate">
+        <phrase id="fldcaption" value="transactiondate" />
+      </field>
+      <field id="handedoverto">
+        <phrase id="fldcaption" value="handedoverto" />
+      </field>
+      <field id="hoto">
+        <phrase id="fldcaption" value="hoto" />
+      </field>
+      <field id="departmentto">
+        <phrase id="fldcaption" value="departmentto" />
+      </field>
+      <field id="deptto">
+        <phrase id="fldcaption" value="deptto" />
+      </field>
+      <field id="handedoverby">
+        <phrase id="fldcaption" value="handedoverby" />
+      </field>
+      <field id="hoby">
+        <phrase id="fldcaption" value="hoby" />
+      </field>
+      <field id="departmentby">
+        <phrase id="fldcaption" value="departmentby" />
+      </field>
+      <field id="deptby">
+        <phrase id="fldcaption" value="deptby" />
+      </field>
+      <field id="sign1">
+        <phrase id="fldcaption" value="sign 1" />
+      </field>
+      <field id="signa1">
+        <phrase id="fldcaption" value="signa 1" />
+      </field>
+      <field id="jobt1">
+        <phrase id="fldcaption" value="jobt 1" />
+      </field>
+      <field id="sign2">
+        <phrase id="fldcaption" value="sign 2" />
+      </field>
+      <field id="signa2">
+        <phrase id="fldcaption" value="signa 2" />
+      </field>
+      <field id="jobt2">
+        <phrase id="fldcaption" value="jobt 2" />
+      </field>
+      <field id="sign3">
+        <phrase id="fldcaption" value="sign 3" />
+      </field>
+      <field id="signa3">
+        <phrase id="fldcaption" value="signa 3" />
+      </field>
+      <field id="jobt3">
+        <phrase id="fldcaption" value="jobt 3" />
+      </field>
+      <field id="sign4">
+        <phrase id="fldcaption" value="sign 4" />
+      </field>
+      <field id="signa4">
+        <phrase id="fldcaption" value="signa 4" />
+      </field>
+      <field id="jobt4">
+        <phrase id="fldcaption" value="jobt 4" />
+      </field>
+      <field id="hodetail_id">
+        <phrase id="fldcaption" value="hodetail id" />
+      </field>
+      <field id="asset_id">
+        <phrase id="fldcaption" value="asset id" />
+      </field>
+      <field id="code">
+        <phrase id="fldcaption" value="code" />
+      </field>
+      <field id="description">
+        <phrase id="fldcaption" value="description" />
+      </field>
+      <field id="department_id">
+        <phrase id="fldcaption" value="department id" />
+      </field>
+      <field id="asset_dept">
+        <phrase id="fldcaption" value="asset dept" />
+      </field>
+      <field id="procurementdate">
+        <phrase id="fldcaption" value="procurementdate" />
+      </field>
+      <field id="procurementcurrentcost">
+        <phrase id="fldcaption" value="procurementcurrentcost" />
+      </field>
+      <field id="remarks">
+        <phrase id="fldcaption" value="remarks" />
       </field>
     </table>
   </project>

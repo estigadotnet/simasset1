@@ -82,6 +82,12 @@ class r001_asset extends ReportTable
 
 		// property_id
 		$this->property_id = new ReportField('r001_asset', 'r001_asset', 'x_property_id', 'property_id', '`property_id`', '`property_id`', 3, 11, -1, FALSE, '`property_id`', FALSE, FALSE, FALSE, 'FORMATTED TEXT', 'TEXT');
+		$this->property_id->GroupingFieldId = 1;
+		$this->property_id->ShowGroupHeaderAsRow = $this->ShowGroupHeaderAsRow;
+		$this->property_id->ShowCompactSummaryFooter = $this->ShowCompactSummaryFooter;
+		$this->property_id->GroupByType = "";
+		$this->property_id->GroupInterval = "0";
+		$this->property_id->GroupSql = "";
 		$this->property_id->Nullable = FALSE; // NOT NULL field
 		$this->property_id->Required = TRUE; // Required field
 		$this->property_id->Sortable = TRUE; // Allow sort
@@ -92,6 +98,12 @@ class r001_asset extends ReportTable
 
 		// group_id
 		$this->group_id = new ReportField('r001_asset', 'r001_asset', 'x_group_id', 'group_id', '`group_id`', '`group_id`', 3, 11, -1, FALSE, '`group_id`', FALSE, FALSE, FALSE, 'FORMATTED TEXT', 'TEXT');
+		$this->group_id->GroupingFieldId = 2;
+		$this->group_id->ShowGroupHeaderAsRow = $this->ShowGroupHeaderAsRow;
+		$this->group_id->ShowCompactSummaryFooter = $this->ShowCompactSummaryFooter;
+		$this->group_id->GroupByType = "";
+		$this->group_id->GroupInterval = "0";
+		$this->group_id->GroupSql = "";
 		$this->group_id->Nullable = FALSE; // NOT NULL field
 		$this->group_id->Required = TRUE; // Required field
 		$this->group_id->Sortable = TRUE; // Allow sort
@@ -117,12 +129,10 @@ class r001_asset extends ReportTable
 		$this->fields['Description'] = &$this->Description;
 
 		// brand_id
-		$this->brand_id = new ReportField('r001_asset', 'r001_asset', 'x_brand_id', 'brand_id', '`brand_id`', '`brand_id`', 3, 11, -1, FALSE, '`brand_id`', FALSE, FALSE, FALSE, 'FORMATTED TEXT', 'SELECT');
+		$this->brand_id = new ReportField('r001_asset', 'r001_asset', 'x_brand_id', 'brand_id', '`brand_id`', '`brand_id`', 3, 11, -1, FALSE, '`brand_id`', FALSE, FALSE, FALSE, 'FORMATTED TEXT', 'TEXT');
 		$this->brand_id->Nullable = FALSE; // NOT NULL field
 		$this->brand_id->Required = TRUE; // Required field
 		$this->brand_id->Sortable = TRUE; // Allow sort
-		$this->brand_id->UsePleaseSelect = TRUE; // Use PleaseSelect by default
-		$this->brand_id->PleaseSelectText = $Language->phrase("PleaseSelect"); // "PleaseSelect" text
 		$this->brand_id->Lookup = new Lookup('brand_id', 't008_brand', FALSE, 'id', ["Brand","","",""], [], [], [], [], [], [], '', '');
 		$this->brand_id->DefaultErrorMessage = $Language->phrase("IncorrectInteger");
 		$this->brand_id->SourceTableVar = 't004_asset';
@@ -159,12 +169,10 @@ class r001_asset extends ReportTable
 		$this->fields['department_id'] = &$this->department_id;
 
 		// location_id
-		$this->location_id = new ReportField('r001_asset', 'r001_asset', 'x_location_id', 'location_id', '`location_id`', '`location_id`', 3, 11, -1, FALSE, '`location_id`', FALSE, FALSE, FALSE, 'FORMATTED TEXT', 'SELECT');
+		$this->location_id = new ReportField('r001_asset', 'r001_asset', 'x_location_id', 'location_id', '`location_id`', '`location_id`', 3, 11, -1, FALSE, '`location_id`', FALSE, FALSE, FALSE, 'FORMATTED TEXT', 'TEXT');
 		$this->location_id->Nullable = FALSE; // NOT NULL field
 		$this->location_id->Required = TRUE; // Required field
 		$this->location_id->Sortable = TRUE; // Allow sort
-		$this->location_id->UsePleaseSelect = TRUE; // Use PleaseSelect by default
-		$this->location_id->PleaseSelectText = $Language->phrase("PleaseSelect"); // "PleaseSelect" text
 		$this->location_id->Lookup = new Lookup('location_id', 't009_location', FALSE, 'id', ["Location","","",""], [], [], [], [], [], [], '', '');
 		$this->location_id->DefaultErrorMessage = $Language->phrase("IncorrectInteger");
 		$this->location_id->SourceTableVar = 't004_asset';
@@ -288,6 +296,52 @@ class r001_asset extends ReportTable
 		return $sortSql;
 	}
 
+	// Table Level Group SQL
+	private $_sqlFirstGroupField = "";
+	private $_sqlSelectGroup = "";
+	private $_sqlOrderByGroup = "";
+
+	// First Group Field
+	public function getSqlFirstGroupField($alias = FALSE)
+	{
+		if ($this->_sqlFirstGroupField != "")
+			return $this->_sqlFirstGroupField;
+		$firstGroupField = &$this->property_id;
+		$expr = $firstGroupField->Expression;
+		if ($firstGroupField->GroupSql != "") {
+			$expr = str_replace("%s", $firstGroupField->Expression, $firstGroupField->GroupSql);
+			if ($alias)
+				$expr .= " AS " . QuotedName($firstGroupField->getGroupName(), $this->Dbid);
+		}
+		return $expr;
+	}
+	public function setSqlFirstGroupField($v)
+	{
+		$this->_sqlFirstGroupField = $v;
+	}
+
+	// Select Group
+	public function getSqlSelectGroup()
+	{
+		return ($this->_sqlSelectGroup != "") ? $this->_sqlSelectGroup : "SELECT DISTINCT " . $this->getSqlFirstGroupField(TRUE) . " FROM " . $this->getSqlFrom();
+	}
+	public function setSqlSelectGroup($v)
+	{
+		$this->_sqlSelectGroup = $v;
+	}
+
+	// Order By Group
+	public function getSqlOrderByGroup()
+	{
+		if ($this->_sqlOrderByGroup != "")
+			return $this->_sqlOrderByGroup;
+		return $this->getSqlFirstGroupField() . " ASC";
+	}
+	public function setSqlOrderByGroup($v)
+	{
+		$this->_sqlOrderByGroup = $v;
+	}
+
 	// Summary properties
 	private $_sqlSelectAggregate = "";
 	private $_sqlAggregatePrefix = "";
@@ -357,6 +411,16 @@ class r001_asset extends ReportTable
 		if ($this->SqlSelect != "")
 			return $this->SqlSelect;
 		$select = "*";
+		$groupField = &$this->property_id;
+		if ($groupField->GroupSql != "") {
+			$expr = str_replace("%s", $groupField->Expression, $groupField->GroupSql) . " AS " . QuotedName($groupField->getGroupName(), $this->Dbid);
+			$select .= ", " . $expr;
+		}
+		$groupField = &$this->group_id;
+		if ($groupField->GroupSql != "") {
+			$expr = str_replace("%s", $groupField->Expression, $groupField->GroupSql) . " AS " . QuotedName($groupField->getGroupName(), $this->Dbid);
+			$select .= ", " . $expr;
+		}
 		return "SELECT " . $select . " FROM " . $this->getSqlFrom();
 	}
 	public function sqlSelect() // For backward compatibility

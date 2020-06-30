@@ -45,7 +45,7 @@ Page_Rendering();
 //	"ProcurementDate" => "2013-12-05"
 //	));
 
-$r = fCariDepreciationAmountYtd(20, 2014);
+$r = fCariDepreciationAmountYtd(1, 2014);
 var_dump($r);
 
 ?>

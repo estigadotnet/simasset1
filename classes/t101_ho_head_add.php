@@ -694,12 +694,9 @@ class t101_ho_head_add extends t101_ho_head
 		$this->property_id->setVisibility();
 		$this->TransactionNo->setVisibility();
 		$this->TransactionDate->setVisibility();
-		$this->TransactionType->setVisibility();
 		$this->HandedOverTo->setVisibility();
-		$this->CodeNoTo->setVisibility();
 		$this->DepartmentTo->setVisibility();
 		$this->HandedOverBy->setVisibility();
-		$this->CodeNoBy->setVisibility();
 		$this->DepartmentBy->setVisibility();
 		$this->Sign1->setVisibility();
 		$this->Sign2->setVisibility();
@@ -872,17 +869,12 @@ class t101_ho_head_add extends t101_ho_head
 		$this->TransactionNo->OldValue = $this->TransactionNo->CurrentValue;
 		$this->TransactionDate->CurrentValue = NULL;
 		$this->TransactionDate->OldValue = $this->TransactionDate->CurrentValue;
-		$this->TransactionType->CurrentValue = 0;
 		$this->HandedOverTo->CurrentValue = NULL;
 		$this->HandedOverTo->OldValue = $this->HandedOverTo->CurrentValue;
-		$this->CodeNoTo->CurrentValue = NULL;
-		$this->CodeNoTo->OldValue = $this->CodeNoTo->CurrentValue;
 		$this->DepartmentTo->CurrentValue = NULL;
 		$this->DepartmentTo->OldValue = $this->DepartmentTo->CurrentValue;
 		$this->HandedOverBy->CurrentValue = NULL;
 		$this->HandedOverBy->OldValue = $this->HandedOverBy->CurrentValue;
-		$this->CodeNoBy->CurrentValue = NULL;
-		$this->CodeNoBy->OldValue = $this->CodeNoBy->CurrentValue;
 		$this->DepartmentBy->CurrentValue = NULL;
 		$this->DepartmentBy->OldValue = $this->DepartmentBy->CurrentValue;
 		$this->Sign1->CurrentValue = NULL;
@@ -930,15 +922,6 @@ class t101_ho_head_add extends t101_ho_head
 			$this->TransactionDate->CurrentValue = UnFormatDateTime($this->TransactionDate->CurrentValue, 7);
 		}
 
-		// Check field name 'TransactionType' first before field var 'x_TransactionType'
-		$val = $CurrentForm->hasValue("TransactionType") ? $CurrentForm->getValue("TransactionType") : $CurrentForm->getValue("x_TransactionType");
-		if (!$this->TransactionType->IsDetailKey) {
-			if (IsApi() && $val == NULL)
-				$this->TransactionType->Visible = FALSE; // Disable update for API request
-			else
-				$this->TransactionType->setFormValue($val);
-		}
-
 		// Check field name 'HandedOverTo' first before field var 'x_HandedOverTo'
 		$val = $CurrentForm->hasValue("HandedOverTo") ? $CurrentForm->getValue("HandedOverTo") : $CurrentForm->getValue("x_HandedOverTo");
 		if (!$this->HandedOverTo->IsDetailKey) {
@@ -946,15 +929,6 @@ class t101_ho_head_add extends t101_ho_head
 				$this->HandedOverTo->Visible = FALSE; // Disable update for API request
 			else
 				$this->HandedOverTo->setFormValue($val);
-		}
-
-		// Check field name 'CodeNoTo' first before field var 'x_CodeNoTo'
-		$val = $CurrentForm->hasValue("CodeNoTo") ? $CurrentForm->getValue("CodeNoTo") : $CurrentForm->getValue("x_CodeNoTo");
-		if (!$this->CodeNoTo->IsDetailKey) {
-			if (IsApi() && $val == NULL)
-				$this->CodeNoTo->Visible = FALSE; // Disable update for API request
-			else
-				$this->CodeNoTo->setFormValue($val);
 		}
 
 		// Check field name 'DepartmentTo' first before field var 'x_DepartmentTo'
@@ -973,15 +947,6 @@ class t101_ho_head_add extends t101_ho_head
 				$this->HandedOverBy->Visible = FALSE; // Disable update for API request
 			else
 				$this->HandedOverBy->setFormValue($val);
-		}
-
-		// Check field name 'CodeNoBy' first before field var 'x_CodeNoBy'
-		$val = $CurrentForm->hasValue("CodeNoBy") ? $CurrentForm->getValue("CodeNoBy") : $CurrentForm->getValue("x_CodeNoBy");
-		if (!$this->CodeNoBy->IsDetailKey) {
-			if (IsApi() && $val == NULL)
-				$this->CodeNoBy->Visible = FALSE; // Disable update for API request
-			else
-				$this->CodeNoBy->setFormValue($val);
 		}
 
 		// Check field name 'DepartmentBy' first before field var 'x_DepartmentBy'
@@ -1041,12 +1006,9 @@ class t101_ho_head_add extends t101_ho_head
 		$this->TransactionNo->CurrentValue = $this->TransactionNo->FormValue;
 		$this->TransactionDate->CurrentValue = $this->TransactionDate->FormValue;
 		$this->TransactionDate->CurrentValue = UnFormatDateTime($this->TransactionDate->CurrentValue, 7);
-		$this->TransactionType->CurrentValue = $this->TransactionType->FormValue;
 		$this->HandedOverTo->CurrentValue = $this->HandedOverTo->FormValue;
-		$this->CodeNoTo->CurrentValue = $this->CodeNoTo->FormValue;
 		$this->DepartmentTo->CurrentValue = $this->DepartmentTo->FormValue;
 		$this->HandedOverBy->CurrentValue = $this->HandedOverBy->FormValue;
-		$this->CodeNoBy->CurrentValue = $this->CodeNoBy->FormValue;
 		$this->DepartmentBy->CurrentValue = $this->DepartmentBy->FormValue;
 		$this->Sign1->CurrentValue = $this->Sign1->FormValue;
 		$this->Sign2->CurrentValue = $this->Sign2->FormValue;
@@ -1093,9 +1055,7 @@ class t101_ho_head_add extends t101_ho_head
 		$this->property_id->setDbValue($row['property_id']);
 		$this->TransactionNo->setDbValue($row['TransactionNo']);
 		$this->TransactionDate->setDbValue($row['TransactionDate']);
-		$this->TransactionType->setDbValue($row['TransactionType']);
 		$this->HandedOverTo->setDbValue($row['HandedOverTo']);
-		$this->CodeNoTo->setDbValue($row['CodeNoTo']);
 		$this->DepartmentTo->setDbValue($row['DepartmentTo']);
 		$this->HandedOverBy->setDbValue($row['HandedOverBy']);
 		if (array_key_exists('EV__HandedOverBy', $rs->fields)) {
@@ -1103,7 +1063,6 @@ class t101_ho_head_add extends t101_ho_head
 		} else {
 			$this->HandedOverBy->VirtualValue = ""; // Clear value
 		}
-		$this->CodeNoBy->setDbValue($row['CodeNoBy']);
 		$this->DepartmentBy->setDbValue($row['DepartmentBy']);
 		$this->Sign1->setDbValue($row['Sign1']);
 		$this->Sign2->setDbValue($row['Sign2']);
@@ -1120,12 +1079,9 @@ class t101_ho_head_add extends t101_ho_head
 		$row['property_id'] = $this->property_id->CurrentValue;
 		$row['TransactionNo'] = $this->TransactionNo->CurrentValue;
 		$row['TransactionDate'] = $this->TransactionDate->CurrentValue;
-		$row['TransactionType'] = $this->TransactionType->CurrentValue;
 		$row['HandedOverTo'] = $this->HandedOverTo->CurrentValue;
-		$row['CodeNoTo'] = $this->CodeNoTo->CurrentValue;
 		$row['DepartmentTo'] = $this->DepartmentTo->CurrentValue;
 		$row['HandedOverBy'] = $this->HandedOverBy->CurrentValue;
-		$row['CodeNoBy'] = $this->CodeNoBy->CurrentValue;
 		$row['DepartmentBy'] = $this->DepartmentBy->CurrentValue;
 		$row['Sign1'] = $this->Sign1->CurrentValue;
 		$row['Sign2'] = $this->Sign2->CurrentValue;
@@ -1172,12 +1128,9 @@ class t101_ho_head_add extends t101_ho_head
 		// property_id
 		// TransactionNo
 		// TransactionDate
-		// TransactionType
 		// HandedOverTo
-		// CodeNoTo
 		// DepartmentTo
 		// HandedOverBy
-		// CodeNoBy
 		// DepartmentBy
 		// Sign1
 		// Sign2
@@ -1221,14 +1174,6 @@ class t101_ho_head_add extends t101_ho_head
 			$this->TransactionDate->ViewValue = FormatDateTime($this->TransactionDate->ViewValue, 7);
 			$this->TransactionDate->ViewCustomAttributes = "";
 
-			// TransactionType
-			if (strval($this->TransactionType->CurrentValue) != "") {
-				$this->TransactionType->ViewValue = $this->TransactionType->optionCaption($this->TransactionType->CurrentValue);
-			} else {
-				$this->TransactionType->ViewValue = NULL;
-			}
-			$this->TransactionType->ViewCustomAttributes = "";
-
 			// HandedOverTo
 			$curVal = strval($this->HandedOverTo->CurrentValue);
 			if ($curVal != "") {
@@ -1250,10 +1195,6 @@ class t101_ho_head_add extends t101_ho_head
 				$this->HandedOverTo->ViewValue = NULL;
 			}
 			$this->HandedOverTo->ViewCustomAttributes = "";
-
-			// CodeNoTo
-			$this->CodeNoTo->ViewValue = $this->CodeNoTo->CurrentValue;
-			$this->CodeNoTo->ViewCustomAttributes = "";
 
 			// DepartmentTo
 			$curVal = strval($this->DepartmentTo->CurrentValue);
@@ -1302,10 +1243,6 @@ class t101_ho_head_add extends t101_ho_head
 				}
 			}
 			$this->HandedOverBy->ViewCustomAttributes = "";
-
-			// CodeNoBy
-			$this->CodeNoBy->ViewValue = $this->CodeNoBy->CurrentValue;
-			$this->CodeNoBy->ViewCustomAttributes = "";
 
 			// DepartmentBy
 			$curVal = strval($this->DepartmentBy->CurrentValue);
@@ -1432,20 +1369,10 @@ class t101_ho_head_add extends t101_ho_head
 			$this->TransactionDate->HrefValue = "";
 			$this->TransactionDate->TooltipValue = "";
 
-			// TransactionType
-			$this->TransactionType->LinkCustomAttributes = "";
-			$this->TransactionType->HrefValue = "";
-			$this->TransactionType->TooltipValue = "";
-
 			// HandedOverTo
 			$this->HandedOverTo->LinkCustomAttributes = "";
 			$this->HandedOverTo->HrefValue = "";
 			$this->HandedOverTo->TooltipValue = "";
-
-			// CodeNoTo
-			$this->CodeNoTo->LinkCustomAttributes = "";
-			$this->CodeNoTo->HrefValue = "";
-			$this->CodeNoTo->TooltipValue = "";
 
 			// DepartmentTo
 			$this->DepartmentTo->LinkCustomAttributes = "";
@@ -1456,11 +1383,6 @@ class t101_ho_head_add extends t101_ho_head
 			$this->HandedOverBy->LinkCustomAttributes = "";
 			$this->HandedOverBy->HrefValue = "";
 			$this->HandedOverBy->TooltipValue = "";
-
-			// CodeNoBy
-			$this->CodeNoBy->LinkCustomAttributes = "";
-			$this->CodeNoBy->HrefValue = "";
-			$this->CodeNoBy->TooltipValue = "";
 
 			// DepartmentBy
 			$this->DepartmentBy->LinkCustomAttributes = "";
@@ -1534,11 +1456,6 @@ class t101_ho_head_add extends t101_ho_head
 			$this->TransactionDate->EditValue = HtmlEncode(FormatDateTime($this->TransactionDate->CurrentValue, 7));
 			$this->TransactionDate->PlaceHolder = RemoveHtml($this->TransactionDate->caption());
 
-			// TransactionType
-			$this->TransactionType->EditAttrs["class"] = "form-control";
-			$this->TransactionType->EditCustomAttributes = "";
-			$this->TransactionType->EditValue = $this->TransactionType->options(TRUE);
-
 			// HandedOverTo
 			$this->HandedOverTo->EditCustomAttributes = "";
 			$curVal = trim(strval($this->HandedOverTo->CurrentValue));
@@ -1570,14 +1487,6 @@ class t101_ho_head_add extends t101_ho_head
 					$rswrk->close();
 				$this->HandedOverTo->EditValue = $arwrk;
 			}
-
-			// CodeNoTo
-			$this->CodeNoTo->EditAttrs["class"] = "form-control";
-			$this->CodeNoTo->EditCustomAttributes = "";
-			if (!$this->CodeNoTo->Raw)
-				$this->CodeNoTo->CurrentValue = HtmlDecode($this->CodeNoTo->CurrentValue);
-			$this->CodeNoTo->EditValue = HtmlEncode($this->CodeNoTo->CurrentValue);
-			$this->CodeNoTo->PlaceHolder = RemoveHtml($this->CodeNoTo->caption());
 
 			// DepartmentTo
 			$this->DepartmentTo->EditCustomAttributes = "";
@@ -1642,14 +1551,6 @@ class t101_ho_head_add extends t101_ho_head
 					$rswrk->close();
 				$this->HandedOverBy->EditValue = $arwrk;
 			}
-
-			// CodeNoBy
-			$this->CodeNoBy->EditAttrs["class"] = "form-control";
-			$this->CodeNoBy->EditCustomAttributes = "";
-			if (!$this->CodeNoBy->Raw)
-				$this->CodeNoBy->CurrentValue = HtmlDecode($this->CodeNoBy->CurrentValue);
-			$this->CodeNoBy->EditValue = HtmlEncode($this->CodeNoBy->CurrentValue);
-			$this->CodeNoBy->PlaceHolder = RemoveHtml($this->CodeNoBy->caption());
 
 			// DepartmentBy
 			$this->DepartmentBy->EditCustomAttributes = "";
@@ -1825,17 +1726,9 @@ class t101_ho_head_add extends t101_ho_head
 			$this->TransactionDate->LinkCustomAttributes = "";
 			$this->TransactionDate->HrefValue = "";
 
-			// TransactionType
-			$this->TransactionType->LinkCustomAttributes = "";
-			$this->TransactionType->HrefValue = "";
-
 			// HandedOverTo
 			$this->HandedOverTo->LinkCustomAttributes = "";
 			$this->HandedOverTo->HrefValue = "";
-
-			// CodeNoTo
-			$this->CodeNoTo->LinkCustomAttributes = "";
-			$this->CodeNoTo->HrefValue = "";
 
 			// DepartmentTo
 			$this->DepartmentTo->LinkCustomAttributes = "";
@@ -1844,10 +1737,6 @@ class t101_ho_head_add extends t101_ho_head
 			// HandedOverBy
 			$this->HandedOverBy->LinkCustomAttributes = "";
 			$this->HandedOverBy->HrefValue = "";
-
-			// CodeNoBy
-			$this->CodeNoBy->LinkCustomAttributes = "";
-			$this->CodeNoBy->HrefValue = "";
 
 			// DepartmentBy
 			$this->DepartmentBy->LinkCustomAttributes = "";
@@ -1906,19 +1795,9 @@ class t101_ho_head_add extends t101_ho_head
 		if (!CheckEuroDate($this->TransactionDate->FormValue)) {
 			AddMessage($FormError, $this->TransactionDate->errorMessage());
 		}
-		if ($this->TransactionType->Required) {
-			if (!$this->TransactionType->IsDetailKey && $this->TransactionType->FormValue != NULL && $this->TransactionType->FormValue == "") {
-				AddMessage($FormError, str_replace("%s", $this->TransactionType->caption(), $this->TransactionType->RequiredErrorMessage));
-			}
-		}
 		if ($this->HandedOverTo->Required) {
 			if (!$this->HandedOverTo->IsDetailKey && $this->HandedOverTo->FormValue != NULL && $this->HandedOverTo->FormValue == "") {
 				AddMessage($FormError, str_replace("%s", $this->HandedOverTo->caption(), $this->HandedOverTo->RequiredErrorMessage));
-			}
-		}
-		if ($this->CodeNoTo->Required) {
-			if (!$this->CodeNoTo->IsDetailKey && $this->CodeNoTo->FormValue != NULL && $this->CodeNoTo->FormValue == "") {
-				AddMessage($FormError, str_replace("%s", $this->CodeNoTo->caption(), $this->CodeNoTo->RequiredErrorMessage));
 			}
 		}
 		if ($this->DepartmentTo->Required) {
@@ -1929,11 +1808,6 @@ class t101_ho_head_add extends t101_ho_head
 		if ($this->HandedOverBy->Required) {
 			if (!$this->HandedOverBy->IsDetailKey && $this->HandedOverBy->FormValue != NULL && $this->HandedOverBy->FormValue == "") {
 				AddMessage($FormError, str_replace("%s", $this->HandedOverBy->caption(), $this->HandedOverBy->RequiredErrorMessage));
-			}
-		}
-		if ($this->CodeNoBy->Required) {
-			if (!$this->CodeNoBy->IsDetailKey && $this->CodeNoBy->FormValue != NULL && $this->CodeNoBy->FormValue == "") {
-				AddMessage($FormError, str_replace("%s", $this->CodeNoBy->caption(), $this->CodeNoBy->RequiredErrorMessage));
 			}
 		}
 		if ($this->DepartmentBy->Required) {
@@ -2007,23 +1881,14 @@ class t101_ho_head_add extends t101_ho_head
 		// TransactionDate
 		$this->TransactionDate->setDbValueDef($rsnew, UnFormatDateTime($this->TransactionDate->CurrentValue, 7), CurrentDate(), FALSE);
 
-		// TransactionType
-		$this->TransactionType->setDbValueDef($rsnew, $this->TransactionType->CurrentValue, 0, FALSE);
-
 		// HandedOverTo
 		$this->HandedOverTo->setDbValueDef($rsnew, $this->HandedOverTo->CurrentValue, 0, FALSE);
-
-		// CodeNoTo
-		$this->CodeNoTo->setDbValueDef($rsnew, $this->CodeNoTo->CurrentValue, "", FALSE);
 
 		// DepartmentTo
 		$this->DepartmentTo->setDbValueDef($rsnew, $this->DepartmentTo->CurrentValue, 0, FALSE);
 
 		// HandedOverBy
 		$this->HandedOverBy->setDbValueDef($rsnew, $this->HandedOverBy->CurrentValue, 0, FALSE);
-
-		// CodeNoBy
-		$this->CodeNoBy->setDbValueDef($rsnew, $this->CodeNoBy->CurrentValue, "", FALSE);
 
 		// DepartmentBy
 		$this->DepartmentBy->setDbValueDef($rsnew, $this->DepartmentBy->CurrentValue, 0, FALSE);
@@ -2165,8 +2030,6 @@ class t101_ho_head_add extends t101_ho_head
 			// Set up lookup SQL and connection
 			switch ($fld->FieldVar) {
 				case "x_property_id":
-					break;
-				case "x_TransactionType":
 					break;
 				case "x_HandedOverTo":
 					break;

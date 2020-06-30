@@ -692,8 +692,6 @@ class r001_asset_summary extends r001_asset
 			$this->ReportTableClass = "table ew-table";
 
 		// Set field visibility for detail fields
-		$this->property_id->setVisibility();
-		$this->group_id->setVisibility();
 		$this->Code->setVisibility();
 		$this->Description->setVisibility();
 		$this->brand_id->setVisibility();
@@ -741,8 +739,8 @@ class r001_asset_summary extends r001_asset
 		// Update filter
 		AddFilter($this->Filter, $this->SearchWhere);
 
-		// Get total count
-		$sql = BuildReportSql($this->getSqlSelect(), $this->getSqlWhere(), $this->getSqlGroupBy(), $this->getSqlHaving(), "", $this->Filter, "");
+		// Get total group count
+		$sql = BuildReportSql($this->getSqlSelectGroup(), $this->getSqlWhere(), $this->getSqlGroupBy(), $this->getSqlHaving(), "", $this->Filter, "");
 		$this->TotalGroups = $this->getRecordCount($sql);
 		if ($this->DisplayGroups <= 0 || $this->DrillDown || $DashboardReport) // Display all groups
 			$this->DisplayGroups = $this->TotalGroups;
@@ -780,13 +778,18 @@ class r001_asset_summary extends r001_asset
 			$this->FilterOptions->hideAllOptions();
 		}
 
-		// Get current page records
+		// Get group records
 		if ($this->TotalGroups > 0) {
-			$sql = BuildReportSql($this->getSqlSelect(), $this->getSqlWhere(), $this->getSqlGroupBy(), $this->getSqlHaving(), "", $this->Filter, $this->Sort);
-			$rs = $this->getRecordset($sql, $this->DisplayGroups, $this->StartGroup - 1);
-			$this->DetailRecords = $rs->getRows(); // Get records
+			$grpSort = UpdateSortFields($this->getSqlOrderByGroup(), $this->Sort, 2); // Get grouping field only
+			$sql = BuildReportSql($this->getSqlSelectGroup(), $this->getSqlWhere(), $this->getSqlGroupBy(), $this->getSqlHaving(), $this->getSqlOrderByGroup(), $this->Filter, $grpSort);
+			$grpRs = $this->getRecordset($sql, $this->DisplayGroups, $this->StartGroup - 1);
+			$this->GroupRecords = $grpRs->getRows(); // Get records of first grouping field
+			$this->loadGroupRowValues();
 			$this->GroupCount = 1;
 		}
+
+		// Init detail records
+		$this->DetailRecords = [];
 		$this->setupFieldCount();
 
 		// Set the last group to display if not export all
@@ -801,10 +804,19 @@ class r001_asset_summary extends r001_asset
 			$this->StopGroup = $this->TotalGroups;
 		$this->RecordCount = 0;
 		$this->RecordIndex = 0;
-		$this->setGroupCount($this->StopGroup - $this->StartGroup + 1, 1);
 
 		// Set up pager
 		$this->Pager = new PrevNextPager($this->StartGroup, $this->DisplayGroups, $this->TotalGroups, $this->PageSizes, $this->GroupRange, $this->AutoHidePager, $this->AutoHidePageSizeSelector);
+	}
+
+	// Load group row values
+	public function loadGroupRowValues()
+	{
+		$cnt = count($this->GroupRecords); // Get record count
+		if ($this->GroupCount < $cnt)
+			$this->property_id->setGroupValue($this->GroupRecords[$this->GroupCount][0]);
+		else
+			$this->property_id->setGroupValue("");
 	}
 
 	// Load row values
@@ -830,7 +842,7 @@ class r001_asset_summary extends r001_asset
 			$this->Rows[] = $data;
 		}
 		$this->id->setDbValue($record['id']);
-		$this->property_id->setDbValue($record['property_id']);
+		$this->property_id->setDbValue(GroupValue($this->property_id, $record['property_id']));
 		$this->group_id->setDbValue($record['group_id']);
 		$this->Code->setDbValue($record['Code']);
 		$this->Description->setDbValue($record['Description']);
@@ -853,7 +865,16 @@ class r001_asset_summary extends r001_asset
 		global $Security, $Language, $Language;
 		$conn = $this->getConnection();
 		if ($this->RowType == ROWTYPE_TOTAL && $this->RowTotalSubType == ROWTOTAL_FOOTER && $this->RowTotalType == ROWTOTAL_PAGE) { // Get Page total
-			$records = &$this->DetailRecords;
+
+			// Build detail SQL
+			$firstGrpFld = &$this->property_id;
+			$firstGrpFld->getDistinctValues($this->GroupRecords);
+			$where = DetailFilterSql($firstGrpFld, $this->getSqlFirstGroupField(), $firstGrpFld->DistinctValues, $this->Dbid);
+			if ($this->Filter != "")
+				$where = "($this->Filter) AND ($where)";
+			$sql = BuildReportSql($this->getSqlSelect(), $this->getSqlWhere(), $this->getSqlGroupBy(), $this->getSqlHaving(), $this->getSqlOrderBy(), $where, $this->Sort);
+			$rs = $this->getRecordset($sql);
+			$records = $rs ? $rs->getRows() : [];
 			$this->PageTotalCount = count($records);
 		} elseif ($this->RowType == ROWTYPE_TOTAL && $this->RowTotalSubType == ROWTOTAL_FOOTER && $this->RowTotalType == ROWTOTAL_GRAND) { // Get Grand total
 			$hasCount = FALSE;
@@ -902,6 +923,60 @@ class r001_asset_summary extends r001_asset
 		if ($this->RowType == ROWTYPE_SEARCH) { // Search row
 		} elseif ($this->RowType == ROWTYPE_TOTAL && !($this->RowTotalType == ROWTOTAL_GROUP && $this->RowTotalSubType == ROWTOTAL_HEADER)) { // Summary row
 			$this->RowAttrs->prependClass(($this->RowTotalType == ROWTOTAL_PAGE || $this->RowTotalType == ROWTOTAL_GRAND) ? "ew-rpt-grp-aggregate" : ""); // Set up row class
+			if ($this->RowTotalType == ROWTOTAL_GROUP)
+				$this->RowAttrs["data-group"] = $this->property_id->groupValue(); // Set up group attribute
+			if ($this->RowTotalType == ROWTOTAL_GROUP && $this->RowGroupLevel >= 2)
+				$this->RowAttrs["data-group-2"] = $this->group_id->groupValue(); // Set up group attribute 2
+
+			// property_id
+			$this->property_id->GroupViewValue = $this->property_id->groupValue();
+			$curVal = strval($this->property_id->groupValue());
+			if ($curVal != "") {
+				$this->property_id->GroupViewValue = $this->property_id->lookupCacheOption($curVal);
+				if ($this->property_id->GroupViewValue === NULL) { // Lookup from database
+					$filterWrk = "`id`" . SearchString("=", $curVal, DATATYPE_NUMBER, "");
+					$sqlWrk = $this->property_id->Lookup->getSql(FALSE, $filterWrk, '', $this);
+					$rswrk = Conn()->execute($sqlWrk);
+					if ($rswrk && !$rswrk->EOF) { // Lookup values found
+						$arwrk = [];
+						$arwrk[1] = $rswrk->fields('df');
+						$this->property_id->GroupViewValue = $this->property_id->displayValue($arwrk);
+						$rswrk->Close();
+					} else {
+						$this->property_id->GroupViewValue = $this->property_id->groupValue();
+					}
+				}
+			} else {
+				$this->property_id->GroupViewValue = NULL;
+			}
+			$this->property_id->CellCssClass = ($this->RowGroupLevel == 1 ? "ew-rpt-grp-summary-1" : "ew-rpt-grp-field-1");
+			$this->property_id->ViewCustomAttributes = "";
+			$this->property_id->GroupViewValue = DisplayGroupValue($this->property_id, $this->property_id->GroupViewValue);
+
+			// group_id
+			$this->group_id->GroupViewValue = $this->group_id->groupValue();
+			$curVal = strval($this->group_id->groupValue());
+			if ($curVal != "") {
+				$this->group_id->GroupViewValue = $this->group_id->lookupCacheOption($curVal);
+				if ($this->group_id->GroupViewValue === NULL) { // Lookup from database
+					$filterWrk = "`id`" . SearchString("=", $curVal, DATATYPE_NUMBER, "");
+					$sqlWrk = $this->group_id->Lookup->getSql(FALSE, $filterWrk, '', $this);
+					$rswrk = Conn()->execute($sqlWrk);
+					if ($rswrk && !$rswrk->EOF) { // Lookup values found
+						$arwrk = [];
+						$arwrk[1] = $rswrk->fields('df');
+						$this->group_id->GroupViewValue = $this->group_id->displayValue($arwrk);
+						$rswrk->Close();
+					} else {
+						$this->group_id->GroupViewValue = $this->group_id->groupValue();
+					}
+				}
+			} else {
+				$this->group_id->GroupViewValue = NULL;
+			}
+			$this->group_id->CellCssClass = ($this->RowGroupLevel == 2 ? "ew-rpt-grp-summary-2" : "ew-rpt-grp-field-2");
+			$this->group_id->ViewCustomAttributes = "";
+			$this->group_id->GroupViewValue = DisplayGroupValue($this->group_id, $this->group_id->GroupViewValue);
 
 			// property_id
 			$this->property_id->HrefValue = "";
@@ -949,56 +1024,70 @@ class r001_asset_summary extends r001_asset
 			$this->PeriodEnd->HrefValue = "";
 		} else {
 			if ($this->RowTotalType == ROWTOTAL_GROUP && $this->RowTotalSubType == ROWTOTAL_HEADER) {
+			$this->RowAttrs["data-group"] = $this->property_id->groupValue(); // Set up group attribute
+			if ($this->RowGroupLevel >= 2) $this->RowAttrs["data-group-2"] = $this->group_id->groupValue(); // Set up group attribute 2
 			} else {
+			$this->RowAttrs["data-group"] = $this->property_id->groupValue(); // Set up group attribute
+			$this->RowAttrs["data-group-2"] = $this->group_id->groupValue(); // Set up group attribute 2
 			}
 
 			// property_id
-			$this->property_id->ViewValue = $this->property_id->CurrentValue;
-			$curVal = strval($this->property_id->CurrentValue);
+			$this->property_id->GroupViewValue = $this->property_id->groupValue();
+			$curVal = strval($this->property_id->groupValue());
 			if ($curVal != "") {
-				$this->property_id->ViewValue = $this->property_id->lookupCacheOption($curVal);
-				if ($this->property_id->ViewValue === NULL) { // Lookup from database
+				$this->property_id->GroupViewValue = $this->property_id->lookupCacheOption($curVal);
+				if ($this->property_id->GroupViewValue === NULL) { // Lookup from database
 					$filterWrk = "`id`" . SearchString("=", $curVal, DATATYPE_NUMBER, "");
 					$sqlWrk = $this->property_id->Lookup->getSql(FALSE, $filterWrk, '', $this);
 					$rswrk = Conn()->execute($sqlWrk);
 					if ($rswrk && !$rswrk->EOF) { // Lookup values found
 						$arwrk = [];
 						$arwrk[1] = $rswrk->fields('df');
-						$this->property_id->ViewValue = $this->property_id->displayValue($arwrk);
+						$this->property_id->GroupViewValue = $this->property_id->displayValue($arwrk);
 						$rswrk->Close();
 					} else {
-						$this->property_id->ViewValue = $this->property_id->CurrentValue;
+						$this->property_id->GroupViewValue = $this->property_id->groupValue();
 					}
 				}
 			} else {
-				$this->property_id->ViewValue = NULL;
+				$this->property_id->GroupViewValue = NULL;
 			}
-			$this->property_id->CellCssClass = ($this->RecordCount % 2 != 1 ? "ew-table-alt-row" : "ew-table-row");
+			$this->property_id->CellCssClass = "ew-rpt-grp-field-1";
 			$this->property_id->ViewCustomAttributes = "";
+			$this->property_id->GroupViewValue = DisplayGroupValue($this->property_id, $this->property_id->GroupViewValue);
+			if (!$this->property_id->LevelBreak)
+				$this->property_id->GroupViewValue = "&nbsp;";
+			else
+				$this->property_id->LevelBreak = FALSE;
 
 			// group_id
-			$this->group_id->ViewValue = $this->group_id->CurrentValue;
-			$curVal = strval($this->group_id->CurrentValue);
+			$this->group_id->GroupViewValue = $this->group_id->groupValue();
+			$curVal = strval($this->group_id->groupValue());
 			if ($curVal != "") {
-				$this->group_id->ViewValue = $this->group_id->lookupCacheOption($curVal);
-				if ($this->group_id->ViewValue === NULL) { // Lookup from database
+				$this->group_id->GroupViewValue = $this->group_id->lookupCacheOption($curVal);
+				if ($this->group_id->GroupViewValue === NULL) { // Lookup from database
 					$filterWrk = "`id`" . SearchString("=", $curVal, DATATYPE_NUMBER, "");
 					$sqlWrk = $this->group_id->Lookup->getSql(FALSE, $filterWrk, '', $this);
 					$rswrk = Conn()->execute($sqlWrk);
 					if ($rswrk && !$rswrk->EOF) { // Lookup values found
 						$arwrk = [];
 						$arwrk[1] = $rswrk->fields('df');
-						$this->group_id->ViewValue = $this->group_id->displayValue($arwrk);
+						$this->group_id->GroupViewValue = $this->group_id->displayValue($arwrk);
 						$rswrk->Close();
 					} else {
-						$this->group_id->ViewValue = $this->group_id->CurrentValue;
+						$this->group_id->GroupViewValue = $this->group_id->groupValue();
 					}
 				}
 			} else {
-				$this->group_id->ViewValue = NULL;
+				$this->group_id->GroupViewValue = NULL;
 			}
-			$this->group_id->CellCssClass = ($this->RecordCount % 2 != 1 ? "ew-table-alt-row" : "ew-table-row");
+			$this->group_id->CellCssClass = "ew-rpt-grp-field-2";
 			$this->group_id->ViewCustomAttributes = "";
+			$this->group_id->GroupViewValue = DisplayGroupValue($this->group_id, $this->group_id->GroupViewValue);
+			if (!$this->group_id->LevelBreak)
+				$this->group_id->GroupViewValue = "&nbsp;";
+			else
+				$this->group_id->LevelBreak = FALSE;
 
 			// Code
 			$this->Code->ViewValue = $this->Code->CurrentValue;
@@ -1011,6 +1100,7 @@ class r001_asset_summary extends r001_asset
 			$this->Description->ViewCustomAttributes = "";
 
 			// brand_id
+			$this->brand_id->ViewValue = $this->brand_id->CurrentValue;
 			$curVal = strval($this->brand_id->CurrentValue);
 			if ($curVal != "") {
 				$this->brand_id->ViewValue = $this->brand_id->lookupCacheOption($curVal);
@@ -1106,6 +1196,7 @@ class r001_asset_summary extends r001_asset
 			$this->department_id->ViewCustomAttributes = "";
 
 			// location_id
+			$this->location_id->ViewValue = $this->location_id->CurrentValue;
 			$curVal = strval($this->location_id->CurrentValue);
 			if ($curVal != "") {
 				$this->location_id->ViewValue = $this->location_id->lookupCacheOption($curVal);
@@ -1243,11 +1334,10 @@ class r001_asset_summary extends r001_asset
 
 		// Call Cell_Rendered event
 		if ($this->RowType == ROWTYPE_TOTAL) { // Summary row
-		} else {
 
 			// property_id
-			$currentValue = $this->property_id->CurrentValue;
-			$viewValue = &$this->property_id->ViewValue;
+			$currentValue = $this->property_id->GroupViewValue;
+			$viewValue = &$this->property_id->GroupViewValue;
 			$viewAttrs = &$this->property_id->ViewAttrs;
 			$cellAttrs = &$this->property_id->CellAttrs;
 			$hrefValue = &$this->property_id->HrefValue;
@@ -1255,8 +1345,27 @@ class r001_asset_summary extends r001_asset
 			$this->Cell_Rendered($this->property_id, $currentValue, $viewValue, $viewAttrs, $cellAttrs, $hrefValue, $linkAttrs);
 
 			// group_id
-			$currentValue = $this->group_id->CurrentValue;
-			$viewValue = &$this->group_id->ViewValue;
+			$currentValue = $this->group_id->GroupViewValue;
+			$viewValue = &$this->group_id->GroupViewValue;
+			$viewAttrs = &$this->group_id->ViewAttrs;
+			$cellAttrs = &$this->group_id->CellAttrs;
+			$hrefValue = &$this->group_id->HrefValue;
+			$linkAttrs = &$this->group_id->LinkAttrs;
+			$this->Cell_Rendered($this->group_id, $currentValue, $viewValue, $viewAttrs, $cellAttrs, $hrefValue, $linkAttrs);
+		} else {
+
+			// property_id
+			$currentValue = $this->property_id->groupValue();
+			$viewValue = &$this->property_id->GroupViewValue;
+			$viewAttrs = &$this->property_id->ViewAttrs;
+			$cellAttrs = &$this->property_id->CellAttrs;
+			$hrefValue = &$this->property_id->HrefValue;
+			$linkAttrs = &$this->property_id->LinkAttrs;
+			$this->Cell_Rendered($this->property_id, $currentValue, $viewValue, $viewAttrs, $cellAttrs, $hrefValue, $linkAttrs);
+
+			// group_id
+			$currentValue = $this->group_id->groupValue();
+			$viewValue = &$this->group_id->GroupViewValue;
 			$viewAttrs = &$this->group_id->ViewAttrs;
 			$cellAttrs = &$this->group_id->CellAttrs;
 			$hrefValue = &$this->group_id->HrefValue;
@@ -1428,9 +1537,11 @@ class r001_asset_summary extends r001_asset
 		$this->SubGroupColumnCount = 0;
 		$this->DetailColumnCount = 0;
 		if ($this->property_id->Visible)
-			$this->DetailColumnCount += 1;
-		if ($this->group_id->Visible)
-			$this->DetailColumnCount += 1;
+			$this->GroupColumnCount += 1;
+		if ($this->group_id->Visible) {
+			$this->GroupColumnCount += 1;
+			$this->SubGroupColumnCount += 1;
+		}
 		if ($this->Code->Visible)
 			$this->DetailColumnCount += 1;
 		if ($this->Description->Visible)

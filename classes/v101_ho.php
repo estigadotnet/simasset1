@@ -29,12 +29,9 @@ class v101_ho extends DbTable
 	public $property_id;
 	public $TransactionNo;
 	public $TransactionDate;
-	public $TransactionType;
 	public $HandedOverTo;
-	public $CodeNoTo;
 	public $DepartmentTo;
 	public $HandedOverBy;
-	public $CodeNoBy;
 	public $DepartmentBy;
 	public $Sign1;
 	public $Sign2;
@@ -133,14 +130,6 @@ class v101_ho extends DbTable
 		$this->TransactionDate->DefaultErrorMessage = str_replace("%s", $GLOBALS["DATE_FORMAT"], $Language->phrase("IncorrectDate"));
 		$this->fields['TransactionDate'] = &$this->TransactionDate;
 
-		// TransactionType
-		$this->TransactionType = new DbField('v101_ho', 'v101_ho', 'x_TransactionType', 'TransactionType', '`TransactionType`', '`TransactionType`', 16, 4, -1, FALSE, '`TransactionType`', FALSE, FALSE, FALSE, 'FORMATTED TEXT', 'TEXT');
-		$this->TransactionType->Nullable = FALSE; // NOT NULL field
-		$this->TransactionType->Required = TRUE; // Required field
-		$this->TransactionType->Sortable = TRUE; // Allow sort
-		$this->TransactionType->DefaultErrorMessage = $Language->phrase("IncorrectInteger");
-		$this->fields['TransactionType'] = &$this->TransactionType;
-
 		// HandedOverTo
 		$this->HandedOverTo = new DbField('v101_ho', 'v101_ho', 'x_HandedOverTo', 'HandedOverTo', '`HandedOverTo`', '`HandedOverTo`', 3, 11, -1, FALSE, '`HandedOverTo`', FALSE, FALSE, FALSE, 'FORMATTED TEXT', 'TEXT');
 		$this->HandedOverTo->Nullable = FALSE; // NOT NULL field
@@ -148,13 +137,6 @@ class v101_ho extends DbTable
 		$this->HandedOverTo->Sortable = TRUE; // Allow sort
 		$this->HandedOverTo->DefaultErrorMessage = $Language->phrase("IncorrectInteger");
 		$this->fields['HandedOverTo'] = &$this->HandedOverTo;
-
-		// CodeNoTo
-		$this->CodeNoTo = new DbField('v101_ho', 'v101_ho', 'x_CodeNoTo', 'CodeNoTo', '`CodeNoTo`', '`CodeNoTo`', 200, 25, -1, FALSE, '`CodeNoTo`', FALSE, FALSE, FALSE, 'FORMATTED TEXT', 'TEXT');
-		$this->CodeNoTo->Nullable = FALSE; // NOT NULL field
-		$this->CodeNoTo->Required = TRUE; // Required field
-		$this->CodeNoTo->Sortable = TRUE; // Allow sort
-		$this->fields['CodeNoTo'] = &$this->CodeNoTo;
 
 		// DepartmentTo
 		$this->DepartmentTo = new DbField('v101_ho', 'v101_ho', 'x_DepartmentTo', 'DepartmentTo', '`DepartmentTo`', '`DepartmentTo`', 3, 11, -1, FALSE, '`DepartmentTo`', FALSE, FALSE, FALSE, 'FORMATTED TEXT', 'TEXT');
@@ -171,13 +153,6 @@ class v101_ho extends DbTable
 		$this->HandedOverBy->Sortable = TRUE; // Allow sort
 		$this->HandedOverBy->DefaultErrorMessage = $Language->phrase("IncorrectInteger");
 		$this->fields['HandedOverBy'] = &$this->HandedOverBy;
-
-		// CodeNoBy
-		$this->CodeNoBy = new DbField('v101_ho', 'v101_ho', 'x_CodeNoBy', 'CodeNoBy', '`CodeNoBy`', '`CodeNoBy`', 200, 25, -1, FALSE, '`CodeNoBy`', FALSE, FALSE, FALSE, 'FORMATTED TEXT', 'TEXT');
-		$this->CodeNoBy->Nullable = FALSE; // NOT NULL field
-		$this->CodeNoBy->Required = TRUE; // Required field
-		$this->CodeNoBy->Sortable = TRUE; // Allow sort
-		$this->fields['CodeNoBy'] = &$this->CodeNoBy;
 
 		// DepartmentBy
 		$this->DepartmentBy = new DbField('v101_ho', 'v101_ho', 'x_DepartmentBy', 'DepartmentBy', '`DepartmentBy`', '`DepartmentBy`', 3, 11, -1, FALSE, '`DepartmentBy`', FALSE, FALSE, FALSE, 'FORMATTED TEXT', 'TEXT');
@@ -744,12 +719,9 @@ class v101_ho extends DbTable
 		$this->property_id->DbValue = $row['property_id'];
 		$this->TransactionNo->DbValue = $row['TransactionNo'];
 		$this->TransactionDate->DbValue = $row['TransactionDate'];
-		$this->TransactionType->DbValue = $row['TransactionType'];
 		$this->HandedOverTo->DbValue = $row['HandedOverTo'];
-		$this->CodeNoTo->DbValue = $row['CodeNoTo'];
 		$this->DepartmentTo->DbValue = $row['DepartmentTo'];
 		$this->HandedOverBy->DbValue = $row['HandedOverBy'];
-		$this->CodeNoBy->DbValue = $row['CodeNoBy'];
 		$this->DepartmentBy->DbValue = $row['DepartmentBy'];
 		$this->Sign1->DbValue = $row['Sign1'];
 		$this->Sign2->DbValue = $row['Sign2'];
@@ -1052,12 +1024,9 @@ class v101_ho extends DbTable
 		$this->property_id->setDbValue($rs->fields('property_id'));
 		$this->TransactionNo->setDbValue($rs->fields('TransactionNo'));
 		$this->TransactionDate->setDbValue($rs->fields('TransactionDate'));
-		$this->TransactionType->setDbValue($rs->fields('TransactionType'));
 		$this->HandedOverTo->setDbValue($rs->fields('HandedOverTo'));
-		$this->CodeNoTo->setDbValue($rs->fields('CodeNoTo'));
 		$this->DepartmentTo->setDbValue($rs->fields('DepartmentTo'));
 		$this->HandedOverBy->setDbValue($rs->fields('HandedOverBy'));
-		$this->CodeNoBy->setDbValue($rs->fields('CodeNoBy'));
 		$this->DepartmentBy->setDbValue($rs->fields('DepartmentBy'));
 		$this->Sign1->setDbValue($rs->fields('Sign1'));
 		$this->Sign2->setDbValue($rs->fields('Sign2'));
@@ -1106,12 +1075,9 @@ class v101_ho extends DbTable
 		// property_id
 		// TransactionNo
 		// TransactionDate
-		// TransactionType
 		// HandedOverTo
-		// CodeNoTo
 		// DepartmentTo
 		// HandedOverBy
-		// CodeNoBy
 		// DepartmentBy
 		// Sign1
 		// Sign2
@@ -1164,19 +1130,10 @@ class v101_ho extends DbTable
 		$this->TransactionDate->ViewValue = FormatDateTime($this->TransactionDate->ViewValue, 0);
 		$this->TransactionDate->ViewCustomAttributes = "";
 
-		// TransactionType
-		$this->TransactionType->ViewValue = $this->TransactionType->CurrentValue;
-		$this->TransactionType->ViewValue = FormatNumber($this->TransactionType->ViewValue, 0, -2, -2, -2);
-		$this->TransactionType->ViewCustomAttributes = "";
-
 		// HandedOverTo
 		$this->HandedOverTo->ViewValue = $this->HandedOverTo->CurrentValue;
 		$this->HandedOverTo->ViewValue = FormatNumber($this->HandedOverTo->ViewValue, 0, -2, -2, -2);
 		$this->HandedOverTo->ViewCustomAttributes = "";
-
-		// CodeNoTo
-		$this->CodeNoTo->ViewValue = $this->CodeNoTo->CurrentValue;
-		$this->CodeNoTo->ViewCustomAttributes = "";
 
 		// DepartmentTo
 		$this->DepartmentTo->ViewValue = $this->DepartmentTo->CurrentValue;
@@ -1187,10 +1144,6 @@ class v101_ho extends DbTable
 		$this->HandedOverBy->ViewValue = $this->HandedOverBy->CurrentValue;
 		$this->HandedOverBy->ViewValue = FormatNumber($this->HandedOverBy->ViewValue, 0, -2, -2, -2);
 		$this->HandedOverBy->ViewCustomAttributes = "";
-
-		// CodeNoBy
-		$this->CodeNoBy->ViewValue = $this->CodeNoBy->CurrentValue;
-		$this->CodeNoBy->ViewCustomAttributes = "";
 
 		// DepartmentBy
 		$this->DepartmentBy->ViewValue = $this->DepartmentBy->CurrentValue;
@@ -1354,20 +1307,10 @@ class v101_ho extends DbTable
 		$this->TransactionDate->HrefValue = "";
 		$this->TransactionDate->TooltipValue = "";
 
-		// TransactionType
-		$this->TransactionType->LinkCustomAttributes = "";
-		$this->TransactionType->HrefValue = "";
-		$this->TransactionType->TooltipValue = "";
-
 		// HandedOverTo
 		$this->HandedOverTo->LinkCustomAttributes = "";
 		$this->HandedOverTo->HrefValue = "";
 		$this->HandedOverTo->TooltipValue = "";
-
-		// CodeNoTo
-		$this->CodeNoTo->LinkCustomAttributes = "";
-		$this->CodeNoTo->HrefValue = "";
-		$this->CodeNoTo->TooltipValue = "";
 
 		// DepartmentTo
 		$this->DepartmentTo->LinkCustomAttributes = "";
@@ -1378,11 +1321,6 @@ class v101_ho extends DbTable
 		$this->HandedOverBy->LinkCustomAttributes = "";
 		$this->HandedOverBy->HrefValue = "";
 		$this->HandedOverBy->TooltipValue = "";
-
-		// CodeNoBy
-		$this->CodeNoBy->LinkCustomAttributes = "";
-		$this->CodeNoBy->HrefValue = "";
-		$this->CodeNoBy->TooltipValue = "";
 
 		// DepartmentBy
 		$this->DepartmentBy->LinkCustomAttributes = "";
@@ -1590,25 +1528,11 @@ class v101_ho extends DbTable
 		$this->TransactionDate->EditValue = FormatDateTime($this->TransactionDate->CurrentValue, 8);
 		$this->TransactionDate->PlaceHolder = RemoveHtml($this->TransactionDate->caption());
 
-		// TransactionType
-		$this->TransactionType->EditAttrs["class"] = "form-control";
-		$this->TransactionType->EditCustomAttributes = "";
-		$this->TransactionType->EditValue = $this->TransactionType->CurrentValue;
-		$this->TransactionType->PlaceHolder = RemoveHtml($this->TransactionType->caption());
-
 		// HandedOverTo
 		$this->HandedOverTo->EditAttrs["class"] = "form-control";
 		$this->HandedOverTo->EditCustomAttributes = "";
 		$this->HandedOverTo->EditValue = $this->HandedOverTo->CurrentValue;
 		$this->HandedOverTo->PlaceHolder = RemoveHtml($this->HandedOverTo->caption());
-
-		// CodeNoTo
-		$this->CodeNoTo->EditAttrs["class"] = "form-control";
-		$this->CodeNoTo->EditCustomAttributes = "";
-		if (!$this->CodeNoTo->Raw)
-			$this->CodeNoTo->CurrentValue = HtmlDecode($this->CodeNoTo->CurrentValue);
-		$this->CodeNoTo->EditValue = $this->CodeNoTo->CurrentValue;
-		$this->CodeNoTo->PlaceHolder = RemoveHtml($this->CodeNoTo->caption());
 
 		// DepartmentTo
 		$this->DepartmentTo->EditAttrs["class"] = "form-control";
@@ -1621,14 +1545,6 @@ class v101_ho extends DbTable
 		$this->HandedOverBy->EditCustomAttributes = "";
 		$this->HandedOverBy->EditValue = $this->HandedOverBy->CurrentValue;
 		$this->HandedOverBy->PlaceHolder = RemoveHtml($this->HandedOverBy->caption());
-
-		// CodeNoBy
-		$this->CodeNoBy->EditAttrs["class"] = "form-control";
-		$this->CodeNoBy->EditCustomAttributes = "";
-		if (!$this->CodeNoBy->Raw)
-			$this->CodeNoBy->CurrentValue = HtmlDecode($this->CodeNoBy->CurrentValue);
-		$this->CodeNoBy->EditValue = $this->CodeNoBy->CurrentValue;
-		$this->CodeNoBy->PlaceHolder = RemoveHtml($this->CodeNoBy->caption());
 
 		// DepartmentBy
 		$this->DepartmentBy->EditAttrs["class"] = "form-control";
@@ -1909,12 +1825,9 @@ class v101_ho extends DbTable
 					$doc->exportCaption($this->property_id);
 					$doc->exportCaption($this->TransactionNo);
 					$doc->exportCaption($this->TransactionDate);
-					$doc->exportCaption($this->TransactionType);
 					$doc->exportCaption($this->HandedOverTo);
-					$doc->exportCaption($this->CodeNoTo);
 					$doc->exportCaption($this->DepartmentTo);
 					$doc->exportCaption($this->HandedOverBy);
-					$doc->exportCaption($this->CodeNoBy);
 					$doc->exportCaption($this->DepartmentBy);
 					$doc->exportCaption($this->Sign1);
 					$doc->exportCaption($this->Sign2);
@@ -1953,12 +1866,9 @@ class v101_ho extends DbTable
 					$doc->exportCaption($this->property_id);
 					$doc->exportCaption($this->TransactionNo);
 					$doc->exportCaption($this->TransactionDate);
-					$doc->exportCaption($this->TransactionType);
 					$doc->exportCaption($this->HandedOverTo);
-					$doc->exportCaption($this->CodeNoTo);
 					$doc->exportCaption($this->DepartmentTo);
 					$doc->exportCaption($this->HandedOverBy);
-					$doc->exportCaption($this->CodeNoBy);
 					$doc->exportCaption($this->DepartmentBy);
 					$doc->exportCaption($this->Sign1);
 					$doc->exportCaption($this->Sign2);
@@ -2026,12 +1936,9 @@ class v101_ho extends DbTable
 						$doc->exportField($this->property_id);
 						$doc->exportField($this->TransactionNo);
 						$doc->exportField($this->TransactionDate);
-						$doc->exportField($this->TransactionType);
 						$doc->exportField($this->HandedOverTo);
-						$doc->exportField($this->CodeNoTo);
 						$doc->exportField($this->DepartmentTo);
 						$doc->exportField($this->HandedOverBy);
-						$doc->exportField($this->CodeNoBy);
 						$doc->exportField($this->DepartmentBy);
 						$doc->exportField($this->Sign1);
 						$doc->exportField($this->Sign2);
@@ -2070,12 +1977,9 @@ class v101_ho extends DbTable
 						$doc->exportField($this->property_id);
 						$doc->exportField($this->TransactionNo);
 						$doc->exportField($this->TransactionDate);
-						$doc->exportField($this->TransactionType);
 						$doc->exportField($this->HandedOverTo);
-						$doc->exportField($this->CodeNoTo);
 						$doc->exportField($this->DepartmentTo);
 						$doc->exportField($this->HandedOverBy);
-						$doc->exportField($this->CodeNoBy);
 						$doc->exportField($this->DepartmentBy);
 						$doc->exportField($this->Sign1);
 						$doc->exportField($this->Sign2);

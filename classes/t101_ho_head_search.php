@@ -684,12 +684,9 @@ class t101_ho_head_search extends t101_ho_head
 		$this->property_id->setVisibility();
 		$this->TransactionNo->setVisibility();
 		$this->TransactionDate->setVisibility();
-		$this->TransactionType->setVisibility();
 		$this->HandedOverTo->setVisibility();
-		$this->CodeNoTo->setVisibility();
 		$this->DepartmentTo->setVisibility();
 		$this->HandedOverBy->setVisibility();
-		$this->CodeNoBy->setVisibility();
 		$this->DepartmentBy->setVisibility();
 		$this->Sign1->setVisibility();
 		$this->Sign2->setVisibility();
@@ -772,12 +769,9 @@ class t101_ho_head_search extends t101_ho_head
 		$this->buildSearchUrl($srchUrl, $this->property_id); // property_id
 		$this->buildSearchUrl($srchUrl, $this->TransactionNo); // TransactionNo
 		$this->buildSearchUrl($srchUrl, $this->TransactionDate); // TransactionDate
-		$this->buildSearchUrl($srchUrl, $this->TransactionType); // TransactionType
 		$this->buildSearchUrl($srchUrl, $this->HandedOverTo); // HandedOverTo
-		$this->buildSearchUrl($srchUrl, $this->CodeNoTo); // CodeNoTo
 		$this->buildSearchUrl($srchUrl, $this->DepartmentTo); // DepartmentTo
 		$this->buildSearchUrl($srchUrl, $this->HandedOverBy); // HandedOverBy
-		$this->buildSearchUrl($srchUrl, $this->CodeNoBy); // CodeNoBy
 		$this->buildSearchUrl($srchUrl, $this->DepartmentBy); // DepartmentBy
 		$this->buildSearchUrl($srchUrl, $this->Sign1); // Sign1
 		$this->buildSearchUrl($srchUrl, $this->Sign2); // Sign2
@@ -861,17 +855,11 @@ class t101_ho_head_search extends t101_ho_head
 			$got = TRUE;
 		if ($this->TransactionDate->AdvancedSearch->post())
 			$got = TRUE;
-		if ($this->TransactionType->AdvancedSearch->post())
-			$got = TRUE;
 		if ($this->HandedOverTo->AdvancedSearch->post())
-			$got = TRUE;
-		if ($this->CodeNoTo->AdvancedSearch->post())
 			$got = TRUE;
 		if ($this->DepartmentTo->AdvancedSearch->post())
 			$got = TRUE;
 		if ($this->HandedOverBy->AdvancedSearch->post())
-			$got = TRUE;
-		if ($this->CodeNoBy->AdvancedSearch->post())
 			$got = TRUE;
 		if ($this->DepartmentBy->AdvancedSearch->post())
 			$got = TRUE;
@@ -901,12 +889,9 @@ class t101_ho_head_search extends t101_ho_head
 		// property_id
 		// TransactionNo
 		// TransactionDate
-		// TransactionType
 		// HandedOverTo
-		// CodeNoTo
 		// DepartmentTo
 		// HandedOverBy
-		// CodeNoBy
 		// DepartmentBy
 		// Sign1
 		// Sign2
@@ -950,14 +935,6 @@ class t101_ho_head_search extends t101_ho_head
 			$this->TransactionDate->ViewValue = FormatDateTime($this->TransactionDate->ViewValue, 7);
 			$this->TransactionDate->ViewCustomAttributes = "";
 
-			// TransactionType
-			if (strval($this->TransactionType->CurrentValue) != "") {
-				$this->TransactionType->ViewValue = $this->TransactionType->optionCaption($this->TransactionType->CurrentValue);
-			} else {
-				$this->TransactionType->ViewValue = NULL;
-			}
-			$this->TransactionType->ViewCustomAttributes = "";
-
 			// HandedOverTo
 			$curVal = strval($this->HandedOverTo->CurrentValue);
 			if ($curVal != "") {
@@ -979,10 +956,6 @@ class t101_ho_head_search extends t101_ho_head
 				$this->HandedOverTo->ViewValue = NULL;
 			}
 			$this->HandedOverTo->ViewCustomAttributes = "";
-
-			// CodeNoTo
-			$this->CodeNoTo->ViewValue = $this->CodeNoTo->CurrentValue;
-			$this->CodeNoTo->ViewCustomAttributes = "";
 
 			// DepartmentTo
 			$curVal = strval($this->DepartmentTo->CurrentValue);
@@ -1031,10 +1004,6 @@ class t101_ho_head_search extends t101_ho_head
 				}
 			}
 			$this->HandedOverBy->ViewCustomAttributes = "";
-
-			// CodeNoBy
-			$this->CodeNoBy->ViewValue = $this->CodeNoBy->CurrentValue;
-			$this->CodeNoBy->ViewCustomAttributes = "";
 
 			// DepartmentBy
 			$curVal = strval($this->DepartmentBy->CurrentValue);
@@ -1161,20 +1130,10 @@ class t101_ho_head_search extends t101_ho_head
 			$this->TransactionDate->HrefValue = "";
 			$this->TransactionDate->TooltipValue = "";
 
-			// TransactionType
-			$this->TransactionType->LinkCustomAttributes = "";
-			$this->TransactionType->HrefValue = "";
-			$this->TransactionType->TooltipValue = "";
-
 			// HandedOverTo
 			$this->HandedOverTo->LinkCustomAttributes = "";
 			$this->HandedOverTo->HrefValue = "";
 			$this->HandedOverTo->TooltipValue = "";
-
-			// CodeNoTo
-			$this->CodeNoTo->LinkCustomAttributes = "";
-			$this->CodeNoTo->HrefValue = "";
-			$this->CodeNoTo->TooltipValue = "";
 
 			// DepartmentTo
 			$this->DepartmentTo->LinkCustomAttributes = "";
@@ -1185,11 +1144,6 @@ class t101_ho_head_search extends t101_ho_head
 			$this->HandedOverBy->LinkCustomAttributes = "";
 			$this->HandedOverBy->HrefValue = "";
 			$this->HandedOverBy->TooltipValue = "";
-
-			// CodeNoBy
-			$this->CodeNoBy->LinkCustomAttributes = "";
-			$this->CodeNoBy->HrefValue = "";
-			$this->CodeNoBy->TooltipValue = "";
 
 			// DepartmentBy
 			$this->DepartmentBy->LinkCustomAttributes = "";
@@ -1263,11 +1217,6 @@ class t101_ho_head_search extends t101_ho_head
 			$this->TransactionDate->EditValue = HtmlEncode(FormatDateTime(UnFormatDateTime($this->TransactionDate->AdvancedSearch->SearchValue, 7), 7));
 			$this->TransactionDate->PlaceHolder = RemoveHtml($this->TransactionDate->caption());
 
-			// TransactionType
-			$this->TransactionType->EditAttrs["class"] = "form-control";
-			$this->TransactionType->EditCustomAttributes = "";
-			$this->TransactionType->EditValue = $this->TransactionType->options(TRUE);
-
 			// HandedOverTo
 			$this->HandedOverTo->EditCustomAttributes = "";
 			$curVal = trim(strval($this->HandedOverTo->AdvancedSearch->SearchValue));
@@ -1299,14 +1248,6 @@ class t101_ho_head_search extends t101_ho_head
 					$rswrk->close();
 				$this->HandedOverTo->EditValue = $arwrk;
 			}
-
-			// CodeNoTo
-			$this->CodeNoTo->EditAttrs["class"] = "form-control";
-			$this->CodeNoTo->EditCustomAttributes = "";
-			if (!$this->CodeNoTo->Raw)
-				$this->CodeNoTo->AdvancedSearch->SearchValue = HtmlDecode($this->CodeNoTo->AdvancedSearch->SearchValue);
-			$this->CodeNoTo->EditValue = HtmlEncode($this->CodeNoTo->AdvancedSearch->SearchValue);
-			$this->CodeNoTo->PlaceHolder = RemoveHtml($this->CodeNoTo->caption());
 
 			// DepartmentTo
 			$this->DepartmentTo->EditCustomAttributes = "";
@@ -1371,14 +1312,6 @@ class t101_ho_head_search extends t101_ho_head
 					$rswrk->close();
 				$this->HandedOverBy->EditValue = $arwrk;
 			}
-
-			// CodeNoBy
-			$this->CodeNoBy->EditAttrs["class"] = "form-control";
-			$this->CodeNoBy->EditCustomAttributes = "";
-			if (!$this->CodeNoBy->Raw)
-				$this->CodeNoBy->AdvancedSearch->SearchValue = HtmlDecode($this->CodeNoBy->AdvancedSearch->SearchValue);
-			$this->CodeNoBy->EditValue = HtmlEncode($this->CodeNoBy->AdvancedSearch->SearchValue);
-			$this->CodeNoBy->PlaceHolder = RemoveHtml($this->CodeNoBy->caption());
 
 			// DepartmentBy
 			$this->DepartmentBy->EditCustomAttributes = "";
@@ -1581,12 +1514,9 @@ class t101_ho_head_search extends t101_ho_head
 		$this->property_id->AdvancedSearch->load();
 		$this->TransactionNo->AdvancedSearch->load();
 		$this->TransactionDate->AdvancedSearch->load();
-		$this->TransactionType->AdvancedSearch->load();
 		$this->HandedOverTo->AdvancedSearch->load();
-		$this->CodeNoTo->AdvancedSearch->load();
 		$this->DepartmentTo->AdvancedSearch->load();
 		$this->HandedOverBy->AdvancedSearch->load();
-		$this->CodeNoBy->AdvancedSearch->load();
 		$this->DepartmentBy->AdvancedSearch->load();
 		$this->Sign1->AdvancedSearch->load();
 		$this->Sign2->AdvancedSearch->load();
@@ -1620,8 +1550,6 @@ class t101_ho_head_search extends t101_ho_head
 			// Set up lookup SQL and connection
 			switch ($fld->FieldVar) {
 				case "x_property_id":
-					break;
-				case "x_TransactionType":
 					break;
 				case "x_HandedOverTo":
 					break;

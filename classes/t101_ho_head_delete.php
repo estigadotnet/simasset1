@@ -596,12 +596,9 @@ class t101_ho_head_delete extends t101_ho_head
 		$this->property_id->setVisibility();
 		$this->TransactionNo->setVisibility();
 		$this->TransactionDate->setVisibility();
-		$this->TransactionType->setVisibility();
 		$this->HandedOverTo->setVisibility();
-		$this->CodeNoTo->setVisibility();
 		$this->DepartmentTo->setVisibility();
 		$this->HandedOverBy->setVisibility();
-		$this->CodeNoBy->setVisibility();
 		$this->DepartmentBy->setVisibility();
 		$this->Sign1->setVisibility();
 		$this->Sign2->setVisibility();
@@ -765,9 +762,7 @@ class t101_ho_head_delete extends t101_ho_head
 		$this->property_id->setDbValue($row['property_id']);
 		$this->TransactionNo->setDbValue($row['TransactionNo']);
 		$this->TransactionDate->setDbValue($row['TransactionDate']);
-		$this->TransactionType->setDbValue($row['TransactionType']);
 		$this->HandedOverTo->setDbValue($row['HandedOverTo']);
-		$this->CodeNoTo->setDbValue($row['CodeNoTo']);
 		$this->DepartmentTo->setDbValue($row['DepartmentTo']);
 		$this->HandedOverBy->setDbValue($row['HandedOverBy']);
 		if (array_key_exists('EV__HandedOverBy', $rs->fields)) {
@@ -775,7 +770,6 @@ class t101_ho_head_delete extends t101_ho_head
 		} else {
 			$this->HandedOverBy->VirtualValue = ""; // Clear value
 		}
-		$this->CodeNoBy->setDbValue($row['CodeNoBy']);
 		$this->DepartmentBy->setDbValue($row['DepartmentBy']);
 		$this->Sign1->setDbValue($row['Sign1']);
 		$this->Sign2->setDbValue($row['Sign2']);
@@ -791,12 +785,9 @@ class t101_ho_head_delete extends t101_ho_head
 		$row['property_id'] = NULL;
 		$row['TransactionNo'] = NULL;
 		$row['TransactionDate'] = NULL;
-		$row['TransactionType'] = NULL;
 		$row['HandedOverTo'] = NULL;
-		$row['CodeNoTo'] = NULL;
 		$row['DepartmentTo'] = NULL;
 		$row['HandedOverBy'] = NULL;
-		$row['CodeNoBy'] = NULL;
 		$row['DepartmentBy'] = NULL;
 		$row['Sign1'] = NULL;
 		$row['Sign2'] = NULL;
@@ -820,12 +811,9 @@ class t101_ho_head_delete extends t101_ho_head
 		// property_id
 		// TransactionNo
 		// TransactionDate
-		// TransactionType
 		// HandedOverTo
-		// CodeNoTo
 		// DepartmentTo
 		// HandedOverBy
-		// CodeNoBy
 		// DepartmentBy
 		// Sign1
 		// Sign2
@@ -869,14 +857,6 @@ class t101_ho_head_delete extends t101_ho_head
 			$this->TransactionDate->ViewValue = FormatDateTime($this->TransactionDate->ViewValue, 7);
 			$this->TransactionDate->ViewCustomAttributes = "";
 
-			// TransactionType
-			if (strval($this->TransactionType->CurrentValue) != "") {
-				$this->TransactionType->ViewValue = $this->TransactionType->optionCaption($this->TransactionType->CurrentValue);
-			} else {
-				$this->TransactionType->ViewValue = NULL;
-			}
-			$this->TransactionType->ViewCustomAttributes = "";
-
 			// HandedOverTo
 			$curVal = strval($this->HandedOverTo->CurrentValue);
 			if ($curVal != "") {
@@ -898,10 +878,6 @@ class t101_ho_head_delete extends t101_ho_head
 				$this->HandedOverTo->ViewValue = NULL;
 			}
 			$this->HandedOverTo->ViewCustomAttributes = "";
-
-			// CodeNoTo
-			$this->CodeNoTo->ViewValue = $this->CodeNoTo->CurrentValue;
-			$this->CodeNoTo->ViewCustomAttributes = "";
 
 			// DepartmentTo
 			$curVal = strval($this->DepartmentTo->CurrentValue);
@@ -950,10 +926,6 @@ class t101_ho_head_delete extends t101_ho_head
 				}
 			}
 			$this->HandedOverBy->ViewCustomAttributes = "";
-
-			// CodeNoBy
-			$this->CodeNoBy->ViewValue = $this->CodeNoBy->CurrentValue;
-			$this->CodeNoBy->ViewCustomAttributes = "";
 
 			// DepartmentBy
 			$curVal = strval($this->DepartmentBy->CurrentValue);
@@ -1080,20 +1052,10 @@ class t101_ho_head_delete extends t101_ho_head
 			$this->TransactionDate->HrefValue = "";
 			$this->TransactionDate->TooltipValue = "";
 
-			// TransactionType
-			$this->TransactionType->LinkCustomAttributes = "";
-			$this->TransactionType->HrefValue = "";
-			$this->TransactionType->TooltipValue = "";
-
 			// HandedOverTo
 			$this->HandedOverTo->LinkCustomAttributes = "";
 			$this->HandedOverTo->HrefValue = "";
 			$this->HandedOverTo->TooltipValue = "";
-
-			// CodeNoTo
-			$this->CodeNoTo->LinkCustomAttributes = "";
-			$this->CodeNoTo->HrefValue = "";
-			$this->CodeNoTo->TooltipValue = "";
 
 			// DepartmentTo
 			$this->DepartmentTo->LinkCustomAttributes = "";
@@ -1104,11 +1066,6 @@ class t101_ho_head_delete extends t101_ho_head
 			$this->HandedOverBy->LinkCustomAttributes = "";
 			$this->HandedOverBy->HrefValue = "";
 			$this->HandedOverBy->TooltipValue = "";
-
-			// CodeNoBy
-			$this->CodeNoBy->LinkCustomAttributes = "";
-			$this->CodeNoBy->HrefValue = "";
-			$this->CodeNoBy->TooltipValue = "";
 
 			// DepartmentBy
 			$this->DepartmentBy->LinkCustomAttributes = "";
@@ -1263,8 +1220,6 @@ class t101_ho_head_delete extends t101_ho_head
 			// Set up lookup SQL and connection
 			switch ($fld->FieldVar) {
 				case "x_property_id":
-					break;
-				case "x_TransactionType":
 					break;
 				case "x_HandedOverTo":
 					break;

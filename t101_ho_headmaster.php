@@ -35,32 +35,12 @@ namespace PHPMaker2020\p_simasset1;
 </td>
 		</tr>
 <?php } ?>
-<?php if ($t101_ho_head->TransactionType->Visible) { // TransactionType ?>
-		<tr id="r_TransactionType">
-			<td class="<?php echo $t101_ho_head->TableLeftColumnClass ?>"><?php echo $t101_ho_head->TransactionType->caption() ?></td>
-			<td <?php echo $t101_ho_head->TransactionType->cellAttributes() ?>>
-<span id="el_t101_ho_head_TransactionType">
-<span<?php echo $t101_ho_head->TransactionType->viewAttributes() ?>><?php echo $t101_ho_head->TransactionType->getViewValue() ?></span>
-</span>
-</td>
-		</tr>
-<?php } ?>
 <?php if ($t101_ho_head->HandedOverTo->Visible) { // HandedOverTo ?>
 		<tr id="r_HandedOverTo">
 			<td class="<?php echo $t101_ho_head->TableLeftColumnClass ?>"><?php echo $t101_ho_head->HandedOverTo->caption() ?></td>
 			<td <?php echo $t101_ho_head->HandedOverTo->cellAttributes() ?>>
 <span id="el_t101_ho_head_HandedOverTo">
 <span<?php echo $t101_ho_head->HandedOverTo->viewAttributes() ?>><?php echo $t101_ho_head->HandedOverTo->getViewValue() ?></span>
-</span>
-</td>
-		</tr>
-<?php } ?>
-<?php if ($t101_ho_head->CodeNoTo->Visible) { // CodeNoTo ?>
-		<tr id="r_CodeNoTo">
-			<td class="<?php echo $t101_ho_head->TableLeftColumnClass ?>"><?php echo $t101_ho_head->CodeNoTo->caption() ?></td>
-			<td <?php echo $t101_ho_head->CodeNoTo->cellAttributes() ?>>
-<span id="el_t101_ho_head_CodeNoTo">
-<span<?php echo $t101_ho_head->CodeNoTo->viewAttributes() ?>><?php echo $t101_ho_head->CodeNoTo->getViewValue() ?></span>
 </span>
 </td>
 		</tr>
@@ -81,16 +61,6 @@ namespace PHPMaker2020\p_simasset1;
 			<td <?php echo $t101_ho_head->HandedOverBy->cellAttributes() ?>>
 <span id="el_t101_ho_head_HandedOverBy">
 <span<?php echo $t101_ho_head->HandedOverBy->viewAttributes() ?>><?php echo $t101_ho_head->HandedOverBy->getViewValue() ?></span>
-</span>
-</td>
-		</tr>
-<?php } ?>
-<?php if ($t101_ho_head->CodeNoBy->Visible) { // CodeNoBy ?>
-		<tr id="r_CodeNoBy">
-			<td class="<?php echo $t101_ho_head->TableLeftColumnClass ?>"><?php echo $t101_ho_head->CodeNoBy->caption() ?></td>
-			<td <?php echo $t101_ho_head->CodeNoBy->cellAttributes() ?>>
-<span id="el_t101_ho_head_CodeNoBy">
-<span<?php echo $t101_ho_head->CodeNoBy->viewAttributes() ?>><?php echo $t101_ho_head->CodeNoBy->getViewValue() ?></span>
 </span>
 </td>
 		</tr>

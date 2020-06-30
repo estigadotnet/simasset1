@@ -74,20 +74,10 @@ loadjs.ready("head", function() {
 				elm = this.getElements("x" + infix + "_TransactionDate");
 				if (elm && !ew.checkEuroDate(elm.value))
 					return this.onError(elm, "<?php echo JsEncode($t101_ho_head_edit->TransactionDate->errorMessage()) ?>");
-			<?php if ($t101_ho_head_edit->TransactionType->Required) { ?>
-				elm = this.getElements("x" + infix + "_TransactionType");
-				if (elm && !ew.isHidden(elm) && !ew.hasValue(elm))
-					return this.onError(elm, "<?php echo JsEncode(str_replace("%s", $t101_ho_head_edit->TransactionType->caption(), $t101_ho_head_edit->TransactionType->RequiredErrorMessage)) ?>");
-			<?php } ?>
 			<?php if ($t101_ho_head_edit->HandedOverTo->Required) { ?>
 				elm = this.getElements("x" + infix + "_HandedOverTo");
 				if (elm && !ew.isHidden(elm) && !ew.hasValue(elm))
 					return this.onError(elm, "<?php echo JsEncode(str_replace("%s", $t101_ho_head_edit->HandedOverTo->caption(), $t101_ho_head_edit->HandedOverTo->RequiredErrorMessage)) ?>");
-			<?php } ?>
-			<?php if ($t101_ho_head_edit->CodeNoTo->Required) { ?>
-				elm = this.getElements("x" + infix + "_CodeNoTo");
-				if (elm && !ew.isHidden(elm) && !ew.hasValue(elm))
-					return this.onError(elm, "<?php echo JsEncode(str_replace("%s", $t101_ho_head_edit->CodeNoTo->caption(), $t101_ho_head_edit->CodeNoTo->RequiredErrorMessage)) ?>");
 			<?php } ?>
 			<?php if ($t101_ho_head_edit->DepartmentTo->Required) { ?>
 				elm = this.getElements("x" + infix + "_DepartmentTo");
@@ -98,11 +88,6 @@ loadjs.ready("head", function() {
 				elm = this.getElements("x" + infix + "_HandedOverBy");
 				if (elm && !ew.isHidden(elm) && !ew.hasValue(elm))
 					return this.onError(elm, "<?php echo JsEncode(str_replace("%s", $t101_ho_head_edit->HandedOverBy->caption(), $t101_ho_head_edit->HandedOverBy->RequiredErrorMessage)) ?>");
-			<?php } ?>
-			<?php if ($t101_ho_head_edit->CodeNoBy->Required) { ?>
-				elm = this.getElements("x" + infix + "_CodeNoBy");
-				if (elm && !ew.isHidden(elm) && !ew.hasValue(elm))
-					return this.onError(elm, "<?php echo JsEncode(str_replace("%s", $t101_ho_head_edit->CodeNoBy->caption(), $t101_ho_head_edit->CodeNoBy->RequiredErrorMessage)) ?>");
 			<?php } ?>
 			<?php if ($t101_ho_head_edit->DepartmentBy->Required) { ?>
 				elm = this.getElements("x" + infix + "_DepartmentBy");
@@ -242,17 +227,6 @@ loadjs.ready(["ft101_ho_headedit", "datetimepicker"], function() {
 <?php echo $t101_ho_head_edit->TransactionDate->CustomMsg ?></div></div>
 	</div>
 <?php } ?>
-<?php if ($t101_ho_head_edit->TransactionType->Visible) { // TransactionType ?>
-	<div id="r_TransactionType" class="form-group row">
-		<label id="elh_t101_ho_head_TransactionType" for="x_TransactionType" class="<?php echo $t101_ho_head_edit->LeftColumnClass ?>"><?php echo $t101_ho_head_edit->TransactionType->caption() ?><?php echo $t101_ho_head_edit->TransactionType->Required ? $Language->phrase("FieldRequiredIndicator") : "" ?></label>
-		<div class="<?php echo $t101_ho_head_edit->RightColumnClass ?>"><div <?php echo $t101_ho_head_edit->TransactionType->cellAttributes() ?>>
-<span id="el_t101_ho_head_TransactionType">
-<span<?php echo $t101_ho_head_edit->TransactionType->viewAttributes() ?>><input type="text" readonly class="form-control-plaintext" value="<?php echo HtmlEncode(RemoveHtml($t101_ho_head_edit->TransactionType->EditValue)) ?>"></span>
-</span>
-<input type="hidden" data-table="t101_ho_head" data-field="x_TransactionType" name="x_TransactionType" id="x_TransactionType" value="<?php echo HtmlEncode($t101_ho_head_edit->TransactionType->CurrentValue) ?>">
-<?php echo $t101_ho_head_edit->TransactionType->CustomMsg ?></div></div>
-	</div>
-<?php } ?>
 <?php if ($t101_ho_head_edit->HandedOverTo->Visible) { // HandedOverTo ?>
 	<div id="r_HandedOverTo" class="form-group row">
 		<label id="elh_t101_ho_head_HandedOverTo" for="x_HandedOverTo" class="<?php echo $t101_ho_head_edit->LeftColumnClass ?>"><?php echo $t101_ho_head_edit->HandedOverTo->caption() ?><?php echo $t101_ho_head_edit->HandedOverTo->Required ? $Language->phrase("FieldRequiredIndicator") : "" ?></label>
@@ -271,16 +245,6 @@ loadjs.ready(["ft101_ho_headedit", "datetimepicker"], function() {
 <input type="hidden" data-table="t101_ho_head" data-field="x_HandedOverTo" data-multiple="0" data-lookup="1" data-value-separator="<?php echo $t101_ho_head_edit->HandedOverTo->displayValueSeparatorAttribute() ?>" name="x_HandedOverTo" id="x_HandedOverTo" value="<?php echo $t101_ho_head_edit->HandedOverTo->CurrentValue ?>"<?php echo $t101_ho_head_edit->HandedOverTo->editAttributes() ?>>
 </span>
 <?php echo $t101_ho_head_edit->HandedOverTo->CustomMsg ?></div></div>
-	</div>
-<?php } ?>
-<?php if ($t101_ho_head_edit->CodeNoTo->Visible) { // CodeNoTo ?>
-	<div id="r_CodeNoTo" class="form-group row">
-		<label id="elh_t101_ho_head_CodeNoTo" for="x_CodeNoTo" class="<?php echo $t101_ho_head_edit->LeftColumnClass ?>"><?php echo $t101_ho_head_edit->CodeNoTo->caption() ?><?php echo $t101_ho_head_edit->CodeNoTo->Required ? $Language->phrase("FieldRequiredIndicator") : "" ?></label>
-		<div class="<?php echo $t101_ho_head_edit->RightColumnClass ?>"><div <?php echo $t101_ho_head_edit->CodeNoTo->cellAttributes() ?>>
-<span id="el_t101_ho_head_CodeNoTo">
-<input type="text" data-table="t101_ho_head" data-field="x_CodeNoTo" name="x_CodeNoTo" id="x_CodeNoTo" size="10" maxlength="25" placeholder="<?php echo HtmlEncode($t101_ho_head_edit->CodeNoTo->getPlaceHolder()) ?>" value="<?php echo $t101_ho_head_edit->CodeNoTo->EditValue ?>"<?php echo $t101_ho_head_edit->CodeNoTo->editAttributes() ?>>
-</span>
-<?php echo $t101_ho_head_edit->CodeNoTo->CustomMsg ?></div></div>
 	</div>
 <?php } ?>
 <?php if ($t101_ho_head_edit->DepartmentTo->Visible) { // DepartmentTo ?>
@@ -321,16 +285,6 @@ loadjs.ready(["ft101_ho_headedit", "datetimepicker"], function() {
 <input type="hidden" data-table="t101_ho_head" data-field="x_HandedOverBy" data-multiple="0" data-lookup="1" data-value-separator="<?php echo $t101_ho_head_edit->HandedOverBy->displayValueSeparatorAttribute() ?>" name="x_HandedOverBy" id="x_HandedOverBy" value="<?php echo $t101_ho_head_edit->HandedOverBy->CurrentValue ?>"<?php echo $t101_ho_head_edit->HandedOverBy->editAttributes() ?>>
 </span>
 <?php echo $t101_ho_head_edit->HandedOverBy->CustomMsg ?></div></div>
-	</div>
-<?php } ?>
-<?php if ($t101_ho_head_edit->CodeNoBy->Visible) { // CodeNoBy ?>
-	<div id="r_CodeNoBy" class="form-group row">
-		<label id="elh_t101_ho_head_CodeNoBy" for="x_CodeNoBy" class="<?php echo $t101_ho_head_edit->LeftColumnClass ?>"><?php echo $t101_ho_head_edit->CodeNoBy->caption() ?><?php echo $t101_ho_head_edit->CodeNoBy->Required ? $Language->phrase("FieldRequiredIndicator") : "" ?></label>
-		<div class="<?php echo $t101_ho_head_edit->RightColumnClass ?>"><div <?php echo $t101_ho_head_edit->CodeNoBy->cellAttributes() ?>>
-<span id="el_t101_ho_head_CodeNoBy">
-<input type="text" data-table="t101_ho_head" data-field="x_CodeNoBy" name="x_CodeNoBy" id="x_CodeNoBy" size="30" maxlength="25" placeholder="<?php echo HtmlEncode($t101_ho_head_edit->CodeNoBy->getPlaceHolder()) ?>" value="<?php echo $t101_ho_head_edit->CodeNoBy->EditValue ?>"<?php echo $t101_ho_head_edit->CodeNoBy->editAttributes() ?>>
-</span>
-<?php echo $t101_ho_head_edit->CodeNoBy->CustomMsg ?></div></div>
 	</div>
 <?php } ?>
 <?php if ($t101_ho_head_edit->DepartmentBy->Visible) { // DepartmentBy ?>

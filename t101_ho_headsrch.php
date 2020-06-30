@@ -74,8 +74,6 @@ loadjs.ready("head", function() {
 	// Dynamic selection lists
 	ft101_ho_headsearch.lists["x_property_id"] = <?php echo $t101_ho_head_search->property_id->Lookup->toClientList($t101_ho_head_search) ?>;
 	ft101_ho_headsearch.lists["x_property_id"].options = <?php echo JsonEncode($t101_ho_head_search->property_id->lookupOptions()) ?>;
-	ft101_ho_headsearch.lists["x_TransactionType"] = <?php echo $t101_ho_head_search->TransactionType->Lookup->toClientList($t101_ho_head_search) ?>;
-	ft101_ho_headsearch.lists["x_TransactionType"].options = <?php echo JsonEncode($t101_ho_head_search->TransactionType->options(FALSE, TRUE)) ?>;
 	ft101_ho_headsearch.lists["x_HandedOverTo"] = <?php echo $t101_ho_head_search->HandedOverTo->Lookup->toClientList($t101_ho_head_search) ?>;
 	ft101_ho_headsearch.lists["x_HandedOverTo"].options = <?php echo JsonEncode($t101_ho_head_search->HandedOverTo->lookupOptions()) ?>;
 	ft101_ho_headsearch.lists["x_DepartmentTo"] = <?php echo $t101_ho_head_search->DepartmentTo->Lookup->toClientList($t101_ho_head_search) ?>;
@@ -174,25 +172,6 @@ loadjs.ready(["ft101_ho_headsearch", "datetimepicker"], function() {
 		</div></div>
 	</div>
 <?php } ?>
-<?php if ($t101_ho_head_search->TransactionType->Visible) { // TransactionType ?>
-	<div id="r_TransactionType" class="form-group row">
-		<label for="x_TransactionType" class="<?php echo $t101_ho_head_search->LeftColumnClass ?>"><span id="elh_t101_ho_head_TransactionType"><?php echo $t101_ho_head_search->TransactionType->caption() ?></span>
-		<span class="ew-search-operator">
-<?php echo $Language->phrase("=") ?>
-<input type="hidden" name="z_TransactionType" id="z_TransactionType" value="=">
-</span>
-		</label>
-		<div class="<?php echo $t101_ho_head_search->RightColumnClass ?>"><div <?php echo $t101_ho_head_search->TransactionType->cellAttributes() ?>>
-			<span id="el_t101_ho_head_TransactionType" class="ew-search-field">
-<div class="input-group">
-	<select class="custom-select ew-custom-select" data-table="t101_ho_head" data-field="x_TransactionType" data-value-separator="<?php echo $t101_ho_head_search->TransactionType->displayValueSeparatorAttribute() ?>" id="x_TransactionType" name="x_TransactionType"<?php echo $t101_ho_head_search->TransactionType->editAttributes() ?>>
-			<?php echo $t101_ho_head_search->TransactionType->selectOptionListHtml("x_TransactionType") ?>
-		</select>
-</div>
-</span>
-		</div></div>
-	</div>
-<?php } ?>
 <?php if ($t101_ho_head_search->HandedOverTo->Visible) { // HandedOverTo ?>
 	<div id="r_HandedOverTo" class="form-group row">
 		<label for="x_HandedOverTo" class="<?php echo $t101_ho_head_search->LeftColumnClass ?>"><span id="elh_t101_ho_head_HandedOverTo"><?php echo $t101_ho_head_search->HandedOverTo->caption() ?></span>
@@ -211,21 +190,6 @@ loadjs.ready(["ft101_ho_headsearch", "datetimepicker"], function() {
 </div>
 <?php echo $t101_ho_head_search->HandedOverTo->Lookup->getParamTag($t101_ho_head_search, "p_x_HandedOverTo") ?>
 <input type="hidden" data-table="t101_ho_head" data-field="x_HandedOverTo" data-multiple="0" data-lookup="1" data-value-separator="<?php echo $t101_ho_head_search->HandedOverTo->displayValueSeparatorAttribute() ?>" name="x_HandedOverTo" id="x_HandedOverTo" value="<?php echo $t101_ho_head_search->HandedOverTo->AdvancedSearch->SearchValue ?>"<?php echo $t101_ho_head_search->HandedOverTo->editAttributes() ?>>
-</span>
-		</div></div>
-	</div>
-<?php } ?>
-<?php if ($t101_ho_head_search->CodeNoTo->Visible) { // CodeNoTo ?>
-	<div id="r_CodeNoTo" class="form-group row">
-		<label for="x_CodeNoTo" class="<?php echo $t101_ho_head_search->LeftColumnClass ?>"><span id="elh_t101_ho_head_CodeNoTo"><?php echo $t101_ho_head_search->CodeNoTo->caption() ?></span>
-		<span class="ew-search-operator">
-<?php echo $Language->phrase("LIKE") ?>
-<input type="hidden" name="z_CodeNoTo" id="z_CodeNoTo" value="LIKE">
-</span>
-		</label>
-		<div class="<?php echo $t101_ho_head_search->RightColumnClass ?>"><div <?php echo $t101_ho_head_search->CodeNoTo->cellAttributes() ?>>
-			<span id="el_t101_ho_head_CodeNoTo" class="ew-search-field">
-<input type="text" data-table="t101_ho_head" data-field="x_CodeNoTo" name="x_CodeNoTo" id="x_CodeNoTo" size="10" maxlength="25" placeholder="<?php echo HtmlEncode($t101_ho_head_search->CodeNoTo->getPlaceHolder()) ?>" value="<?php echo $t101_ho_head_search->CodeNoTo->EditValue ?>"<?php echo $t101_ho_head_search->CodeNoTo->editAttributes() ?>>
 </span>
 		</div></div>
 	</div>
@@ -270,21 +234,6 @@ loadjs.ready(["ft101_ho_headsearch", "datetimepicker"], function() {
 </div>
 <?php echo $t101_ho_head_search->HandedOverBy->Lookup->getParamTag($t101_ho_head_search, "p_x_HandedOverBy") ?>
 <input type="hidden" data-table="t101_ho_head" data-field="x_HandedOverBy" data-multiple="0" data-lookup="1" data-value-separator="<?php echo $t101_ho_head_search->HandedOverBy->displayValueSeparatorAttribute() ?>" name="x_HandedOverBy" id="x_HandedOverBy" value="<?php echo $t101_ho_head_search->HandedOverBy->AdvancedSearch->SearchValue ?>"<?php echo $t101_ho_head_search->HandedOverBy->editAttributes() ?>>
-</span>
-		</div></div>
-	</div>
-<?php } ?>
-<?php if ($t101_ho_head_search->CodeNoBy->Visible) { // CodeNoBy ?>
-	<div id="r_CodeNoBy" class="form-group row">
-		<label for="x_CodeNoBy" class="<?php echo $t101_ho_head_search->LeftColumnClass ?>"><span id="elh_t101_ho_head_CodeNoBy"><?php echo $t101_ho_head_search->CodeNoBy->caption() ?></span>
-		<span class="ew-search-operator">
-<?php echo $Language->phrase("LIKE") ?>
-<input type="hidden" name="z_CodeNoBy" id="z_CodeNoBy" value="LIKE">
-</span>
-		</label>
-		<div class="<?php echo $t101_ho_head_search->RightColumnClass ?>"><div <?php echo $t101_ho_head_search->CodeNoBy->cellAttributes() ?>>
-			<span id="el_t101_ho_head_CodeNoBy" class="ew-search-field">
-<input type="text" data-table="t101_ho_head" data-field="x_CodeNoBy" name="x_CodeNoBy" id="x_CodeNoBy" size="30" maxlength="25" placeholder="<?php echo HtmlEncode($t101_ho_head_search->CodeNoBy->getPlaceHolder()) ?>" value="<?php echo $t101_ho_head_search->CodeNoBy->EditValue ?>"<?php echo $t101_ho_head_search->CodeNoBy->editAttributes() ?>>
 </span>
 		</div></div>
 	</div>

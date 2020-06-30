@@ -12,6 +12,8 @@ $USER_LEVELS = [["-2","Anonymous"],
 // User level priv info
 $USER_LEVEL_PRIVS = [["{E1C6E322-15B9-474C-85CF-A99378A9BC2B}c101_ho.php","-2","0"],
 	["{E1C6E322-15B9-474C-85CF-A99378A9BC2B}c101_ho.php","0","0"],
+	["{E1C6E322-15B9-474C-85CF-A99378A9BC2B}c101_ho_2.php","-2","0"],
+	["{E1C6E322-15B9-474C-85CF-A99378A9BC2B}c101_ho_2.php","0","0"],
 	["{E1C6E322-15B9-474C-85CF-A99378A9BC2B}c9.php","-2","0"],
 	["{E1C6E322-15B9-474C-85CF-A99378A9BC2B}c9.php","0","0"],
 	["{E1C6E322-15B9-474C-85CF-A99378A9BC2B}d301_home","-2","72"],
@@ -55,10 +57,13 @@ $USER_LEVEL_PRIVS = [["{E1C6E322-15B9-474C-85CF-A99378A9BC2B}c101_ho.php","-2","
 	["{E1C6E322-15B9-474C-85CF-A99378A9BC2B}t205_parameter","-2","0"],
 	["{E1C6E322-15B9-474C-85CF-A99378A9BC2B}t205_parameter","0","0"],
 	["{E1C6E322-15B9-474C-85CF-A99378A9BC2B}v101_ho","-2","0"],
-	["{E1C6E322-15B9-474C-85CF-A99378A9BC2B}v101_ho","0","0"]];
+	["{E1C6E322-15B9-474C-85CF-A99378A9BC2B}v101_ho","0","0"],
+	["{E1C6E322-15B9-474C-85CF-A99378A9BC2B}v101_ho_2","-2","0"],
+	["{E1C6E322-15B9-474C-85CF-A99378A9BC2B}v101_ho_2","0","0"]];
 
 // User level table info
 $USER_LEVEL_TABLES = [["c101_ho.php","c101_ho","Cetak Handover Form",true,"{E1C6E322-15B9-474C-85CF-A99378A9BC2B}"],
+	["c101_ho_2.php","c101_ho_2","Cetak Handover Form",true,"{E1C6E322-15B9-474C-85CF-A99378A9BC2B}"],
 	["c9.php","c9","Trial",true,"{E1C6E322-15B9-474C-85CF-A99378A9BC2B}"],
 	["d301_home","d301_home","Home",true,"{E1C6E322-15B9-474C-85CF-A99378A9BC2B}"],
 	["r001_asset","r001_asset","Asset",true,"{E1C6E322-15B9-474C-85CF-A99378A9BC2B}"],
@@ -80,4 +85,5 @@ $USER_LEVEL_TABLES = [["c101_ho.php","c101_ho","Cetak Handover Form",true,"{E1C6
 	["t203_userlevelpermissions","t203_userlevelpermissions","Hak Akses Detail",true,"{E1C6E322-15B9-474C-85CF-A99378A9BC2B}"],
 	["t204_audittrail","t204_audittrail","Activity Log",true,"{E1C6E322-15B9-474C-85CF-A99378A9BC2B}"],
 	["t205_parameter","t205_parameter","Parameter",true,"{E1C6E322-15B9-474C-85CF-A99378A9BC2B}"],
-	["v101_ho","v101_ho","viewHandover",true,"{E1C6E322-15B9-474C-85CF-A99378A9BC2B}"]];
+	["v101_ho","v101_ho","viewHandover",true,"{E1C6E322-15B9-474C-85CF-A99378A9BC2B}"],
+	["v101_ho_2","v101_ho_2","viewHandover_2",true,"{E1C6E322-15B9-474C-85CF-A99378A9BC2B}"]];

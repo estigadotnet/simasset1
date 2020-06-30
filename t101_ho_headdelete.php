@@ -79,23 +79,14 @@ $t101_ho_head_delete->showMessage();
 <?php if ($t101_ho_head_delete->TransactionDate->Visible) { // TransactionDate ?>
 		<th class="<?php echo $t101_ho_head_delete->TransactionDate->headerCellClass() ?>"><span id="elh_t101_ho_head_TransactionDate" class="t101_ho_head_TransactionDate"><?php echo $t101_ho_head_delete->TransactionDate->caption() ?></span></th>
 <?php } ?>
-<?php if ($t101_ho_head_delete->TransactionType->Visible) { // TransactionType ?>
-		<th class="<?php echo $t101_ho_head_delete->TransactionType->headerCellClass() ?>"><span id="elh_t101_ho_head_TransactionType" class="t101_ho_head_TransactionType"><?php echo $t101_ho_head_delete->TransactionType->caption() ?></span></th>
-<?php } ?>
 <?php if ($t101_ho_head_delete->HandedOverTo->Visible) { // HandedOverTo ?>
 		<th class="<?php echo $t101_ho_head_delete->HandedOverTo->headerCellClass() ?>"><span id="elh_t101_ho_head_HandedOverTo" class="t101_ho_head_HandedOverTo"><?php echo $t101_ho_head_delete->HandedOverTo->caption() ?></span></th>
-<?php } ?>
-<?php if ($t101_ho_head_delete->CodeNoTo->Visible) { // CodeNoTo ?>
-		<th class="<?php echo $t101_ho_head_delete->CodeNoTo->headerCellClass() ?>"><span id="elh_t101_ho_head_CodeNoTo" class="t101_ho_head_CodeNoTo"><?php echo $t101_ho_head_delete->CodeNoTo->caption() ?></span></th>
 <?php } ?>
 <?php if ($t101_ho_head_delete->DepartmentTo->Visible) { // DepartmentTo ?>
 		<th class="<?php echo $t101_ho_head_delete->DepartmentTo->headerCellClass() ?>"><span id="elh_t101_ho_head_DepartmentTo" class="t101_ho_head_DepartmentTo"><?php echo $t101_ho_head_delete->DepartmentTo->caption() ?></span></th>
 <?php } ?>
 <?php if ($t101_ho_head_delete->HandedOverBy->Visible) { // HandedOverBy ?>
 		<th class="<?php echo $t101_ho_head_delete->HandedOverBy->headerCellClass() ?>"><span id="elh_t101_ho_head_HandedOverBy" class="t101_ho_head_HandedOverBy"><?php echo $t101_ho_head_delete->HandedOverBy->caption() ?></span></th>
-<?php } ?>
-<?php if ($t101_ho_head_delete->CodeNoBy->Visible) { // CodeNoBy ?>
-		<th class="<?php echo $t101_ho_head_delete->CodeNoBy->headerCellClass() ?>"><span id="elh_t101_ho_head_CodeNoBy" class="t101_ho_head_CodeNoBy"><?php echo $t101_ho_head_delete->CodeNoBy->caption() ?></span></th>
 <?php } ?>
 <?php if ($t101_ho_head_delete->DepartmentBy->Visible) { // DepartmentBy ?>
 		<th class="<?php echo $t101_ho_head_delete->DepartmentBy->headerCellClass() ?>"><span id="elh_t101_ho_head_DepartmentBy" class="t101_ho_head_DepartmentBy"><?php echo $t101_ho_head_delete->DepartmentBy->caption() ?></span></th>
@@ -154,24 +145,10 @@ while (!$t101_ho_head_delete->Recordset->EOF) {
 </span>
 </td>
 <?php } ?>
-<?php if ($t101_ho_head_delete->TransactionType->Visible) { // TransactionType ?>
-		<td <?php echo $t101_ho_head_delete->TransactionType->cellAttributes() ?>>
-<span id="el<?php echo $t101_ho_head_delete->RowCount ?>_t101_ho_head_TransactionType" class="t101_ho_head_TransactionType">
-<span<?php echo $t101_ho_head_delete->TransactionType->viewAttributes() ?>><?php echo $t101_ho_head_delete->TransactionType->getViewValue() ?></span>
-</span>
-</td>
-<?php } ?>
 <?php if ($t101_ho_head_delete->HandedOverTo->Visible) { // HandedOverTo ?>
 		<td <?php echo $t101_ho_head_delete->HandedOverTo->cellAttributes() ?>>
 <span id="el<?php echo $t101_ho_head_delete->RowCount ?>_t101_ho_head_HandedOverTo" class="t101_ho_head_HandedOverTo">
 <span<?php echo $t101_ho_head_delete->HandedOverTo->viewAttributes() ?>><?php echo $t101_ho_head_delete->HandedOverTo->getViewValue() ?></span>
-</span>
-</td>
-<?php } ?>
-<?php if ($t101_ho_head_delete->CodeNoTo->Visible) { // CodeNoTo ?>
-		<td <?php echo $t101_ho_head_delete->CodeNoTo->cellAttributes() ?>>
-<span id="el<?php echo $t101_ho_head_delete->RowCount ?>_t101_ho_head_CodeNoTo" class="t101_ho_head_CodeNoTo">
-<span<?php echo $t101_ho_head_delete->CodeNoTo->viewAttributes() ?>><?php echo $t101_ho_head_delete->CodeNoTo->getViewValue() ?></span>
 </span>
 </td>
 <?php } ?>
@@ -186,13 +163,6 @@ while (!$t101_ho_head_delete->Recordset->EOF) {
 		<td <?php echo $t101_ho_head_delete->HandedOverBy->cellAttributes() ?>>
 <span id="el<?php echo $t101_ho_head_delete->RowCount ?>_t101_ho_head_HandedOverBy" class="t101_ho_head_HandedOverBy">
 <span<?php echo $t101_ho_head_delete->HandedOverBy->viewAttributes() ?>><?php echo $t101_ho_head_delete->HandedOverBy->getViewValue() ?></span>
-</span>
-</td>
-<?php } ?>
-<?php if ($t101_ho_head_delete->CodeNoBy->Visible) { // CodeNoBy ?>
-		<td <?php echo $t101_ho_head_delete->CodeNoBy->cellAttributes() ?>>
-<span id="el<?php echo $t101_ho_head_delete->RowCount ?>_t101_ho_head_CodeNoBy" class="t101_ho_head_CodeNoBy">
-<span<?php echo $t101_ho_head_delete->CodeNoBy->viewAttributes() ?>><?php echo $t101_ho_head_delete->CodeNoBy->getViewValue() ?></span>
 </span>
 </td>
 <?php } ?>

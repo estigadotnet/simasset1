@@ -74,20 +74,10 @@ loadjs.ready("head", function() {
 				elm = this.getElements("x" + infix + "_TransactionDate");
 				if (elm && !ew.checkEuroDate(elm.value))
 					return this.onError(elm, "<?php echo JsEncode($t101_ho_head_add->TransactionDate->errorMessage()) ?>");
-			<?php if ($t101_ho_head_add->TransactionType->Required) { ?>
-				elm = this.getElements("x" + infix + "_TransactionType");
-				if (elm && !ew.isHidden(elm) && !ew.hasValue(elm))
-					return this.onError(elm, "<?php echo JsEncode(str_replace("%s", $t101_ho_head_add->TransactionType->caption(), $t101_ho_head_add->TransactionType->RequiredErrorMessage)) ?>");
-			<?php } ?>
 			<?php if ($t101_ho_head_add->HandedOverTo->Required) { ?>
 				elm = this.getElements("x" + infix + "_HandedOverTo");
 				if (elm && !ew.isHidden(elm) && !ew.hasValue(elm))
 					return this.onError(elm, "<?php echo JsEncode(str_replace("%s", $t101_ho_head_add->HandedOverTo->caption(), $t101_ho_head_add->HandedOverTo->RequiredErrorMessage)) ?>");
-			<?php } ?>
-			<?php if ($t101_ho_head_add->CodeNoTo->Required) { ?>
-				elm = this.getElements("x" + infix + "_CodeNoTo");
-				if (elm && !ew.isHidden(elm) && !ew.hasValue(elm))
-					return this.onError(elm, "<?php echo JsEncode(str_replace("%s", $t101_ho_head_add->CodeNoTo->caption(), $t101_ho_head_add->CodeNoTo->RequiredErrorMessage)) ?>");
 			<?php } ?>
 			<?php if ($t101_ho_head_add->DepartmentTo->Required) { ?>
 				elm = this.getElements("x" + infix + "_DepartmentTo");
@@ -98,11 +88,6 @@ loadjs.ready("head", function() {
 				elm = this.getElements("x" + infix + "_HandedOverBy");
 				if (elm && !ew.isHidden(elm) && !ew.hasValue(elm))
 					return this.onError(elm, "<?php echo JsEncode(str_replace("%s", $t101_ho_head_add->HandedOverBy->caption(), $t101_ho_head_add->HandedOverBy->RequiredErrorMessage)) ?>");
-			<?php } ?>
-			<?php if ($t101_ho_head_add->CodeNoBy->Required) { ?>
-				elm = this.getElements("x" + infix + "_CodeNoBy");
-				if (elm && !ew.isHidden(elm) && !ew.hasValue(elm))
-					return this.onError(elm, "<?php echo JsEncode(str_replace("%s", $t101_ho_head_add->CodeNoBy->caption(), $t101_ho_head_add->CodeNoBy->RequiredErrorMessage)) ?>");
 			<?php } ?>
 			<?php if ($t101_ho_head_add->DepartmentBy->Required) { ?>
 				elm = this.getElements("x" + infix + "_DepartmentBy");
@@ -159,8 +144,6 @@ loadjs.ready("head", function() {
 	// Dynamic selection lists
 	ft101_ho_headadd.lists["x_property_id"] = <?php echo $t101_ho_head_add->property_id->Lookup->toClientList($t101_ho_head_add) ?>;
 	ft101_ho_headadd.lists["x_property_id"].options = <?php echo JsonEncode($t101_ho_head_add->property_id->lookupOptions()) ?>;
-	ft101_ho_headadd.lists["x_TransactionType"] = <?php echo $t101_ho_head_add->TransactionType->Lookup->toClientList($t101_ho_head_add) ?>;
-	ft101_ho_headadd.lists["x_TransactionType"].options = <?php echo JsonEncode($t101_ho_head_add->TransactionType->options(FALSE, TRUE)) ?>;
 	ft101_ho_headadd.lists["x_HandedOverTo"] = <?php echo $t101_ho_head_add->HandedOverTo->Lookup->toClientList($t101_ho_head_add) ?>;
 	ft101_ho_headadd.lists["x_HandedOverTo"].options = <?php echo JsonEncode($t101_ho_head_add->HandedOverTo->lookupOptions()) ?>;
 	ft101_ho_headadd.lists["x_DepartmentTo"] = <?php echo $t101_ho_head_add->DepartmentTo->Lookup->toClientList($t101_ho_head_add) ?>;
@@ -244,20 +227,6 @@ loadjs.ready(["ft101_ho_headadd", "datetimepicker"], function() {
 <?php echo $t101_ho_head_add->TransactionDate->CustomMsg ?></div></div>
 	</div>
 <?php } ?>
-<?php if ($t101_ho_head_add->TransactionType->Visible) { // TransactionType ?>
-	<div id="r_TransactionType" class="form-group row">
-		<label id="elh_t101_ho_head_TransactionType" for="x_TransactionType" class="<?php echo $t101_ho_head_add->LeftColumnClass ?>"><?php echo $t101_ho_head_add->TransactionType->caption() ?><?php echo $t101_ho_head_add->TransactionType->Required ? $Language->phrase("FieldRequiredIndicator") : "" ?></label>
-		<div class="<?php echo $t101_ho_head_add->RightColumnClass ?>"><div <?php echo $t101_ho_head_add->TransactionType->cellAttributes() ?>>
-<span id="el_t101_ho_head_TransactionType">
-<div class="input-group">
-	<select class="custom-select ew-custom-select" data-table="t101_ho_head" data-field="x_TransactionType" data-value-separator="<?php echo $t101_ho_head_add->TransactionType->displayValueSeparatorAttribute() ?>" id="x_TransactionType" name="x_TransactionType"<?php echo $t101_ho_head_add->TransactionType->editAttributes() ?>>
-			<?php echo $t101_ho_head_add->TransactionType->selectOptionListHtml("x_TransactionType") ?>
-		</select>
-</div>
-</span>
-<?php echo $t101_ho_head_add->TransactionType->CustomMsg ?></div></div>
-	</div>
-<?php } ?>
 <?php if ($t101_ho_head_add->HandedOverTo->Visible) { // HandedOverTo ?>
 	<div id="r_HandedOverTo" class="form-group row">
 		<label id="elh_t101_ho_head_HandedOverTo" for="x_HandedOverTo" class="<?php echo $t101_ho_head_add->LeftColumnClass ?>"><?php echo $t101_ho_head_add->HandedOverTo->caption() ?><?php echo $t101_ho_head_add->HandedOverTo->Required ? $Language->phrase("FieldRequiredIndicator") : "" ?></label>
@@ -276,16 +245,6 @@ loadjs.ready(["ft101_ho_headadd", "datetimepicker"], function() {
 <input type="hidden" data-table="t101_ho_head" data-field="x_HandedOverTo" data-multiple="0" data-lookup="1" data-value-separator="<?php echo $t101_ho_head_add->HandedOverTo->displayValueSeparatorAttribute() ?>" name="x_HandedOverTo" id="x_HandedOverTo" value="<?php echo $t101_ho_head_add->HandedOverTo->CurrentValue ?>"<?php echo $t101_ho_head_add->HandedOverTo->editAttributes() ?>>
 </span>
 <?php echo $t101_ho_head_add->HandedOverTo->CustomMsg ?></div></div>
-	</div>
-<?php } ?>
-<?php if ($t101_ho_head_add->CodeNoTo->Visible) { // CodeNoTo ?>
-	<div id="r_CodeNoTo" class="form-group row">
-		<label id="elh_t101_ho_head_CodeNoTo" for="x_CodeNoTo" class="<?php echo $t101_ho_head_add->LeftColumnClass ?>"><?php echo $t101_ho_head_add->CodeNoTo->caption() ?><?php echo $t101_ho_head_add->CodeNoTo->Required ? $Language->phrase("FieldRequiredIndicator") : "" ?></label>
-		<div class="<?php echo $t101_ho_head_add->RightColumnClass ?>"><div <?php echo $t101_ho_head_add->CodeNoTo->cellAttributes() ?>>
-<span id="el_t101_ho_head_CodeNoTo">
-<input type="text" data-table="t101_ho_head" data-field="x_CodeNoTo" name="x_CodeNoTo" id="x_CodeNoTo" size="10" maxlength="25" placeholder="<?php echo HtmlEncode($t101_ho_head_add->CodeNoTo->getPlaceHolder()) ?>" value="<?php echo $t101_ho_head_add->CodeNoTo->EditValue ?>"<?php echo $t101_ho_head_add->CodeNoTo->editAttributes() ?>>
-</span>
-<?php echo $t101_ho_head_add->CodeNoTo->CustomMsg ?></div></div>
 	</div>
 <?php } ?>
 <?php if ($t101_ho_head_add->DepartmentTo->Visible) { // DepartmentTo ?>
@@ -326,16 +285,6 @@ loadjs.ready(["ft101_ho_headadd", "datetimepicker"], function() {
 <input type="hidden" data-table="t101_ho_head" data-field="x_HandedOverBy" data-multiple="0" data-lookup="1" data-value-separator="<?php echo $t101_ho_head_add->HandedOverBy->displayValueSeparatorAttribute() ?>" name="x_HandedOverBy" id="x_HandedOverBy" value="<?php echo $t101_ho_head_add->HandedOverBy->CurrentValue ?>"<?php echo $t101_ho_head_add->HandedOverBy->editAttributes() ?>>
 </span>
 <?php echo $t101_ho_head_add->HandedOverBy->CustomMsg ?></div></div>
-	</div>
-<?php } ?>
-<?php if ($t101_ho_head_add->CodeNoBy->Visible) { // CodeNoBy ?>
-	<div id="r_CodeNoBy" class="form-group row">
-		<label id="elh_t101_ho_head_CodeNoBy" for="x_CodeNoBy" class="<?php echo $t101_ho_head_add->LeftColumnClass ?>"><?php echo $t101_ho_head_add->CodeNoBy->caption() ?><?php echo $t101_ho_head_add->CodeNoBy->Required ? $Language->phrase("FieldRequiredIndicator") : "" ?></label>
-		<div class="<?php echo $t101_ho_head_add->RightColumnClass ?>"><div <?php echo $t101_ho_head_add->CodeNoBy->cellAttributes() ?>>
-<span id="el_t101_ho_head_CodeNoBy">
-<input type="text" data-table="t101_ho_head" data-field="x_CodeNoBy" name="x_CodeNoBy" id="x_CodeNoBy" size="30" maxlength="25" placeholder="<?php echo HtmlEncode($t101_ho_head_add->CodeNoBy->getPlaceHolder()) ?>" value="<?php echo $t101_ho_head_add->CodeNoBy->EditValue ?>"<?php echo $t101_ho_head_add->CodeNoBy->editAttributes() ?>>
-</span>
-<?php echo $t101_ho_head_add->CodeNoBy->CustomMsg ?></div></div>
 	</div>
 <?php } ?>
 <?php if ($t101_ho_head_add->DepartmentBy->Visible) { // DepartmentBy ?>

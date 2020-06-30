@@ -4,7 +4,7 @@ namespace PHPMaker2020\p_simasset1;
 /**
  * Page class
  */
-class v101_ho_list extends v101_ho
+class v101_ho_2_list extends v101_ho_2
 {
 
 	// Page ID
@@ -14,13 +14,13 @@ class v101_ho_list extends v101_ho
 	public $ProjectID = "{E1C6E322-15B9-474C-85CF-A99378A9BC2B}";
 
 	// Table name
-	public $TableName = 'v101_ho';
+	public $TableName = 'v101_ho_2';
 
 	// Page object name
-	public $PageObjName = "v101_ho_list";
+	public $PageObjName = "v101_ho_2_list";
 
 	// Grid form hidden field names
-	public $FormName = "fv101_holist";
+	public $FormName = "fv101_ho_2list";
 	public $FormActionName = "k_action";
 	public $FormKeyName = "k_key";
 	public $FormOldKeyName = "k_oldkey";
@@ -381,10 +381,10 @@ class v101_ho_list extends v101_ho
 		// Parent constuctor
 		parent::__construct();
 
-		// Table object (v101_ho)
-		if (!isset($GLOBALS["v101_ho"]) || get_class($GLOBALS["v101_ho"]) == PROJECT_NAMESPACE . "v101_ho") {
-			$GLOBALS["v101_ho"] = &$this;
-			$GLOBALS["Table"] = &$GLOBALS["v101_ho"];
+		// Table object (v101_ho_2)
+		if (!isset($GLOBALS["v101_ho_2"]) || get_class($GLOBALS["v101_ho_2"]) == PROJECT_NAMESPACE . "v101_ho_2") {
+			$GLOBALS["v101_ho_2"] = &$this;
+			$GLOBALS["Table"] = &$GLOBALS["v101_ho_2"];
 		}
 
 		// Initialize URLs
@@ -395,12 +395,12 @@ class v101_ho_list extends v101_ho
 		$this->ExportHtmlUrl = $this->pageUrl() . "export=html";
 		$this->ExportXmlUrl = $this->pageUrl() . "export=xml";
 		$this->ExportCsvUrl = $this->pageUrl() . "export=csv";
-		$this->AddUrl = "v101_hoadd.php";
+		$this->AddUrl = "v101_ho_2add.php";
 		$this->InlineAddUrl = $this->pageUrl() . "action=add";
 		$this->GridAddUrl = $this->pageUrl() . "action=gridadd";
 		$this->GridEditUrl = $this->pageUrl() . "action=gridedit";
-		$this->MultiDeleteUrl = "v101_hodelete.php";
-		$this->MultiUpdateUrl = "v101_houpdate.php";
+		$this->MultiDeleteUrl = "v101_ho_2delete.php";
+		$this->MultiUpdateUrl = "v101_ho_2update.php";
 
 		// Table object (t201_users)
 		if (!isset($GLOBALS['t201_users']))
@@ -412,7 +412,7 @@ class v101_ho_list extends v101_ho
 
 		// Table name (for backward compatibility only)
 		if (!defined(PROJECT_NAMESPACE . "TABLE_NAME"))
-			define(PROJECT_NAMESPACE . "TABLE_NAME", 'v101_ho');
+			define(PROJECT_NAMESPACE . "TABLE_NAME", 'v101_ho_2');
 
 		// Start timer
 		if (!isset($GLOBALS["DebugTimer"]))
@@ -452,7 +452,7 @@ class v101_ho_list extends v101_ho
 
 		// Filter options
 		$this->FilterOptions = new ListOptions("div");
-		$this->FilterOptions->TagClassName = "ew-filter-option fv101_holistsrch";
+		$this->FilterOptions->TagClassName = "ew-filter-option fv101_ho_2listsrch";
 
 		// List actions
 		$this->ListActions = new ListActions();
@@ -470,14 +470,14 @@ class v101_ho_list extends v101_ho
 		Page_Unloaded();
 
 		// Export
-		global $v101_ho;
+		global $v101_ho_2;
 		if ($this->CustomExport && $this->CustomExport == $this->Export && array_key_exists($this->CustomExport, Config("EXPORT_CLASSES"))) {
 				$content = ob_get_contents();
 			if ($ExportFileName == "")
 				$ExportFileName = $this->TableVar;
 			$class = PROJECT_NAMESPACE . Config("EXPORT_CLASSES." . $this->CustomExport);
 			if (class_exists($class)) {
-				$doc = new $class($v101_ho);
+				$doc = new $class($v101_ho_2);
 				$doc->Text = @$content;
 				if ($this->isExport("email"))
 					echo $this->exportEmail($doc->Text);
@@ -828,44 +828,39 @@ class v101_ho_list extends v101_ho
 		$this->setupExportOptions();
 		$this->id->setVisibility();
 		$this->property_id->setVisibility();
-		$this->TransactionNo->setVisibility();
-		$this->TransactionDate->setVisibility();
-		$this->HandedOverTo->setVisibility();
-		$this->DepartmentTo->setVisibility();
-		$this->HandedOverBy->setVisibility();
-		$this->DepartmentBy->setVisibility();
-		$this->Sign1->setVisibility();
-		$this->Sign2->setVisibility();
-		$this->Sign3->setVisibility();
-		$this->Sign4->setVisibility();
+		$this->property->setVisibility();
+		$this->templatefile->setVisibility();
+		$this->transactionno->setVisibility();
+		$this->transactiondate->setVisibility();
+		$this->handedoverto->setVisibility();
+		$this->hoto->setVisibility();
+		$this->departmentto->setVisibility();
+		$this->deptto->setVisibility();
+		$this->handedoverby->setVisibility();
+		$this->hoby->setVisibility();
+		$this->departmentby->setVisibility();
+		$this->deptby->setVisibility();
+		$this->sign1->setVisibility();
+		$this->signa1->setVisibility();
+		$this->jobt1->setVisibility();
+		$this->sign2->setVisibility();
+		$this->signa2->setVisibility();
+		$this->jobt2->setVisibility();
+		$this->sign3->setVisibility();
+		$this->signa3->setVisibility();
+		$this->jobt3->setVisibility();
+		$this->sign4->setVisibility();
+		$this->signa4->setVisibility();
+		$this->jobt4->setVisibility();
 		$this->hodetail_id->setVisibility();
 		$this->asset_id->setVisibility();
-		$this->Property->setVisibility();
-		$this->TemplateFile->setVisibility();
-		$this->hoDepartmentTo->setVisibility();
-		$this->hoSignatureTo->setVisibility();
-		$this->hoJobTitleTo->setVisibility();
-		$this->hoDepartmentBy->setVisibility();
-		$this->hoSignatureBy->setVisibility();
-		$this->hoJobTitleBy->setVisibility();
-		$this->Code->setVisibility();
-		$this->Description->setVisibility();
-		$this->Type->setVisibility();
-		$this->Group->setVisibility();
-		$this->ProcurementDate->setVisibility();
-		$this->ProcurementCurrentCost->setVisibility();
-		$this->Estimated_Life_28in_Year29->setVisibility();
-		$this->Qty->setVisibility();
-		$this->Remarks->Visible = FALSE;
-		$this->Sign1Signature->setVisibility();
-		$this->Sign1JobTitle->setVisibility();
-		$this->Sign2Signature->setVisibility();
-		$this->Sign2JobTitle->setVisibility();
-		$this->Sign3Signature->setVisibility();
-		$this->Sign3JobTitle->setVisibility();
-		$this->Sign4Signature->setVisibility();
-		$this->Sign4JobTitle->setVisibility();
-		$this->AssetDepartment->setVisibility();
+		$this->code->setVisibility();
+		$this->description->setVisibility();
+		$this->department_id->setVisibility();
+		$this->asset_dept->setVisibility();
+		$this->procurementdate->setVisibility();
+		$this->procurementcurrentcost->setVisibility();
+		$this->remarks->Visible = FALSE;
 		$this->hideFieldsForAddEdit();
 
 		// Global Page Loading event (in userfn*.php)
@@ -1156,44 +1151,39 @@ class v101_ho_list extends v101_ho
 		$savedFilterList = "";
 		$filterList = Concat($filterList, $this->id->AdvancedSearch->toJson(), ","); // Field id
 		$filterList = Concat($filterList, $this->property_id->AdvancedSearch->toJson(), ","); // Field property_id
-		$filterList = Concat($filterList, $this->TransactionNo->AdvancedSearch->toJson(), ","); // Field TransactionNo
-		$filterList = Concat($filterList, $this->TransactionDate->AdvancedSearch->toJson(), ","); // Field TransactionDate
-		$filterList = Concat($filterList, $this->HandedOverTo->AdvancedSearch->toJson(), ","); // Field HandedOverTo
-		$filterList = Concat($filterList, $this->DepartmentTo->AdvancedSearch->toJson(), ","); // Field DepartmentTo
-		$filterList = Concat($filterList, $this->HandedOverBy->AdvancedSearch->toJson(), ","); // Field HandedOverBy
-		$filterList = Concat($filterList, $this->DepartmentBy->AdvancedSearch->toJson(), ","); // Field DepartmentBy
-		$filterList = Concat($filterList, $this->Sign1->AdvancedSearch->toJson(), ","); // Field Sign1
-		$filterList = Concat($filterList, $this->Sign2->AdvancedSearch->toJson(), ","); // Field Sign2
-		$filterList = Concat($filterList, $this->Sign3->AdvancedSearch->toJson(), ","); // Field Sign3
-		$filterList = Concat($filterList, $this->Sign4->AdvancedSearch->toJson(), ","); // Field Sign4
+		$filterList = Concat($filterList, $this->property->AdvancedSearch->toJson(), ","); // Field property
+		$filterList = Concat($filterList, $this->templatefile->AdvancedSearch->toJson(), ","); // Field templatefile
+		$filterList = Concat($filterList, $this->transactionno->AdvancedSearch->toJson(), ","); // Field transactionno
+		$filterList = Concat($filterList, $this->transactiondate->AdvancedSearch->toJson(), ","); // Field transactiondate
+		$filterList = Concat($filterList, $this->handedoverto->AdvancedSearch->toJson(), ","); // Field handedoverto
+		$filterList = Concat($filterList, $this->hoto->AdvancedSearch->toJson(), ","); // Field hoto
+		$filterList = Concat($filterList, $this->departmentto->AdvancedSearch->toJson(), ","); // Field departmentto
+		$filterList = Concat($filterList, $this->deptto->AdvancedSearch->toJson(), ","); // Field deptto
+		$filterList = Concat($filterList, $this->handedoverby->AdvancedSearch->toJson(), ","); // Field handedoverby
+		$filterList = Concat($filterList, $this->hoby->AdvancedSearch->toJson(), ","); // Field hoby
+		$filterList = Concat($filterList, $this->departmentby->AdvancedSearch->toJson(), ","); // Field departmentby
+		$filterList = Concat($filterList, $this->deptby->AdvancedSearch->toJson(), ","); // Field deptby
+		$filterList = Concat($filterList, $this->sign1->AdvancedSearch->toJson(), ","); // Field sign1
+		$filterList = Concat($filterList, $this->signa1->AdvancedSearch->toJson(), ","); // Field signa1
+		$filterList = Concat($filterList, $this->jobt1->AdvancedSearch->toJson(), ","); // Field jobt1
+		$filterList = Concat($filterList, $this->sign2->AdvancedSearch->toJson(), ","); // Field sign2
+		$filterList = Concat($filterList, $this->signa2->AdvancedSearch->toJson(), ","); // Field signa2
+		$filterList = Concat($filterList, $this->jobt2->AdvancedSearch->toJson(), ","); // Field jobt2
+		$filterList = Concat($filterList, $this->sign3->AdvancedSearch->toJson(), ","); // Field sign3
+		$filterList = Concat($filterList, $this->signa3->AdvancedSearch->toJson(), ","); // Field signa3
+		$filterList = Concat($filterList, $this->jobt3->AdvancedSearch->toJson(), ","); // Field jobt3
+		$filterList = Concat($filterList, $this->sign4->AdvancedSearch->toJson(), ","); // Field sign4
+		$filterList = Concat($filterList, $this->signa4->AdvancedSearch->toJson(), ","); // Field signa4
+		$filterList = Concat($filterList, $this->jobt4->AdvancedSearch->toJson(), ","); // Field jobt4
 		$filterList = Concat($filterList, $this->hodetail_id->AdvancedSearch->toJson(), ","); // Field hodetail_id
 		$filterList = Concat($filterList, $this->asset_id->AdvancedSearch->toJson(), ","); // Field asset_id
-		$filterList = Concat($filterList, $this->Property->AdvancedSearch->toJson(), ","); // Field Property
-		$filterList = Concat($filterList, $this->TemplateFile->AdvancedSearch->toJson(), ","); // Field TemplateFile
-		$filterList = Concat($filterList, $this->hoDepartmentTo->AdvancedSearch->toJson(), ","); // Field hoDepartmentTo
-		$filterList = Concat($filterList, $this->hoSignatureTo->AdvancedSearch->toJson(), ","); // Field hoSignatureTo
-		$filterList = Concat($filterList, $this->hoJobTitleTo->AdvancedSearch->toJson(), ","); // Field hoJobTitleTo
-		$filterList = Concat($filterList, $this->hoDepartmentBy->AdvancedSearch->toJson(), ","); // Field hoDepartmentBy
-		$filterList = Concat($filterList, $this->hoSignatureBy->AdvancedSearch->toJson(), ","); // Field hoSignatureBy
-		$filterList = Concat($filterList, $this->hoJobTitleBy->AdvancedSearch->toJson(), ","); // Field hoJobTitleBy
-		$filterList = Concat($filterList, $this->Code->AdvancedSearch->toJson(), ","); // Field Code
-		$filterList = Concat($filterList, $this->Description->AdvancedSearch->toJson(), ","); // Field Description
-		$filterList = Concat($filterList, $this->Type->AdvancedSearch->toJson(), ","); // Field Type
-		$filterList = Concat($filterList, $this->Group->AdvancedSearch->toJson(), ","); // Field Group
-		$filterList = Concat($filterList, $this->ProcurementDate->AdvancedSearch->toJson(), ","); // Field ProcurementDate
-		$filterList = Concat($filterList, $this->ProcurementCurrentCost->AdvancedSearch->toJson(), ","); // Field ProcurementCurrentCost
-		$filterList = Concat($filterList, $this->Estimated_Life_28in_Year29->AdvancedSearch->toJson(), ","); // Field Estimated Life (in Year)
-		$filterList = Concat($filterList, $this->Qty->AdvancedSearch->toJson(), ","); // Field Qty
-		$filterList = Concat($filterList, $this->Remarks->AdvancedSearch->toJson(), ","); // Field Remarks
-		$filterList = Concat($filterList, $this->Sign1Signature->AdvancedSearch->toJson(), ","); // Field Sign1Signature
-		$filterList = Concat($filterList, $this->Sign1JobTitle->AdvancedSearch->toJson(), ","); // Field Sign1JobTitle
-		$filterList = Concat($filterList, $this->Sign2Signature->AdvancedSearch->toJson(), ","); // Field Sign2Signature
-		$filterList = Concat($filterList, $this->Sign2JobTitle->AdvancedSearch->toJson(), ","); // Field Sign2JobTitle
-		$filterList = Concat($filterList, $this->Sign3Signature->AdvancedSearch->toJson(), ","); // Field Sign3Signature
-		$filterList = Concat($filterList, $this->Sign3JobTitle->AdvancedSearch->toJson(), ","); // Field Sign3JobTitle
-		$filterList = Concat($filterList, $this->Sign4Signature->AdvancedSearch->toJson(), ","); // Field Sign4Signature
-		$filterList = Concat($filterList, $this->Sign4JobTitle->AdvancedSearch->toJson(), ","); // Field Sign4JobTitle
-		$filterList = Concat($filterList, $this->AssetDepartment->AdvancedSearch->toJson(), ","); // Field AssetDepartment
+		$filterList = Concat($filterList, $this->code->AdvancedSearch->toJson(), ","); // Field code
+		$filterList = Concat($filterList, $this->description->AdvancedSearch->toJson(), ","); // Field description
+		$filterList = Concat($filterList, $this->department_id->AdvancedSearch->toJson(), ","); // Field department_id
+		$filterList = Concat($filterList, $this->asset_dept->AdvancedSearch->toJson(), ","); // Field asset_dept
+		$filterList = Concat($filterList, $this->procurementdate->AdvancedSearch->toJson(), ","); // Field procurementdate
+		$filterList = Concat($filterList, $this->procurementcurrentcost->AdvancedSearch->toJson(), ","); // Field procurementcurrentcost
+		$filterList = Concat($filterList, $this->remarks->AdvancedSearch->toJson(), ","); // Field remarks
 		if ($this->BasicSearch->Keyword != "") {
 			$wrk = "\"" . Config("TABLE_BASIC_SEARCH") . "\":\"" . JsEncode($this->BasicSearch->Keyword) . "\",\"" . Config("TABLE_BASIC_SEARCH_TYPE") . "\":\"" . JsEncode($this->BasicSearch->Type) . "\"";
 			$filterList = Concat($filterList, $wrk, ",");
@@ -1213,7 +1203,7 @@ class v101_ho_list extends v101_ho
 		global $UserProfile;
 		if (Post("ajax") == "savefilters") { // Save filter request (Ajax)
 			$filters = Post("filters");
-			$UserProfile->setSearchFilters(CurrentUserName(), "fv101_holistsrch", $filters);
+			$UserProfile->setSearchFilters(CurrentUserName(), "fv101_ho_2listsrch", $filters);
 			WriteJson([["success" => TRUE]]); // Success
 			return TRUE;
 		} elseif (Post("cmd") == "resetfilter") {
@@ -1248,85 +1238,197 @@ class v101_ho_list extends v101_ho
 		$this->property_id->AdvancedSearch->SearchOperator2 = @$filter["w_property_id"];
 		$this->property_id->AdvancedSearch->save();
 
-		// Field TransactionNo
-		$this->TransactionNo->AdvancedSearch->SearchValue = @$filter["x_TransactionNo"];
-		$this->TransactionNo->AdvancedSearch->SearchOperator = @$filter["z_TransactionNo"];
-		$this->TransactionNo->AdvancedSearch->SearchCondition = @$filter["v_TransactionNo"];
-		$this->TransactionNo->AdvancedSearch->SearchValue2 = @$filter["y_TransactionNo"];
-		$this->TransactionNo->AdvancedSearch->SearchOperator2 = @$filter["w_TransactionNo"];
-		$this->TransactionNo->AdvancedSearch->save();
+		// Field property
+		$this->property->AdvancedSearch->SearchValue = @$filter["x_property"];
+		$this->property->AdvancedSearch->SearchOperator = @$filter["z_property"];
+		$this->property->AdvancedSearch->SearchCondition = @$filter["v_property"];
+		$this->property->AdvancedSearch->SearchValue2 = @$filter["y_property"];
+		$this->property->AdvancedSearch->SearchOperator2 = @$filter["w_property"];
+		$this->property->AdvancedSearch->save();
 
-		// Field TransactionDate
-		$this->TransactionDate->AdvancedSearch->SearchValue = @$filter["x_TransactionDate"];
-		$this->TransactionDate->AdvancedSearch->SearchOperator = @$filter["z_TransactionDate"];
-		$this->TransactionDate->AdvancedSearch->SearchCondition = @$filter["v_TransactionDate"];
-		$this->TransactionDate->AdvancedSearch->SearchValue2 = @$filter["y_TransactionDate"];
-		$this->TransactionDate->AdvancedSearch->SearchOperator2 = @$filter["w_TransactionDate"];
-		$this->TransactionDate->AdvancedSearch->save();
+		// Field templatefile
+		$this->templatefile->AdvancedSearch->SearchValue = @$filter["x_templatefile"];
+		$this->templatefile->AdvancedSearch->SearchOperator = @$filter["z_templatefile"];
+		$this->templatefile->AdvancedSearch->SearchCondition = @$filter["v_templatefile"];
+		$this->templatefile->AdvancedSearch->SearchValue2 = @$filter["y_templatefile"];
+		$this->templatefile->AdvancedSearch->SearchOperator2 = @$filter["w_templatefile"];
+		$this->templatefile->AdvancedSearch->save();
 
-		// Field HandedOverTo
-		$this->HandedOverTo->AdvancedSearch->SearchValue = @$filter["x_HandedOverTo"];
-		$this->HandedOverTo->AdvancedSearch->SearchOperator = @$filter["z_HandedOverTo"];
-		$this->HandedOverTo->AdvancedSearch->SearchCondition = @$filter["v_HandedOverTo"];
-		$this->HandedOverTo->AdvancedSearch->SearchValue2 = @$filter["y_HandedOverTo"];
-		$this->HandedOverTo->AdvancedSearch->SearchOperator2 = @$filter["w_HandedOverTo"];
-		$this->HandedOverTo->AdvancedSearch->save();
+		// Field transactionno
+		$this->transactionno->AdvancedSearch->SearchValue = @$filter["x_transactionno"];
+		$this->transactionno->AdvancedSearch->SearchOperator = @$filter["z_transactionno"];
+		$this->transactionno->AdvancedSearch->SearchCondition = @$filter["v_transactionno"];
+		$this->transactionno->AdvancedSearch->SearchValue2 = @$filter["y_transactionno"];
+		$this->transactionno->AdvancedSearch->SearchOperator2 = @$filter["w_transactionno"];
+		$this->transactionno->AdvancedSearch->save();
 
-		// Field DepartmentTo
-		$this->DepartmentTo->AdvancedSearch->SearchValue = @$filter["x_DepartmentTo"];
-		$this->DepartmentTo->AdvancedSearch->SearchOperator = @$filter["z_DepartmentTo"];
-		$this->DepartmentTo->AdvancedSearch->SearchCondition = @$filter["v_DepartmentTo"];
-		$this->DepartmentTo->AdvancedSearch->SearchValue2 = @$filter["y_DepartmentTo"];
-		$this->DepartmentTo->AdvancedSearch->SearchOperator2 = @$filter["w_DepartmentTo"];
-		$this->DepartmentTo->AdvancedSearch->save();
+		// Field transactiondate
+		$this->transactiondate->AdvancedSearch->SearchValue = @$filter["x_transactiondate"];
+		$this->transactiondate->AdvancedSearch->SearchOperator = @$filter["z_transactiondate"];
+		$this->transactiondate->AdvancedSearch->SearchCondition = @$filter["v_transactiondate"];
+		$this->transactiondate->AdvancedSearch->SearchValue2 = @$filter["y_transactiondate"];
+		$this->transactiondate->AdvancedSearch->SearchOperator2 = @$filter["w_transactiondate"];
+		$this->transactiondate->AdvancedSearch->save();
 
-		// Field HandedOverBy
-		$this->HandedOverBy->AdvancedSearch->SearchValue = @$filter["x_HandedOverBy"];
-		$this->HandedOverBy->AdvancedSearch->SearchOperator = @$filter["z_HandedOverBy"];
-		$this->HandedOverBy->AdvancedSearch->SearchCondition = @$filter["v_HandedOverBy"];
-		$this->HandedOverBy->AdvancedSearch->SearchValue2 = @$filter["y_HandedOverBy"];
-		$this->HandedOverBy->AdvancedSearch->SearchOperator2 = @$filter["w_HandedOverBy"];
-		$this->HandedOverBy->AdvancedSearch->save();
+		// Field handedoverto
+		$this->handedoverto->AdvancedSearch->SearchValue = @$filter["x_handedoverto"];
+		$this->handedoverto->AdvancedSearch->SearchOperator = @$filter["z_handedoverto"];
+		$this->handedoverto->AdvancedSearch->SearchCondition = @$filter["v_handedoverto"];
+		$this->handedoverto->AdvancedSearch->SearchValue2 = @$filter["y_handedoverto"];
+		$this->handedoverto->AdvancedSearch->SearchOperator2 = @$filter["w_handedoverto"];
+		$this->handedoverto->AdvancedSearch->save();
 
-		// Field DepartmentBy
-		$this->DepartmentBy->AdvancedSearch->SearchValue = @$filter["x_DepartmentBy"];
-		$this->DepartmentBy->AdvancedSearch->SearchOperator = @$filter["z_DepartmentBy"];
-		$this->DepartmentBy->AdvancedSearch->SearchCondition = @$filter["v_DepartmentBy"];
-		$this->DepartmentBy->AdvancedSearch->SearchValue2 = @$filter["y_DepartmentBy"];
-		$this->DepartmentBy->AdvancedSearch->SearchOperator2 = @$filter["w_DepartmentBy"];
-		$this->DepartmentBy->AdvancedSearch->save();
+		// Field hoto
+		$this->hoto->AdvancedSearch->SearchValue = @$filter["x_hoto"];
+		$this->hoto->AdvancedSearch->SearchOperator = @$filter["z_hoto"];
+		$this->hoto->AdvancedSearch->SearchCondition = @$filter["v_hoto"];
+		$this->hoto->AdvancedSearch->SearchValue2 = @$filter["y_hoto"];
+		$this->hoto->AdvancedSearch->SearchOperator2 = @$filter["w_hoto"];
+		$this->hoto->AdvancedSearch->save();
 
-		// Field Sign1
-		$this->Sign1->AdvancedSearch->SearchValue = @$filter["x_Sign1"];
-		$this->Sign1->AdvancedSearch->SearchOperator = @$filter["z_Sign1"];
-		$this->Sign1->AdvancedSearch->SearchCondition = @$filter["v_Sign1"];
-		$this->Sign1->AdvancedSearch->SearchValue2 = @$filter["y_Sign1"];
-		$this->Sign1->AdvancedSearch->SearchOperator2 = @$filter["w_Sign1"];
-		$this->Sign1->AdvancedSearch->save();
+		// Field departmentto
+		$this->departmentto->AdvancedSearch->SearchValue = @$filter["x_departmentto"];
+		$this->departmentto->AdvancedSearch->SearchOperator = @$filter["z_departmentto"];
+		$this->departmentto->AdvancedSearch->SearchCondition = @$filter["v_departmentto"];
+		$this->departmentto->AdvancedSearch->SearchValue2 = @$filter["y_departmentto"];
+		$this->departmentto->AdvancedSearch->SearchOperator2 = @$filter["w_departmentto"];
+		$this->departmentto->AdvancedSearch->save();
 
-		// Field Sign2
-		$this->Sign2->AdvancedSearch->SearchValue = @$filter["x_Sign2"];
-		$this->Sign2->AdvancedSearch->SearchOperator = @$filter["z_Sign2"];
-		$this->Sign2->AdvancedSearch->SearchCondition = @$filter["v_Sign2"];
-		$this->Sign2->AdvancedSearch->SearchValue2 = @$filter["y_Sign2"];
-		$this->Sign2->AdvancedSearch->SearchOperator2 = @$filter["w_Sign2"];
-		$this->Sign2->AdvancedSearch->save();
+		// Field deptto
+		$this->deptto->AdvancedSearch->SearchValue = @$filter["x_deptto"];
+		$this->deptto->AdvancedSearch->SearchOperator = @$filter["z_deptto"];
+		$this->deptto->AdvancedSearch->SearchCondition = @$filter["v_deptto"];
+		$this->deptto->AdvancedSearch->SearchValue2 = @$filter["y_deptto"];
+		$this->deptto->AdvancedSearch->SearchOperator2 = @$filter["w_deptto"];
+		$this->deptto->AdvancedSearch->save();
 
-		// Field Sign3
-		$this->Sign3->AdvancedSearch->SearchValue = @$filter["x_Sign3"];
-		$this->Sign3->AdvancedSearch->SearchOperator = @$filter["z_Sign3"];
-		$this->Sign3->AdvancedSearch->SearchCondition = @$filter["v_Sign3"];
-		$this->Sign3->AdvancedSearch->SearchValue2 = @$filter["y_Sign3"];
-		$this->Sign3->AdvancedSearch->SearchOperator2 = @$filter["w_Sign3"];
-		$this->Sign3->AdvancedSearch->save();
+		// Field handedoverby
+		$this->handedoverby->AdvancedSearch->SearchValue = @$filter["x_handedoverby"];
+		$this->handedoverby->AdvancedSearch->SearchOperator = @$filter["z_handedoverby"];
+		$this->handedoverby->AdvancedSearch->SearchCondition = @$filter["v_handedoverby"];
+		$this->handedoverby->AdvancedSearch->SearchValue2 = @$filter["y_handedoverby"];
+		$this->handedoverby->AdvancedSearch->SearchOperator2 = @$filter["w_handedoverby"];
+		$this->handedoverby->AdvancedSearch->save();
 
-		// Field Sign4
-		$this->Sign4->AdvancedSearch->SearchValue = @$filter["x_Sign4"];
-		$this->Sign4->AdvancedSearch->SearchOperator = @$filter["z_Sign4"];
-		$this->Sign4->AdvancedSearch->SearchCondition = @$filter["v_Sign4"];
-		$this->Sign4->AdvancedSearch->SearchValue2 = @$filter["y_Sign4"];
-		$this->Sign4->AdvancedSearch->SearchOperator2 = @$filter["w_Sign4"];
-		$this->Sign4->AdvancedSearch->save();
+		// Field hoby
+		$this->hoby->AdvancedSearch->SearchValue = @$filter["x_hoby"];
+		$this->hoby->AdvancedSearch->SearchOperator = @$filter["z_hoby"];
+		$this->hoby->AdvancedSearch->SearchCondition = @$filter["v_hoby"];
+		$this->hoby->AdvancedSearch->SearchValue2 = @$filter["y_hoby"];
+		$this->hoby->AdvancedSearch->SearchOperator2 = @$filter["w_hoby"];
+		$this->hoby->AdvancedSearch->save();
+
+		// Field departmentby
+		$this->departmentby->AdvancedSearch->SearchValue = @$filter["x_departmentby"];
+		$this->departmentby->AdvancedSearch->SearchOperator = @$filter["z_departmentby"];
+		$this->departmentby->AdvancedSearch->SearchCondition = @$filter["v_departmentby"];
+		$this->departmentby->AdvancedSearch->SearchValue2 = @$filter["y_departmentby"];
+		$this->departmentby->AdvancedSearch->SearchOperator2 = @$filter["w_departmentby"];
+		$this->departmentby->AdvancedSearch->save();
+
+		// Field deptby
+		$this->deptby->AdvancedSearch->SearchValue = @$filter["x_deptby"];
+		$this->deptby->AdvancedSearch->SearchOperator = @$filter["z_deptby"];
+		$this->deptby->AdvancedSearch->SearchCondition = @$filter["v_deptby"];
+		$this->deptby->AdvancedSearch->SearchValue2 = @$filter["y_deptby"];
+		$this->deptby->AdvancedSearch->SearchOperator2 = @$filter["w_deptby"];
+		$this->deptby->AdvancedSearch->save();
+
+		// Field sign1
+		$this->sign1->AdvancedSearch->SearchValue = @$filter["x_sign1"];
+		$this->sign1->AdvancedSearch->SearchOperator = @$filter["z_sign1"];
+		$this->sign1->AdvancedSearch->SearchCondition = @$filter["v_sign1"];
+		$this->sign1->AdvancedSearch->SearchValue2 = @$filter["y_sign1"];
+		$this->sign1->AdvancedSearch->SearchOperator2 = @$filter["w_sign1"];
+		$this->sign1->AdvancedSearch->save();
+
+		// Field signa1
+		$this->signa1->AdvancedSearch->SearchValue = @$filter["x_signa1"];
+		$this->signa1->AdvancedSearch->SearchOperator = @$filter["z_signa1"];
+		$this->signa1->AdvancedSearch->SearchCondition = @$filter["v_signa1"];
+		$this->signa1->AdvancedSearch->SearchValue2 = @$filter["y_signa1"];
+		$this->signa1->AdvancedSearch->SearchOperator2 = @$filter["w_signa1"];
+		$this->signa1->AdvancedSearch->save();
+
+		// Field jobt1
+		$this->jobt1->AdvancedSearch->SearchValue = @$filter["x_jobt1"];
+		$this->jobt1->AdvancedSearch->SearchOperator = @$filter["z_jobt1"];
+		$this->jobt1->AdvancedSearch->SearchCondition = @$filter["v_jobt1"];
+		$this->jobt1->AdvancedSearch->SearchValue2 = @$filter["y_jobt1"];
+		$this->jobt1->AdvancedSearch->SearchOperator2 = @$filter["w_jobt1"];
+		$this->jobt1->AdvancedSearch->save();
+
+		// Field sign2
+		$this->sign2->AdvancedSearch->SearchValue = @$filter["x_sign2"];
+		$this->sign2->AdvancedSearch->SearchOperator = @$filter["z_sign2"];
+		$this->sign2->AdvancedSearch->SearchCondition = @$filter["v_sign2"];
+		$this->sign2->AdvancedSearch->SearchValue2 = @$filter["y_sign2"];
+		$this->sign2->AdvancedSearch->SearchOperator2 = @$filter["w_sign2"];
+		$this->sign2->AdvancedSearch->save();
+
+		// Field signa2
+		$this->signa2->AdvancedSearch->SearchValue = @$filter["x_signa2"];
+		$this->signa2->AdvancedSearch->SearchOperator = @$filter["z_signa2"];
+		$this->signa2->AdvancedSearch->SearchCondition = @$filter["v_signa2"];
+		$this->signa2->AdvancedSearch->SearchValue2 = @$filter["y_signa2"];
+		$this->signa2->AdvancedSearch->SearchOperator2 = @$filter["w_signa2"];
+		$this->signa2->AdvancedSearch->save();
+
+		// Field jobt2
+		$this->jobt2->AdvancedSearch->SearchValue = @$filter["x_jobt2"];
+		$this->jobt2->AdvancedSearch->SearchOperator = @$filter["z_jobt2"];
+		$this->jobt2->AdvancedSearch->SearchCondition = @$filter["v_jobt2"];
+		$this->jobt2->AdvancedSearch->SearchValue2 = @$filter["y_jobt2"];
+		$this->jobt2->AdvancedSearch->SearchOperator2 = @$filter["w_jobt2"];
+		$this->jobt2->AdvancedSearch->save();
+
+		// Field sign3
+		$this->sign3->AdvancedSearch->SearchValue = @$filter["x_sign3"];
+		$this->sign3->AdvancedSearch->SearchOperator = @$filter["z_sign3"];
+		$this->sign3->AdvancedSearch->SearchCondition = @$filter["v_sign3"];
+		$this->sign3->AdvancedSearch->SearchValue2 = @$filter["y_sign3"];
+		$this->sign3->AdvancedSearch->SearchOperator2 = @$filter["w_sign3"];
+		$this->sign3->AdvancedSearch->save();
+
+		// Field signa3
+		$this->signa3->AdvancedSearch->SearchValue = @$filter["x_signa3"];
+		$this->signa3->AdvancedSearch->SearchOperator = @$filter["z_signa3"];
+		$this->signa3->AdvancedSearch->SearchCondition = @$filter["v_signa3"];
+		$this->signa3->AdvancedSearch->SearchValue2 = @$filter["y_signa3"];
+		$this->signa3->AdvancedSearch->SearchOperator2 = @$filter["w_signa3"];
+		$this->signa3->AdvancedSearch->save();
+
+		// Field jobt3
+		$this->jobt3->AdvancedSearch->SearchValue = @$filter["x_jobt3"];
+		$this->jobt3->AdvancedSearch->SearchOperator = @$filter["z_jobt3"];
+		$this->jobt3->AdvancedSearch->SearchCondition = @$filter["v_jobt3"];
+		$this->jobt3->AdvancedSearch->SearchValue2 = @$filter["y_jobt3"];
+		$this->jobt3->AdvancedSearch->SearchOperator2 = @$filter["w_jobt3"];
+		$this->jobt3->AdvancedSearch->save();
+
+		// Field sign4
+		$this->sign4->AdvancedSearch->SearchValue = @$filter["x_sign4"];
+		$this->sign4->AdvancedSearch->SearchOperator = @$filter["z_sign4"];
+		$this->sign4->AdvancedSearch->SearchCondition = @$filter["v_sign4"];
+		$this->sign4->AdvancedSearch->SearchValue2 = @$filter["y_sign4"];
+		$this->sign4->AdvancedSearch->SearchOperator2 = @$filter["w_sign4"];
+		$this->sign4->AdvancedSearch->save();
+
+		// Field signa4
+		$this->signa4->AdvancedSearch->SearchValue = @$filter["x_signa4"];
+		$this->signa4->AdvancedSearch->SearchOperator = @$filter["z_signa4"];
+		$this->signa4->AdvancedSearch->SearchCondition = @$filter["v_signa4"];
+		$this->signa4->AdvancedSearch->SearchValue2 = @$filter["y_signa4"];
+		$this->signa4->AdvancedSearch->SearchOperator2 = @$filter["w_signa4"];
+		$this->signa4->AdvancedSearch->save();
+
+		// Field jobt4
+		$this->jobt4->AdvancedSearch->SearchValue = @$filter["x_jobt4"];
+		$this->jobt4->AdvancedSearch->SearchOperator = @$filter["z_jobt4"];
+		$this->jobt4->AdvancedSearch->SearchCondition = @$filter["v_jobt4"];
+		$this->jobt4->AdvancedSearch->SearchValue2 = @$filter["y_jobt4"];
+		$this->jobt4->AdvancedSearch->SearchOperator2 = @$filter["w_jobt4"];
+		$this->jobt4->AdvancedSearch->save();
 
 		// Field hodetail_id
 		$this->hodetail_id->AdvancedSearch->SearchValue = @$filter["x_hodetail_id"];
@@ -1344,213 +1446,61 @@ class v101_ho_list extends v101_ho
 		$this->asset_id->AdvancedSearch->SearchOperator2 = @$filter["w_asset_id"];
 		$this->asset_id->AdvancedSearch->save();
 
-		// Field Property
-		$this->Property->AdvancedSearch->SearchValue = @$filter["x_Property"];
-		$this->Property->AdvancedSearch->SearchOperator = @$filter["z_Property"];
-		$this->Property->AdvancedSearch->SearchCondition = @$filter["v_Property"];
-		$this->Property->AdvancedSearch->SearchValue2 = @$filter["y_Property"];
-		$this->Property->AdvancedSearch->SearchOperator2 = @$filter["w_Property"];
-		$this->Property->AdvancedSearch->save();
+		// Field code
+		$this->code->AdvancedSearch->SearchValue = @$filter["x_code"];
+		$this->code->AdvancedSearch->SearchOperator = @$filter["z_code"];
+		$this->code->AdvancedSearch->SearchCondition = @$filter["v_code"];
+		$this->code->AdvancedSearch->SearchValue2 = @$filter["y_code"];
+		$this->code->AdvancedSearch->SearchOperator2 = @$filter["w_code"];
+		$this->code->AdvancedSearch->save();
 
-		// Field TemplateFile
-		$this->TemplateFile->AdvancedSearch->SearchValue = @$filter["x_TemplateFile"];
-		$this->TemplateFile->AdvancedSearch->SearchOperator = @$filter["z_TemplateFile"];
-		$this->TemplateFile->AdvancedSearch->SearchCondition = @$filter["v_TemplateFile"];
-		$this->TemplateFile->AdvancedSearch->SearchValue2 = @$filter["y_TemplateFile"];
-		$this->TemplateFile->AdvancedSearch->SearchOperator2 = @$filter["w_TemplateFile"];
-		$this->TemplateFile->AdvancedSearch->save();
+		// Field description
+		$this->description->AdvancedSearch->SearchValue = @$filter["x_description"];
+		$this->description->AdvancedSearch->SearchOperator = @$filter["z_description"];
+		$this->description->AdvancedSearch->SearchCondition = @$filter["v_description"];
+		$this->description->AdvancedSearch->SearchValue2 = @$filter["y_description"];
+		$this->description->AdvancedSearch->SearchOperator2 = @$filter["w_description"];
+		$this->description->AdvancedSearch->save();
 
-		// Field hoDepartmentTo
-		$this->hoDepartmentTo->AdvancedSearch->SearchValue = @$filter["x_hoDepartmentTo"];
-		$this->hoDepartmentTo->AdvancedSearch->SearchOperator = @$filter["z_hoDepartmentTo"];
-		$this->hoDepartmentTo->AdvancedSearch->SearchCondition = @$filter["v_hoDepartmentTo"];
-		$this->hoDepartmentTo->AdvancedSearch->SearchValue2 = @$filter["y_hoDepartmentTo"];
-		$this->hoDepartmentTo->AdvancedSearch->SearchOperator2 = @$filter["w_hoDepartmentTo"];
-		$this->hoDepartmentTo->AdvancedSearch->save();
+		// Field department_id
+		$this->department_id->AdvancedSearch->SearchValue = @$filter["x_department_id"];
+		$this->department_id->AdvancedSearch->SearchOperator = @$filter["z_department_id"];
+		$this->department_id->AdvancedSearch->SearchCondition = @$filter["v_department_id"];
+		$this->department_id->AdvancedSearch->SearchValue2 = @$filter["y_department_id"];
+		$this->department_id->AdvancedSearch->SearchOperator2 = @$filter["w_department_id"];
+		$this->department_id->AdvancedSearch->save();
 
-		// Field hoSignatureTo
-		$this->hoSignatureTo->AdvancedSearch->SearchValue = @$filter["x_hoSignatureTo"];
-		$this->hoSignatureTo->AdvancedSearch->SearchOperator = @$filter["z_hoSignatureTo"];
-		$this->hoSignatureTo->AdvancedSearch->SearchCondition = @$filter["v_hoSignatureTo"];
-		$this->hoSignatureTo->AdvancedSearch->SearchValue2 = @$filter["y_hoSignatureTo"];
-		$this->hoSignatureTo->AdvancedSearch->SearchOperator2 = @$filter["w_hoSignatureTo"];
-		$this->hoSignatureTo->AdvancedSearch->save();
+		// Field asset_dept
+		$this->asset_dept->AdvancedSearch->SearchValue = @$filter["x_asset_dept"];
+		$this->asset_dept->AdvancedSearch->SearchOperator = @$filter["z_asset_dept"];
+		$this->asset_dept->AdvancedSearch->SearchCondition = @$filter["v_asset_dept"];
+		$this->asset_dept->AdvancedSearch->SearchValue2 = @$filter["y_asset_dept"];
+		$this->asset_dept->AdvancedSearch->SearchOperator2 = @$filter["w_asset_dept"];
+		$this->asset_dept->AdvancedSearch->save();
 
-		// Field hoJobTitleTo
-		$this->hoJobTitleTo->AdvancedSearch->SearchValue = @$filter["x_hoJobTitleTo"];
-		$this->hoJobTitleTo->AdvancedSearch->SearchOperator = @$filter["z_hoJobTitleTo"];
-		$this->hoJobTitleTo->AdvancedSearch->SearchCondition = @$filter["v_hoJobTitleTo"];
-		$this->hoJobTitleTo->AdvancedSearch->SearchValue2 = @$filter["y_hoJobTitleTo"];
-		$this->hoJobTitleTo->AdvancedSearch->SearchOperator2 = @$filter["w_hoJobTitleTo"];
-		$this->hoJobTitleTo->AdvancedSearch->save();
+		// Field procurementdate
+		$this->procurementdate->AdvancedSearch->SearchValue = @$filter["x_procurementdate"];
+		$this->procurementdate->AdvancedSearch->SearchOperator = @$filter["z_procurementdate"];
+		$this->procurementdate->AdvancedSearch->SearchCondition = @$filter["v_procurementdate"];
+		$this->procurementdate->AdvancedSearch->SearchValue2 = @$filter["y_procurementdate"];
+		$this->procurementdate->AdvancedSearch->SearchOperator2 = @$filter["w_procurementdate"];
+		$this->procurementdate->AdvancedSearch->save();
 
-		// Field hoDepartmentBy
-		$this->hoDepartmentBy->AdvancedSearch->SearchValue = @$filter["x_hoDepartmentBy"];
-		$this->hoDepartmentBy->AdvancedSearch->SearchOperator = @$filter["z_hoDepartmentBy"];
-		$this->hoDepartmentBy->AdvancedSearch->SearchCondition = @$filter["v_hoDepartmentBy"];
-		$this->hoDepartmentBy->AdvancedSearch->SearchValue2 = @$filter["y_hoDepartmentBy"];
-		$this->hoDepartmentBy->AdvancedSearch->SearchOperator2 = @$filter["w_hoDepartmentBy"];
-		$this->hoDepartmentBy->AdvancedSearch->save();
+		// Field procurementcurrentcost
+		$this->procurementcurrentcost->AdvancedSearch->SearchValue = @$filter["x_procurementcurrentcost"];
+		$this->procurementcurrentcost->AdvancedSearch->SearchOperator = @$filter["z_procurementcurrentcost"];
+		$this->procurementcurrentcost->AdvancedSearch->SearchCondition = @$filter["v_procurementcurrentcost"];
+		$this->procurementcurrentcost->AdvancedSearch->SearchValue2 = @$filter["y_procurementcurrentcost"];
+		$this->procurementcurrentcost->AdvancedSearch->SearchOperator2 = @$filter["w_procurementcurrentcost"];
+		$this->procurementcurrentcost->AdvancedSearch->save();
 
-		// Field hoSignatureBy
-		$this->hoSignatureBy->AdvancedSearch->SearchValue = @$filter["x_hoSignatureBy"];
-		$this->hoSignatureBy->AdvancedSearch->SearchOperator = @$filter["z_hoSignatureBy"];
-		$this->hoSignatureBy->AdvancedSearch->SearchCondition = @$filter["v_hoSignatureBy"];
-		$this->hoSignatureBy->AdvancedSearch->SearchValue2 = @$filter["y_hoSignatureBy"];
-		$this->hoSignatureBy->AdvancedSearch->SearchOperator2 = @$filter["w_hoSignatureBy"];
-		$this->hoSignatureBy->AdvancedSearch->save();
-
-		// Field hoJobTitleBy
-		$this->hoJobTitleBy->AdvancedSearch->SearchValue = @$filter["x_hoJobTitleBy"];
-		$this->hoJobTitleBy->AdvancedSearch->SearchOperator = @$filter["z_hoJobTitleBy"];
-		$this->hoJobTitleBy->AdvancedSearch->SearchCondition = @$filter["v_hoJobTitleBy"];
-		$this->hoJobTitleBy->AdvancedSearch->SearchValue2 = @$filter["y_hoJobTitleBy"];
-		$this->hoJobTitleBy->AdvancedSearch->SearchOperator2 = @$filter["w_hoJobTitleBy"];
-		$this->hoJobTitleBy->AdvancedSearch->save();
-
-		// Field Code
-		$this->Code->AdvancedSearch->SearchValue = @$filter["x_Code"];
-		$this->Code->AdvancedSearch->SearchOperator = @$filter["z_Code"];
-		$this->Code->AdvancedSearch->SearchCondition = @$filter["v_Code"];
-		$this->Code->AdvancedSearch->SearchValue2 = @$filter["y_Code"];
-		$this->Code->AdvancedSearch->SearchOperator2 = @$filter["w_Code"];
-		$this->Code->AdvancedSearch->save();
-
-		// Field Description
-		$this->Description->AdvancedSearch->SearchValue = @$filter["x_Description"];
-		$this->Description->AdvancedSearch->SearchOperator = @$filter["z_Description"];
-		$this->Description->AdvancedSearch->SearchCondition = @$filter["v_Description"];
-		$this->Description->AdvancedSearch->SearchValue2 = @$filter["y_Description"];
-		$this->Description->AdvancedSearch->SearchOperator2 = @$filter["w_Description"];
-		$this->Description->AdvancedSearch->save();
-
-		// Field Type
-		$this->Type->AdvancedSearch->SearchValue = @$filter["x_Type"];
-		$this->Type->AdvancedSearch->SearchOperator = @$filter["z_Type"];
-		$this->Type->AdvancedSearch->SearchCondition = @$filter["v_Type"];
-		$this->Type->AdvancedSearch->SearchValue2 = @$filter["y_Type"];
-		$this->Type->AdvancedSearch->SearchOperator2 = @$filter["w_Type"];
-		$this->Type->AdvancedSearch->save();
-
-		// Field Group
-		$this->Group->AdvancedSearch->SearchValue = @$filter["x_Group"];
-		$this->Group->AdvancedSearch->SearchOperator = @$filter["z_Group"];
-		$this->Group->AdvancedSearch->SearchCondition = @$filter["v_Group"];
-		$this->Group->AdvancedSearch->SearchValue2 = @$filter["y_Group"];
-		$this->Group->AdvancedSearch->SearchOperator2 = @$filter["w_Group"];
-		$this->Group->AdvancedSearch->save();
-
-		// Field ProcurementDate
-		$this->ProcurementDate->AdvancedSearch->SearchValue = @$filter["x_ProcurementDate"];
-		$this->ProcurementDate->AdvancedSearch->SearchOperator = @$filter["z_ProcurementDate"];
-		$this->ProcurementDate->AdvancedSearch->SearchCondition = @$filter["v_ProcurementDate"];
-		$this->ProcurementDate->AdvancedSearch->SearchValue2 = @$filter["y_ProcurementDate"];
-		$this->ProcurementDate->AdvancedSearch->SearchOperator2 = @$filter["w_ProcurementDate"];
-		$this->ProcurementDate->AdvancedSearch->save();
-
-		// Field ProcurementCurrentCost
-		$this->ProcurementCurrentCost->AdvancedSearch->SearchValue = @$filter["x_ProcurementCurrentCost"];
-		$this->ProcurementCurrentCost->AdvancedSearch->SearchOperator = @$filter["z_ProcurementCurrentCost"];
-		$this->ProcurementCurrentCost->AdvancedSearch->SearchCondition = @$filter["v_ProcurementCurrentCost"];
-		$this->ProcurementCurrentCost->AdvancedSearch->SearchValue2 = @$filter["y_ProcurementCurrentCost"];
-		$this->ProcurementCurrentCost->AdvancedSearch->SearchOperator2 = @$filter["w_ProcurementCurrentCost"];
-		$this->ProcurementCurrentCost->AdvancedSearch->save();
-
-		// Field Estimated Life (in Year)
-		$this->Estimated_Life_28in_Year29->AdvancedSearch->SearchValue = @$filter["x_Estimated_Life_28in_Year29"];
-		$this->Estimated_Life_28in_Year29->AdvancedSearch->SearchOperator = @$filter["z_Estimated_Life_28in_Year29"];
-		$this->Estimated_Life_28in_Year29->AdvancedSearch->SearchCondition = @$filter["v_Estimated_Life_28in_Year29"];
-		$this->Estimated_Life_28in_Year29->AdvancedSearch->SearchValue2 = @$filter["y_Estimated_Life_28in_Year29"];
-		$this->Estimated_Life_28in_Year29->AdvancedSearch->SearchOperator2 = @$filter["w_Estimated_Life_28in_Year29"];
-		$this->Estimated_Life_28in_Year29->AdvancedSearch->save();
-
-		// Field Qty
-		$this->Qty->AdvancedSearch->SearchValue = @$filter["x_Qty"];
-		$this->Qty->AdvancedSearch->SearchOperator = @$filter["z_Qty"];
-		$this->Qty->AdvancedSearch->SearchCondition = @$filter["v_Qty"];
-		$this->Qty->AdvancedSearch->SearchValue2 = @$filter["y_Qty"];
-		$this->Qty->AdvancedSearch->SearchOperator2 = @$filter["w_Qty"];
-		$this->Qty->AdvancedSearch->save();
-
-		// Field Remarks
-		$this->Remarks->AdvancedSearch->SearchValue = @$filter["x_Remarks"];
-		$this->Remarks->AdvancedSearch->SearchOperator = @$filter["z_Remarks"];
-		$this->Remarks->AdvancedSearch->SearchCondition = @$filter["v_Remarks"];
-		$this->Remarks->AdvancedSearch->SearchValue2 = @$filter["y_Remarks"];
-		$this->Remarks->AdvancedSearch->SearchOperator2 = @$filter["w_Remarks"];
-		$this->Remarks->AdvancedSearch->save();
-
-		// Field Sign1Signature
-		$this->Sign1Signature->AdvancedSearch->SearchValue = @$filter["x_Sign1Signature"];
-		$this->Sign1Signature->AdvancedSearch->SearchOperator = @$filter["z_Sign1Signature"];
-		$this->Sign1Signature->AdvancedSearch->SearchCondition = @$filter["v_Sign1Signature"];
-		$this->Sign1Signature->AdvancedSearch->SearchValue2 = @$filter["y_Sign1Signature"];
-		$this->Sign1Signature->AdvancedSearch->SearchOperator2 = @$filter["w_Sign1Signature"];
-		$this->Sign1Signature->AdvancedSearch->save();
-
-		// Field Sign1JobTitle
-		$this->Sign1JobTitle->AdvancedSearch->SearchValue = @$filter["x_Sign1JobTitle"];
-		$this->Sign1JobTitle->AdvancedSearch->SearchOperator = @$filter["z_Sign1JobTitle"];
-		$this->Sign1JobTitle->AdvancedSearch->SearchCondition = @$filter["v_Sign1JobTitle"];
-		$this->Sign1JobTitle->AdvancedSearch->SearchValue2 = @$filter["y_Sign1JobTitle"];
-		$this->Sign1JobTitle->AdvancedSearch->SearchOperator2 = @$filter["w_Sign1JobTitle"];
-		$this->Sign1JobTitle->AdvancedSearch->save();
-
-		// Field Sign2Signature
-		$this->Sign2Signature->AdvancedSearch->SearchValue = @$filter["x_Sign2Signature"];
-		$this->Sign2Signature->AdvancedSearch->SearchOperator = @$filter["z_Sign2Signature"];
-		$this->Sign2Signature->AdvancedSearch->SearchCondition = @$filter["v_Sign2Signature"];
-		$this->Sign2Signature->AdvancedSearch->SearchValue2 = @$filter["y_Sign2Signature"];
-		$this->Sign2Signature->AdvancedSearch->SearchOperator2 = @$filter["w_Sign2Signature"];
-		$this->Sign2Signature->AdvancedSearch->save();
-
-		// Field Sign2JobTitle
-		$this->Sign2JobTitle->AdvancedSearch->SearchValue = @$filter["x_Sign2JobTitle"];
-		$this->Sign2JobTitle->AdvancedSearch->SearchOperator = @$filter["z_Sign2JobTitle"];
-		$this->Sign2JobTitle->AdvancedSearch->SearchCondition = @$filter["v_Sign2JobTitle"];
-		$this->Sign2JobTitle->AdvancedSearch->SearchValue2 = @$filter["y_Sign2JobTitle"];
-		$this->Sign2JobTitle->AdvancedSearch->SearchOperator2 = @$filter["w_Sign2JobTitle"];
-		$this->Sign2JobTitle->AdvancedSearch->save();
-
-		// Field Sign3Signature
-		$this->Sign3Signature->AdvancedSearch->SearchValue = @$filter["x_Sign3Signature"];
-		$this->Sign3Signature->AdvancedSearch->SearchOperator = @$filter["z_Sign3Signature"];
-		$this->Sign3Signature->AdvancedSearch->SearchCondition = @$filter["v_Sign3Signature"];
-		$this->Sign3Signature->AdvancedSearch->SearchValue2 = @$filter["y_Sign3Signature"];
-		$this->Sign3Signature->AdvancedSearch->SearchOperator2 = @$filter["w_Sign3Signature"];
-		$this->Sign3Signature->AdvancedSearch->save();
-
-		// Field Sign3JobTitle
-		$this->Sign3JobTitle->AdvancedSearch->SearchValue = @$filter["x_Sign3JobTitle"];
-		$this->Sign3JobTitle->AdvancedSearch->SearchOperator = @$filter["z_Sign3JobTitle"];
-		$this->Sign3JobTitle->AdvancedSearch->SearchCondition = @$filter["v_Sign3JobTitle"];
-		$this->Sign3JobTitle->AdvancedSearch->SearchValue2 = @$filter["y_Sign3JobTitle"];
-		$this->Sign3JobTitle->AdvancedSearch->SearchOperator2 = @$filter["w_Sign3JobTitle"];
-		$this->Sign3JobTitle->AdvancedSearch->save();
-
-		// Field Sign4Signature
-		$this->Sign4Signature->AdvancedSearch->SearchValue = @$filter["x_Sign4Signature"];
-		$this->Sign4Signature->AdvancedSearch->SearchOperator = @$filter["z_Sign4Signature"];
-		$this->Sign4Signature->AdvancedSearch->SearchCondition = @$filter["v_Sign4Signature"];
-		$this->Sign4Signature->AdvancedSearch->SearchValue2 = @$filter["y_Sign4Signature"];
-		$this->Sign4Signature->AdvancedSearch->SearchOperator2 = @$filter["w_Sign4Signature"];
-		$this->Sign4Signature->AdvancedSearch->save();
-
-		// Field Sign4JobTitle
-		$this->Sign4JobTitle->AdvancedSearch->SearchValue = @$filter["x_Sign4JobTitle"];
-		$this->Sign4JobTitle->AdvancedSearch->SearchOperator = @$filter["z_Sign4JobTitle"];
-		$this->Sign4JobTitle->AdvancedSearch->SearchCondition = @$filter["v_Sign4JobTitle"];
-		$this->Sign4JobTitle->AdvancedSearch->SearchValue2 = @$filter["y_Sign4JobTitle"];
-		$this->Sign4JobTitle->AdvancedSearch->SearchOperator2 = @$filter["w_Sign4JobTitle"];
-		$this->Sign4JobTitle->AdvancedSearch->save();
-
-		// Field AssetDepartment
-		$this->AssetDepartment->AdvancedSearch->SearchValue = @$filter["x_AssetDepartment"];
-		$this->AssetDepartment->AdvancedSearch->SearchOperator = @$filter["z_AssetDepartment"];
-		$this->AssetDepartment->AdvancedSearch->SearchCondition = @$filter["v_AssetDepartment"];
-		$this->AssetDepartment->AdvancedSearch->SearchValue2 = @$filter["y_AssetDepartment"];
-		$this->AssetDepartment->AdvancedSearch->SearchOperator2 = @$filter["w_AssetDepartment"];
-		$this->AssetDepartment->AdvancedSearch->save();
+		// Field remarks
+		$this->remarks->AdvancedSearch->SearchValue = @$filter["x_remarks"];
+		$this->remarks->AdvancedSearch->SearchOperator = @$filter["z_remarks"];
+		$this->remarks->AdvancedSearch->SearchCondition = @$filter["v_remarks"];
+		$this->remarks->AdvancedSearch->SearchValue2 = @$filter["y_remarks"];
+		$this->remarks->AdvancedSearch->SearchOperator2 = @$filter["w_remarks"];
+		$this->remarks->AdvancedSearch->save();
 		$this->BasicSearch->setKeyword(@$filter[Config("TABLE_BASIC_SEARCH")]);
 		$this->BasicSearch->setType(@$filter[Config("TABLE_BASIC_SEARCH_TYPE")]);
 	}
@@ -1559,29 +1509,25 @@ class v101_ho_list extends v101_ho
 	protected function basicSearchSql($arKeywords, $type)
 	{
 		$where = "";
-		$this->buildBasicSearchSql($where, $this->TransactionNo, $arKeywords, $type);
-		$this->buildBasicSearchSql($where, $this->Property, $arKeywords, $type);
-		$this->buildBasicSearchSql($where, $this->TemplateFile, $arKeywords, $type);
-		$this->buildBasicSearchSql($where, $this->hoDepartmentTo, $arKeywords, $type);
-		$this->buildBasicSearchSql($where, $this->hoSignatureTo, $arKeywords, $type);
-		$this->buildBasicSearchSql($where, $this->hoJobTitleTo, $arKeywords, $type);
-		$this->buildBasicSearchSql($where, $this->hoDepartmentBy, $arKeywords, $type);
-		$this->buildBasicSearchSql($where, $this->hoSignatureBy, $arKeywords, $type);
-		$this->buildBasicSearchSql($where, $this->hoJobTitleBy, $arKeywords, $type);
-		$this->buildBasicSearchSql($where, $this->Code, $arKeywords, $type);
-		$this->buildBasicSearchSql($where, $this->Description, $arKeywords, $type);
-		$this->buildBasicSearchSql($where, $this->Type, $arKeywords, $type);
-		$this->buildBasicSearchSql($where, $this->Group, $arKeywords, $type);
-		$this->buildBasicSearchSql($where, $this->Remarks, $arKeywords, $type);
-		$this->buildBasicSearchSql($where, $this->Sign1Signature, $arKeywords, $type);
-		$this->buildBasicSearchSql($where, $this->Sign1JobTitle, $arKeywords, $type);
-		$this->buildBasicSearchSql($where, $this->Sign2Signature, $arKeywords, $type);
-		$this->buildBasicSearchSql($where, $this->Sign2JobTitle, $arKeywords, $type);
-		$this->buildBasicSearchSql($where, $this->Sign3Signature, $arKeywords, $type);
-		$this->buildBasicSearchSql($where, $this->Sign3JobTitle, $arKeywords, $type);
-		$this->buildBasicSearchSql($where, $this->Sign4Signature, $arKeywords, $type);
-		$this->buildBasicSearchSql($where, $this->Sign4JobTitle, $arKeywords, $type);
-		$this->buildBasicSearchSql($where, $this->AssetDepartment, $arKeywords, $type);
+		$this->buildBasicSearchSql($where, $this->property, $arKeywords, $type);
+		$this->buildBasicSearchSql($where, $this->templatefile, $arKeywords, $type);
+		$this->buildBasicSearchSql($where, $this->transactionno, $arKeywords, $type);
+		$this->buildBasicSearchSql($where, $this->hoto, $arKeywords, $type);
+		$this->buildBasicSearchSql($where, $this->deptto, $arKeywords, $type);
+		$this->buildBasicSearchSql($where, $this->hoby, $arKeywords, $type);
+		$this->buildBasicSearchSql($where, $this->deptby, $arKeywords, $type);
+		$this->buildBasicSearchSql($where, $this->signa1, $arKeywords, $type);
+		$this->buildBasicSearchSql($where, $this->jobt1, $arKeywords, $type);
+		$this->buildBasicSearchSql($where, $this->signa2, $arKeywords, $type);
+		$this->buildBasicSearchSql($where, $this->jobt2, $arKeywords, $type);
+		$this->buildBasicSearchSql($where, $this->signa3, $arKeywords, $type);
+		$this->buildBasicSearchSql($where, $this->jobt3, $arKeywords, $type);
+		$this->buildBasicSearchSql($where, $this->signa4, $arKeywords, $type);
+		$this->buildBasicSearchSql($where, $this->jobt4, $arKeywords, $type);
+		$this->buildBasicSearchSql($where, $this->code, $arKeywords, $type);
+		$this->buildBasicSearchSql($where, $this->description, $arKeywords, $type);
+		$this->buildBasicSearchSql($where, $this->asset_dept, $arKeywords, $type);
+		$this->buildBasicSearchSql($where, $this->remarks, $arKeywords, $type);
 		return $where;
 	}
 
@@ -1745,43 +1691,38 @@ class v101_ho_list extends v101_ho
 			$this->CurrentOrderType = Get("ordertype", "");
 			$this->updateSort($this->id, $ctrl); // id
 			$this->updateSort($this->property_id, $ctrl); // property_id
-			$this->updateSort($this->TransactionNo, $ctrl); // TransactionNo
-			$this->updateSort($this->TransactionDate, $ctrl); // TransactionDate
-			$this->updateSort($this->HandedOverTo, $ctrl); // HandedOverTo
-			$this->updateSort($this->DepartmentTo, $ctrl); // DepartmentTo
-			$this->updateSort($this->HandedOverBy, $ctrl); // HandedOverBy
-			$this->updateSort($this->DepartmentBy, $ctrl); // DepartmentBy
-			$this->updateSort($this->Sign1, $ctrl); // Sign1
-			$this->updateSort($this->Sign2, $ctrl); // Sign2
-			$this->updateSort($this->Sign3, $ctrl); // Sign3
-			$this->updateSort($this->Sign4, $ctrl); // Sign4
+			$this->updateSort($this->property, $ctrl); // property
+			$this->updateSort($this->templatefile, $ctrl); // templatefile
+			$this->updateSort($this->transactionno, $ctrl); // transactionno
+			$this->updateSort($this->transactiondate, $ctrl); // transactiondate
+			$this->updateSort($this->handedoverto, $ctrl); // handedoverto
+			$this->updateSort($this->hoto, $ctrl); // hoto
+			$this->updateSort($this->departmentto, $ctrl); // departmentto
+			$this->updateSort($this->deptto, $ctrl); // deptto
+			$this->updateSort($this->handedoverby, $ctrl); // handedoverby
+			$this->updateSort($this->hoby, $ctrl); // hoby
+			$this->updateSort($this->departmentby, $ctrl); // departmentby
+			$this->updateSort($this->deptby, $ctrl); // deptby
+			$this->updateSort($this->sign1, $ctrl); // sign1
+			$this->updateSort($this->signa1, $ctrl); // signa1
+			$this->updateSort($this->jobt1, $ctrl); // jobt1
+			$this->updateSort($this->sign2, $ctrl); // sign2
+			$this->updateSort($this->signa2, $ctrl); // signa2
+			$this->updateSort($this->jobt2, $ctrl); // jobt2
+			$this->updateSort($this->sign3, $ctrl); // sign3
+			$this->updateSort($this->signa3, $ctrl); // signa3
+			$this->updateSort($this->jobt3, $ctrl); // jobt3
+			$this->updateSort($this->sign4, $ctrl); // sign4
+			$this->updateSort($this->signa4, $ctrl); // signa4
+			$this->updateSort($this->jobt4, $ctrl); // jobt4
 			$this->updateSort($this->hodetail_id, $ctrl); // hodetail_id
 			$this->updateSort($this->asset_id, $ctrl); // asset_id
-			$this->updateSort($this->Property, $ctrl); // Property
-			$this->updateSort($this->TemplateFile, $ctrl); // TemplateFile
-			$this->updateSort($this->hoDepartmentTo, $ctrl); // hoDepartmentTo
-			$this->updateSort($this->hoSignatureTo, $ctrl); // hoSignatureTo
-			$this->updateSort($this->hoJobTitleTo, $ctrl); // hoJobTitleTo
-			$this->updateSort($this->hoDepartmentBy, $ctrl); // hoDepartmentBy
-			$this->updateSort($this->hoSignatureBy, $ctrl); // hoSignatureBy
-			$this->updateSort($this->hoJobTitleBy, $ctrl); // hoJobTitleBy
-			$this->updateSort($this->Code, $ctrl); // Code
-			$this->updateSort($this->Description, $ctrl); // Description
-			$this->updateSort($this->Type, $ctrl); // Type
-			$this->updateSort($this->Group, $ctrl); // Group
-			$this->updateSort($this->ProcurementDate, $ctrl); // ProcurementDate
-			$this->updateSort($this->ProcurementCurrentCost, $ctrl); // ProcurementCurrentCost
-			$this->updateSort($this->Estimated_Life_28in_Year29, $ctrl); // Estimated Life (in Year)
-			$this->updateSort($this->Qty, $ctrl); // Qty
-			$this->updateSort($this->Sign1Signature, $ctrl); // Sign1Signature
-			$this->updateSort($this->Sign1JobTitle, $ctrl); // Sign1JobTitle
-			$this->updateSort($this->Sign2Signature, $ctrl); // Sign2Signature
-			$this->updateSort($this->Sign2JobTitle, $ctrl); // Sign2JobTitle
-			$this->updateSort($this->Sign3Signature, $ctrl); // Sign3Signature
-			$this->updateSort($this->Sign3JobTitle, $ctrl); // Sign3JobTitle
-			$this->updateSort($this->Sign4Signature, $ctrl); // Sign4Signature
-			$this->updateSort($this->Sign4JobTitle, $ctrl); // Sign4JobTitle
-			$this->updateSort($this->AssetDepartment, $ctrl); // AssetDepartment
+			$this->updateSort($this->code, $ctrl); // code
+			$this->updateSort($this->description, $ctrl); // description
+			$this->updateSort($this->department_id, $ctrl); // department_id
+			$this->updateSort($this->asset_dept, $ctrl); // asset_dept
+			$this->updateSort($this->procurementdate, $ctrl); // procurementdate
+			$this->updateSort($this->procurementcurrentcost, $ctrl); // procurementcurrentcost
 			$this->setStartRecordNumber(1); // Reset start position
 		}
 	}
@@ -1819,43 +1760,38 @@ class v101_ho_list extends v101_ho
 				$this->setSessionOrderBy($orderBy);
 				$this->id->setSort("");
 				$this->property_id->setSort("");
-				$this->TransactionNo->setSort("");
-				$this->TransactionDate->setSort("");
-				$this->HandedOverTo->setSort("");
-				$this->DepartmentTo->setSort("");
-				$this->HandedOverBy->setSort("");
-				$this->DepartmentBy->setSort("");
-				$this->Sign1->setSort("");
-				$this->Sign2->setSort("");
-				$this->Sign3->setSort("");
-				$this->Sign4->setSort("");
+				$this->property->setSort("");
+				$this->templatefile->setSort("");
+				$this->transactionno->setSort("");
+				$this->transactiondate->setSort("");
+				$this->handedoverto->setSort("");
+				$this->hoto->setSort("");
+				$this->departmentto->setSort("");
+				$this->deptto->setSort("");
+				$this->handedoverby->setSort("");
+				$this->hoby->setSort("");
+				$this->departmentby->setSort("");
+				$this->deptby->setSort("");
+				$this->sign1->setSort("");
+				$this->signa1->setSort("");
+				$this->jobt1->setSort("");
+				$this->sign2->setSort("");
+				$this->signa2->setSort("");
+				$this->jobt2->setSort("");
+				$this->sign3->setSort("");
+				$this->signa3->setSort("");
+				$this->jobt3->setSort("");
+				$this->sign4->setSort("");
+				$this->signa4->setSort("");
+				$this->jobt4->setSort("");
 				$this->hodetail_id->setSort("");
 				$this->asset_id->setSort("");
-				$this->Property->setSort("");
-				$this->TemplateFile->setSort("");
-				$this->hoDepartmentTo->setSort("");
-				$this->hoSignatureTo->setSort("");
-				$this->hoJobTitleTo->setSort("");
-				$this->hoDepartmentBy->setSort("");
-				$this->hoSignatureBy->setSort("");
-				$this->hoJobTitleBy->setSort("");
-				$this->Code->setSort("");
-				$this->Description->setSort("");
-				$this->Type->setSort("");
-				$this->Group->setSort("");
-				$this->ProcurementDate->setSort("");
-				$this->ProcurementCurrentCost->setSort("");
-				$this->Estimated_Life_28in_Year29->setSort("");
-				$this->Qty->setSort("");
-				$this->Sign1Signature->setSort("");
-				$this->Sign1JobTitle->setSort("");
-				$this->Sign2Signature->setSort("");
-				$this->Sign2JobTitle->setSort("");
-				$this->Sign3Signature->setSort("");
-				$this->Sign3JobTitle->setSort("");
-				$this->Sign4Signature->setSort("");
-				$this->Sign4JobTitle->setSort("");
-				$this->AssetDepartment->setSort("");
+				$this->code->setSort("");
+				$this->description->setSort("");
+				$this->department_id->setSort("");
+				$this->asset_dept->setSort("");
+				$this->procurementdate->setSort("");
+				$this->procurementcurrentcost->setSort("");
 			}
 
 			// Reset start position
@@ -1978,10 +1914,10 @@ class v101_ho_list extends v101_ho
 
 		// Filter button
 		$item = &$this->FilterOptions->add("savecurrentfilter");
-		$item->Body = "<a class=\"ew-save-filter\" data-form=\"fv101_holistsrch\" href=\"#\" onclick=\"return false;\">" . $Language->phrase("SaveCurrentFilter") . "</a>";
+		$item->Body = "<a class=\"ew-save-filter\" data-form=\"fv101_ho_2listsrch\" href=\"#\" onclick=\"return false;\">" . $Language->phrase("SaveCurrentFilter") . "</a>";
 		$item->Visible = TRUE;
 		$item = &$this->FilterOptions->add("deletefilter");
-		$item->Body = "<a class=\"ew-delete-filter\" data-form=\"fv101_holistsrch\" href=\"#\" onclick=\"return false;\">" . $Language->phrase("DeleteFilter") . "</a>";
+		$item->Body = "<a class=\"ew-delete-filter\" data-form=\"fv101_ho_2listsrch\" href=\"#\" onclick=\"return false;\">" . $Language->phrase("DeleteFilter") . "</a>";
 		$item->Visible = TRUE;
 		$this->FilterOptions->UseDropDownButton = TRUE;
 		$this->FilterOptions->UseButtonGroup = !$this->FilterOptions->UseDropDownButton;
@@ -2006,7 +1942,7 @@ class v101_ho_list extends v101_ho
 					$item = &$option->add("custom_" . $listaction->Action);
 					$caption = $listaction->Caption;
 					$icon = ($listaction->Icon != "") ? "<i class=\"" . HtmlEncode($listaction->Icon) . "\" data-caption=\"" . HtmlEncode($caption) . "\"></i> " . $caption : $caption;
-					$item->Body = "<a class=\"ew-action ew-list-action\" title=\"" . HtmlEncode($caption) . "\" data-caption=\"" . HtmlEncode($caption) . "\" href=\"#\" onclick=\"return ew.submitAction(event,jQuery.extend({f:document.fv101_holist}," . $listaction->toJson(TRUE) . "));\">" . $icon . "</a>";
+					$item->Body = "<a class=\"ew-action ew-list-action\" title=\"" . HtmlEncode($caption) . "\" data-caption=\"" . HtmlEncode($caption) . "\" href=\"#\" onclick=\"return ew.submitAction(event,jQuery.extend({f:document.fv101_ho_2list}," . $listaction->toJson(TRUE) . "));\">" . $icon . "</a>";
 					$item->Visible = $listaction->Allow;
 				}
 			}
@@ -2186,44 +2122,39 @@ class v101_ho_list extends v101_ho
 			return;
 		$this->id->setDbValue($row['id']);
 		$this->property_id->setDbValue($row['property_id']);
-		$this->TransactionNo->setDbValue($row['TransactionNo']);
-		$this->TransactionDate->setDbValue($row['TransactionDate']);
-		$this->HandedOverTo->setDbValue($row['HandedOverTo']);
-		$this->DepartmentTo->setDbValue($row['DepartmentTo']);
-		$this->HandedOverBy->setDbValue($row['HandedOverBy']);
-		$this->DepartmentBy->setDbValue($row['DepartmentBy']);
-		$this->Sign1->setDbValue($row['Sign1']);
-		$this->Sign2->setDbValue($row['Sign2']);
-		$this->Sign3->setDbValue($row['Sign3']);
-		$this->Sign4->setDbValue($row['Sign4']);
+		$this->property->setDbValue($row['property']);
+		$this->templatefile->setDbValue($row['templatefile']);
+		$this->transactionno->setDbValue($row['transactionno']);
+		$this->transactiondate->setDbValue($row['transactiondate']);
+		$this->handedoverto->setDbValue($row['handedoverto']);
+		$this->hoto->setDbValue($row['hoto']);
+		$this->departmentto->setDbValue($row['departmentto']);
+		$this->deptto->setDbValue($row['deptto']);
+		$this->handedoverby->setDbValue($row['handedoverby']);
+		$this->hoby->setDbValue($row['hoby']);
+		$this->departmentby->setDbValue($row['departmentby']);
+		$this->deptby->setDbValue($row['deptby']);
+		$this->sign1->setDbValue($row['sign1']);
+		$this->signa1->setDbValue($row['signa1']);
+		$this->jobt1->setDbValue($row['jobt1']);
+		$this->sign2->setDbValue($row['sign2']);
+		$this->signa2->setDbValue($row['signa2']);
+		$this->jobt2->setDbValue($row['jobt2']);
+		$this->sign3->setDbValue($row['sign3']);
+		$this->signa3->setDbValue($row['signa3']);
+		$this->jobt3->setDbValue($row['jobt3']);
+		$this->sign4->setDbValue($row['sign4']);
+		$this->signa4->setDbValue($row['signa4']);
+		$this->jobt4->setDbValue($row['jobt4']);
 		$this->hodetail_id->setDbValue($row['hodetail_id']);
 		$this->asset_id->setDbValue($row['asset_id']);
-		$this->Property->setDbValue($row['Property']);
-		$this->TemplateFile->setDbValue($row['TemplateFile']);
-		$this->hoDepartmentTo->setDbValue($row['hoDepartmentTo']);
-		$this->hoSignatureTo->setDbValue($row['hoSignatureTo']);
-		$this->hoJobTitleTo->setDbValue($row['hoJobTitleTo']);
-		$this->hoDepartmentBy->setDbValue($row['hoDepartmentBy']);
-		$this->hoSignatureBy->setDbValue($row['hoSignatureBy']);
-		$this->hoJobTitleBy->setDbValue($row['hoJobTitleBy']);
-		$this->Code->setDbValue($row['Code']);
-		$this->Description->setDbValue($row['Description']);
-		$this->Type->setDbValue($row['Type']);
-		$this->Group->setDbValue($row['Group']);
-		$this->ProcurementDate->setDbValue($row['ProcurementDate']);
-		$this->ProcurementCurrentCost->setDbValue($row['ProcurementCurrentCost']);
-		$this->Estimated_Life_28in_Year29->setDbValue($row['Estimated Life (in Year)']);
-		$this->Qty->setDbValue($row['Qty']);
-		$this->Remarks->setDbValue($row['Remarks']);
-		$this->Sign1Signature->setDbValue($row['Sign1Signature']);
-		$this->Sign1JobTitle->setDbValue($row['Sign1JobTitle']);
-		$this->Sign2Signature->setDbValue($row['Sign2Signature']);
-		$this->Sign2JobTitle->setDbValue($row['Sign2JobTitle']);
-		$this->Sign3Signature->setDbValue($row['Sign3Signature']);
-		$this->Sign3JobTitle->setDbValue($row['Sign3JobTitle']);
-		$this->Sign4Signature->setDbValue($row['Sign4Signature']);
-		$this->Sign4JobTitle->setDbValue($row['Sign4JobTitle']);
-		$this->AssetDepartment->setDbValue($row['AssetDepartment']);
+		$this->code->setDbValue($row['code']);
+		$this->description->setDbValue($row['description']);
+		$this->department_id->setDbValue($row['department_id']);
+		$this->asset_dept->setDbValue($row['asset_dept']);
+		$this->procurementdate->setDbValue($row['procurementdate']);
+		$this->procurementcurrentcost->setDbValue($row['procurementcurrentcost']);
+		$this->remarks->setDbValue($row['remarks']);
 	}
 
 	// Return a row with default values
@@ -2232,44 +2163,39 @@ class v101_ho_list extends v101_ho
 		$row = [];
 		$row['id'] = NULL;
 		$row['property_id'] = NULL;
-		$row['TransactionNo'] = NULL;
-		$row['TransactionDate'] = NULL;
-		$row['HandedOverTo'] = NULL;
-		$row['DepartmentTo'] = NULL;
-		$row['HandedOverBy'] = NULL;
-		$row['DepartmentBy'] = NULL;
-		$row['Sign1'] = NULL;
-		$row['Sign2'] = NULL;
-		$row['Sign3'] = NULL;
-		$row['Sign4'] = NULL;
+		$row['property'] = NULL;
+		$row['templatefile'] = NULL;
+		$row['transactionno'] = NULL;
+		$row['transactiondate'] = NULL;
+		$row['handedoverto'] = NULL;
+		$row['hoto'] = NULL;
+		$row['departmentto'] = NULL;
+		$row['deptto'] = NULL;
+		$row['handedoverby'] = NULL;
+		$row['hoby'] = NULL;
+		$row['departmentby'] = NULL;
+		$row['deptby'] = NULL;
+		$row['sign1'] = NULL;
+		$row['signa1'] = NULL;
+		$row['jobt1'] = NULL;
+		$row['sign2'] = NULL;
+		$row['signa2'] = NULL;
+		$row['jobt2'] = NULL;
+		$row['sign3'] = NULL;
+		$row['signa3'] = NULL;
+		$row['jobt3'] = NULL;
+		$row['sign4'] = NULL;
+		$row['signa4'] = NULL;
+		$row['jobt4'] = NULL;
 		$row['hodetail_id'] = NULL;
 		$row['asset_id'] = NULL;
-		$row['Property'] = NULL;
-		$row['TemplateFile'] = NULL;
-		$row['hoDepartmentTo'] = NULL;
-		$row['hoSignatureTo'] = NULL;
-		$row['hoJobTitleTo'] = NULL;
-		$row['hoDepartmentBy'] = NULL;
-		$row['hoSignatureBy'] = NULL;
-		$row['hoJobTitleBy'] = NULL;
-		$row['Code'] = NULL;
-		$row['Description'] = NULL;
-		$row['Type'] = NULL;
-		$row['Group'] = NULL;
-		$row['ProcurementDate'] = NULL;
-		$row['ProcurementCurrentCost'] = NULL;
-		$row['Estimated Life (in Year)'] = NULL;
-		$row['Qty'] = NULL;
-		$row['Remarks'] = NULL;
-		$row['Sign1Signature'] = NULL;
-		$row['Sign1JobTitle'] = NULL;
-		$row['Sign2Signature'] = NULL;
-		$row['Sign2JobTitle'] = NULL;
-		$row['Sign3Signature'] = NULL;
-		$row['Sign3JobTitle'] = NULL;
-		$row['Sign4Signature'] = NULL;
-		$row['Sign4JobTitle'] = NULL;
-		$row['AssetDepartment'] = NULL;
+		$row['code'] = NULL;
+		$row['description'] = NULL;
+		$row['department_id'] = NULL;
+		$row['asset_dept'] = NULL;
+		$row['procurementdate'] = NULL;
+		$row['procurementcurrentcost'] = NULL;
+		$row['remarks'] = NULL;
 		return $row;
 	}
 
@@ -2314,12 +2240,8 @@ class v101_ho_list extends v101_ho
 		$this->DeleteUrl = $this->getDeleteUrl();
 
 		// Convert decimal values if posted back
-		if ($this->ProcurementCurrentCost->FormValue == $this->ProcurementCurrentCost->CurrentValue && is_numeric(ConvertToFloatString($this->ProcurementCurrentCost->CurrentValue)))
-			$this->ProcurementCurrentCost->CurrentValue = ConvertToFloatString($this->ProcurementCurrentCost->CurrentValue);
-
-		// Convert decimal values if posted back
-		if ($this->Qty->FormValue == $this->Qty->CurrentValue && is_numeric(ConvertToFloatString($this->Qty->CurrentValue)))
-			$this->Qty->CurrentValue = ConvertToFloatString($this->Qty->CurrentValue);
+		if ($this->procurementcurrentcost->FormValue == $this->procurementcurrentcost->CurrentValue && is_numeric(ConvertToFloatString($this->procurementcurrentcost->CurrentValue)))
+			$this->procurementcurrentcost->CurrentValue = ConvertToFloatString($this->procurementcurrentcost->CurrentValue);
 
 		// Call Row_Rendering event
 		$this->Row_Rendering();
@@ -2327,44 +2249,39 @@ class v101_ho_list extends v101_ho
 		// Common render codes for all row types
 		// id
 		// property_id
-		// TransactionNo
-		// TransactionDate
-		// HandedOverTo
-		// DepartmentTo
-		// HandedOverBy
-		// DepartmentBy
-		// Sign1
-		// Sign2
-		// Sign3
-		// Sign4
+		// property
+		// templatefile
+		// transactionno
+		// transactiondate
+		// handedoverto
+		// hoto
+		// departmentto
+		// deptto
+		// handedoverby
+		// hoby
+		// departmentby
+		// deptby
+		// sign1
+		// signa1
+		// jobt1
+		// sign2
+		// signa2
+		// jobt2
+		// sign3
+		// signa3
+		// jobt3
+		// sign4
+		// signa4
+		// jobt4
 		// hodetail_id
 		// asset_id
-		// Property
-		// TemplateFile
-		// hoDepartmentTo
-		// hoSignatureTo
-		// hoJobTitleTo
-		// hoDepartmentBy
-		// hoSignatureBy
-		// hoJobTitleBy
-		// Code
-		// Description
-		// Type
-		// Group
-		// ProcurementDate
-		// ProcurementCurrentCost
-		// Estimated Life (in Year)
-		// Qty
-		// Remarks
-		// Sign1Signature
-		// Sign1JobTitle
-		// Sign2Signature
-		// Sign2JobTitle
-		// Sign3Signature
-		// Sign3JobTitle
-		// Sign4Signature
-		// Sign4JobTitle
-		// AssetDepartment
+		// code
+		// description
+		// department_id
+		// asset_dept
+		// procurementdate
+		// procurementcurrentcost
+		// remarks
 
 		if ($this->RowType == ROWTYPE_VIEW) { // View row
 
@@ -2377,54 +2294,110 @@ class v101_ho_list extends v101_ho
 			$this->property_id->ViewValue = FormatNumber($this->property_id->ViewValue, 0, -2, -2, -2);
 			$this->property_id->ViewCustomAttributes = "";
 
-			// TransactionNo
-			$this->TransactionNo->ViewValue = $this->TransactionNo->CurrentValue;
-			$this->TransactionNo->ViewCustomAttributes = "";
+			// property
+			$this->property->ViewValue = $this->property->CurrentValue;
+			$this->property->ViewCustomAttributes = "";
 
-			// TransactionDate
-			$this->TransactionDate->ViewValue = $this->TransactionDate->CurrentValue;
-			$this->TransactionDate->ViewValue = FormatDateTime($this->TransactionDate->ViewValue, 0);
-			$this->TransactionDate->ViewCustomAttributes = "";
+			// templatefile
+			$this->templatefile->ViewValue = $this->templatefile->CurrentValue;
+			$this->templatefile->ViewCustomAttributes = "";
 
-			// HandedOverTo
-			$this->HandedOverTo->ViewValue = $this->HandedOverTo->CurrentValue;
-			$this->HandedOverTo->ViewValue = FormatNumber($this->HandedOverTo->ViewValue, 0, -2, -2, -2);
-			$this->HandedOverTo->ViewCustomAttributes = "";
+			// transactionno
+			$this->transactionno->ViewValue = $this->transactionno->CurrentValue;
+			$this->transactionno->ViewCustomAttributes = "";
 
-			// DepartmentTo
-			$this->DepartmentTo->ViewValue = $this->DepartmentTo->CurrentValue;
-			$this->DepartmentTo->ViewValue = FormatNumber($this->DepartmentTo->ViewValue, 0, -2, -2, -2);
-			$this->DepartmentTo->ViewCustomAttributes = "";
+			// transactiondate
+			$this->transactiondate->ViewValue = $this->transactiondate->CurrentValue;
+			$this->transactiondate->ViewValue = FormatDateTime($this->transactiondate->ViewValue, 0);
+			$this->transactiondate->ViewCustomAttributes = "";
 
-			// HandedOverBy
-			$this->HandedOverBy->ViewValue = $this->HandedOverBy->CurrentValue;
-			$this->HandedOverBy->ViewValue = FormatNumber($this->HandedOverBy->ViewValue, 0, -2, -2, -2);
-			$this->HandedOverBy->ViewCustomAttributes = "";
+			// handedoverto
+			$this->handedoverto->ViewValue = $this->handedoverto->CurrentValue;
+			$this->handedoverto->ViewValue = FormatNumber($this->handedoverto->ViewValue, 0, -2, -2, -2);
+			$this->handedoverto->ViewCustomAttributes = "";
 
-			// DepartmentBy
-			$this->DepartmentBy->ViewValue = $this->DepartmentBy->CurrentValue;
-			$this->DepartmentBy->ViewValue = FormatNumber($this->DepartmentBy->ViewValue, 0, -2, -2, -2);
-			$this->DepartmentBy->ViewCustomAttributes = "";
+			// hoto
+			$this->hoto->ViewValue = $this->hoto->CurrentValue;
+			$this->hoto->ViewCustomAttributes = "";
 
-			// Sign1
-			$this->Sign1->ViewValue = $this->Sign1->CurrentValue;
-			$this->Sign1->ViewValue = FormatNumber($this->Sign1->ViewValue, 0, -2, -2, -2);
-			$this->Sign1->ViewCustomAttributes = "";
+			// departmentto
+			$this->departmentto->ViewValue = $this->departmentto->CurrentValue;
+			$this->departmentto->ViewValue = FormatNumber($this->departmentto->ViewValue, 0, -2, -2, -2);
+			$this->departmentto->ViewCustomAttributes = "";
 
-			// Sign2
-			$this->Sign2->ViewValue = $this->Sign2->CurrentValue;
-			$this->Sign2->ViewValue = FormatNumber($this->Sign2->ViewValue, 0, -2, -2, -2);
-			$this->Sign2->ViewCustomAttributes = "";
+			// deptto
+			$this->deptto->ViewValue = $this->deptto->CurrentValue;
+			$this->deptto->ViewCustomAttributes = "";
 
-			// Sign3
-			$this->Sign3->ViewValue = $this->Sign3->CurrentValue;
-			$this->Sign3->ViewValue = FormatNumber($this->Sign3->ViewValue, 0, -2, -2, -2);
-			$this->Sign3->ViewCustomAttributes = "";
+			// handedoverby
+			$this->handedoverby->ViewValue = $this->handedoverby->CurrentValue;
+			$this->handedoverby->ViewValue = FormatNumber($this->handedoverby->ViewValue, 0, -2, -2, -2);
+			$this->handedoverby->ViewCustomAttributes = "";
 
-			// Sign4
-			$this->Sign4->ViewValue = $this->Sign4->CurrentValue;
-			$this->Sign4->ViewValue = FormatNumber($this->Sign4->ViewValue, 0, -2, -2, -2);
-			$this->Sign4->ViewCustomAttributes = "";
+			// hoby
+			$this->hoby->ViewValue = $this->hoby->CurrentValue;
+			$this->hoby->ViewCustomAttributes = "";
+
+			// departmentby
+			$this->departmentby->ViewValue = $this->departmentby->CurrentValue;
+			$this->departmentby->ViewValue = FormatNumber($this->departmentby->ViewValue, 0, -2, -2, -2);
+			$this->departmentby->ViewCustomAttributes = "";
+
+			// deptby
+			$this->deptby->ViewValue = $this->deptby->CurrentValue;
+			$this->deptby->ViewCustomAttributes = "";
+
+			// sign1
+			$this->sign1->ViewValue = $this->sign1->CurrentValue;
+			$this->sign1->ViewValue = FormatNumber($this->sign1->ViewValue, 0, -2, -2, -2);
+			$this->sign1->ViewCustomAttributes = "";
+
+			// signa1
+			$this->signa1->ViewValue = $this->signa1->CurrentValue;
+			$this->signa1->ViewCustomAttributes = "";
+
+			// jobt1
+			$this->jobt1->ViewValue = $this->jobt1->CurrentValue;
+			$this->jobt1->ViewCustomAttributes = "";
+
+			// sign2
+			$this->sign2->ViewValue = $this->sign2->CurrentValue;
+			$this->sign2->ViewValue = FormatNumber($this->sign2->ViewValue, 0, -2, -2, -2);
+			$this->sign2->ViewCustomAttributes = "";
+
+			// signa2
+			$this->signa2->ViewValue = $this->signa2->CurrentValue;
+			$this->signa2->ViewCustomAttributes = "";
+
+			// jobt2
+			$this->jobt2->ViewValue = $this->jobt2->CurrentValue;
+			$this->jobt2->ViewCustomAttributes = "";
+
+			// sign3
+			$this->sign3->ViewValue = $this->sign3->CurrentValue;
+			$this->sign3->ViewValue = FormatNumber($this->sign3->ViewValue, 0, -2, -2, -2);
+			$this->sign3->ViewCustomAttributes = "";
+
+			// signa3
+			$this->signa3->ViewValue = $this->signa3->CurrentValue;
+			$this->signa3->ViewCustomAttributes = "";
+
+			// jobt3
+			$this->jobt3->ViewValue = $this->jobt3->CurrentValue;
+			$this->jobt3->ViewCustomAttributes = "";
+
+			// sign4
+			$this->sign4->ViewValue = $this->sign4->CurrentValue;
+			$this->sign4->ViewValue = FormatNumber($this->sign4->ViewValue, 0, -2, -2, -2);
+			$this->sign4->ViewCustomAttributes = "";
+
+			// signa4
+			$this->signa4->ViewValue = $this->signa4->CurrentValue;
+			$this->signa4->ViewCustomAttributes = "";
+
+			// jobt4
+			$this->jobt4->ViewValue = $this->jobt4->CurrentValue;
+			$this->jobt4->ViewCustomAttributes = "";
 
 			// hodetail_id
 			$this->hodetail_id->ViewValue = $this->hodetail_id->CurrentValue;
@@ -2435,109 +2408,32 @@ class v101_ho_list extends v101_ho
 			$this->asset_id->ViewValue = FormatNumber($this->asset_id->ViewValue, 0, -2, -2, -2);
 			$this->asset_id->ViewCustomAttributes = "";
 
-			// Property
-			$this->Property->ViewValue = $this->Property->CurrentValue;
-			$this->Property->ViewCustomAttributes = "";
+			// code
+			$this->code->ViewValue = $this->code->CurrentValue;
+			$this->code->ViewCustomAttributes = "";
 
-			// TemplateFile
-			$this->TemplateFile->ViewValue = $this->TemplateFile->CurrentValue;
-			$this->TemplateFile->ViewCustomAttributes = "";
+			// description
+			$this->description->ViewValue = $this->description->CurrentValue;
+			$this->description->ViewCustomAttributes = "";
 
-			// hoDepartmentTo
-			$this->hoDepartmentTo->ViewValue = $this->hoDepartmentTo->CurrentValue;
-			$this->hoDepartmentTo->ViewCustomAttributes = "";
+			// department_id
+			$this->department_id->ViewValue = $this->department_id->CurrentValue;
+			$this->department_id->ViewValue = FormatNumber($this->department_id->ViewValue, 0, -2, -2, -2);
+			$this->department_id->ViewCustomAttributes = "";
 
-			// hoSignatureTo
-			$this->hoSignatureTo->ViewValue = $this->hoSignatureTo->CurrentValue;
-			$this->hoSignatureTo->ViewCustomAttributes = "";
+			// asset_dept
+			$this->asset_dept->ViewValue = $this->asset_dept->CurrentValue;
+			$this->asset_dept->ViewCustomAttributes = "";
 
-			// hoJobTitleTo
-			$this->hoJobTitleTo->ViewValue = $this->hoJobTitleTo->CurrentValue;
-			$this->hoJobTitleTo->ViewCustomAttributes = "";
+			// procurementdate
+			$this->procurementdate->ViewValue = $this->procurementdate->CurrentValue;
+			$this->procurementdate->ViewValue = FormatDateTime($this->procurementdate->ViewValue, 0);
+			$this->procurementdate->ViewCustomAttributes = "";
 
-			// hoDepartmentBy
-			$this->hoDepartmentBy->ViewValue = $this->hoDepartmentBy->CurrentValue;
-			$this->hoDepartmentBy->ViewCustomAttributes = "";
-
-			// hoSignatureBy
-			$this->hoSignatureBy->ViewValue = $this->hoSignatureBy->CurrentValue;
-			$this->hoSignatureBy->ViewCustomAttributes = "";
-
-			// hoJobTitleBy
-			$this->hoJobTitleBy->ViewValue = $this->hoJobTitleBy->CurrentValue;
-			$this->hoJobTitleBy->ViewCustomAttributes = "";
-
-			// Code
-			$this->Code->ViewValue = $this->Code->CurrentValue;
-			$this->Code->ViewCustomAttributes = "";
-
-			// Description
-			$this->Description->ViewValue = $this->Description->CurrentValue;
-			$this->Description->ViewCustomAttributes = "";
-
-			// Type
-			$this->Type->ViewValue = $this->Type->CurrentValue;
-			$this->Type->ViewCustomAttributes = "";
-
-			// Group
-			$this->Group->ViewValue = $this->Group->CurrentValue;
-			$this->Group->ViewCustomAttributes = "";
-
-			// ProcurementDate
-			$this->ProcurementDate->ViewValue = $this->ProcurementDate->CurrentValue;
-			$this->ProcurementDate->ViewValue = FormatDateTime($this->ProcurementDate->ViewValue, 0);
-			$this->ProcurementDate->ViewCustomAttributes = "";
-
-			// ProcurementCurrentCost
-			$this->ProcurementCurrentCost->ViewValue = $this->ProcurementCurrentCost->CurrentValue;
-			$this->ProcurementCurrentCost->ViewValue = FormatNumber($this->ProcurementCurrentCost->ViewValue, 2, -2, -2, -2);
-			$this->ProcurementCurrentCost->ViewCustomAttributes = "";
-
-			// Estimated Life (in Year)
-			$this->Estimated_Life_28in_Year29->ViewValue = $this->Estimated_Life_28in_Year29->CurrentValue;
-			$this->Estimated_Life_28in_Year29->ViewValue = FormatNumber($this->Estimated_Life_28in_Year29->ViewValue, 0, -2, -2, -2);
-			$this->Estimated_Life_28in_Year29->ViewCustomAttributes = "";
-
-			// Qty
-			$this->Qty->ViewValue = $this->Qty->CurrentValue;
-			$this->Qty->ViewValue = FormatNumber($this->Qty->ViewValue, 2, -2, -2, -2);
-			$this->Qty->ViewCustomAttributes = "";
-
-			// Sign1Signature
-			$this->Sign1Signature->ViewValue = $this->Sign1Signature->CurrentValue;
-			$this->Sign1Signature->ViewCustomAttributes = "";
-
-			// Sign1JobTitle
-			$this->Sign1JobTitle->ViewValue = $this->Sign1JobTitle->CurrentValue;
-			$this->Sign1JobTitle->ViewCustomAttributes = "";
-
-			// Sign2Signature
-			$this->Sign2Signature->ViewValue = $this->Sign2Signature->CurrentValue;
-			$this->Sign2Signature->ViewCustomAttributes = "";
-
-			// Sign2JobTitle
-			$this->Sign2JobTitle->ViewValue = $this->Sign2JobTitle->CurrentValue;
-			$this->Sign2JobTitle->ViewCustomAttributes = "";
-
-			// Sign3Signature
-			$this->Sign3Signature->ViewValue = $this->Sign3Signature->CurrentValue;
-			$this->Sign3Signature->ViewCustomAttributes = "";
-
-			// Sign3JobTitle
-			$this->Sign3JobTitle->ViewValue = $this->Sign3JobTitle->CurrentValue;
-			$this->Sign3JobTitle->ViewCustomAttributes = "";
-
-			// Sign4Signature
-			$this->Sign4Signature->ViewValue = $this->Sign4Signature->CurrentValue;
-			$this->Sign4Signature->ViewCustomAttributes = "";
-
-			// Sign4JobTitle
-			$this->Sign4JobTitle->ViewValue = $this->Sign4JobTitle->CurrentValue;
-			$this->Sign4JobTitle->ViewCustomAttributes = "";
-
-			// AssetDepartment
-			$this->AssetDepartment->ViewValue = $this->AssetDepartment->CurrentValue;
-			$this->AssetDepartment->ViewCustomAttributes = "";
+			// procurementcurrentcost
+			$this->procurementcurrentcost->ViewValue = $this->procurementcurrentcost->CurrentValue;
+			$this->procurementcurrentcost->ViewValue = FormatNumber($this->procurementcurrentcost->ViewValue, 2, -2, -2, -2);
+			$this->procurementcurrentcost->ViewCustomAttributes = "";
 
 			// id
 			$this->id->LinkCustomAttributes = "";
@@ -2549,55 +2445,125 @@ class v101_ho_list extends v101_ho
 			$this->property_id->HrefValue = "";
 			$this->property_id->TooltipValue = "";
 
-			// TransactionNo
-			$this->TransactionNo->LinkCustomAttributes = "";
-			$this->TransactionNo->HrefValue = "";
-			$this->TransactionNo->TooltipValue = "";
+			// property
+			$this->property->LinkCustomAttributes = "";
+			$this->property->HrefValue = "";
+			$this->property->TooltipValue = "";
 
-			// TransactionDate
-			$this->TransactionDate->LinkCustomAttributes = "";
-			$this->TransactionDate->HrefValue = "";
-			$this->TransactionDate->TooltipValue = "";
+			// templatefile
+			$this->templatefile->LinkCustomAttributes = "";
+			$this->templatefile->HrefValue = "";
+			$this->templatefile->TooltipValue = "";
 
-			// HandedOverTo
-			$this->HandedOverTo->LinkCustomAttributes = "";
-			$this->HandedOverTo->HrefValue = "";
-			$this->HandedOverTo->TooltipValue = "";
+			// transactionno
+			$this->transactionno->LinkCustomAttributes = "";
+			$this->transactionno->HrefValue = "";
+			$this->transactionno->TooltipValue = "";
 
-			// DepartmentTo
-			$this->DepartmentTo->LinkCustomAttributes = "";
-			$this->DepartmentTo->HrefValue = "";
-			$this->DepartmentTo->TooltipValue = "";
+			// transactiondate
+			$this->transactiondate->LinkCustomAttributes = "";
+			$this->transactiondate->HrefValue = "";
+			$this->transactiondate->TooltipValue = "";
 
-			// HandedOverBy
-			$this->HandedOverBy->LinkCustomAttributes = "";
-			$this->HandedOverBy->HrefValue = "";
-			$this->HandedOverBy->TooltipValue = "";
+			// handedoverto
+			$this->handedoverto->LinkCustomAttributes = "";
+			$this->handedoverto->HrefValue = "";
+			$this->handedoverto->TooltipValue = "";
 
-			// DepartmentBy
-			$this->DepartmentBy->LinkCustomAttributes = "";
-			$this->DepartmentBy->HrefValue = "";
-			$this->DepartmentBy->TooltipValue = "";
+			// hoto
+			$this->hoto->LinkCustomAttributes = "";
+			$this->hoto->HrefValue = "";
+			$this->hoto->TooltipValue = "";
 
-			// Sign1
-			$this->Sign1->LinkCustomAttributes = "";
-			$this->Sign1->HrefValue = "";
-			$this->Sign1->TooltipValue = "";
+			// departmentto
+			$this->departmentto->LinkCustomAttributes = "";
+			$this->departmentto->HrefValue = "";
+			$this->departmentto->TooltipValue = "";
 
-			// Sign2
-			$this->Sign2->LinkCustomAttributes = "";
-			$this->Sign2->HrefValue = "";
-			$this->Sign2->TooltipValue = "";
+			// deptto
+			$this->deptto->LinkCustomAttributes = "";
+			$this->deptto->HrefValue = "";
+			$this->deptto->TooltipValue = "";
 
-			// Sign3
-			$this->Sign3->LinkCustomAttributes = "";
-			$this->Sign3->HrefValue = "";
-			$this->Sign3->TooltipValue = "";
+			// handedoverby
+			$this->handedoverby->LinkCustomAttributes = "";
+			$this->handedoverby->HrefValue = "";
+			$this->handedoverby->TooltipValue = "";
 
-			// Sign4
-			$this->Sign4->LinkCustomAttributes = "";
-			$this->Sign4->HrefValue = "";
-			$this->Sign4->TooltipValue = "";
+			// hoby
+			$this->hoby->LinkCustomAttributes = "";
+			$this->hoby->HrefValue = "";
+			$this->hoby->TooltipValue = "";
+
+			// departmentby
+			$this->departmentby->LinkCustomAttributes = "";
+			$this->departmentby->HrefValue = "";
+			$this->departmentby->TooltipValue = "";
+
+			// deptby
+			$this->deptby->LinkCustomAttributes = "";
+			$this->deptby->HrefValue = "";
+			$this->deptby->TooltipValue = "";
+
+			// sign1
+			$this->sign1->LinkCustomAttributes = "";
+			$this->sign1->HrefValue = "";
+			$this->sign1->TooltipValue = "";
+
+			// signa1
+			$this->signa1->LinkCustomAttributes = "";
+			$this->signa1->HrefValue = "";
+			$this->signa1->TooltipValue = "";
+
+			// jobt1
+			$this->jobt1->LinkCustomAttributes = "";
+			$this->jobt1->HrefValue = "";
+			$this->jobt1->TooltipValue = "";
+
+			// sign2
+			$this->sign2->LinkCustomAttributes = "";
+			$this->sign2->HrefValue = "";
+			$this->sign2->TooltipValue = "";
+
+			// signa2
+			$this->signa2->LinkCustomAttributes = "";
+			$this->signa2->HrefValue = "";
+			$this->signa2->TooltipValue = "";
+
+			// jobt2
+			$this->jobt2->LinkCustomAttributes = "";
+			$this->jobt2->HrefValue = "";
+			$this->jobt2->TooltipValue = "";
+
+			// sign3
+			$this->sign3->LinkCustomAttributes = "";
+			$this->sign3->HrefValue = "";
+			$this->sign3->TooltipValue = "";
+
+			// signa3
+			$this->signa3->LinkCustomAttributes = "";
+			$this->signa3->HrefValue = "";
+			$this->signa3->TooltipValue = "";
+
+			// jobt3
+			$this->jobt3->LinkCustomAttributes = "";
+			$this->jobt3->HrefValue = "";
+			$this->jobt3->TooltipValue = "";
+
+			// sign4
+			$this->sign4->LinkCustomAttributes = "";
+			$this->sign4->HrefValue = "";
+			$this->sign4->TooltipValue = "";
+
+			// signa4
+			$this->signa4->LinkCustomAttributes = "";
+			$this->signa4->HrefValue = "";
+			$this->signa4->TooltipValue = "";
+
+			// jobt4
+			$this->jobt4->LinkCustomAttributes = "";
+			$this->jobt4->HrefValue = "";
+			$this->jobt4->TooltipValue = "";
 
 			// hodetail_id
 			$this->hodetail_id->LinkCustomAttributes = "";
@@ -2609,130 +2575,35 @@ class v101_ho_list extends v101_ho
 			$this->asset_id->HrefValue = "";
 			$this->asset_id->TooltipValue = "";
 
-			// Property
-			$this->Property->LinkCustomAttributes = "";
-			$this->Property->HrefValue = "";
-			$this->Property->TooltipValue = "";
+			// code
+			$this->code->LinkCustomAttributes = "";
+			$this->code->HrefValue = "";
+			$this->code->TooltipValue = "";
 
-			// TemplateFile
-			$this->TemplateFile->LinkCustomAttributes = "";
-			$this->TemplateFile->HrefValue = "";
-			$this->TemplateFile->TooltipValue = "";
+			// description
+			$this->description->LinkCustomAttributes = "";
+			$this->description->HrefValue = "";
+			$this->description->TooltipValue = "";
 
-			// hoDepartmentTo
-			$this->hoDepartmentTo->LinkCustomAttributes = "";
-			$this->hoDepartmentTo->HrefValue = "";
-			$this->hoDepartmentTo->TooltipValue = "";
+			// department_id
+			$this->department_id->LinkCustomAttributes = "";
+			$this->department_id->HrefValue = "";
+			$this->department_id->TooltipValue = "";
 
-			// hoSignatureTo
-			$this->hoSignatureTo->LinkCustomAttributes = "";
-			$this->hoSignatureTo->HrefValue = "";
-			$this->hoSignatureTo->TooltipValue = "";
+			// asset_dept
+			$this->asset_dept->LinkCustomAttributes = "";
+			$this->asset_dept->HrefValue = "";
+			$this->asset_dept->TooltipValue = "";
 
-			// hoJobTitleTo
-			$this->hoJobTitleTo->LinkCustomAttributes = "";
-			$this->hoJobTitleTo->HrefValue = "";
-			$this->hoJobTitleTo->TooltipValue = "";
+			// procurementdate
+			$this->procurementdate->LinkCustomAttributes = "";
+			$this->procurementdate->HrefValue = "";
+			$this->procurementdate->TooltipValue = "";
 
-			// hoDepartmentBy
-			$this->hoDepartmentBy->LinkCustomAttributes = "";
-			$this->hoDepartmentBy->HrefValue = "";
-			$this->hoDepartmentBy->TooltipValue = "";
-
-			// hoSignatureBy
-			$this->hoSignatureBy->LinkCustomAttributes = "";
-			$this->hoSignatureBy->HrefValue = "";
-			$this->hoSignatureBy->TooltipValue = "";
-
-			// hoJobTitleBy
-			$this->hoJobTitleBy->LinkCustomAttributes = "";
-			$this->hoJobTitleBy->HrefValue = "";
-			$this->hoJobTitleBy->TooltipValue = "";
-
-			// Code
-			$this->Code->LinkCustomAttributes = "";
-			$this->Code->HrefValue = "";
-			$this->Code->TooltipValue = "";
-
-			// Description
-			$this->Description->LinkCustomAttributes = "";
-			$this->Description->HrefValue = "";
-			$this->Description->TooltipValue = "";
-
-			// Type
-			$this->Type->LinkCustomAttributes = "";
-			$this->Type->HrefValue = "";
-			$this->Type->TooltipValue = "";
-
-			// Group
-			$this->Group->LinkCustomAttributes = "";
-			$this->Group->HrefValue = "";
-			$this->Group->TooltipValue = "";
-
-			// ProcurementDate
-			$this->ProcurementDate->LinkCustomAttributes = "";
-			$this->ProcurementDate->HrefValue = "";
-			$this->ProcurementDate->TooltipValue = "";
-
-			// ProcurementCurrentCost
-			$this->ProcurementCurrentCost->LinkCustomAttributes = "";
-			$this->ProcurementCurrentCost->HrefValue = "";
-			$this->ProcurementCurrentCost->TooltipValue = "";
-
-			// Estimated Life (in Year)
-			$this->Estimated_Life_28in_Year29->LinkCustomAttributes = "";
-			$this->Estimated_Life_28in_Year29->HrefValue = "";
-			$this->Estimated_Life_28in_Year29->TooltipValue = "";
-
-			// Qty
-			$this->Qty->LinkCustomAttributes = "";
-			$this->Qty->HrefValue = "";
-			$this->Qty->TooltipValue = "";
-
-			// Sign1Signature
-			$this->Sign1Signature->LinkCustomAttributes = "";
-			$this->Sign1Signature->HrefValue = "";
-			$this->Sign1Signature->TooltipValue = "";
-
-			// Sign1JobTitle
-			$this->Sign1JobTitle->LinkCustomAttributes = "";
-			$this->Sign1JobTitle->HrefValue = "";
-			$this->Sign1JobTitle->TooltipValue = "";
-
-			// Sign2Signature
-			$this->Sign2Signature->LinkCustomAttributes = "";
-			$this->Sign2Signature->HrefValue = "";
-			$this->Sign2Signature->TooltipValue = "";
-
-			// Sign2JobTitle
-			$this->Sign2JobTitle->LinkCustomAttributes = "";
-			$this->Sign2JobTitle->HrefValue = "";
-			$this->Sign2JobTitle->TooltipValue = "";
-
-			// Sign3Signature
-			$this->Sign3Signature->LinkCustomAttributes = "";
-			$this->Sign3Signature->HrefValue = "";
-			$this->Sign3Signature->TooltipValue = "";
-
-			// Sign3JobTitle
-			$this->Sign3JobTitle->LinkCustomAttributes = "";
-			$this->Sign3JobTitle->HrefValue = "";
-			$this->Sign3JobTitle->TooltipValue = "";
-
-			// Sign4Signature
-			$this->Sign4Signature->LinkCustomAttributes = "";
-			$this->Sign4Signature->HrefValue = "";
-			$this->Sign4Signature->TooltipValue = "";
-
-			// Sign4JobTitle
-			$this->Sign4JobTitle->LinkCustomAttributes = "";
-			$this->Sign4JobTitle->HrefValue = "";
-			$this->Sign4JobTitle->TooltipValue = "";
-
-			// AssetDepartment
-			$this->AssetDepartment->LinkCustomAttributes = "";
-			$this->AssetDepartment->HrefValue = "";
-			$this->AssetDepartment->TooltipValue = "";
+			// procurementcurrentcost
+			$this->procurementcurrentcost->LinkCustomAttributes = "";
+			$this->procurementcurrentcost->HrefValue = "";
+			$this->procurementcurrentcost->TooltipValue = "";
 		}
 
 		// Call Row Rendered event
@@ -2746,17 +2617,17 @@ class v101_ho_list extends v101_ho
 		global $Language;
 		if (SameText($type, "excel")) {
 			if ($custom)
-				return "<a href=\"#\" class=\"ew-export-link ew-excel\" title=\"" . HtmlEncode($Language->phrase("ExportToExcelText")) . "\" data-caption=\"" . HtmlEncode($Language->phrase("ExportToExcelText")) . "\" onclick=\"return ew.export(document.fv101_holist, '" . $this->ExportExcelUrl . "', 'excel', true);\">" . $Language->phrase("ExportToExcel") . "</a>";
+				return "<a href=\"#\" class=\"ew-export-link ew-excel\" title=\"" . HtmlEncode($Language->phrase("ExportToExcelText")) . "\" data-caption=\"" . HtmlEncode($Language->phrase("ExportToExcelText")) . "\" onclick=\"return ew.export(document.fv101_ho_2list, '" . $this->ExportExcelUrl . "', 'excel', true);\">" . $Language->phrase("ExportToExcel") . "</a>";
 			else
 				return "<a href=\"" . $this->ExportExcelUrl . "\" class=\"ew-export-link ew-excel\" title=\"" . HtmlEncode($Language->phrase("ExportToExcelText")) . "\" data-caption=\"" . HtmlEncode($Language->phrase("ExportToExcelText")) . "\">" . $Language->phrase("ExportToExcel") . "</a>";
 		} elseif (SameText($type, "word")) {
 			if ($custom)
-				return "<a href=\"#\" class=\"ew-export-link ew-word\" title=\"" . HtmlEncode($Language->phrase("ExportToWordText")) . "\" data-caption=\"" . HtmlEncode($Language->phrase("ExportToWordText")) . "\" onclick=\"return ew.export(document.fv101_holist, '" . $this->ExportWordUrl . "', 'word', true);\">" . $Language->phrase("ExportToWord") . "</a>";
+				return "<a href=\"#\" class=\"ew-export-link ew-word\" title=\"" . HtmlEncode($Language->phrase("ExportToWordText")) . "\" data-caption=\"" . HtmlEncode($Language->phrase("ExportToWordText")) . "\" onclick=\"return ew.export(document.fv101_ho_2list, '" . $this->ExportWordUrl . "', 'word', true);\">" . $Language->phrase("ExportToWord") . "</a>";
 			else
 				return "<a href=\"" . $this->ExportWordUrl . "\" class=\"ew-export-link ew-word\" title=\"" . HtmlEncode($Language->phrase("ExportToWordText")) . "\" data-caption=\"" . HtmlEncode($Language->phrase("ExportToWordText")) . "\">" . $Language->phrase("ExportToWord") . "</a>";
 		} elseif (SameText($type, "pdf")) {
 			if ($custom)
-				return "<a href=\"#\" class=\"ew-export-link ew-pdf\" title=\"" . HtmlEncode($Language->phrase("ExportToPDFText")) . "\" data-caption=\"" . HtmlEncode($Language->phrase("ExportToPDFText")) . "\" onclick=\"return ew.export(document.fv101_holist, '" . $this->ExportPdfUrl . "', 'pdf', true);\">" . $Language->phrase("ExportToPDF") . "</a>";
+				return "<a href=\"#\" class=\"ew-export-link ew-pdf\" title=\"" . HtmlEncode($Language->phrase("ExportToPDFText")) . "\" data-caption=\"" . HtmlEncode($Language->phrase("ExportToPDFText")) . "\" onclick=\"return ew.export(document.fv101_ho_2list, '" . $this->ExportPdfUrl . "', 'pdf', true);\">" . $Language->phrase("ExportToPDF") . "</a>";
 			else
 				return "<a href=\"" . $this->ExportPdfUrl . "\" class=\"ew-export-link ew-pdf\" title=\"" . HtmlEncode($Language->phrase("ExportToPDFText")) . "\" data-caption=\"" . HtmlEncode($Language->phrase("ExportToPDFText")) . "\">" . $Language->phrase("ExportToPDF") . "</a>";
 		} elseif (SameText($type, "html")) {
@@ -2767,7 +2638,7 @@ class v101_ho_list extends v101_ho
 			return "<a href=\"" . $this->ExportCsvUrl . "\" class=\"ew-export-link ew-csv\" title=\"" . HtmlEncode($Language->phrase("ExportToCsvText")) . "\" data-caption=\"" . HtmlEncode($Language->phrase("ExportToCsvText")) . "\">" . $Language->phrase("ExportToCsv") . "</a>";
 		} elseif (SameText($type, "email")) {
 			$url = $custom ? ",url:'" . $this->pageUrl() . "export=email&amp;custom=1'" : "";
-			return '<button id="emf_v101_ho" class="ew-export-link ew-email" title="' . $Language->phrase("ExportToEmailText") . '" data-caption="' . $Language->phrase("ExportToEmailText") . '" onclick="ew.emailDialogShow({lnk:\'emf_v101_ho\', hdr:ew.language.phrase(\'ExportToEmailText\'), f:document.fv101_holist, sel:false' . $url . '});">' . $Language->phrase("ExportToEmail") . '</button>';
+			return '<button id="emf_v101_ho_2" class="ew-export-link ew-email" title="' . $Language->phrase("ExportToEmailText") . '" data-caption="' . $Language->phrase("ExportToEmailText") . '" onclick="ew.emailDialogShow({lnk:\'emf_v101_ho_2\', hdr:ew.language.phrase(\'ExportToEmailText\'), f:document.fv101_ho_2list, sel:false' . $url . '});">' . $Language->phrase("ExportToEmail") . '</button>';
 		} elseif (SameText($type, "print")) {
 			return "<a href=\"" . $this->ExportPrintUrl . "\" class=\"ew-export-link ew-print\" title=\"" . HtmlEncode($Language->phrase("PrinterFriendlyText")) . "\" data-caption=\"" . HtmlEncode($Language->phrase("PrinterFriendlyText")) . "\">" . $Language->phrase("PrinterFriendly") . "</a>";
 		}
@@ -2841,7 +2712,7 @@ class v101_ho_list extends v101_ho
 		// Search button
 		$item = &$this->SearchOptions->add("searchtoggle");
 		$searchToggleClass = ($this->SearchWhere != "") ? " active" : " active";
-		$item->Body = "<a class=\"btn btn-default ew-search-toggle" . $searchToggleClass . "\" href=\"#\" role=\"button\" title=\"" . $Language->phrase("SearchPanel") . "\" data-caption=\"" . $Language->phrase("SearchPanel") . "\" data-toggle=\"button\" data-form=\"fv101_holistsrch\" aria-pressed=\"" . ($searchToggleClass == " active" ? "true" : "false") . "\">" . $Language->phrase("SearchLink") . "</a>";
+		$item->Body = "<a class=\"btn btn-default ew-search-toggle" . $searchToggleClass . "\" href=\"#\" role=\"button\" title=\"" . $Language->phrase("SearchPanel") . "\" data-caption=\"" . $Language->phrase("SearchPanel") . "\" data-toggle=\"button\" data-form=\"fv101_ho_2listsrch\" aria-pressed=\"" . ($searchToggleClass == " active" ? "true" : "false") . "\">" . $Language->phrase("SearchLink") . "</a>";
 		$item->Visible = TRUE;
 
 		// Show all button
