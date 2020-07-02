@@ -94,7 +94,7 @@ class t102_ho_detail extends DbTable
 		$this->asset_id->Sortable = TRUE; // Allow sort
 		$this->asset_id->UsePleaseSelect = TRUE; // Use PleaseSelect by default
 		$this->asset_id->PleaseSelectText = $Language->phrase("PleaseSelect"); // "PleaseSelect" text
-		$this->asset_id->Lookup = new Lookup('asset_id', 't004_asset', FALSE, 'id', ["Description","","",""], [], [], [], [], [], [], '', '');
+		$this->asset_id->Lookup = new Lookup('asset_id', 't004_asset', FALSE, 'id', ["Code","Description","",""], [], [], [], [], [], [], '', '');
 		$this->asset_id->DefaultErrorMessage = $Language->phrase("IncorrectInteger");
 		$this->fields['asset_id'] = &$this->asset_id;
 	}
@@ -803,6 +803,7 @@ class t102_ho_detail extends DbTable
 				if ($rswrk && !$rswrk->EOF) { // Lookup values found
 					$arwrk = [];
 					$arwrk[1] = $rswrk->fields('df');
+					$arwrk[2] = $rswrk->fields('df2');
 					$this->asset_id->ViewValue = $this->asset_id->displayValue($arwrk);
 					$rswrk->Close();
 				} else {

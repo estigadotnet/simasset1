@@ -868,6 +868,7 @@ class t102_ho_detail_search extends t102_ho_detail
 					if ($rswrk && !$rswrk->EOF) { // Lookup values found
 						$arwrk = [];
 						$arwrk[1] = $rswrk->fields('df');
+						$arwrk[2] = $rswrk->fields('df2');
 						$this->asset_id->ViewValue = $this->asset_id->displayValue($arwrk);
 						$rswrk->Close();
 					} else {
@@ -907,6 +908,7 @@ class t102_ho_detail_search extends t102_ho_detail
 				if ($rswrk && !$rswrk->EOF) { // Lookup values found
 					$arwrk = [];
 					$arwrk[1] = HtmlEncode($rswrk->fields('df'));
+					$arwrk[2] = HtmlEncode($rswrk->fields('df2'));
 					$this->asset_id->AdvancedSearch->ViewValue = $this->asset_id->displayValue($arwrk);
 				} else {
 					$this->asset_id->AdvancedSearch->ViewValue = $Language->phrase("PleaseSelect");
