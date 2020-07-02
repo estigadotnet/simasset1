@@ -70,7 +70,7 @@ $d301_home_dashboard->showMessage();
 		</div>
 		<div id="collapseOne" class="collapse show" aria-labelledby="headingOne" data-parent="#accordion">
 			<div class="card-body">
-<?php include_once "r001_assetsmry.php"; ?>
+<?php include_once "r004_assetglobalsmry.php"; ?>
 </div>
 		</div>
 	</div>

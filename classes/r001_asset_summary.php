@@ -714,15 +714,21 @@ class r001_asset_summary extends r001_asset
 		if (!$this->isExport())
 			$this->setupBreadcrumb();
 
+		// Check if search command
+		$this->SearchCommand = (Get("cmd", "") == "search");
+
 		// Load custom filters
 		$this->Page_FilterLoad();
 
 		// Extended filter
 		$extendedFilter = "";
 
-		// No filter
-		$this->FilterOptions["savecurrentfilter"]->Visible = FALSE;
-		$this->FilterOptions["deletefilter"]->Visible = FALSE;
+		// Restore filter list
+		$this->restoreFilterList();
+
+		// Build extended filter
+		$extendedFilter = $this->getExtendedFilter();
+		AddFilter($this->SearchWhere, $extendedFilter);
 
 		// Call Page Selecting event
 		$this->Page_Selecting($this->SearchWhere);
@@ -928,6 +934,234 @@ class r001_asset_summary extends r001_asset
 		// PeriodEnd
 
 		if ($this->RowType == ROWTYPE_SEARCH) { // Search row
+
+			// property_id
+			$this->property_id->EditAttrs["class"] = "form-control";
+			$this->property_id->EditCustomAttributes = "";
+			$this->property_id->EditValue = HtmlEncode($this->property_id->AdvancedSearch->SearchValue);
+			$curVal = strval($this->property_id->AdvancedSearch->SearchValue);
+			if ($curVal != "") {
+				$this->property_id->EditValue = $this->property_id->lookupCacheOption($curVal);
+				if ($this->property_id->EditValue === NULL) { // Lookup from database
+					$filterWrk = "`id`" . SearchString("=", $curVal, DATATYPE_NUMBER, "");
+					$sqlWrk = $this->property_id->Lookup->getSql(FALSE, $filterWrk, '', $this);
+					$rswrk = Conn()->execute($sqlWrk);
+					if ($rswrk && !$rswrk->EOF) { // Lookup values found
+						$arwrk = [];
+						$arwrk[1] = HtmlEncode($rswrk->fields('df'));
+						$this->property_id->EditValue = $this->property_id->displayValue($arwrk);
+						$rswrk->Close();
+					} else {
+						$this->property_id->EditValue = HtmlEncode($this->property_id->AdvancedSearch->SearchValue);
+					}
+				}
+			} else {
+				$this->property_id->EditValue = NULL;
+			}
+			$this->property_id->PlaceHolder = RemoveHtml($this->property_id->caption());
+
+			// group_id
+			$this->group_id->EditAttrs["class"] = "form-control";
+			$this->group_id->EditCustomAttributes = "";
+			$this->group_id->EditValue = HtmlEncode($this->group_id->AdvancedSearch->SearchValue);
+			$curVal = strval($this->group_id->AdvancedSearch->SearchValue);
+			if ($curVal != "") {
+				$this->group_id->EditValue = $this->group_id->lookupCacheOption($curVal);
+				if ($this->group_id->EditValue === NULL) { // Lookup from database
+					$filterWrk = "`id`" . SearchString("=", $curVal, DATATYPE_NUMBER, "");
+					$sqlWrk = $this->group_id->Lookup->getSql(FALSE, $filterWrk, '', $this);
+					$rswrk = Conn()->execute($sqlWrk);
+					if ($rswrk && !$rswrk->EOF) { // Lookup values found
+						$arwrk = [];
+						$arwrk[1] = HtmlEncode($rswrk->fields('df'));
+						$this->group_id->EditValue = $this->group_id->displayValue($arwrk);
+						$rswrk->Close();
+					} else {
+						$this->group_id->EditValue = HtmlEncode($this->group_id->AdvancedSearch->SearchValue);
+					}
+				}
+			} else {
+				$this->group_id->EditValue = NULL;
+			}
+			$this->group_id->PlaceHolder = RemoveHtml($this->group_id->caption());
+
+			// Code
+			$this->Code->EditAttrs["class"] = "form-control";
+			$this->Code->EditCustomAttributes = "";
+			if (!$this->Code->Raw)
+				$this->Code->AdvancedSearch->SearchValue = HtmlDecode($this->Code->AdvancedSearch->SearchValue);
+			$this->Code->EditValue = HtmlEncode($this->Code->AdvancedSearch->SearchValue);
+			$this->Code->PlaceHolder = RemoveHtml($this->Code->caption());
+
+			// Description
+			$this->Description->EditAttrs["class"] = "form-control";
+			$this->Description->EditCustomAttributes = "";
+			if (!$this->Description->Raw)
+				$this->Description->AdvancedSearch->SearchValue = HtmlDecode($this->Description->AdvancedSearch->SearchValue);
+			$this->Description->EditValue = HtmlEncode($this->Description->AdvancedSearch->SearchValue);
+			$this->Description->PlaceHolder = RemoveHtml($this->Description->caption());
+
+			// brand_id
+			$this->brand_id->EditAttrs["class"] = "form-control";
+			$this->brand_id->EditCustomAttributes = "";
+			$this->brand_id->EditValue = HtmlEncode($this->brand_id->AdvancedSearch->SearchValue);
+			$curVal = strval($this->brand_id->AdvancedSearch->SearchValue);
+			if ($curVal != "") {
+				$this->brand_id->EditValue = $this->brand_id->lookupCacheOption($curVal);
+				if ($this->brand_id->EditValue === NULL) { // Lookup from database
+					$filterWrk = "`id`" . SearchString("=", $curVal, DATATYPE_NUMBER, "");
+					$sqlWrk = $this->brand_id->Lookup->getSql(FALSE, $filterWrk, '', $this);
+					$rswrk = Conn()->execute($sqlWrk);
+					if ($rswrk && !$rswrk->EOF) { // Lookup values found
+						$arwrk = [];
+						$arwrk[1] = HtmlEncode($rswrk->fields('df'));
+						$this->brand_id->EditValue = $this->brand_id->displayValue($arwrk);
+						$rswrk->Close();
+					} else {
+						$this->brand_id->EditValue = HtmlEncode($this->brand_id->AdvancedSearch->SearchValue);
+					}
+				}
+			} else {
+				$this->brand_id->EditValue = NULL;
+			}
+			$this->brand_id->PlaceHolder = RemoveHtml($this->brand_id->caption());
+
+			// type_id
+			$this->type_id->EditAttrs["class"] = "form-control";
+			$this->type_id->EditCustomAttributes = "";
+			$this->type_id->EditValue = HtmlEncode($this->type_id->AdvancedSearch->SearchValue);
+			$curVal = strval($this->type_id->AdvancedSearch->SearchValue);
+			if ($curVal != "") {
+				$this->type_id->EditValue = $this->type_id->lookupCacheOption($curVal);
+				if ($this->type_id->EditValue === NULL) { // Lookup from database
+					$filterWrk = "`id`" . SearchString("=", $curVal, DATATYPE_NUMBER, "");
+					$sqlWrk = $this->type_id->Lookup->getSql(FALSE, $filterWrk, '', $this);
+					$rswrk = Conn()->execute($sqlWrk);
+					if ($rswrk && !$rswrk->EOF) { // Lookup values found
+						$arwrk = [];
+						$arwrk[1] = HtmlEncode($rswrk->fields('df'));
+						$this->type_id->EditValue = $this->type_id->displayValue($arwrk);
+						$rswrk->Close();
+					} else {
+						$this->type_id->EditValue = HtmlEncode($this->type_id->AdvancedSearch->SearchValue);
+					}
+				}
+			} else {
+				$this->type_id->EditValue = NULL;
+			}
+			$this->type_id->PlaceHolder = RemoveHtml($this->type_id->caption());
+
+			// signature_id
+			$this->signature_id->EditAttrs["class"] = "form-control";
+			$this->signature_id->EditCustomAttributes = "";
+			$this->signature_id->EditValue = HtmlEncode($this->signature_id->AdvancedSearch->SearchValue);
+			$curVal = strval($this->signature_id->AdvancedSearch->SearchValue);
+			if ($curVal != "") {
+				$this->signature_id->EditValue = $this->signature_id->lookupCacheOption($curVal);
+				if ($this->signature_id->EditValue === NULL) { // Lookup from database
+					$filterWrk = "`id`" . SearchString("=", $curVal, DATATYPE_NUMBER, "");
+					$sqlWrk = $this->signature_id->Lookup->getSql(FALSE, $filterWrk, '', $this);
+					$rswrk = Conn()->execute($sqlWrk);
+					if ($rswrk && !$rswrk->EOF) { // Lookup values found
+						$arwrk = [];
+						$arwrk[1] = HtmlEncode($rswrk->fields('df'));
+						$this->signature_id->EditValue = $this->signature_id->displayValue($arwrk);
+						$rswrk->Close();
+					} else {
+						$this->signature_id->EditValue = HtmlEncode($this->signature_id->AdvancedSearch->SearchValue);
+					}
+				}
+			} else {
+				$this->signature_id->EditValue = NULL;
+			}
+			$this->signature_id->PlaceHolder = RemoveHtml($this->signature_id->caption());
+
+			// department_id
+			$this->department_id->EditAttrs["class"] = "form-control";
+			$this->department_id->EditCustomAttributes = "";
+			$this->department_id->EditValue = HtmlEncode($this->department_id->AdvancedSearch->SearchValue);
+			$curVal = strval($this->department_id->AdvancedSearch->SearchValue);
+			if ($curVal != "") {
+				$this->department_id->EditValue = $this->department_id->lookupCacheOption($curVal);
+				if ($this->department_id->EditValue === NULL) { // Lookup from database
+					$filterWrk = "`id`" . SearchString("=", $curVal, DATATYPE_NUMBER, "");
+					$sqlWrk = $this->department_id->Lookup->getSql(FALSE, $filterWrk, '', $this);
+					$rswrk = Conn()->execute($sqlWrk);
+					if ($rswrk && !$rswrk->EOF) { // Lookup values found
+						$arwrk = [];
+						$arwrk[1] = HtmlEncode($rswrk->fields('df'));
+						$this->department_id->EditValue = $this->department_id->displayValue($arwrk);
+						$rswrk->Close();
+					} else {
+						$this->department_id->EditValue = HtmlEncode($this->department_id->AdvancedSearch->SearchValue);
+					}
+				}
+			} else {
+				$this->department_id->EditValue = NULL;
+			}
+			$this->department_id->PlaceHolder = RemoveHtml($this->department_id->caption());
+
+			// location_id
+			$this->location_id->EditAttrs["class"] = "form-control";
+			$this->location_id->EditCustomAttributes = "";
+			$this->location_id->EditValue = HtmlEncode($this->location_id->AdvancedSearch->SearchValue);
+			$curVal = strval($this->location_id->AdvancedSearch->SearchValue);
+			if ($curVal != "") {
+				$this->location_id->EditValue = $this->location_id->lookupCacheOption($curVal);
+				if ($this->location_id->EditValue === NULL) { // Lookup from database
+					$filterWrk = "`id`" . SearchString("=", $curVal, DATATYPE_NUMBER, "");
+					$sqlWrk = $this->location_id->Lookup->getSql(FALSE, $filterWrk, '', $this);
+					$rswrk = Conn()->execute($sqlWrk);
+					if ($rswrk && !$rswrk->EOF) { // Lookup values found
+						$arwrk = [];
+						$arwrk[1] = HtmlEncode($rswrk->fields('df'));
+						$this->location_id->EditValue = $this->location_id->displayValue($arwrk);
+						$rswrk->Close();
+					} else {
+						$this->location_id->EditValue = HtmlEncode($this->location_id->AdvancedSearch->SearchValue);
+					}
+				}
+			} else {
+				$this->location_id->EditValue = NULL;
+			}
+			$this->location_id->PlaceHolder = RemoveHtml($this->location_id->caption());
+
+			// cond_id
+			$this->cond_id->EditAttrs["class"] = "form-control";
+			$this->cond_id->EditCustomAttributes = "";
+			$this->cond_id->EditValue = HtmlEncode($this->cond_id->AdvancedSearch->SearchValue);
+			$curVal = strval($this->cond_id->AdvancedSearch->SearchValue);
+			if ($curVal != "") {
+				$this->cond_id->EditValue = $this->cond_id->lookupCacheOption($curVal);
+				if ($this->cond_id->EditValue === NULL) { // Lookup from database
+					$filterWrk = "`id`" . SearchString("=", $curVal, DATATYPE_NUMBER, "");
+					$sqlWrk = $this->cond_id->Lookup->getSql(FALSE, $filterWrk, '', $this);
+					$rswrk = Conn()->execute($sqlWrk);
+					if ($rswrk && !$rswrk->EOF) { // Lookup values found
+						$arwrk = [];
+						$arwrk[1] = HtmlEncode($rswrk->fields('df'));
+						$this->cond_id->EditValue = $this->cond_id->displayValue($arwrk);
+						$rswrk->Close();
+					} else {
+						$this->cond_id->EditValue = HtmlEncode($this->cond_id->AdvancedSearch->SearchValue);
+					}
+				}
+			} else {
+				$this->cond_id->EditValue = NULL;
+			}
+			$this->cond_id->PlaceHolder = RemoveHtml($this->cond_id->caption());
+
+			// Remarks
+			$this->Remarks->EditAttrs["class"] = "form-control";
+			$this->Remarks->EditCustomAttributes = "";
+			$this->Remarks->EditValue = HtmlEncode($this->Remarks->AdvancedSearch->SearchValue);
+			$this->Remarks->PlaceHolder = RemoveHtml($this->Remarks->caption());
+
+			// ProcurementDate
+			$this->ProcurementDate->EditAttrs["class"] = "form-control";
+			$this->ProcurementDate->EditCustomAttributes = "";
+			$this->ProcurementDate->EditValue = HtmlEncode(FormatDateTime(UnFormatDateTime($this->ProcurementDate->AdvancedSearch->SearchValue, 7), 7));
+			$this->ProcurementDate->PlaceHolder = RemoveHtml($this->ProcurementDate->caption());
 		} elseif ($this->RowType == ROWTYPE_TOTAL && !($this->RowTotalType == ROWTOTAL_GROUP && $this->RowTotalSubType == ROWTOTAL_HEADER)) { // Summary row
 			$this->RowAttrs->prependClass(($this->RowTotalType == ROWTOTAL_PAGE || $this->RowTotalType == ROWTOTAL_GRAND) ? "ew-rpt-grp-aggregate" : ""); // Set up row class
 			if ($this->RowTotalType == ROWTOTAL_GROUP)
@@ -1008,7 +1242,7 @@ class r001_asset_summary extends r001_asset
 			} else {
 				$this->type_id->GroupViewValue = NULL;
 			}
-			$this->type_id->CellCssClass = ($this->RowGroupLevel == 3 ? "ew-rpt-grp-summary-3" : "ew-rpt-grp-field-3");
+			$this->type_id->CellCssClass = "ew-rpt-grp-field-%g";
 			$this->type_id->ViewCustomAttributes = "";
 			$this->type_id->GroupViewValue = DisplayGroupValue($this->type_id, $this->type_id->GroupViewValue);
 
@@ -1761,6 +1995,17 @@ class r001_asset_summary extends r001_asset
 		$this->SearchOptions = new ListOptions("div");
 		$this->SearchOptions->TagClassName = "ew-search-option";
 
+		// Search button
+		$item = &$this->SearchOptions->add("searchtoggle");
+		$searchToggleClass = ($this->SearchWhere != "") ? " active" : " active";
+		$item->Body = "<a class=\"btn btn-default ew-search-toggle" . $searchToggleClass . "\" href=\"#\" role=\"button\" title=\"" . $Language->phrase("SearchPanel") . "\" data-caption=\"" . $Language->phrase("SearchPanel") . "\" data-toggle=\"button\" data-form=\"fsummary\" aria-pressed=\"" . ($searchToggleClass == " active" ? "true" : "false") . "\">" . $Language->phrase("SearchLink") . "</a>";
+		$item->Visible = TRUE;
+
+		// Show all button
+		$item = &$this->SearchOptions->add("showall");
+		$item->Body = "<a class=\"btn btn-default ew-show-all\" title=\"" . $Language->phrase("ShowAll") . "\" data-caption=\"" . $Language->phrase("ShowAll") . "\" href=\"" . $this->pageUrl() . "cmd=reset\">" . $Language->phrase("ShowAllBtn") . "</a>";
+		$item->Visible = ($this->SearchWhere != $this->DefaultSearchWhere && $this->SearchWhere != "0=101");
+
 		// Button group for search
 		$this->SearchOptions->UseDropDownButton = FALSE;
 		$this->SearchOptions->UseButtonGroup = TRUE;
@@ -1876,10 +2121,10 @@ class r001_asset_summary extends r001_asset
 		// Filter button
 		$item = &$this->FilterOptions->add("savecurrentfilter");
 		$item->Body = "<a class=\"ew-save-filter\" data-form=\"fsummary\" href=\"#\" onclick=\"return false;\">" . $Language->phrase("SaveCurrentFilter") . "</a>";
-		$item->Visible = FALSE;
+		$item->Visible = TRUE;
 		$item = &$this->FilterOptions->add("deletefilter");
 		$item->Body = "<a class=\"ew-delete-filter\" data-form=\"fsummary\" href=\"#\" onclick=\"return false;\">" . $Language->phrase("DeleteFilter") . "</a>";
-		$item->Visible = FALSE;
+		$item->Visible = TRUE;
 		$this->FilterOptions->UseDropDownButton = TRUE;
 		$this->FilterOptions->UseButtonGroup = !$this->FilterOptions->UseDropDownButton;
 		$this->FilterOptions->DropDownButtonPhrase = $Language->phrase("Filters");
@@ -2097,6 +2342,831 @@ class r001_asset_summary extends r001_asset
 			$this->setStartGroup(1);
 		}
 		return $this->getOrderBy();
+	}
+
+	// Return extended filter
+	protected function getExtendedFilter()
+	{
+		global $FormError;
+		$filter = "";
+		if ($this->DrillDown)
+			return "";
+		$restoreSession = FALSE;
+		$restoreDefault = FALSE;
+
+		// Reset search command
+		if (Get("cmd", "") == "reset") {
+
+			// Set default values
+			$this->property_id->AdvancedSearch->unsetSession();
+			$this->group_id->AdvancedSearch->unsetSession();
+			$this->Code->AdvancedSearch->unsetSession();
+			$this->Description->AdvancedSearch->unsetSession();
+			$this->brand_id->AdvancedSearch->unsetSession();
+			$this->type_id->AdvancedSearch->unsetSession();
+			$this->signature_id->AdvancedSearch->unsetSession();
+			$this->department_id->AdvancedSearch->unsetSession();
+			$this->location_id->AdvancedSearch->unsetSession();
+			$this->cond_id->AdvancedSearch->unsetSession();
+			$this->Remarks->AdvancedSearch->unsetSession();
+			$this->ProcurementDate->AdvancedSearch->unsetSession();
+			$restoreDefault = TRUE;
+		} else {
+			$restoreSession = !$this->SearchCommand;
+
+			// Field property_id
+			if ($this->property_id->AdvancedSearch->get()) {
+				if (FieldDataType($this->property_id->Type) == DATATYPE_DATE) // Format default date format
+					$this->property_id->AdvancedSearch->SearchValue = FormatDateTime($this->property_id->AdvancedSearch->SearchValue, 0);
+			}
+
+			// Field group_id
+			if ($this->group_id->AdvancedSearch->get()) {
+				if (FieldDataType($this->group_id->Type) == DATATYPE_DATE) // Format default date format
+					$this->group_id->AdvancedSearch->SearchValue = FormatDateTime($this->group_id->AdvancedSearch->SearchValue, 0);
+			}
+
+			// Field Code
+			if ($this->Code->AdvancedSearch->get()) {
+			}
+
+			// Field Description
+			if ($this->Description->AdvancedSearch->get()) {
+			}
+
+			// Field brand_id
+			if ($this->brand_id->AdvancedSearch->get()) {
+				if (FieldDataType($this->brand_id->Type) == DATATYPE_DATE) // Format default date format
+					$this->brand_id->AdvancedSearch->SearchValue = FormatDateTime($this->brand_id->AdvancedSearch->SearchValue, 0);
+			}
+
+			// Field type_id
+			if ($this->type_id->AdvancedSearch->get()) {
+				if (FieldDataType($this->type_id->Type) == DATATYPE_DATE) // Format default date format
+					$this->type_id->AdvancedSearch->SearchValue = FormatDateTime($this->type_id->AdvancedSearch->SearchValue, 0);
+			}
+
+			// Field signature_id
+			if ($this->signature_id->AdvancedSearch->get()) {
+				if (FieldDataType($this->signature_id->Type) == DATATYPE_DATE) // Format default date format
+					$this->signature_id->AdvancedSearch->SearchValue = FormatDateTime($this->signature_id->AdvancedSearch->SearchValue, 0);
+			}
+
+			// Field department_id
+			if ($this->department_id->AdvancedSearch->get()) {
+				if (FieldDataType($this->department_id->Type) == DATATYPE_DATE) // Format default date format
+					$this->department_id->AdvancedSearch->SearchValue = FormatDateTime($this->department_id->AdvancedSearch->SearchValue, 0);
+			}
+
+			// Field location_id
+			if ($this->location_id->AdvancedSearch->get()) {
+				if (FieldDataType($this->location_id->Type) == DATATYPE_DATE) // Format default date format
+					$this->location_id->AdvancedSearch->SearchValue = FormatDateTime($this->location_id->AdvancedSearch->SearchValue, 0);
+			}
+
+			// Field cond_id
+			if ($this->cond_id->AdvancedSearch->get()) {
+				if (FieldDataType($this->cond_id->Type) == DATATYPE_DATE) // Format default date format
+					$this->cond_id->AdvancedSearch->SearchValue = FormatDateTime($this->cond_id->AdvancedSearch->SearchValue, 0);
+			}
+
+			// Field Remarks
+			if ($this->Remarks->AdvancedSearch->get()) {
+			}
+
+			// Field ProcurementDate
+			if ($this->ProcurementDate->AdvancedSearch->get()) {
+			}
+			if (!$this->validateForm()) {
+				$this->setFailureMessage($FormError);
+				return $filter;
+			}
+		}
+
+		// Restore session
+		if ($restoreSession) {
+			$restoreDefault = TRUE;
+			if ($this->property_id->AdvancedSearch->issetSession()) { // Field property_id
+				$this->property_id->AdvancedSearch->load();
+				$restoreDefault = FALSE;
+			}
+			if ($this->group_id->AdvancedSearch->issetSession()) { // Field group_id
+				$this->group_id->AdvancedSearch->load();
+				$restoreDefault = FALSE;
+			}
+			if ($this->Code->AdvancedSearch->issetSession()) { // Field Code
+				$this->Code->AdvancedSearch->load();
+				$restoreDefault = FALSE;
+			}
+			if ($this->Description->AdvancedSearch->issetSession()) { // Field Description
+				$this->Description->AdvancedSearch->load();
+				$restoreDefault = FALSE;
+			}
+			if ($this->brand_id->AdvancedSearch->issetSession()) { // Field brand_id
+				$this->brand_id->AdvancedSearch->load();
+				$restoreDefault = FALSE;
+			}
+			if ($this->type_id->AdvancedSearch->issetSession()) { // Field type_id
+				$this->type_id->AdvancedSearch->load();
+				$restoreDefault = FALSE;
+			}
+			if ($this->signature_id->AdvancedSearch->issetSession()) { // Field signature_id
+				$this->signature_id->AdvancedSearch->load();
+				$restoreDefault = FALSE;
+			}
+			if ($this->department_id->AdvancedSearch->issetSession()) { // Field department_id
+				$this->department_id->AdvancedSearch->load();
+				$restoreDefault = FALSE;
+			}
+			if ($this->location_id->AdvancedSearch->issetSession()) { // Field location_id
+				$this->location_id->AdvancedSearch->load();
+				$restoreDefault = FALSE;
+			}
+			if ($this->cond_id->AdvancedSearch->issetSession()) { // Field cond_id
+				$this->cond_id->AdvancedSearch->load();
+				$restoreDefault = FALSE;
+			}
+			if ($this->Remarks->AdvancedSearch->issetSession()) { // Field Remarks
+				$this->Remarks->AdvancedSearch->load();
+				$restoreDefault = FALSE;
+			}
+			if ($this->ProcurementDate->AdvancedSearch->issetSession()) { // Field ProcurementDate
+				$this->ProcurementDate->AdvancedSearch->load();
+				$restoreDefault = FALSE;
+			}
+		}
+
+		// Restore default
+		if ($restoreDefault)
+			$this->loadDefaultFilters();
+
+		// Call page filter validated event
+		$this->Page_FilterValidated();
+
+		// Build SQL and save to session
+		$this->buildExtendedFilter($this->property_id, $filter, FALSE, TRUE); // Field property_id
+		$this->property_id->AdvancedSearch->save();
+		$this->buildExtendedFilter($this->group_id, $filter, FALSE, TRUE); // Field group_id
+		$this->group_id->AdvancedSearch->save();
+		$this->buildExtendedFilter($this->Code, $filter, FALSE, TRUE); // Field Code
+		$this->Code->AdvancedSearch->save();
+		$this->buildExtendedFilter($this->Description, $filter, FALSE, TRUE); // Field Description
+		$this->Description->AdvancedSearch->save();
+		$this->buildExtendedFilter($this->brand_id, $filter, FALSE, TRUE); // Field brand_id
+		$this->brand_id->AdvancedSearch->save();
+		$this->buildExtendedFilter($this->type_id, $filter, FALSE, TRUE); // Field type_id
+		$this->type_id->AdvancedSearch->save();
+		$this->buildExtendedFilter($this->signature_id, $filter, FALSE, TRUE); // Field signature_id
+		$this->signature_id->AdvancedSearch->save();
+		$this->buildExtendedFilter($this->department_id, $filter, FALSE, TRUE); // Field department_id
+		$this->department_id->AdvancedSearch->save();
+		$this->buildExtendedFilter($this->location_id, $filter, FALSE, TRUE); // Field location_id
+		$this->location_id->AdvancedSearch->save();
+		$this->buildExtendedFilter($this->cond_id, $filter, FALSE, TRUE); // Field cond_id
+		$this->cond_id->AdvancedSearch->save();
+		$this->buildExtendedFilter($this->Remarks, $filter, FALSE, TRUE); // Field Remarks
+		$this->Remarks->AdvancedSearch->save();
+		$this->buildExtendedFilter($this->ProcurementDate, $filter, FALSE, TRUE); // Field ProcurementDate
+		$this->ProcurementDate->AdvancedSearch->save();
+		return $filter;
+	}
+
+	// Build dropdown filter
+	protected function buildDropDownFilter(&$fld, &$filterClause, $fldOpr, $default = FALSE, $saveFilter = FALSE)
+	{
+		$fldVal = ($default) ? $fld->AdvancedSearch->SearchValueDefault : $fld->AdvancedSearch->SearchValue;
+		$sql = "";
+		if (is_array($fldVal)) {
+			foreach ($fldVal as $val) {
+				$wrk = $this->getDropDownFilter($fld, $val, $fldOpr);
+
+				// Call Page Filtering event
+				if (!StartsString("@@", $val))
+					$this->Page_Filtering($fld, $wrk, "dropdown", $fldOpr, $val);
+				if ($wrk != "") {
+					if ($sql != "")
+						$sql .= " OR " . $wrk;
+					else
+						$sql = $wrk;
+				}
+			}
+		} else {
+			$sql = $this->getDropDownFilter($fld, $fldVal, $fldOpr);
+
+			// Call Page Filtering event
+			if (!StartsString("@@", $fldVal))
+				$this->Page_Filtering($fld, $sql, "dropdown", $fldOpr, $fldVal);
+		}
+		if ($sql != "") {
+			AddFilter($filterClause, $sql);
+			if ($saveFilter) $fld->CurrentFilter = $sql;
+		}
+	}
+
+	// Get dropdown filter
+	protected function getDropDownFilter(&$fld, $fldVal, $fldOpr)
+	{
+		$fldName = $fld->Name;
+		$fldExpression = $fld->Expression;
+		$fldDataType = $fld->DataType;
+		$isMultiple = $fld->HtmlTag == "CHECKBOX" || $fld->HtmlTag == "SELECT" && $fld->SelectMultiple;
+		$fldVal = strval($fldVal);
+		if ($fldOpr == "") $fldOpr = "=";
+		$wrk = "";
+		if (SameString($fldVal, Config("NULL_VALUE"))) {
+			$wrk = $fldExpression . " IS NULL";
+		} elseif (SameString($fldVal, Config("NOT_NULL_VALUE"))) {
+			$wrk = $fldExpression . " IS NOT NULL";
+		} elseif (SameString($fldVal, EMPTY_VALUE)) {
+			$wrk = $fldExpression . " = ''";
+		} elseif (SameString($fldVal, ALL_VALUE)) {
+			$wrk = "1 = 1";
+		} else {
+			if ($fld->GroupSql != "") // Use grouping SQL for search if exists
+				$fldExpression = str_replace("%s", $fldExpression, $fld->GroupSql);
+			if (StartsString("@@", $fldVal)) {
+				$wrk = $this->getCustomFilter($fld, $fldVal, $this->Dbid);
+			} elseif ($isMultiple && IsMultiSearchOperator($fldOpr) && trim($fldVal) != "" && $fldVal != INIT_VALUE && ($fldDataType == DATATYPE_STRING || $fldDataType == DATATYPE_MEMO)) {
+				$wrk = GetMultiSearchSql($fld, $fldOpr, trim($fldVal), $this->Dbid);
+			} else {
+				if ($fldVal != "" && $fldVal != INIT_VALUE) {
+					if ($fldDataType == DATATYPE_DATE && $fld->GroupSql == "" && $fldOpr != "") {
+						$wrk = GetDateFilterSql($fldExpression, $fldOpr, $fldVal, $fldDataType, $this->Dbid);
+					} else {
+						$wrk = GetFilterSql($fldOpr, $fldVal, $fldDataType, $this->Dbid);
+						if ($wrk != "") $wrk = $fldExpression . $wrk;
+					}
+				}
+			}
+		}
+		return $wrk;
+	}
+
+	// Get custom filter
+	protected function getCustomFilter(&$fld, $fldVal, $dbid = 0)
+	{
+		$wrk = "";
+		if (is_array($fld->AdvancedFilters)) {
+			foreach ($fld->AdvancedFilters as $filter) {
+				if ($filter->ID == $fldVal && $filter->Enabled) {
+					$fldExpr = $fld->Expression;
+					$fn = $filter->FunctionName;
+					$wrkid = StartsString("@@", $filter->ID) ? substr($filter->ID, 2) : $filter->ID;
+					if ($fn != "") {
+						$fn = PROJECT_NAMESPACE . $fn;
+						$wrk = $fn($fldExpr, $dbid);
+					} else
+						$wrk = "";
+					$this->Page_Filtering($fld, $wrk, "custom", $wrkid);
+					break;
+				}
+			}
+		}
+		return $wrk;
+	}
+
+	// Build extended filter
+	protected function buildExtendedFilter(&$fld, &$filterClause, $default = FALSE, $saveFilter = FALSE)
+	{
+		$wrk = GetExtendedFilter($fld, $default, $this->Dbid);
+		if (!$default)
+			$this->Page_Filtering($fld, $wrk, "extended", $fld->AdvancedSearch->SearchOperator, $fld->AdvancedSearch->SearchValue, $fld->AdvancedSearch->SearchCondition, $fld->AdvancedSearch->SearchOperator2, $fld->AdvancedSearch->SearchValue2);
+		if ($wrk != "") {
+			AddFilter($filterClause, $wrk);
+			if ($saveFilter) $fld->CurrentFilter = $wrk;
+		}
+	}
+
+	// Get drop down value from querystring
+	protected function getDropDownValue(&$fld)
+	{
+		$parm = $fld->Param;
+		if (IsPost())
+			return FALSE; // Skip post back
+		$opr = Get("z_$parm");
+		if ($opr !== NULL)
+			$fld->AdvancedSearch->SearchOperator = $opr;
+		$val = Get("x_$parm");
+		if ($val !== NULL) {
+			if (is_array($val))
+				$val = implode(Config("MULTIPLE_OPTION_SEPARATOR"), $val); 
+			$fld->AdvancedSearch->setSearchValue($val);
+			return TRUE;
+		}
+		return FALSE;
+	}
+
+	// Dropdown filter exist
+	protected function dropDownFilterExist(&$fld, $fldOpr)
+	{
+		$wrk = "";
+		$this->buildDropDownFilter($fld, $wrk, $fldOpr);
+		return ($wrk != "");
+	}
+
+	// Extended filter exist
+	protected function extendedFilterExist(&$fld)
+	{
+		$extWrk = "";
+		$this->buildExtendedFilter($fld, $extWrk);
+		return ($extWrk != "");
+	}
+
+	// Validate form
+	protected function validateForm()
+	{
+		global $Language, $FormError;
+
+		// Initialize form error message
+		$FormError = "";
+
+		// Check if validation required
+		if (!Config("SERVER_VALIDATE"))
+			return ($FormError == "");
+		if (!CheckEuroDate($this->PeriodEnd->FormValue)) {
+			AddMessage($FormError, $this->PeriodEnd->errorMessage());
+		}
+		if (!CheckEuroDate($this->PeriodEnd->FormValue)) {
+			AddMessage($FormError, $this->PeriodEnd->errorMessage());
+		}
+		if (!CheckEuroDate($this->PeriodEnd->FormValue)) {
+			AddMessage($FormError, $this->PeriodEnd->errorMessage());
+		}
+		if (!CheckEuroDate($this->PeriodEnd->FormValue)) {
+			AddMessage($FormError, $this->PeriodEnd->errorMessage());
+		}
+		if (!CheckEuroDate($this->PeriodEnd->FormValue)) {
+			AddMessage($FormError, $this->PeriodEnd->errorMessage());
+		}
+		if (!CheckEuroDate($this->PeriodEnd->FormValue)) {
+			AddMessage($FormError, $this->PeriodEnd->errorMessage());
+		}
+		if (!CheckEuroDate($this->PeriodEnd->FormValue)) {
+			AddMessage($FormError, $this->PeriodEnd->errorMessage());
+		}
+		if (!CheckEuroDate($this->PeriodEnd->FormValue)) {
+			AddMessage($FormError, $this->PeriodEnd->errorMessage());
+		}
+		if (!CheckEuroDate($this->PeriodEnd->FormValue)) {
+			AddMessage($FormError, $this->PeriodEnd->errorMessage());
+		}
+		if (!CheckEuroDate($this->PeriodEnd->FormValue)) {
+			AddMessage($FormError, $this->PeriodEnd->errorMessage());
+		}
+		if (!CheckEuroDate($this->PeriodEnd->FormValue)) {
+			AddMessage($FormError, $this->PeriodEnd->errorMessage());
+		}
+		if (!CheckEuroDate($this->PeriodEnd->FormValue)) {
+			AddMessage($FormError, $this->PeriodEnd->errorMessage());
+		}
+
+		// Return validate result
+		$validateForm = ($FormError == "");
+
+		// Call Form_CustomValidate event
+		$formCustomError = "";
+		$validateForm = $validateForm && $this->Form_CustomValidate($formCustomError);
+		if ($formCustomError != "") {
+			$FormError .= ($FormError != "") ? "<p>&nbsp;</p>" : "";
+			$FormError .= $formCustomError;
+		}
+		return $validateForm;
+	}
+
+	// Load default value for filters
+	protected function loadDefaultFilters()
+	{
+
+		/**
+		* Set up default values for extended filters
+		*/
+		// Field property_id
+
+		$this->property_id->AdvancedSearch->loadDefault();
+
+		// Field group_id
+		$this->group_id->AdvancedSearch->loadDefault();
+
+		// Field Code
+		$this->Code->AdvancedSearch->loadDefault();
+
+		// Field Description
+		$this->Description->AdvancedSearch->loadDefault();
+
+		// Field brand_id
+		$this->brand_id->AdvancedSearch->loadDefault();
+
+		// Field type_id
+		$this->type_id->AdvancedSearch->loadDefault();
+
+		// Field signature_id
+		$this->signature_id->AdvancedSearch->loadDefault();
+
+		// Field department_id
+		$this->department_id->AdvancedSearch->loadDefault();
+
+		// Field location_id
+		$this->location_id->AdvancedSearch->loadDefault();
+
+		// Field cond_id
+		$this->cond_id->AdvancedSearch->loadDefault();
+
+		// Field Remarks
+		$this->Remarks->AdvancedSearch->loadDefault();
+
+		// Field ProcurementDate
+		$this->ProcurementDate->AdvancedSearch->loadDefault();
+	}
+
+	// Show list of filters
+	public function showFilterList()
+	{
+		global $Language;
+
+		// Initialize
+		$filterList = "";
+		$captionClass = $this->isExport("email") ? "ew-filter-caption-email" : "ew-filter-caption";
+		$captionSuffix = $this->isExport("email") ? ": " : "";
+
+		// Field property_id
+		$extWrk = "";
+		$this->buildExtendedFilter($this->property_id, $extWrk);
+		$filter = "";
+		if ($extWrk != "")
+			$filter .= "<span class=\"ew-filter-value\">$extWrk</span>";
+		if ($filter != "")
+			$filterList .= "<div><span class=\"" . $captionClass . "\">" . $this->property_id->caption() . "</span>" . $captionSuffix . $filter . "</div>";
+
+		// Field group_id
+		$extWrk = "";
+		$this->buildExtendedFilter($this->group_id, $extWrk);
+		$filter = "";
+		if ($extWrk != "")
+			$filter .= "<span class=\"ew-filter-value\">$extWrk</span>";
+		if ($filter != "")
+			$filterList .= "<div><span class=\"" . $captionClass . "\">" . $this->group_id->caption() . "</span>" . $captionSuffix . $filter . "</div>";
+
+		// Field Code
+		$extWrk = "";
+		$this->buildExtendedFilter($this->Code, $extWrk);
+		$filter = "";
+		if ($extWrk != "")
+			$filter .= "<span class=\"ew-filter-value\">$extWrk</span>";
+		if ($filter != "")
+			$filterList .= "<div><span class=\"" . $captionClass . "\">" . $this->Code->caption() . "</span>" . $captionSuffix . $filter . "</div>";
+
+		// Field Description
+		$extWrk = "";
+		$this->buildExtendedFilter($this->Description, $extWrk);
+		$filter = "";
+		if ($extWrk != "")
+			$filter .= "<span class=\"ew-filter-value\">$extWrk</span>";
+		if ($filter != "")
+			$filterList .= "<div><span class=\"" . $captionClass . "\">" . $this->Description->caption() . "</span>" . $captionSuffix . $filter . "</div>";
+
+		// Field brand_id
+		$extWrk = "";
+		$this->buildExtendedFilter($this->brand_id, $extWrk);
+		$filter = "";
+		if ($extWrk != "")
+			$filter .= "<span class=\"ew-filter-value\">$extWrk</span>";
+		if ($filter != "")
+			$filterList .= "<div><span class=\"" . $captionClass . "\">" . $this->brand_id->caption() . "</span>" . $captionSuffix . $filter . "</div>";
+
+		// Field type_id
+		$extWrk = "";
+		$this->buildExtendedFilter($this->type_id, $extWrk);
+		$filter = "";
+		if ($extWrk != "")
+			$filter .= "<span class=\"ew-filter-value\">$extWrk</span>";
+		if ($filter != "")
+			$filterList .= "<div><span class=\"" . $captionClass . "\">" . $this->type_id->caption() . "</span>" . $captionSuffix . $filter . "</div>";
+
+		// Field signature_id
+		$extWrk = "";
+		$this->buildExtendedFilter($this->signature_id, $extWrk);
+		$filter = "";
+		if ($extWrk != "")
+			$filter .= "<span class=\"ew-filter-value\">$extWrk</span>";
+		if ($filter != "")
+			$filterList .= "<div><span class=\"" . $captionClass . "\">" . $this->signature_id->caption() . "</span>" . $captionSuffix . $filter . "</div>";
+
+		// Field department_id
+		$extWrk = "";
+		$this->buildExtendedFilter($this->department_id, $extWrk);
+		$filter = "";
+		if ($extWrk != "")
+			$filter .= "<span class=\"ew-filter-value\">$extWrk</span>";
+		if ($filter != "")
+			$filterList .= "<div><span class=\"" . $captionClass . "\">" . $this->department_id->caption() . "</span>" . $captionSuffix . $filter . "</div>";
+
+		// Field location_id
+		$extWrk = "";
+		$this->buildExtendedFilter($this->location_id, $extWrk);
+		$filter = "";
+		if ($extWrk != "")
+			$filter .= "<span class=\"ew-filter-value\">$extWrk</span>";
+		if ($filter != "")
+			$filterList .= "<div><span class=\"" . $captionClass . "\">" . $this->location_id->caption() . "</span>" . $captionSuffix . $filter . "</div>";
+
+		// Field cond_id
+		$extWrk = "";
+		$this->buildExtendedFilter($this->cond_id, $extWrk);
+		$filter = "";
+		if ($extWrk != "")
+			$filter .= "<span class=\"ew-filter-value\">$extWrk</span>";
+		if ($filter != "")
+			$filterList .= "<div><span class=\"" . $captionClass . "\">" . $this->cond_id->caption() . "</span>" . $captionSuffix . $filter . "</div>";
+
+		// Field Remarks
+		$extWrk = "";
+		$this->buildExtendedFilter($this->Remarks, $extWrk);
+		$filter = "";
+		if ($extWrk != "")
+			$filter .= "<span class=\"ew-filter-value\">$extWrk</span>";
+		if ($filter != "")
+			$filterList .= "<div><span class=\"" . $captionClass . "\">" . $this->Remarks->caption() . "</span>" . $captionSuffix . $filter . "</div>";
+
+		// Field ProcurementDate
+		$extWrk = "";
+		$this->buildExtendedFilter($this->ProcurementDate, $extWrk);
+		$filter = "";
+		if ($extWrk != "")
+			$filter .= "<span class=\"ew-filter-value\">$extWrk</span>";
+		if ($filter != "")
+			$filterList .= "<div><span class=\"" . $captionClass . "\">" . $this->ProcurementDate->caption() . "</span>" . $captionSuffix . $filter . "</div>";
+
+		// Show Filters
+		if ($filterList != "") {
+			$message = "<div id=\"ew-filter-list\" class=\"alert alert-info d-table\"><div id=\"ew-current-filters\">" .
+				$Language->phrase("CurrentFilters") . "</div>" . $filterList . "</div>";
+			$this->Message_Showing($message, "");
+			Write($message);
+		}
+	}
+
+	// Get list of filters
+	public function getFilterList()
+	{
+		global $UserProfile;
+
+		// Initialize
+		$filterList = "";
+		$savedFilterList = "";
+
+		// Field property_id
+		$wrk = "";
+		if ($this->property_id->AdvancedSearch->SearchValue != "" || $this->property_id->AdvancedSearch->SearchValue2 != "") {
+			$wrk = "\"x_property_id\":\"" . JsEncode($this->property_id->AdvancedSearch->SearchValue) . "\"," .
+				"\"z_property_id\":\"" . JsEncode($this->property_id->AdvancedSearch->SearchOperator) . "\"," .
+				"\"v_property_id\":\"" . JsEncode($this->property_id->AdvancedSearch->SearchCondition) . "\"," .
+				"\"y_property_id\":\"" . JsEncode($this->property_id->AdvancedSearch->SearchValue2) . "\"," .
+				"\"w_property_id\":\"" . JsEncode($this->property_id->AdvancedSearch->SearchOperator2) . "\"";
+		}
+		if ($wrk != "") {
+			if ($filterList != "") $filterList .= ",";
+			$filterList .= $wrk;
+		}
+
+		// Field group_id
+		$wrk = "";
+		if ($this->group_id->AdvancedSearch->SearchValue != "" || $this->group_id->AdvancedSearch->SearchValue2 != "") {
+			$wrk = "\"x_group_id\":\"" . JsEncode($this->group_id->AdvancedSearch->SearchValue) . "\"," .
+				"\"z_group_id\":\"" . JsEncode($this->group_id->AdvancedSearch->SearchOperator) . "\"," .
+				"\"v_group_id\":\"" . JsEncode($this->group_id->AdvancedSearch->SearchCondition) . "\"," .
+				"\"y_group_id\":\"" . JsEncode($this->group_id->AdvancedSearch->SearchValue2) . "\"," .
+				"\"w_group_id\":\"" . JsEncode($this->group_id->AdvancedSearch->SearchOperator2) . "\"";
+		}
+		if ($wrk != "") {
+			if ($filterList != "") $filterList .= ",";
+			$filterList .= $wrk;
+		}
+
+		// Field Code
+		$wrk = "";
+		if ($this->Code->AdvancedSearch->SearchValue != "" || $this->Code->AdvancedSearch->SearchValue2 != "") {
+			$wrk = "\"x_Code\":\"" . JsEncode($this->Code->AdvancedSearch->SearchValue) . "\"," .
+				"\"z_Code\":\"" . JsEncode($this->Code->AdvancedSearch->SearchOperator) . "\"," .
+				"\"v_Code\":\"" . JsEncode($this->Code->AdvancedSearch->SearchCondition) . "\"," .
+				"\"y_Code\":\"" . JsEncode($this->Code->AdvancedSearch->SearchValue2) . "\"," .
+				"\"w_Code\":\"" . JsEncode($this->Code->AdvancedSearch->SearchOperator2) . "\"";
+		}
+		if ($wrk != "") {
+			if ($filterList != "") $filterList .= ",";
+			$filterList .= $wrk;
+		}
+
+		// Field Description
+		$wrk = "";
+		if ($this->Description->AdvancedSearch->SearchValue != "" || $this->Description->AdvancedSearch->SearchValue2 != "") {
+			$wrk = "\"x_Description\":\"" . JsEncode($this->Description->AdvancedSearch->SearchValue) . "\"," .
+				"\"z_Description\":\"" . JsEncode($this->Description->AdvancedSearch->SearchOperator) . "\"," .
+				"\"v_Description\":\"" . JsEncode($this->Description->AdvancedSearch->SearchCondition) . "\"," .
+				"\"y_Description\":\"" . JsEncode($this->Description->AdvancedSearch->SearchValue2) . "\"," .
+				"\"w_Description\":\"" . JsEncode($this->Description->AdvancedSearch->SearchOperator2) . "\"";
+		}
+		if ($wrk != "") {
+			if ($filterList != "") $filterList .= ",";
+			$filterList .= $wrk;
+		}
+
+		// Field brand_id
+		$wrk = "";
+		if ($this->brand_id->AdvancedSearch->SearchValue != "" || $this->brand_id->AdvancedSearch->SearchValue2 != "") {
+			$wrk = "\"x_brand_id\":\"" . JsEncode($this->brand_id->AdvancedSearch->SearchValue) . "\"," .
+				"\"z_brand_id\":\"" . JsEncode($this->brand_id->AdvancedSearch->SearchOperator) . "\"," .
+				"\"v_brand_id\":\"" . JsEncode($this->brand_id->AdvancedSearch->SearchCondition) . "\"," .
+				"\"y_brand_id\":\"" . JsEncode($this->brand_id->AdvancedSearch->SearchValue2) . "\"," .
+				"\"w_brand_id\":\"" . JsEncode($this->brand_id->AdvancedSearch->SearchOperator2) . "\"";
+		}
+		if ($wrk != "") {
+			if ($filterList != "") $filterList .= ",";
+			$filterList .= $wrk;
+		}
+
+		// Field type_id
+		$wrk = "";
+		if ($this->type_id->AdvancedSearch->SearchValue != "" || $this->type_id->AdvancedSearch->SearchValue2 != "") {
+			$wrk = "\"x_type_id\":\"" . JsEncode($this->type_id->AdvancedSearch->SearchValue) . "\"," .
+				"\"z_type_id\":\"" . JsEncode($this->type_id->AdvancedSearch->SearchOperator) . "\"," .
+				"\"v_type_id\":\"" . JsEncode($this->type_id->AdvancedSearch->SearchCondition) . "\"," .
+				"\"y_type_id\":\"" . JsEncode($this->type_id->AdvancedSearch->SearchValue2) . "\"," .
+				"\"w_type_id\":\"" . JsEncode($this->type_id->AdvancedSearch->SearchOperator2) . "\"";
+		}
+		if ($wrk != "") {
+			if ($filterList != "") $filterList .= ",";
+			$filterList .= $wrk;
+		}
+
+		// Field signature_id
+		$wrk = "";
+		if ($this->signature_id->AdvancedSearch->SearchValue != "" || $this->signature_id->AdvancedSearch->SearchValue2 != "") {
+			$wrk = "\"x_signature_id\":\"" . JsEncode($this->signature_id->AdvancedSearch->SearchValue) . "\"," .
+				"\"z_signature_id\":\"" . JsEncode($this->signature_id->AdvancedSearch->SearchOperator) . "\"," .
+				"\"v_signature_id\":\"" . JsEncode($this->signature_id->AdvancedSearch->SearchCondition) . "\"," .
+				"\"y_signature_id\":\"" . JsEncode($this->signature_id->AdvancedSearch->SearchValue2) . "\"," .
+				"\"w_signature_id\":\"" . JsEncode($this->signature_id->AdvancedSearch->SearchOperator2) . "\"";
+		}
+		if ($wrk != "") {
+			if ($filterList != "") $filterList .= ",";
+			$filterList .= $wrk;
+		}
+
+		// Field department_id
+		$wrk = "";
+		if ($this->department_id->AdvancedSearch->SearchValue != "" || $this->department_id->AdvancedSearch->SearchValue2 != "") {
+			$wrk = "\"x_department_id\":\"" . JsEncode($this->department_id->AdvancedSearch->SearchValue) . "\"," .
+				"\"z_department_id\":\"" . JsEncode($this->department_id->AdvancedSearch->SearchOperator) . "\"," .
+				"\"v_department_id\":\"" . JsEncode($this->department_id->AdvancedSearch->SearchCondition) . "\"," .
+				"\"y_department_id\":\"" . JsEncode($this->department_id->AdvancedSearch->SearchValue2) . "\"," .
+				"\"w_department_id\":\"" . JsEncode($this->department_id->AdvancedSearch->SearchOperator2) . "\"";
+		}
+		if ($wrk != "") {
+			if ($filterList != "") $filterList .= ",";
+			$filterList .= $wrk;
+		}
+
+		// Field location_id
+		$wrk = "";
+		if ($this->location_id->AdvancedSearch->SearchValue != "" || $this->location_id->AdvancedSearch->SearchValue2 != "") {
+			$wrk = "\"x_location_id\":\"" . JsEncode($this->location_id->AdvancedSearch->SearchValue) . "\"," .
+				"\"z_location_id\":\"" . JsEncode($this->location_id->AdvancedSearch->SearchOperator) . "\"," .
+				"\"v_location_id\":\"" . JsEncode($this->location_id->AdvancedSearch->SearchCondition) . "\"," .
+				"\"y_location_id\":\"" . JsEncode($this->location_id->AdvancedSearch->SearchValue2) . "\"," .
+				"\"w_location_id\":\"" . JsEncode($this->location_id->AdvancedSearch->SearchOperator2) . "\"";
+		}
+		if ($wrk != "") {
+			if ($filterList != "") $filterList .= ",";
+			$filterList .= $wrk;
+		}
+
+		// Field cond_id
+		$wrk = "";
+		if ($this->cond_id->AdvancedSearch->SearchValue != "" || $this->cond_id->AdvancedSearch->SearchValue2 != "") {
+			$wrk = "\"x_cond_id\":\"" . JsEncode($this->cond_id->AdvancedSearch->SearchValue) . "\"," .
+				"\"z_cond_id\":\"" . JsEncode($this->cond_id->AdvancedSearch->SearchOperator) . "\"," .
+				"\"v_cond_id\":\"" . JsEncode($this->cond_id->AdvancedSearch->SearchCondition) . "\"," .
+				"\"y_cond_id\":\"" . JsEncode($this->cond_id->AdvancedSearch->SearchValue2) . "\"," .
+				"\"w_cond_id\":\"" . JsEncode($this->cond_id->AdvancedSearch->SearchOperator2) . "\"";
+		}
+		if ($wrk != "") {
+			if ($filterList != "") $filterList .= ",";
+			$filterList .= $wrk;
+		}
+
+		// Field Remarks
+		$wrk = "";
+		if ($this->Remarks->AdvancedSearch->SearchValue != "" || $this->Remarks->AdvancedSearch->SearchValue2 != "") {
+			$wrk = "\"x_Remarks\":\"" . JsEncode($this->Remarks->AdvancedSearch->SearchValue) . "\"," .
+				"\"z_Remarks\":\"" . JsEncode($this->Remarks->AdvancedSearch->SearchOperator) . "\"," .
+				"\"v_Remarks\":\"" . JsEncode($this->Remarks->AdvancedSearch->SearchCondition) . "\"," .
+				"\"y_Remarks\":\"" . JsEncode($this->Remarks->AdvancedSearch->SearchValue2) . "\"," .
+				"\"w_Remarks\":\"" . JsEncode($this->Remarks->AdvancedSearch->SearchOperator2) . "\"";
+		}
+		if ($wrk != "") {
+			if ($filterList != "") $filterList .= ",";
+			$filterList .= $wrk;
+		}
+
+		// Field ProcurementDate
+		$wrk = "";
+		if ($this->ProcurementDate->AdvancedSearch->SearchValue != "" || $this->ProcurementDate->AdvancedSearch->SearchValue2 != "") {
+			$wrk = "\"x_ProcurementDate\":\"" . JsEncode($this->ProcurementDate->AdvancedSearch->SearchValue) . "\"," .
+				"\"z_ProcurementDate\":\"" . JsEncode($this->ProcurementDate->AdvancedSearch->SearchOperator) . "\"," .
+				"\"v_ProcurementDate\":\"" . JsEncode($this->ProcurementDate->AdvancedSearch->SearchCondition) . "\"," .
+				"\"y_ProcurementDate\":\"" . JsEncode($this->ProcurementDate->AdvancedSearch->SearchValue2) . "\"," .
+				"\"w_ProcurementDate\":\"" . JsEncode($this->ProcurementDate->AdvancedSearch->SearchOperator2) . "\"";
+		}
+		if ($wrk != "") {
+			if ($filterList != "") $filterList .= ",";
+			$filterList .= $wrk;
+		}
+
+		// Return filter list in json
+		if ($filterList != "")
+			$filterList = "\"data\":{" . $filterList . "}";
+		if ($savedFilterList != "")
+			$filterList = Concat($filterList, "\"filters\":" . $savedFilterList, ",");
+		return ($filterList != "") ? "{" . $filterList . "}" : "null";
+	}
+
+	// Restore list of filters
+	protected function restoreFilterList()
+	{
+
+		// Return if not reset filter
+		if (Post("cmd", "") != "resetfilter")
+			return FALSE;
+		$filter = json_decode(Post("filter", ""), TRUE);
+		return $this->setupFilterList($filter);
+	}
+
+	// Setup list of filters
+	protected function setupFilterList($filter)
+	{
+		if (!is_array($filter))
+			return FALSE;
+
+		// Field property_id
+		if (!$this->property_id->AdvancedSearch->getFromArray($filter))
+			$this->property_id->AdvancedSearch->loadDefault(); // Clear filter
+		$this->property_id->AdvancedSearch->save();
+
+		// Field group_id
+		if (!$this->group_id->AdvancedSearch->getFromArray($filter))
+			$this->group_id->AdvancedSearch->loadDefault(); // Clear filter
+		$this->group_id->AdvancedSearch->save();
+
+		// Field Code
+		if (!$this->Code->AdvancedSearch->getFromArray($filter))
+			$this->Code->AdvancedSearch->loadDefault(); // Clear filter
+		$this->Code->AdvancedSearch->save();
+
+		// Field Description
+		if (!$this->Description->AdvancedSearch->getFromArray($filter))
+			$this->Description->AdvancedSearch->loadDefault(); // Clear filter
+		$this->Description->AdvancedSearch->save();
+
+		// Field brand_id
+		if (!$this->brand_id->AdvancedSearch->getFromArray($filter))
+			$this->brand_id->AdvancedSearch->loadDefault(); // Clear filter
+		$this->brand_id->AdvancedSearch->save();
+
+		// Field type_id
+		if (!$this->type_id->AdvancedSearch->getFromArray($filter))
+			$this->type_id->AdvancedSearch->loadDefault(); // Clear filter
+		$this->type_id->AdvancedSearch->save();
+
+		// Field signature_id
+		if (!$this->signature_id->AdvancedSearch->getFromArray($filter))
+			$this->signature_id->AdvancedSearch->loadDefault(); // Clear filter
+		$this->signature_id->AdvancedSearch->save();
+
+		// Field department_id
+		if (!$this->department_id->AdvancedSearch->getFromArray($filter))
+			$this->department_id->AdvancedSearch->loadDefault(); // Clear filter
+		$this->department_id->AdvancedSearch->save();
+
+		// Field location_id
+		if (!$this->location_id->AdvancedSearch->getFromArray($filter))
+			$this->location_id->AdvancedSearch->loadDefault(); // Clear filter
+		$this->location_id->AdvancedSearch->save();
+
+		// Field cond_id
+		if (!$this->cond_id->AdvancedSearch->getFromArray($filter))
+			$this->cond_id->AdvancedSearch->loadDefault(); // Clear filter
+		$this->cond_id->AdvancedSearch->save();
+
+		// Field Remarks
+		if (!$this->Remarks->AdvancedSearch->getFromArray($filter))
+			$this->Remarks->AdvancedSearch->loadDefault(); // Clear filter
+		$this->Remarks->AdvancedSearch->save();
+
+		// Field ProcurementDate
+		if (!$this->ProcurementDate->AdvancedSearch->getFromArray($filter))
+			$this->ProcurementDate->AdvancedSearch->loadDefault(); // Clear filter
+		$this->ProcurementDate->AdvancedSearch->save();
+		return TRUE;
 	}
 
 	// Page Load event

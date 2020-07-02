@@ -37,6 +37,93 @@ $r001_asset_summary->Page_Render();
 <?php } ?>
 <?php if (!$r001_asset_summary->isExport() && !$r001_asset_summary->DrillDown && !$DashboardReport) { ?>
 <script>
+var fsummary, currentPageID;
+loadjs.ready("head", function() {
+
+	// Form object for search
+	fsummary = currentForm = new ew.Form("fsummary", "summary");
+	currentPageID = ew.PAGE_ID = "summary";
+
+	// Validate function for search
+	fsummary.validate = function(fobj) {
+		if (!this.validateRequired)
+			return true; // Ignore validation
+		fobj = fobj || this._form;
+		var infix = "";
+		elm = this.getElements("x" + infix + "_property_id");
+		if (elm && !ew.checkInteger(elm.value))
+			return this.onError(elm, "<?php echo JsEncode($r001_asset_summary->property_id->errorMessage()) ?>");
+		elm = this.getElements("x" + infix + "_group_id");
+		if (elm && !ew.checkInteger(elm.value))
+			return this.onError(elm, "<?php echo JsEncode($r001_asset_summary->group_id->errorMessage()) ?>");
+		elm = this.getElements("x" + infix + "_brand_id");
+		if (elm && !ew.checkInteger(elm.value))
+			return this.onError(elm, "<?php echo JsEncode($r001_asset_summary->brand_id->errorMessage()) ?>");
+		elm = this.getElements("x" + infix + "_type_id");
+		if (elm && !ew.checkInteger(elm.value))
+			return this.onError(elm, "<?php echo JsEncode($r001_asset_summary->type_id->errorMessage()) ?>");
+		elm = this.getElements("x" + infix + "_signature_id");
+		if (elm && !ew.checkInteger(elm.value))
+			return this.onError(elm, "<?php echo JsEncode($r001_asset_summary->signature_id->errorMessage()) ?>");
+		elm = this.getElements("x" + infix + "_department_id");
+		if (elm && !ew.checkInteger(elm.value))
+			return this.onError(elm, "<?php echo JsEncode($r001_asset_summary->department_id->errorMessage()) ?>");
+		elm = this.getElements("x" + infix + "_location_id");
+		if (elm && !ew.checkInteger(elm.value))
+			return this.onError(elm, "<?php echo JsEncode($r001_asset_summary->location_id->errorMessage()) ?>");
+		elm = this.getElements("x" + infix + "_cond_id");
+		if (elm && !ew.checkInteger(elm.value))
+			return this.onError(elm, "<?php echo JsEncode($r001_asset_summary->cond_id->errorMessage()) ?>");
+		elm = this.getElements("x" + infix + "_ProcurementDate");
+		if (elm && !ew.checkEuroDate(elm.value))
+			return this.onError(elm, "<?php echo JsEncode($r001_asset_summary->ProcurementDate->errorMessage()) ?>");
+
+		// Call Form_CustomValidate event
+		if (!this.Form_CustomValidate(fobj))
+			return false;
+		return true;
+	}
+
+	// Form_CustomValidate
+	fsummary.Form_CustomValidate = function(fobj) { // DO NOT CHANGE THIS LINE!
+
+		// Your custom validation code here, return false if invalid.
+		return true;
+	}
+
+	// Use JavaScript validation or not
+	fsummary.validateRequired = <?php echo Config("CLIENT_VALIDATE") ? "true" : "false" ?>;
+
+	// Dynamic selection lists
+	fsummary.lists["x_property_id"] = <?php echo $r001_asset_summary->property_id->Lookup->toClientList($r001_asset_summary) ?>;
+	fsummary.lists["x_property_id"].options = <?php echo JsonEncode($r001_asset_summary->property_id->lookupOptions()) ?>;
+	fsummary.autoSuggests["x_property_id"] = <?php echo json_encode(["data" => "ajax=autosuggest"]) ?>;
+	fsummary.lists["x_group_id"] = <?php echo $r001_asset_summary->group_id->Lookup->toClientList($r001_asset_summary) ?>;
+	fsummary.lists["x_group_id"].options = <?php echo JsonEncode($r001_asset_summary->group_id->lookupOptions()) ?>;
+	fsummary.autoSuggests["x_group_id"] = <?php echo json_encode(["data" => "ajax=autosuggest"]) ?>;
+	fsummary.lists["x_brand_id"] = <?php echo $r001_asset_summary->brand_id->Lookup->toClientList($r001_asset_summary) ?>;
+	fsummary.lists["x_brand_id"].options = <?php echo JsonEncode($r001_asset_summary->brand_id->lookupOptions()) ?>;
+	fsummary.autoSuggests["x_brand_id"] = <?php echo json_encode(["data" => "ajax=autosuggest"]) ?>;
+	fsummary.lists["x_type_id"] = <?php echo $r001_asset_summary->type_id->Lookup->toClientList($r001_asset_summary) ?>;
+	fsummary.lists["x_type_id"].options = <?php echo JsonEncode($r001_asset_summary->type_id->lookupOptions()) ?>;
+	fsummary.autoSuggests["x_type_id"] = <?php echo json_encode(["data" => "ajax=autosuggest"]) ?>;
+	fsummary.lists["x_signature_id"] = <?php echo $r001_asset_summary->signature_id->Lookup->toClientList($r001_asset_summary) ?>;
+	fsummary.lists["x_signature_id"].options = <?php echo JsonEncode($r001_asset_summary->signature_id->lookupOptions()) ?>;
+	fsummary.autoSuggests["x_signature_id"] = <?php echo json_encode(["data" => "ajax=autosuggest"]) ?>;
+	fsummary.lists["x_department_id"] = <?php echo $r001_asset_summary->department_id->Lookup->toClientList($r001_asset_summary) ?>;
+	fsummary.lists["x_department_id"].options = <?php echo JsonEncode($r001_asset_summary->department_id->lookupOptions()) ?>;
+	fsummary.autoSuggests["x_department_id"] = <?php echo json_encode(["data" => "ajax=autosuggest"]) ?>;
+	fsummary.lists["x_location_id"] = <?php echo $r001_asset_summary->location_id->Lookup->toClientList($r001_asset_summary) ?>;
+	fsummary.lists["x_location_id"].options = <?php echo JsonEncode($r001_asset_summary->location_id->lookupOptions()) ?>;
+	fsummary.autoSuggests["x_location_id"] = <?php echo json_encode(["data" => "ajax=autosuggest"]) ?>;
+	fsummary.lists["x_cond_id"] = <?php echo $r001_asset_summary->cond_id->Lookup->toClientList($r001_asset_summary) ?>;
+	fsummary.lists["x_cond_id"].options = <?php echo JsonEncode($r001_asset_summary->cond_id->lookupOptions()) ?>;
+	fsummary.autoSuggests["x_cond_id"] = <?php echo json_encode(["data" => "ajax=autosuggest"]) ?>;
+
+	// Filters
+	fsummary.filterList = <?php echo $r001_asset_summary->getFilterList() ?>;
+	loadjs.done("fsummary");
+});
 </script>
 <script>
 loadjs.ready("head", function() {
@@ -51,6 +138,9 @@ loadjs.ready("head", function() {
 <?php if ((!$r001_asset_summary->isExport() || $r001_asset_summary->isExport("print")) && !$DashboardReport) { ?>
 <!-- Content Container -->
 <div id="ew-report" class="ew-report container-fluid">
+<?php } ?>
+<?php if ($r001_asset_summary->ShowCurrentFilter) { ?>
+<?php $r001_asset_summary->showFilterList() ?>
 <?php } ?>
 <div class="btn-toolbar ew-toolbar">
 <?php
@@ -75,6 +165,438 @@ $r001_asset_summary->showMessage();
 <!-- Summary report (begin) -->
 <div id="report_summary">
 <?php if (!$r001_asset_summary->isExport() && !$r001_asset_summary->DrillDown && !$DashboardReport) { ?>
+<?php if ($Security->CanSearch()) { ?>
+<?php if (!$r001_asset_summary->isExport() && !$r001_asset->CurrentAction) { ?>
+<form name="fsummary" id="fsummary" class="form-inline ew-form ew-ext-search-form" action="<?php echo CurrentPageName() ?>">
+<div id="fsummary-search-panel" class="<?php echo $r001_asset_summary->SearchPanelClass ?>">
+<input type="hidden" name="cmd" value="search">
+<input type="hidden" name="t" value="r001_asset">
+	<div class="ew-extended-search">
+<?php
+
+// Render search row
+$r001_asset->RowType = ROWTYPE_SEARCH;
+$r001_asset->resetAttributes();
+$r001_asset_summary->renderRow();
+?>
+<?php if ($r001_asset_summary->property_id->Visible) { // property_id ?>
+	<?php
+		$r001_asset_summary->SearchColumnCount++;
+		if (($r001_asset_summary->SearchColumnCount - 1) % $r001_asset_summary->SearchFieldsPerRow == 0) {
+			$r001_asset_summary->SearchRowCount++;
+	?>
+<div id="xsr_<?php echo $r001_asset_summary->SearchRowCount ?>" class="ew-row d-sm-flex">
+	<?php
+		}
+	 ?>
+	<div id="xsc_property_id" class="ew-cell form-group">
+		<label class="ew-search-caption ew-label"><?php echo $r001_asset_summary->property_id->caption() ?></label>
+		<span class="ew-search-operator">
+<?php echo $Language->phrase("=") ?>
+<input type="hidden" name="z_property_id" id="z_property_id" value="=">
+</span>
+		<span id="el_r001_asset_property_id" class="ew-search-field">
+<?php
+$onchange = $r001_asset_summary->property_id->EditAttrs->prepend("onchange", "");
+$onchange = ($onchange) ? ' onchange="' . JsEncode($onchange) . '"' : '';
+$r001_asset_summary->property_id->EditAttrs["onchange"] = "";
+?>
+<span id="as_x_property_id">
+	<input type="text" class="form-control" name="sv_x_property_id" id="sv_x_property_id" value="<?php echo RemoveHtml($r001_asset_summary->property_id->EditValue) ?>" size="30" maxlength="11" placeholder="<?php echo HtmlEncode($r001_asset_summary->property_id->getPlaceHolder()) ?>" data-placeholder="<?php echo HtmlEncode($r001_asset_summary->property_id->getPlaceHolder()) ?>"<?php echo $r001_asset_summary->property_id->editAttributes() ?>>
+</span>
+<input type="hidden" data-table="r001_asset" data-field="x_property_id" data-value-separator="<?php echo $r001_asset_summary->property_id->displayValueSeparatorAttribute() ?>" name="x_property_id" id="x_property_id" value="<?php echo HtmlEncode($r001_asset_summary->property_id->AdvancedSearch->SearchValue) ?>"<?php echo $onchange ?>>
+<script>
+loadjs.ready(["fsummary"], function() {
+	fsummary.createAutoSuggest({"id":"x_property_id","forceSelect":false});
+});
+</script>
+<?php echo $r001_asset_summary->property_id->Lookup->getParamTag($r001_asset_summary, "p_x_property_id") ?>
+</span>
+	</div>
+	<?php if ($r001_asset_summary->SearchColumnCount % $r001_asset_summary->SearchFieldsPerRow == 0) { ?>
+</div>
+	<?php } ?>
+<?php } ?>
+<?php if ($r001_asset_summary->group_id->Visible) { // group_id ?>
+	<?php
+		$r001_asset_summary->SearchColumnCount++;
+		if (($r001_asset_summary->SearchColumnCount - 1) % $r001_asset_summary->SearchFieldsPerRow == 0) {
+			$r001_asset_summary->SearchRowCount++;
+	?>
+<div id="xsr_<?php echo $r001_asset_summary->SearchRowCount ?>" class="ew-row d-sm-flex">
+	<?php
+		}
+	 ?>
+	<div id="xsc_group_id" class="ew-cell form-group">
+		<label class="ew-search-caption ew-label"><?php echo $r001_asset_summary->group_id->caption() ?></label>
+		<span class="ew-search-operator">
+<?php echo $Language->phrase("=") ?>
+<input type="hidden" name="z_group_id" id="z_group_id" value="=">
+</span>
+		<span id="el_r001_asset_group_id" class="ew-search-field">
+<?php
+$onchange = $r001_asset_summary->group_id->EditAttrs->prepend("onchange", "");
+$onchange = ($onchange) ? ' onchange="' . JsEncode($onchange) . '"' : '';
+$r001_asset_summary->group_id->EditAttrs["onchange"] = "";
+?>
+<span id="as_x_group_id">
+	<input type="text" class="form-control" name="sv_x_group_id" id="sv_x_group_id" value="<?php echo RemoveHtml($r001_asset_summary->group_id->EditValue) ?>" size="30" maxlength="11" placeholder="<?php echo HtmlEncode($r001_asset_summary->group_id->getPlaceHolder()) ?>" data-placeholder="<?php echo HtmlEncode($r001_asset_summary->group_id->getPlaceHolder()) ?>"<?php echo $r001_asset_summary->group_id->editAttributes() ?>>
+</span>
+<input type="hidden" data-table="r001_asset" data-field="x_group_id" data-value-separator="<?php echo $r001_asset_summary->group_id->displayValueSeparatorAttribute() ?>" name="x_group_id" id="x_group_id" value="<?php echo HtmlEncode($r001_asset_summary->group_id->AdvancedSearch->SearchValue) ?>"<?php echo $onchange ?>>
+<script>
+loadjs.ready(["fsummary"], function() {
+	fsummary.createAutoSuggest({"id":"x_group_id","forceSelect":false});
+});
+</script>
+<?php echo $r001_asset_summary->group_id->Lookup->getParamTag($r001_asset_summary, "p_x_group_id") ?>
+</span>
+	</div>
+	<?php if ($r001_asset_summary->SearchColumnCount % $r001_asset_summary->SearchFieldsPerRow == 0) { ?>
+</div>
+	<?php } ?>
+<?php } ?>
+<?php if ($r001_asset_summary->Code->Visible) { // Code ?>
+	<?php
+		$r001_asset_summary->SearchColumnCount++;
+		if (($r001_asset_summary->SearchColumnCount - 1) % $r001_asset_summary->SearchFieldsPerRow == 0) {
+			$r001_asset_summary->SearchRowCount++;
+	?>
+<div id="xsr_<?php echo $r001_asset_summary->SearchRowCount ?>" class="ew-row d-sm-flex">
+	<?php
+		}
+	 ?>
+	<div id="xsc_Code" class="ew-cell form-group">
+		<label for="x_Code" class="ew-search-caption ew-label"><?php echo $r001_asset_summary->Code->caption() ?></label>
+		<span class="ew-search-operator">
+<?php echo $Language->phrase("LIKE") ?>
+<input type="hidden" name="z_Code" id="z_Code" value="LIKE">
+</span>
+		<span id="el_r001_asset_Code" class="ew-search-field">
+<input type="text" data-table="r001_asset" data-field="x_Code" name="x_Code" id="x_Code" size="30" maxlength="25" placeholder="<?php echo HtmlEncode($r001_asset_summary->Code->getPlaceHolder()) ?>" value="<?php echo $r001_asset_summary->Code->EditValue ?>"<?php echo $r001_asset_summary->Code->editAttributes() ?>>
+</span>
+	</div>
+	<?php if ($r001_asset_summary->SearchColumnCount % $r001_asset_summary->SearchFieldsPerRow == 0) { ?>
+</div>
+	<?php } ?>
+<?php } ?>
+<?php if ($r001_asset_summary->Description->Visible) { // Description ?>
+	<?php
+		$r001_asset_summary->SearchColumnCount++;
+		if (($r001_asset_summary->SearchColumnCount - 1) % $r001_asset_summary->SearchFieldsPerRow == 0) {
+			$r001_asset_summary->SearchRowCount++;
+	?>
+<div id="xsr_<?php echo $r001_asset_summary->SearchRowCount ?>" class="ew-row d-sm-flex">
+	<?php
+		}
+	 ?>
+	<div id="xsc_Description" class="ew-cell form-group">
+		<label for="x_Description" class="ew-search-caption ew-label"><?php echo $r001_asset_summary->Description->caption() ?></label>
+		<span class="ew-search-operator">
+<?php echo $Language->phrase("LIKE") ?>
+<input type="hidden" name="z_Description" id="z_Description" value="LIKE">
+</span>
+		<span id="el_r001_asset_Description" class="ew-search-field">
+<input type="text" data-table="r001_asset" data-field="x_Description" name="x_Description" id="x_Description" size="30" maxlength="255" placeholder="<?php echo HtmlEncode($r001_asset_summary->Description->getPlaceHolder()) ?>" value="<?php echo $r001_asset_summary->Description->EditValue ?>"<?php echo $r001_asset_summary->Description->editAttributes() ?>>
+</span>
+	</div>
+	<?php if ($r001_asset_summary->SearchColumnCount % $r001_asset_summary->SearchFieldsPerRow == 0) { ?>
+</div>
+	<?php } ?>
+<?php } ?>
+<?php if ($r001_asset_summary->brand_id->Visible) { // brand_id ?>
+	<?php
+		$r001_asset_summary->SearchColumnCount++;
+		if (($r001_asset_summary->SearchColumnCount - 1) % $r001_asset_summary->SearchFieldsPerRow == 0) {
+			$r001_asset_summary->SearchRowCount++;
+	?>
+<div id="xsr_<?php echo $r001_asset_summary->SearchRowCount ?>" class="ew-row d-sm-flex">
+	<?php
+		}
+	 ?>
+	<div id="xsc_brand_id" class="ew-cell form-group">
+		<label class="ew-search-caption ew-label"><?php echo $r001_asset_summary->brand_id->caption() ?></label>
+		<span class="ew-search-operator">
+<?php echo $Language->phrase("=") ?>
+<input type="hidden" name="z_brand_id" id="z_brand_id" value="=">
+</span>
+		<span id="el_r001_asset_brand_id" class="ew-search-field">
+<?php
+$onchange = $r001_asset_summary->brand_id->EditAttrs->prepend("onchange", "");
+$onchange = ($onchange) ? ' onchange="' . JsEncode($onchange) . '"' : '';
+$r001_asset_summary->brand_id->EditAttrs["onchange"] = "";
+?>
+<span id="as_x_brand_id">
+	<input type="text" class="form-control" name="sv_x_brand_id" id="sv_x_brand_id" value="<?php echo RemoveHtml($r001_asset_summary->brand_id->EditValue) ?>" size="30" maxlength="11" placeholder="<?php echo HtmlEncode($r001_asset_summary->brand_id->getPlaceHolder()) ?>" data-placeholder="<?php echo HtmlEncode($r001_asset_summary->brand_id->getPlaceHolder()) ?>"<?php echo $r001_asset_summary->brand_id->editAttributes() ?>>
+</span>
+<input type="hidden" data-table="r001_asset" data-field="x_brand_id" data-value-separator="<?php echo $r001_asset_summary->brand_id->displayValueSeparatorAttribute() ?>" name="x_brand_id" id="x_brand_id" value="<?php echo HtmlEncode($r001_asset_summary->brand_id->AdvancedSearch->SearchValue) ?>"<?php echo $onchange ?>>
+<script>
+loadjs.ready(["fsummary"], function() {
+	fsummary.createAutoSuggest({"id":"x_brand_id","forceSelect":false});
+});
+</script>
+<?php echo $r001_asset_summary->brand_id->Lookup->getParamTag($r001_asset_summary, "p_x_brand_id") ?>
+</span>
+	</div>
+	<?php if ($r001_asset_summary->SearchColumnCount % $r001_asset_summary->SearchFieldsPerRow == 0) { ?>
+</div>
+	<?php } ?>
+<?php } ?>
+<?php if ($r001_asset_summary->type_id->Visible) { // type_id ?>
+	<?php
+		$r001_asset_summary->SearchColumnCount++;
+		if (($r001_asset_summary->SearchColumnCount - 1) % $r001_asset_summary->SearchFieldsPerRow == 0) {
+			$r001_asset_summary->SearchRowCount++;
+	?>
+<div id="xsr_<?php echo $r001_asset_summary->SearchRowCount ?>" class="ew-row d-sm-flex">
+	<?php
+		}
+	 ?>
+	<div id="xsc_type_id" class="ew-cell form-group">
+		<label class="ew-search-caption ew-label"><?php echo $r001_asset_summary->type_id->caption() ?></label>
+		<span class="ew-search-operator">
+<?php echo $Language->phrase("=") ?>
+<input type="hidden" name="z_type_id" id="z_type_id" value="=">
+</span>
+		<span id="el_r001_asset_type_id" class="ew-search-field">
+<?php
+$onchange = $r001_asset_summary->type_id->EditAttrs->prepend("onchange", "");
+$onchange = ($onchange) ? ' onchange="' . JsEncode($onchange) . '"' : '';
+$r001_asset_summary->type_id->EditAttrs["onchange"] = "";
+?>
+<span id="as_x_type_id">
+	<input type="text" class="form-control" name="sv_x_type_id" id="sv_x_type_id" value="<?php echo RemoveHtml($r001_asset_summary->type_id->EditValue) ?>" size="30" maxlength="11" placeholder="<?php echo HtmlEncode($r001_asset_summary->type_id->getPlaceHolder()) ?>" data-placeholder="<?php echo HtmlEncode($r001_asset_summary->type_id->getPlaceHolder()) ?>"<?php echo $r001_asset_summary->type_id->editAttributes() ?>>
+</span>
+<input type="hidden" data-table="r001_asset" data-field="x_type_id" data-value-separator="<?php echo $r001_asset_summary->type_id->displayValueSeparatorAttribute() ?>" name="x_type_id" id="x_type_id" value="<?php echo HtmlEncode($r001_asset_summary->type_id->AdvancedSearch->SearchValue) ?>"<?php echo $onchange ?>>
+<script>
+loadjs.ready(["fsummary"], function() {
+	fsummary.createAutoSuggest({"id":"x_type_id","forceSelect":false});
+});
+</script>
+<?php echo $r001_asset_summary->type_id->Lookup->getParamTag($r001_asset_summary, "p_x_type_id") ?>
+</span>
+	</div>
+	<?php if ($r001_asset_summary->SearchColumnCount % $r001_asset_summary->SearchFieldsPerRow == 0) { ?>
+</div>
+	<?php } ?>
+<?php } ?>
+<?php if ($r001_asset_summary->signature_id->Visible) { // signature_id ?>
+	<?php
+		$r001_asset_summary->SearchColumnCount++;
+		if (($r001_asset_summary->SearchColumnCount - 1) % $r001_asset_summary->SearchFieldsPerRow == 0) {
+			$r001_asset_summary->SearchRowCount++;
+	?>
+<div id="xsr_<?php echo $r001_asset_summary->SearchRowCount ?>" class="ew-row d-sm-flex">
+	<?php
+		}
+	 ?>
+	<div id="xsc_signature_id" class="ew-cell form-group">
+		<label class="ew-search-caption ew-label"><?php echo $r001_asset_summary->signature_id->caption() ?></label>
+		<span class="ew-search-operator">
+<?php echo $Language->phrase("=") ?>
+<input type="hidden" name="z_signature_id" id="z_signature_id" value="=">
+</span>
+		<span id="el_r001_asset_signature_id" class="ew-search-field">
+<?php
+$onchange = $r001_asset_summary->signature_id->EditAttrs->prepend("onchange", "");
+$onchange = ($onchange) ? ' onchange="' . JsEncode($onchange) . '"' : '';
+$r001_asset_summary->signature_id->EditAttrs["onchange"] = "";
+?>
+<span id="as_x_signature_id">
+	<input type="text" class="form-control" name="sv_x_signature_id" id="sv_x_signature_id" value="<?php echo RemoveHtml($r001_asset_summary->signature_id->EditValue) ?>" size="30" maxlength="11" placeholder="<?php echo HtmlEncode($r001_asset_summary->signature_id->getPlaceHolder()) ?>" data-placeholder="<?php echo HtmlEncode($r001_asset_summary->signature_id->getPlaceHolder()) ?>"<?php echo $r001_asset_summary->signature_id->editAttributes() ?>>
+</span>
+<input type="hidden" data-table="r001_asset" data-field="x_signature_id" data-value-separator="<?php echo $r001_asset_summary->signature_id->displayValueSeparatorAttribute() ?>" name="x_signature_id" id="x_signature_id" value="<?php echo HtmlEncode($r001_asset_summary->signature_id->AdvancedSearch->SearchValue) ?>"<?php echo $onchange ?>>
+<script>
+loadjs.ready(["fsummary"], function() {
+	fsummary.createAutoSuggest({"id":"x_signature_id","forceSelect":false});
+});
+</script>
+<?php echo $r001_asset_summary->signature_id->Lookup->getParamTag($r001_asset_summary, "p_x_signature_id") ?>
+</span>
+	</div>
+	<?php if ($r001_asset_summary->SearchColumnCount % $r001_asset_summary->SearchFieldsPerRow == 0) { ?>
+</div>
+	<?php } ?>
+<?php } ?>
+<?php if ($r001_asset_summary->department_id->Visible) { // department_id ?>
+	<?php
+		$r001_asset_summary->SearchColumnCount++;
+		if (($r001_asset_summary->SearchColumnCount - 1) % $r001_asset_summary->SearchFieldsPerRow == 0) {
+			$r001_asset_summary->SearchRowCount++;
+	?>
+<div id="xsr_<?php echo $r001_asset_summary->SearchRowCount ?>" class="ew-row d-sm-flex">
+	<?php
+		}
+	 ?>
+	<div id="xsc_department_id" class="ew-cell form-group">
+		<label class="ew-search-caption ew-label"><?php echo $r001_asset_summary->department_id->caption() ?></label>
+		<span class="ew-search-operator">
+<?php echo $Language->phrase("=") ?>
+<input type="hidden" name="z_department_id" id="z_department_id" value="=">
+</span>
+		<span id="el_r001_asset_department_id" class="ew-search-field">
+<?php
+$onchange = $r001_asset_summary->department_id->EditAttrs->prepend("onchange", "");
+$onchange = ($onchange) ? ' onchange="' . JsEncode($onchange) . '"' : '';
+$r001_asset_summary->department_id->EditAttrs["onchange"] = "";
+?>
+<span id="as_x_department_id">
+	<input type="text" class="form-control" name="sv_x_department_id" id="sv_x_department_id" value="<?php echo RemoveHtml($r001_asset_summary->department_id->EditValue) ?>" size="30" maxlength="11" placeholder="<?php echo HtmlEncode($r001_asset_summary->department_id->getPlaceHolder()) ?>" data-placeholder="<?php echo HtmlEncode($r001_asset_summary->department_id->getPlaceHolder()) ?>"<?php echo $r001_asset_summary->department_id->editAttributes() ?>>
+</span>
+<input type="hidden" data-table="r001_asset" data-field="x_department_id" data-value-separator="<?php echo $r001_asset_summary->department_id->displayValueSeparatorAttribute() ?>" name="x_department_id" id="x_department_id" value="<?php echo HtmlEncode($r001_asset_summary->department_id->AdvancedSearch->SearchValue) ?>"<?php echo $onchange ?>>
+<script>
+loadjs.ready(["fsummary"], function() {
+	fsummary.createAutoSuggest({"id":"x_department_id","forceSelect":false});
+});
+</script>
+<?php echo $r001_asset_summary->department_id->Lookup->getParamTag($r001_asset_summary, "p_x_department_id") ?>
+</span>
+	</div>
+	<?php if ($r001_asset_summary->SearchColumnCount % $r001_asset_summary->SearchFieldsPerRow == 0) { ?>
+</div>
+	<?php } ?>
+<?php } ?>
+<?php if ($r001_asset_summary->location_id->Visible) { // location_id ?>
+	<?php
+		$r001_asset_summary->SearchColumnCount++;
+		if (($r001_asset_summary->SearchColumnCount - 1) % $r001_asset_summary->SearchFieldsPerRow == 0) {
+			$r001_asset_summary->SearchRowCount++;
+	?>
+<div id="xsr_<?php echo $r001_asset_summary->SearchRowCount ?>" class="ew-row d-sm-flex">
+	<?php
+		}
+	 ?>
+	<div id="xsc_location_id" class="ew-cell form-group">
+		<label class="ew-search-caption ew-label"><?php echo $r001_asset_summary->location_id->caption() ?></label>
+		<span class="ew-search-operator">
+<?php echo $Language->phrase("=") ?>
+<input type="hidden" name="z_location_id" id="z_location_id" value="=">
+</span>
+		<span id="el_r001_asset_location_id" class="ew-search-field">
+<?php
+$onchange = $r001_asset_summary->location_id->EditAttrs->prepend("onchange", "");
+$onchange = ($onchange) ? ' onchange="' . JsEncode($onchange) . '"' : '';
+$r001_asset_summary->location_id->EditAttrs["onchange"] = "";
+?>
+<span id="as_x_location_id">
+	<input type="text" class="form-control" name="sv_x_location_id" id="sv_x_location_id" value="<?php echo RemoveHtml($r001_asset_summary->location_id->EditValue) ?>" size="30" maxlength="11" placeholder="<?php echo HtmlEncode($r001_asset_summary->location_id->getPlaceHolder()) ?>" data-placeholder="<?php echo HtmlEncode($r001_asset_summary->location_id->getPlaceHolder()) ?>"<?php echo $r001_asset_summary->location_id->editAttributes() ?>>
+</span>
+<input type="hidden" data-table="r001_asset" data-field="x_location_id" data-value-separator="<?php echo $r001_asset_summary->location_id->displayValueSeparatorAttribute() ?>" name="x_location_id" id="x_location_id" value="<?php echo HtmlEncode($r001_asset_summary->location_id->AdvancedSearch->SearchValue) ?>"<?php echo $onchange ?>>
+<script>
+loadjs.ready(["fsummary"], function() {
+	fsummary.createAutoSuggest({"id":"x_location_id","forceSelect":false});
+});
+</script>
+<?php echo $r001_asset_summary->location_id->Lookup->getParamTag($r001_asset_summary, "p_x_location_id") ?>
+</span>
+	</div>
+	<?php if ($r001_asset_summary->SearchColumnCount % $r001_asset_summary->SearchFieldsPerRow == 0) { ?>
+</div>
+	<?php } ?>
+<?php } ?>
+<?php if ($r001_asset_summary->cond_id->Visible) { // cond_id ?>
+	<?php
+		$r001_asset_summary->SearchColumnCount++;
+		if (($r001_asset_summary->SearchColumnCount - 1) % $r001_asset_summary->SearchFieldsPerRow == 0) {
+			$r001_asset_summary->SearchRowCount++;
+	?>
+<div id="xsr_<?php echo $r001_asset_summary->SearchRowCount ?>" class="ew-row d-sm-flex">
+	<?php
+		}
+	 ?>
+	<div id="xsc_cond_id" class="ew-cell form-group">
+		<label class="ew-search-caption ew-label"><?php echo $r001_asset_summary->cond_id->caption() ?></label>
+		<span class="ew-search-operator">
+<?php echo $Language->phrase("=") ?>
+<input type="hidden" name="z_cond_id" id="z_cond_id" value="=">
+</span>
+		<span id="el_r001_asset_cond_id" class="ew-search-field">
+<?php
+$onchange = $r001_asset_summary->cond_id->EditAttrs->prepend("onchange", "");
+$onchange = ($onchange) ? ' onchange="' . JsEncode($onchange) . '"' : '';
+$r001_asset_summary->cond_id->EditAttrs["onchange"] = "";
+?>
+<span id="as_x_cond_id">
+	<input type="text" class="form-control" name="sv_x_cond_id" id="sv_x_cond_id" value="<?php echo RemoveHtml($r001_asset_summary->cond_id->EditValue) ?>" size="30" maxlength="11" placeholder="<?php echo HtmlEncode($r001_asset_summary->cond_id->getPlaceHolder()) ?>" data-placeholder="<?php echo HtmlEncode($r001_asset_summary->cond_id->getPlaceHolder()) ?>"<?php echo $r001_asset_summary->cond_id->editAttributes() ?>>
+</span>
+<input type="hidden" data-table="r001_asset" data-field="x_cond_id" data-value-separator="<?php echo $r001_asset_summary->cond_id->displayValueSeparatorAttribute() ?>" name="x_cond_id" id="x_cond_id" value="<?php echo HtmlEncode($r001_asset_summary->cond_id->AdvancedSearch->SearchValue) ?>"<?php echo $onchange ?>>
+<script>
+loadjs.ready(["fsummary"], function() {
+	fsummary.createAutoSuggest({"id":"x_cond_id","forceSelect":false});
+});
+</script>
+<?php echo $r001_asset_summary->cond_id->Lookup->getParamTag($r001_asset_summary, "p_x_cond_id") ?>
+</span>
+	</div>
+	<?php if ($r001_asset_summary->SearchColumnCount % $r001_asset_summary->SearchFieldsPerRow == 0) { ?>
+</div>
+	<?php } ?>
+<?php } ?>
+<?php if ($r001_asset_summary->Remarks->Visible) { // Remarks ?>
+	<?php
+		$r001_asset_summary->SearchColumnCount++;
+		if (($r001_asset_summary->SearchColumnCount - 1) % $r001_asset_summary->SearchFieldsPerRow == 0) {
+			$r001_asset_summary->SearchRowCount++;
+	?>
+<div id="xsr_<?php echo $r001_asset_summary->SearchRowCount ?>" class="ew-row d-sm-flex">
+	<?php
+		}
+	 ?>
+	<div id="xsc_Remarks" class="ew-cell form-group">
+		<label for="x_Remarks" class="ew-search-caption ew-label"><?php echo $r001_asset_summary->Remarks->caption() ?></label>
+		<span class="ew-search-operator">
+<?php echo $Language->phrase("LIKE") ?>
+<input type="hidden" name="z_Remarks" id="z_Remarks" value="LIKE">
+</span>
+		<span id="el_r001_asset_Remarks" class="ew-search-field">
+<input type="text" data-table="r001_asset" data-field="x_Remarks" name="x_Remarks" id="x_Remarks" size="35" maxlength="65535" placeholder="<?php echo HtmlEncode($r001_asset_summary->Remarks->getPlaceHolder()) ?>" value="<?php echo $r001_asset_summary->Remarks->EditValue ?>"<?php echo $r001_asset_summary->Remarks->editAttributes() ?>>
+</span>
+	</div>
+	<?php if ($r001_asset_summary->SearchColumnCount % $r001_asset_summary->SearchFieldsPerRow == 0) { ?>
+</div>
+	<?php } ?>
+<?php } ?>
+<?php if ($r001_asset_summary->ProcurementDate->Visible) { // ProcurementDate ?>
+	<?php
+		$r001_asset_summary->SearchColumnCount++;
+		if (($r001_asset_summary->SearchColumnCount - 1) % $r001_asset_summary->SearchFieldsPerRow == 0) {
+			$r001_asset_summary->SearchRowCount++;
+	?>
+<div id="xsr_<?php echo $r001_asset_summary->SearchRowCount ?>" class="ew-row d-sm-flex">
+	<?php
+		}
+	 ?>
+	<div id="xsc_ProcurementDate" class="ew-cell form-group">
+		<label for="x_ProcurementDate" class="ew-search-caption ew-label"><?php echo $r001_asset_summary->ProcurementDate->caption() ?></label>
+		<span class="ew-search-operator">
+<?php echo $Language->phrase("=") ?>
+<input type="hidden" name="z_ProcurementDate" id="z_ProcurementDate" value="=">
+</span>
+		<span id="el_r001_asset_ProcurementDate" class="ew-search-field">
+<input type="text" data-table="r001_asset" data-field="x_ProcurementDate" data-format="7" name="x_ProcurementDate" id="x_ProcurementDate" maxlength="10" placeholder="<?php echo HtmlEncode($r001_asset_summary->ProcurementDate->getPlaceHolder()) ?>" value="<?php echo $r001_asset_summary->ProcurementDate->EditValue ?>"<?php echo $r001_asset_summary->ProcurementDate->editAttributes() ?>>
+<?php if (!$r001_asset_summary->ProcurementDate->ReadOnly && !$r001_asset_summary->ProcurementDate->Disabled && !isset($r001_asset_summary->ProcurementDate->EditAttrs["readonly"]) && !isset($r001_asset_summary->ProcurementDate->EditAttrs["disabled"])) { ?>
+<script>
+loadjs.ready(["fsummary", "datetimepicker"], function() {
+	ew.createDateTimePicker("fsummary", "x_ProcurementDate", {"ignoreReadonly":true,"useCurrent":false,"format":7});
+});
+</script>
+<?php } ?>
+</span>
+	</div>
+	<?php if ($r001_asset_summary->SearchColumnCount % $r001_asset_summary->SearchFieldsPerRow == 0) { ?>
+</div>
+	<?php } ?>
+<?php } ?>
+	<?php if ($r001_asset_summary->SearchColumnCount % $r001_asset_summary->SearchFieldsPerRow > 0) { ?>
+</div>
+	<?php } ?>
+<div id="xsr_<?php echo $r001_asset_summary->SearchRowCount + 1 ?>" class="ew-row d-sm-flex">
+	<button class="btn btn-primary" name="btn-submit" id="btn-submit" type="submit"><?php echo $Language->phrase("SearchBtn") ?></button>
+</div>
+	</div><!-- /.ew-extended-search -->
+</div><!-- /.ew-search-panel -->
+</form>
+<?php } ?>
+<?php } ?>
 <?php } ?>
 <?php
 while ($r001_asset_summary->GroupCount <= count($r001_asset_summary->GroupRecords) && $r001_asset_summary->GroupCount <= $r001_asset_summary->DisplayGroups) {

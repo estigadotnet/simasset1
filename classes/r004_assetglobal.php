@@ -2,9 +2,9 @@
 <?php
 
 /**
- * Table class for r001_asset
+ * Table class for r004_assetglobal
  */
-class r001_asset extends ReportTable
+class r004_assetglobal extends ReportTable
 {
 	protected $SqlFrom = "";
 	protected $SqlSelect = "";
@@ -20,31 +20,17 @@ class r001_asset extends ReportTable
 	public $RightColumnClass = "col-sm-10";
 	public $OffsetColumnClass = "col-sm-10 offset-sm-2";
 	public $TableLeftColumnClass = "w-col-2";
-	public $ShowGroupHeaderAsRow = TRUE;
+	public $ShowGroupHeaderAsRow = FALSE;
 	public $ShowCompactSummaryFooter = TRUE;
 
 	// Export
 	public $ExportDoc;
 
 	// Fields
-	public $id;
-	public $property_id;
-	public $group_id;
-	public $Code;
-	public $Description;
-	public $brand_id;
-	public $type_id;
-	public $signature_id;
-	public $department_id;
-	public $location_id;
-	public $Qty;
-	public $Variance;
-	public $cond_id;
-	public $Remarks;
-	public $ProcurementDate;
-	public $ProcurementCurrentCost;
-	public $PeriodBegin;
-	public $PeriodEnd;
+	public $groupDescription;
+	public $typeDescription;
+	public $bookValue2Label;
+	public $bookValue2;
 
 	// Constructor
 	public function __construct()
@@ -55,13 +41,13 @@ class r001_asset extends ReportTable
 		// Language object
 		if (!isset($Language))
 			$Language = new Language();
-		$this->TableVar = 'r001_asset';
-		$this->TableName = 'r001_asset';
+		$this->TableVar = 'r004_assetglobal';
+		$this->TableName = 'r004_assetglobal';
 		$this->TableType = 'REPORT';
 
 		// Update Table
-		$this->UpdateTable = "`t004_asset`";
-		$this->ReportSourceTable = 't004_asset'; // Report source table
+		$this->UpdateTable = "`v104_assetglobal`";
+		$this->ReportSourceTable = 'v104_assetglobal'; // Report source table
 		$this->Dbid = 'DB';
 		$this->ExportAll = TRUE;
 		$this->ExportPageBreakCount = 0; // Page break per every n record (report only)
@@ -73,187 +59,52 @@ class r001_asset extends ReportTable
 		$this->ExportWordColumnWidth = NULL; // Cell width (PHPWord only)
 		$this->UserIDAllowSecurity = Config("DEFAULT_USER_ID_ALLOW_SECURITY"); // Default User ID allowed permissions
 
-		// id
-		$this->id = new ReportField('r001_asset', 'r001_asset', 'x_id', 'id', '`id`', '`id`', 3, 11, -1, FALSE, '`id`', FALSE, FALSE, FALSE, 'FORMATTED TEXT', 'NO');
-		$this->id->IsAutoIncrement = TRUE; // Autoincrement field
-		$this->id->IsPrimaryKey = TRUE; // Primary key field
-		$this->id->Sortable = TRUE; // Allow sort
-		$this->id->DefaultErrorMessage = $Language->phrase("IncorrectInteger");
-		$this->id->SourceTableVar = 't004_asset';
-		$this->fields['id'] = &$this->id;
+		// groupDescription
+		$this->groupDescription = new ReportField('r004_assetglobal', 'r004_assetglobal', 'x_groupDescription', 'groupDescription', '`groupDescription`', '`groupDescription`', 200, 255, -1, FALSE, '`groupDescription`', FALSE, FALSE, FALSE, 'FORMATTED TEXT', 'TEXT');
+		$this->groupDescription->GroupingFieldId = 1;
+		$this->groupDescription->ShowGroupHeaderAsRow = $this->ShowGroupHeaderAsRow;
+		$this->groupDescription->ShowCompactSummaryFooter = $this->ShowCompactSummaryFooter;
+		$this->groupDescription->GroupByType = "";
+		$this->groupDescription->GroupInterval = "0";
+		$this->groupDescription->GroupSql = "";
+		$this->groupDescription->Nullable = FALSE; // NOT NULL field
+		$this->groupDescription->Required = TRUE; // Required field
+		$this->groupDescription->Sortable = TRUE; // Allow sort
+		$this->groupDescription->SourceTableVar = 'v104_assetglobal';
+		$this->fields['groupDescription'] = &$this->groupDescription;
 
-		// property_id
-		$this->property_id = new ReportField('r001_asset', 'r001_asset', 'x_property_id', 'property_id', '`property_id`', '`property_id`', 3, 11, -1, FALSE, '`property_id`', FALSE, FALSE, FALSE, 'FORMATTED TEXT', 'TEXT');
-		$this->property_id->GroupingFieldId = 1;
-		$this->property_id->ShowGroupHeaderAsRow = $this->ShowGroupHeaderAsRow;
-		$this->property_id->ShowCompactSummaryFooter = $this->ShowCompactSummaryFooter;
-		$this->property_id->GroupByType = "";
-		$this->property_id->GroupInterval = "0";
-		$this->property_id->GroupSql = "";
-		$this->property_id->Nullable = FALSE; // NOT NULL field
-		$this->property_id->Required = TRUE; // Required field
-		$this->property_id->Sortable = TRUE; // Allow sort
-		$this->property_id->Lookup = new Lookup('property_id', 't001_property', FALSE, 'id', ["Property","","",""], [], [], [], [], [], [], '', '');
-		$this->property_id->DefaultErrorMessage = $Language->phrase("IncorrectInteger");
-		$this->property_id->SourceTableVar = 't004_asset';
-		$this->fields['property_id'] = &$this->property_id;
+		// typeDescription
+		$this->typeDescription = new ReportField('r004_assetglobal', 'r004_assetglobal', 'x_typeDescription', 'typeDescription', '`typeDescription`', '`typeDescription`', 200, 50, -1, FALSE, '`typeDescription`', FALSE, FALSE, FALSE, 'FORMATTED TEXT', 'TEXT');
+		$this->typeDescription->Nullable = FALSE; // NOT NULL field
+		$this->typeDescription->Required = TRUE; // Required field
+		$this->typeDescription->Sortable = TRUE; // Allow sort
+		$this->typeDescription->SourceTableVar = 'v104_assetglobal';
+		$this->fields['typeDescription'] = &$this->typeDescription;
 
-		// group_id
-		$this->group_id = new ReportField('r001_asset', 'r001_asset', 'x_group_id', 'group_id', '`group_id`', '`group_id`', 3, 11, -1, FALSE, '`group_id`', FALSE, FALSE, FALSE, 'FORMATTED TEXT', 'TEXT');
-		$this->group_id->GroupingFieldId = 2;
-		$this->group_id->ShowGroupHeaderAsRow = $this->ShowGroupHeaderAsRow;
-		$this->group_id->ShowCompactSummaryFooter = $this->ShowCompactSummaryFooter;
-		$this->group_id->GroupByType = "";
-		$this->group_id->GroupInterval = "0";
-		$this->group_id->GroupSql = "";
-		$this->group_id->Nullable = FALSE; // NOT NULL field
-		$this->group_id->Required = TRUE; // Required field
-		$this->group_id->Sortable = TRUE; // Allow sort
-		$this->group_id->Lookup = new Lookup('group_id', 't005_assetgroup', FALSE, 'id', ["Description","","",""], [], [], [], [], [], [], '', '');
-		$this->group_id->DefaultErrorMessage = $Language->phrase("IncorrectInteger");
-		$this->group_id->SourceTableVar = 't004_asset';
-		$this->fields['group_id'] = &$this->group_id;
+		// bookValue2Label
+		$this->bookValue2Label = new ReportField('r004_assetglobal', 'r004_assetglobal', 'x_bookValue2Label', 'bookValue2Label', '`bookValue2Label`', '`bookValue2Label`', 200, 15, -1, FALSE, '`bookValue2Label`', FALSE, FALSE, FALSE, 'FORMATTED TEXT', 'TEXT');
+		$this->bookValue2Label->GroupingFieldId = 2;
+		$this->bookValue2Label->ShowGroupHeaderAsRow = $this->ShowGroupHeaderAsRow;
+		$this->bookValue2Label->ShowCompactSummaryFooter = $this->ShowCompactSummaryFooter;
+		$this->bookValue2Label->GroupByType = "";
+		$this->bookValue2Label->GroupInterval = "0";
+		$this->bookValue2Label->GroupSql = "";
+		$this->bookValue2Label->Sortable = TRUE; // Allow sort
+		$this->bookValue2Label->SourceTableVar = 'v104_assetglobal';
+		$this->fields['bookValue2Label'] = &$this->bookValue2Label;
 
-		// Code
-		$this->Code = new ReportField('r001_asset', 'r001_asset', 'x_Code', 'Code', '`Code`', '`Code`', 200, 25, -1, FALSE, '`Code`', FALSE, FALSE, FALSE, 'FORMATTED TEXT', 'TEXT');
-		$this->Code->Nullable = FALSE; // NOT NULL field
-		$this->Code->Required = TRUE; // Required field
-		$this->Code->Sortable = TRUE; // Allow sort
-		$this->Code->SourceTableVar = 't004_asset';
-		$this->fields['Code'] = &$this->Code;
-
-		// Description
-		$this->Description = new ReportField('r001_asset', 'r001_asset', 'x_Description', 'Description', '`Description`', '`Description`', 200, 255, -1, FALSE, '`Description`', FALSE, FALSE, FALSE, 'FORMATTED TEXT', 'TEXT');
-		$this->Description->Nullable = FALSE; // NOT NULL field
-		$this->Description->Required = TRUE; // Required field
-		$this->Description->Sortable = TRUE; // Allow sort
-		$this->Description->SourceTableVar = 't004_asset';
-		$this->fields['Description'] = &$this->Description;
-
-		// brand_id
-		$this->brand_id = new ReportField('r001_asset', 'r001_asset', 'x_brand_id', 'brand_id', '`brand_id`', '`brand_id`', 3, 11, -1, FALSE, '`brand_id`', FALSE, FALSE, FALSE, 'FORMATTED TEXT', 'TEXT');
-		$this->brand_id->Nullable = FALSE; // NOT NULL field
-		$this->brand_id->Required = TRUE; // Required field
-		$this->brand_id->Sortable = TRUE; // Allow sort
-		$this->brand_id->Lookup = new Lookup('brand_id', 't008_brand', FALSE, 'id', ["Brand","","",""], [], [], [], [], [], [], '', '');
-		$this->brand_id->DefaultErrorMessage = $Language->phrase("IncorrectInteger");
-		$this->brand_id->SourceTableVar = 't004_asset';
-		$this->fields['brand_id'] = &$this->brand_id;
-
-		// type_id
-		$this->type_id = new ReportField('r001_asset', 'r001_asset', 'x_type_id', 'type_id', '`type_id`', '`type_id`', 3, 11, -1, FALSE, '`type_id`', FALSE, FALSE, FALSE, 'FORMATTED TEXT', 'TEXT');
-		$this->type_id->GroupingFieldId = 3;
-		$this->type_id->ShowGroupHeaderAsRow = $this->ShowGroupHeaderAsRow;
-		$this->type_id->ShowCompactSummaryFooter = $this->ShowCompactSummaryFooter;
-		$this->type_id->GroupByType = "";
-		$this->type_id->GroupInterval = "0";
-		$this->type_id->GroupSql = "";
-		$this->type_id->Nullable = FALSE; // NOT NULL field
-		$this->type_id->Required = TRUE; // Required field
-		$this->type_id->Sortable = TRUE; // Allow sort
-		$this->type_id->Lookup = new Lookup('type_id', 't007_assettype', FALSE, 'id', ["Description","","",""], [], [], [], [], [], [], '', '');
-		$this->type_id->DefaultErrorMessage = $Language->phrase("IncorrectInteger");
-		$this->type_id->SourceTableVar = 't004_asset';
-		$this->fields['type_id'] = &$this->type_id;
-
-		// signature_id
-		$this->signature_id = new ReportField('r001_asset', 'r001_asset', 'x_signature_id', 'signature_id', '`signature_id`', '`signature_id`', 3, 11, -1, FALSE, '`signature_id`', FALSE, FALSE, FALSE, 'FORMATTED TEXT', 'TEXT');
-		$this->signature_id->Nullable = FALSE; // NOT NULL field
-		$this->signature_id->Required = TRUE; // Required field
-		$this->signature_id->Sortable = TRUE; // Allow sort
-		$this->signature_id->Lookup = new Lookup('signature_id', 't003_signature', FALSE, 'id', ["Signature","","",""], [], [], [], [], [], [], '', '');
-		$this->signature_id->DefaultErrorMessage = $Language->phrase("IncorrectInteger");
-		$this->signature_id->SourceTableVar = 't004_asset';
-		$this->fields['signature_id'] = &$this->signature_id;
-
-		// department_id
-		$this->department_id = new ReportField('r001_asset', 'r001_asset', 'x_department_id', 'department_id', '`department_id`', '`department_id`', 3, 11, -1, FALSE, '`department_id`', FALSE, FALSE, FALSE, 'FORMATTED TEXT', 'TEXT');
-		$this->department_id->Nullable = FALSE; // NOT NULL field
-		$this->department_id->Required = TRUE; // Required field
-		$this->department_id->Sortable = TRUE; // Allow sort
-		$this->department_id->Lookup = new Lookup('department_id', 't002_department', FALSE, 'id', ["Department","","",""], [], [], [], [], [], [], '', '');
-		$this->department_id->DefaultErrorMessage = $Language->phrase("IncorrectInteger");
-		$this->department_id->SourceTableVar = 't004_asset';
-		$this->fields['department_id'] = &$this->department_id;
-
-		// location_id
-		$this->location_id = new ReportField('r001_asset', 'r001_asset', 'x_location_id', 'location_id', '`location_id`', '`location_id`', 3, 11, -1, FALSE, '`location_id`', FALSE, FALSE, FALSE, 'FORMATTED TEXT', 'TEXT');
-		$this->location_id->Nullable = FALSE; // NOT NULL field
-		$this->location_id->Required = TRUE; // Required field
-		$this->location_id->Sortable = TRUE; // Allow sort
-		$this->location_id->Lookup = new Lookup('location_id', 't009_location', FALSE, 'id', ["Location","","",""], [], [], [], [], [], [], '', '');
-		$this->location_id->DefaultErrorMessage = $Language->phrase("IncorrectInteger");
-		$this->location_id->SourceTableVar = 't004_asset';
-		$this->fields['location_id'] = &$this->location_id;
-
-		// Qty
-		$this->Qty = new ReportField('r001_asset', 'r001_asset', 'x_Qty', 'Qty', '`Qty`', '`Qty`', 4, 14, -1, FALSE, '`Qty`', FALSE, FALSE, FALSE, 'FORMATTED TEXT', 'TEXT');
-		$this->Qty->Nullable = FALSE; // NOT NULL field
-		$this->Qty->Required = TRUE; // Required field
-		$this->Qty->Sortable = TRUE; // Allow sort
-		$this->Qty->DefaultErrorMessage = $Language->phrase("IncorrectFloat");
-		$this->Qty->SourceTableVar = 't004_asset';
-		$this->fields['Qty'] = &$this->Qty;
-
-		// Variance
-		$this->Variance = new ReportField('r001_asset', 'r001_asset', 'x_Variance', 'Variance', '`Variance`', '`Variance`', 4, 14, -1, FALSE, '`Variance`', FALSE, FALSE, FALSE, 'FORMATTED TEXT', 'TEXT');
-		$this->Variance->Nullable = FALSE; // NOT NULL field
-		$this->Variance->Sortable = TRUE; // Allow sort
-		$this->Variance->DefaultErrorMessage = $Language->phrase("IncorrectFloat");
-		$this->Variance->SourceTableVar = 't004_asset';
-		$this->fields['Variance'] = &$this->Variance;
-
-		// cond_id
-		$this->cond_id = new ReportField('r001_asset', 'r001_asset', 'x_cond_id', 'cond_id', '`cond_id`', '`cond_id`', 3, 11, -1, FALSE, '`cond_id`', FALSE, FALSE, FALSE, 'FORMATTED TEXT', 'TEXT');
-		$this->cond_id->Nullable = FALSE; // NOT NULL field
-		$this->cond_id->Required = TRUE; // Required field
-		$this->cond_id->Sortable = TRUE; // Allow sort
-		$this->cond_id->Lookup = new Lookup('cond_id', 't010_condition', FALSE, 'id', ["Status","","",""], [], [], [], [], [], [], '', '');
-		$this->cond_id->DefaultErrorMessage = $Language->phrase("IncorrectInteger");
-		$this->cond_id->SourceTableVar = 't004_asset';
-		$this->fields['cond_id'] = &$this->cond_id;
-
-		// Remarks
-		$this->Remarks = new ReportField('r001_asset', 'r001_asset', 'x_Remarks', 'Remarks', '`Remarks`', '`Remarks`', 201, 65535, -1, FALSE, '`Remarks`', FALSE, FALSE, FALSE, 'FORMATTED TEXT', 'TEXTAREA');
-		$this->Remarks->Sortable = TRUE; // Allow sort
-		$this->Remarks->SourceTableVar = 't004_asset';
-		$this->fields['Remarks'] = &$this->Remarks;
-
-		// ProcurementDate
-		$this->ProcurementDate = new ReportField('r001_asset', 'r001_asset', 'x_ProcurementDate', 'ProcurementDate', '`ProcurementDate`', CastDateFieldForLike("`ProcurementDate`", 7, "DB"), 133, 10, 7, FALSE, '`ProcurementDate`', FALSE, FALSE, FALSE, 'FORMATTED TEXT', 'TEXT');
-		$this->ProcurementDate->Nullable = FALSE; // NOT NULL field
-		$this->ProcurementDate->Required = TRUE; // Required field
-		$this->ProcurementDate->Sortable = TRUE; // Allow sort
-		$this->ProcurementDate->DefaultErrorMessage = str_replace("%s", $GLOBALS["DATE_SEPARATOR"], $Language->phrase("IncorrectDateDMY"));
-		$this->ProcurementDate->SourceTableVar = 't004_asset';
-		$this->fields['ProcurementDate'] = &$this->ProcurementDate;
-
-		// ProcurementCurrentCost
-		$this->ProcurementCurrentCost = new ReportField('r001_asset', 'r001_asset', 'x_ProcurementCurrentCost', 'ProcurementCurrentCost', '`ProcurementCurrentCost`', '`ProcurementCurrentCost`', 4, 17, -1, FALSE, '`ProcurementCurrentCost`', FALSE, FALSE, FALSE, 'FORMATTED TEXT', 'TEXT');
-		$this->ProcurementCurrentCost->Nullable = FALSE; // NOT NULL field
-		$this->ProcurementCurrentCost->Required = TRUE; // Required field
-		$this->ProcurementCurrentCost->Sortable = TRUE; // Allow sort
-		$this->ProcurementCurrentCost->DefaultErrorMessage = $Language->phrase("IncorrectFloat");
-		$this->ProcurementCurrentCost->SourceTableVar = 't004_asset';
-		$this->fields['ProcurementCurrentCost'] = &$this->ProcurementCurrentCost;
-
-		// PeriodBegin
-		$this->PeriodBegin = new ReportField('r001_asset', 'r001_asset', 'x_PeriodBegin', 'PeriodBegin', '`PeriodBegin`', CastDateFieldForLike("`PeriodBegin`", 7, "DB"), 133, 10, 7, FALSE, '`PeriodBegin`', FALSE, FALSE, FALSE, 'FORMATTED TEXT', 'TEXT');
-		$this->PeriodBegin->Nullable = FALSE; // NOT NULL field
-		$this->PeriodBegin->Required = TRUE; // Required field
-		$this->PeriodBegin->Sortable = TRUE; // Allow sort
-		$this->PeriodBegin->DefaultErrorMessage = str_replace("%s", $GLOBALS["DATE_SEPARATOR"], $Language->phrase("IncorrectDateDMY"));
-		$this->PeriodBegin->SourceTableVar = 't004_asset';
-		$this->fields['PeriodBegin'] = &$this->PeriodBegin;
-
-		// PeriodEnd
-		$this->PeriodEnd = new ReportField('r001_asset', 'r001_asset', 'x_PeriodEnd', 'PeriodEnd', '`PeriodEnd`', CastDateFieldForLike("`PeriodEnd`", 7, "DB"), 133, 10, 7, FALSE, '`PeriodEnd`', FALSE, FALSE, FALSE, 'FORMATTED TEXT', 'TEXT');
-		$this->PeriodEnd->Nullable = FALSE; // NOT NULL field
-		$this->PeriodEnd->Required = TRUE; // Required field
-		$this->PeriodEnd->Sortable = TRUE; // Allow sort
-		$this->PeriodEnd->DefaultErrorMessage = str_replace("%s", $GLOBALS["DATE_SEPARATOR"], $Language->phrase("IncorrectDateDMY"));
-		$this->PeriodEnd->SourceTableVar = 't004_asset';
-		$this->fields['PeriodEnd'] = &$this->PeriodEnd;
+		// bookValue2
+		$this->bookValue2 = new ReportField('r004_assetglobal', 'r004_assetglobal', 'x_bookValue2', 'bookValue2', '`bookValue2`', '`bookValue2`', 20, 11, -1, FALSE, '`bookValue2`', FALSE, FALSE, FALSE, 'FORMATTED TEXT', 'TEXT');
+		$this->bookValue2->GroupingFieldId = 3;
+		$this->bookValue2->ShowGroupHeaderAsRow = $this->ShowGroupHeaderAsRow;
+		$this->bookValue2->ShowCompactSummaryFooter = $this->ShowCompactSummaryFooter;
+		$this->bookValue2->GroupByType = "";
+		$this->bookValue2->GroupInterval = "0";
+		$this->bookValue2->GroupSql = "";
+		$this->bookValue2->Sortable = TRUE; // Allow sort
+		$this->bookValue2->DefaultErrorMessage = $Language->phrase("IncorrectInteger");
+		$this->bookValue2->SourceTableVar = 'v104_assetglobal';
+		$this->fields['bookValue2'] = &$this->bookValue2;
 	}
 
 	// Field Visibility
@@ -332,7 +183,7 @@ class r001_asset extends ReportTable
 	{
 		if ($this->_sqlFirstGroupField != "")
 			return $this->_sqlFirstGroupField;
-		$firstGroupField = &$this->property_id;
+		$firstGroupField = &$this->groupDescription;
 		$expr = $firstGroupField->Expression;
 		if ($firstGroupField->GroupSql != "") {
 			$expr = str_replace("%s", $firstGroupField->Expression, $firstGroupField->GroupSql);
@@ -417,24 +268,12 @@ class r001_asset extends ReportTable
 	// Render for lookup
 	public function renderLookup()
 	{
-		$this->property_id->ViewValue = $this->property_id->CurrentValue;
-		$this->group_id->ViewValue = $this->group_id->CurrentValue;
-		$this->Code->ViewValue = $this->Code->CurrentValue;
-		$this->Description->ViewValue = $this->Description->CurrentValue;
-		$this->brand_id->ViewValue = $this->brand_id->CurrentValue;
-		$this->type_id->ViewValue = $this->type_id->CurrentValue;
-		$this->signature_id->ViewValue = $this->signature_id->CurrentValue;
-		$this->department_id->ViewValue = $this->department_id->CurrentValue;
-		$this->location_id->ViewValue = $this->location_id->CurrentValue;
-		$this->cond_id->ViewValue = $this->cond_id->CurrentValue;
-		$this->Remarks->ViewValue = $this->Remarks->CurrentValue;
-		$this->ProcurementDate->ViewValue = FormatDateTime($this->ProcurementDate->CurrentValue, 7);
 	}
 
 	// Table level SQL
 	public function getSqlFrom() // From
 	{
-		return ($this->SqlFrom != "") ? $this->SqlFrom : "`t004_asset`";
+		return ($this->SqlFrom != "") ? $this->SqlFrom : "`v104_assetglobal`";
 	}
 	public function sqlFrom() // For backward compatibility
 	{
@@ -449,17 +288,17 @@ class r001_asset extends ReportTable
 		if ($this->SqlSelect != "")
 			return $this->SqlSelect;
 		$select = "*";
-		$groupField = &$this->property_id;
+		$groupField = &$this->groupDescription;
 		if ($groupField->GroupSql != "") {
 			$expr = str_replace("%s", $groupField->Expression, $groupField->GroupSql) . " AS " . QuotedName($groupField->getGroupName(), $this->Dbid);
 			$select .= ", " . $expr;
 		}
-		$groupField = &$this->group_id;
+		$groupField = &$this->bookValue2Label;
 		if ($groupField->GroupSql != "") {
 			$expr = str_replace("%s", $groupField->Expression, $groupField->GroupSql) . " AS " . QuotedName($groupField->getGroupName(), $this->Dbid);
 			$select .= ", " . $expr;
 		}
-		$groupField = &$this->type_id;
+		$groupField = &$this->bookValue2;
 		if ($groupField->GroupSql != "") {
 			$expr = str_replace("%s", $groupField->Expression, $groupField->GroupSql) . " AS " . QuotedName($groupField->getGroupName(), $this->Dbid);
 			$select .= ", " . $expr;
@@ -609,23 +448,13 @@ class r001_asset extends ReportTable
 	// Record filter WHERE clause
 	protected function sqlKeyFilter()
 	{
-		return "`id` = @id@";
+		return "";
 	}
 
 	// Get record filter
 	public function getRecordFilter($row = NULL)
 	{
 		$keyFilter = $this->sqlKeyFilter();
-		if (is_array($row))
-			$val = array_key_exists('id', $row) ? $row['id'] : NULL;
-		else
-			$val = $this->id->OldValue !== NULL ? $this->id->OldValue : $this->id->CurrentValue;
-		if (!is_numeric($val))
-			return "0=1"; // Invalid key
-		if ($val == NULL)
-			return "0=1"; // Invalid key
-		else
-			$keyFilter = str_replace("@id@", AdjustSql($val, $this->Dbid), $keyFilter); // Replace key value
 		return $keyFilter;
 	}
 
@@ -730,7 +559,6 @@ class r001_asset extends ReportTable
 	public function keyToJson($htmlEncode = FALSE)
 	{
 		$json = "";
-		$json .= "id:" . JsonEncode($this->id->CurrentValue, "number");
 		$json = "{" . $json . "}";
 		if ($htmlEncode)
 			$json = HtmlEncode($json);
@@ -743,11 +571,6 @@ class r001_asset extends ReportTable
 		$url = $url . "?";
 		if ($parm != "")
 			$url .= $parm . "&";
-		if ($this->id->CurrentValue != NULL) {
-			$url .= "id=" . urlencode($this->id->CurrentValue);
-		} else {
-			return "javascript:ew.alert(ew.language.phrase('InvalidRecord'));";
-		}
 		return $url;
 	}
 
@@ -776,14 +599,6 @@ class r001_asset extends ReportTable
 			$arKeys = Param("key_m");
 			$cnt = count($arKeys);
 		} else {
-			if (Param("id") !== NULL)
-				$arKeys[] = Param("id");
-			elseif (IsApi() && Key(0) !== NULL)
-				$arKeys[] = Key(0);
-			elseif (IsApi() && Route(2) !== NULL)
-				$arKeys[] = Route(2);
-			else
-				$arKeys = NULL; // Do not setup
 
 			//return $arKeys; // Do not return yet, so the values will also be checked by the following code
 		}
@@ -792,8 +607,6 @@ class r001_asset extends ReportTable
 		$ar = [];
 		if (is_array($arKeys)) {
 			foreach ($arKeys as $key) {
-				if (!is_numeric($key))
-					continue;
 				$ar[] = $key;
 			}
 		}
@@ -807,10 +620,6 @@ class r001_asset extends ReportTable
 		$keyFilter = "";
 		foreach ($arKeys as $key) {
 			if ($keyFilter != "") $keyFilter .= " OR ";
-			if ($setCurrent)
-				$this->id->CurrentValue = $key;
-			else
-				$this->id->OldValue = $key;
 			$keyFilter .= "(" . $this->getRecordFilter() . ")";
 		}
 		return $keyFilter;

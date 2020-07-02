@@ -335,6 +335,10 @@ class index
 			$this->terminate("v101_holist.php");
 		if ($Security->allowList(CurrentProjectID() . 'v101_ho_2'))
 			$this->terminate("v101_ho_2list.php");
+		if ($Security->allowList(CurrentProjectID() . 'v104_assetglobal'))
+			$this->terminate("v104_assetgloballist.php");
+		if ($Security->allowList(CurrentProjectID() . 'r004_assetglobal'))
+			$this->terminate("r004_assetglobalsmry.php");
 		if ($Security->isLoggedIn()) {
 			$this->setFailureMessage(DeniedMessage() . "<br><br><a href=\"logout.php\">" . $Language->phrase("BackToLogin") . "</a>");
 		} else {
