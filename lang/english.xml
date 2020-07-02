@@ -1232,7 +1232,7 @@
       </field>
     </table>
     <table id="t101_ho_head">
-      <phrase id="tblcaption" value="Handover (Owner to Property)" />
+      <phrase id="tblcaption" value="Handover" />
       <field id="id">
         <phrase id="fldcaption" value="id" />
       </field>

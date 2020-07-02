@@ -91,7 +91,7 @@ $USER_LEVEL_TABLES = [["c101_ho.php","c101_ho","Cetak Handover Form",true,"{E1C6
 	["t009_location","t009_location","Location",true,"{E1C6E322-15B9-474C-85CF-A99378A9BC2B}"],
 	["t010_condition","t010_condition","Status",true,"{E1C6E322-15B9-474C-85CF-A99378A9BC2B}"],
 	["t011_reason","t011_reason","Reason",true,"{E1C6E322-15B9-474C-85CF-A99378A9BC2B}"],
-	["t101_ho_head","t101_ho_head","Handover (Owner to Property)",true,"{E1C6E322-15B9-474C-85CF-A99378A9BC2B}"],
+	["t101_ho_head","t101_ho_head","Handover",true,"{E1C6E322-15B9-474C-85CF-A99378A9BC2B}"],
 	["t102_ho_detail","t102_ho_detail","Asset",true,"{E1C6E322-15B9-474C-85CF-A99378A9BC2B}"],
 	["t103_ho1_head","t103_ho1_head","Handover (Property to Personnel/Dept.)",true,"{E1C6E322-15B9-474C-85CF-A99378A9BC2B}"],
 	["t104_ho1_detail","t104_ho1_detail","Asset",true,"{E1C6E322-15B9-474C-85CF-A99378A9BC2B}"],
