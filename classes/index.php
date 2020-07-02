@@ -293,6 +293,8 @@ class index
 			$this->terminate("c9.php");
 		if ($Security->allowList(CurrentProjectID() . 'r001_asset'))
 			$this->terminate("r001_assetsmry.php");
+		if ($Security->allowList(CurrentProjectID() . 'r004_assetglobal'))
+			$this->terminate("r004_assetglobalsmry.php");
 		if ($Security->allowList(CurrentProjectID() . 't001_property'))
 			$this->terminate("t001_propertylist.php");
 		if ($Security->allowList(CurrentProjectID() . 't002_department'))
@@ -321,6 +323,8 @@ class index
 			$this->terminate("t103_ho1_headlist.php");
 		if ($Security->allowList(CurrentProjectID() . 't104_ho1_detail'))
 			$this->terminate("t104_ho1_detaillist.php");
+		if ($Security->allowList(CurrentProjectID() . 't105_disposalhead'))
+			$this->terminate("t105_disposalheadlist.php");
 		if ($Security->allowList(CurrentProjectID() . 't201_users'))
 			$this->terminate("t201_userslist.php");
 		if ($Security->allowList(CurrentProjectID() . 't202_userlevels'))
@@ -337,8 +341,6 @@ class index
 			$this->terminate("v101_ho_2list.php");
 		if ($Security->allowList(CurrentProjectID() . 'v104_assetglobal'))
 			$this->terminate("v104_assetgloballist.php");
-		if ($Security->allowList(CurrentProjectID() . 'r004_assetglobal'))
-			$this->terminate("r004_assetglobalsmry.php");
 		if ($Security->isLoggedIn()) {
 			$this->setFailureMessage(DeniedMessage() . "<br><br><a href=\"logout.php\">" . $Language->phrase("BackToLogin") . "</a>");
 		} else {

@@ -342,13 +342,13 @@ class d301_home_dashboard extends ReportTable
 		if (!isset($GLOBALS['r001_asset']))
 			$GLOBALS['r001_asset'] = new r001_asset();
 
-		// Table object (t201_users)
-		if (!isset($GLOBALS['t201_users']))
-			$GLOBALS['t201_users'] = new t201_users();
-
 		// Table object (r004_assetglobal)
 		if (!isset($GLOBALS['r004_assetglobal']))
 			$GLOBALS['r004_assetglobal'] = new r004_assetglobal();
+
+		// Table object (t201_users)
+		if (!isset($GLOBALS['t201_users']))
+			$GLOBALS['t201_users'] = new t201_users();
 
 		// Page ID (for backward compatibility only)
 		if (!defined(PROJECT_NAMESPACE . "PAGE_ID"))

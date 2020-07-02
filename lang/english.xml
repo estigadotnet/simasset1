@@ -925,6 +925,9 @@
     <menu id="40">
       <phrase id="menutext" value="Asset" />
     </menu>
+    <menu id="50">
+      <phrase id="menutext" value="Disposal" />
+    </menu>
     <menu id="18">
       <phrase id="menutext" value="Report" />
     </menu>
@@ -935,7 +938,7 @@
       <phrase id="menutext" value="viewassetglobal" />
     </menu>
     <menu id="13">
-      <phrase id="menutext" value="Asset" />
+      <phrase id="menutext" value="Asset (Detail)" />
     </menu>
     <menu id="17">
       <phrase id="menutext" value="Utility" />
@@ -968,7 +971,7 @@
       <phrase id="tblcaption" value="Dashboard" />
     </table>
     <table id="r001_asset">
-      <phrase id="tblcaption" value="Asset" />
+      <phrase id="tblcaption" value="Asset (Detail)" />
       <field id="id">
         <phrase id="fldcaption" value="id" />
       </field>
@@ -1022,6 +1025,21 @@
       </field>
       <field id="periodend">
         <phrase id="fldcaption" value="Period End" />
+      </field>
+    </table>
+    <table id="r004_assetglobal">
+      <phrase id="tblcaption" value="Asset (Global)" />
+      <field id="groupdescription">
+        <phrase id="fldcaption" value="Tangible Assets" />
+      </field>
+      <field id="typedescription">
+        <phrase id="fldcaption" value="Asset Type" />
+      </field>
+      <field id="bookvalue2label">
+        <phrase id="fldcaption" value="Sub-Group" />
+      </field>
+      <field id="bookvalue2">
+        <phrase id="fldcaption" value="Book Value" />
       </field>
     </table>
     <table id="t001_property">
@@ -1300,6 +1318,36 @@
       </field>
       <field id="asset_id">
         <phrase id="fldcaption" value="asset id" />
+      </field>
+    </table>
+    <table id="t105_disposalhead">
+      <phrase id="tblcaption" value="Disposal" />
+      <field id="id">
+        <phrase id="fldcaption" value="id" />
+      </field>
+      <field id="property_id">
+        <phrase id="fldcaption" value="property id" />
+      </field>
+      <field id="transactionno">
+        <phrase id="fldcaption" value="Transaction No" />
+      </field>
+      <field id="recommendedby">
+        <phrase id="fldcaption" value="Recommended By" />
+      </field>
+      <field id="ce">
+        <phrase id="fldcaption" value="CE" />
+      </field>
+      <field id="itm">
+        <phrase id="fldcaption" value="ITM" />
+      </field>
+      <field id="sign1">
+        <phrase id="fldcaption" value="Sign 1" />
+      </field>
+      <field id="sign2">
+        <phrase id="fldcaption" value="Sign 2" />
+      </field>
+      <field id="sign3">
+        <phrase id="fldcaption" value="Sign 3" />
       </field>
     </table>
     <table id="t201_users">
@@ -1703,21 +1751,6 @@
       </field>
       <field id="bookvalue2">
         <phrase id="fldcaption" value="book Value 2" />
-      </field>
-    </table>
-    <table id="r004_assetglobal">
-      <phrase id="tblcaption" value="Asset (Global)" />
-      <field id="groupdescription">
-        <phrase id="fldcaption" value="Tangible Assets" />
-      </field>
-      <field id="typedescription">
-        <phrase id="fldcaption" value="Asset Type" />
-      </field>
-      <field id="bookvalue2label">
-        <phrase id="fldcaption" value="Sub-Group" />
-      </field>
-      <field id="bookvalue2">
-        <phrase id="fldcaption" value="Book Value" />
       </field>
     </table>
   </project>
