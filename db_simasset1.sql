@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1:3307
--- Generation Time: Jul 02, 2020 at 03:17 PM
+-- Generation Time: Jul 02, 2020 at 08:17 PM
 -- Server version: 10.4.8-MariaDB
 -- PHP Version: 7.3.11
 
@@ -126,7 +126,7 @@ CREATE TABLE `t004_asset` (
 --
 
 INSERT INTO `t004_asset` (`id`, `property_id`, `group_id`, `type_id`, `Code`, `Description`, `brand_id`, `signature_id`, `department_id`, `location_id`, `Qty`, `Variance`, `cond_id`, `Remarks`, `ProcurementDate`, `ProcurementCurrentCost`, `PeriodBegin`, `PeriodEnd`) VALUES
-(1, 1, 2, 3, 'AK101113000001', 'IT - Printer Inkjet', 14, 1, 1, 1, 1.00, 0.00, 1, '', '2013-10-01', 0.00, '0000-00-00', '0000-00-00'),
+(1, 1, 2, 3, 'AK101113000001', 'IT - Printer Inkjet', 14, 1, 1, 1, 1.00, 0.00, 1, NULL, '2013-10-01', 1500000.00, '2013-10-31', '2017-09-30'),
 (2, 1, 2, 4, 'AK102113000002', 'Table GM', 67, 1, 1, 1, 1.00, 0.00, 1, '', '2013-10-01', 0.00, '0000-00-00', '0000-00-00'),
 (3, 1, 2, 4, 'AK102113000003', 'Chair Mgr', 67, 1, 1, 1, 1.00, 0.00, 1, '', '2013-10-01', 0.00, '0000-00-00', '0000-00-00'),
 (4, 1, 2, 4, 'AK102113000004', 'Mobile Pedestal', 210, 1, 1, 1, 1.00, 0.00, 1, '', '2013-10-01', 0.00, '0000-00-00', '0000-00-00'),
@@ -1354,6 +1354,17 @@ CREATE TABLE `t006_assetdepreciation` (
   `NetBookValue` float(14,2) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
+--
+-- Dumping data for table `t006_assetdepreciation`
+--
+
+INSERT INTO `t006_assetdepreciation` (`id`, `asset_id`, `ListOfYears`, `NumberOfMonths`, `DepreciationAmount`, `DepreciationYtd`, `NetBookValue`) VALUES
+(6, 1, 2013, 3, 93750.00, 93750.00, 1406250.00),
+(7, 1, 2014, 12, 375000.00, 468750.00, 1031250.00),
+(8, 1, 2015, 12, 375000.00, 843750.00, 656250.00),
+(9, 1, 2016, 12, 375000.00, 1218750.00, 281250.00),
+(10, 1, 2017, 9, 281250.00, 1500000.00, 0.00);
+
 -- --------------------------------------------------------
 
 --
@@ -2088,6 +2099,17 @@ CREATE TABLE `t204_audittrail` (
   `newvalue` longtext DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
+--
+-- Dumping data for table `t204_audittrail`
+--
+
+INSERT INTO `t204_audittrail` (`id`, `datetime`, `script`, `user`, `action`, `table`, `field`, `keyvalue`, `oldvalue`, `newvalue`) VALUES
+(1, '2020-07-02 21:44:43', '/simasset1/login.php', 'admin', 'login', '::1', '', '', '', ''),
+(2, '2020-07-02 23:38:13', '/simasset1/t004_assetedit.php', '4', 'U', 't004_asset', 'Remarks', '1', '', NULL),
+(3, '2020-07-02 23:38:13', '/simasset1/t004_assetedit.php', '4', 'U', 't004_asset', 'PeriodBegin', '1', '0000-00-00', '2013-10-31'),
+(4, '2020-07-02 23:38:13', '/simasset1/t004_assetedit.php', '4', 'U', 't004_asset', 'PeriodEnd', '1', '0000-00-00', '2017-09-30'),
+(5, '2020-07-02 23:39:25', '/simasset1/t004_assetedit.php', '4', 'U', 't004_asset', 'ProcurementCurrentCost', '1', '0.00', '1500000');
+
 -- --------------------------------------------------------
 
 --
@@ -2258,7 +2280,7 @@ ALTER TABLE `t005_assetgroup`
 -- AUTO_INCREMENT for table `t006_assetdepreciation`
 --
 ALTER TABLE `t006_assetdepreciation`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
 
 --
 -- AUTO_INCREMENT for table `t007_assettype`
@@ -2318,7 +2340,7 @@ ALTER TABLE `t201_users`
 -- AUTO_INCREMENT for table `t204_audittrail`
 --
 ALTER TABLE `t204_audittrail`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT for table `t205_parameter`
