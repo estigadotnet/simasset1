@@ -28,7 +28,7 @@ $topMenu->addMenuItem(23, "mi_c9", $MenuLanguage->MenuPhrase("23", "MenuText"), 
 $topMenu->addMenuItem(16, "mci_Proses", $MenuLanguage->MenuPhrase("16", "MenuText"), "", -1, "", IsLoggedIn(), FALSE, TRUE, "", "", TRUE);
 $topMenu->addMenuItem(38, "mci_Handover", $MenuLanguage->MenuPhrase("38", "MenuText"), "", 16, "", IsLoggedIn(), FALSE, TRUE, "", "", TRUE);
 $topMenu->addMenuItem(5, "mi_t101_ho_head", $MenuLanguage->MenuPhrase("5", "MenuText"), $MenuRelativePath . "t101_ho_headlist.php", 38, "", AllowListMenu('{E1C6E322-15B9-474C-85CF-A99378A9BC2B}t101_ho_head'), FALSE, FALSE, "", "", TRUE);
-$topMenu->addMenuItem(50, "mi_t105_disposalhead", $MenuLanguage->MenuPhrase("50", "MenuText"), $MenuRelativePath . "t105_disposalheadlist.php", 38, "", AllowListMenu('{E1C6E322-15B9-474C-85CF-A99378A9BC2B}t105_disposalhead'), FALSE, FALSE, "", "", TRUE);
+$topMenu->addMenuItem(50, "mi_t105_disposalhead", $MenuLanguage->MenuPhrase("50", "MenuText"), $MenuRelativePath . "t105_disposalheadlist.php", 16, "", AllowListMenu('{E1C6E322-15B9-474C-85CF-A99378A9BC2B}t105_disposalhead'), FALSE, FALSE, "", "", TRUE);
 $topMenu->addMenuItem(18, "mci_Report", $MenuLanguage->MenuPhrase("18", "MenuText"), "", -1, "", IsLoggedIn(), FALSE, TRUE, "", "", TRUE);
 $topMenu->addMenuItem(49, "mi_r004_assetglobal", $MenuLanguage->MenuPhrase("49", "MenuText"), $MenuRelativePath . "r004_assetglobalsmry.php", 18, "", AllowListMenu('{E1C6E322-15B9-474C-85CF-A99378A9BC2B}r004_assetglobal'), FALSE, FALSE, "", "", TRUE);
 $topMenu->addMenuItem(13, "mi_r001_asset", $MenuLanguage->MenuPhrase("13", "MenuText"), $MenuRelativePath . "r001_assetsmry.php", 18, "", AllowListMenu('{E1C6E322-15B9-474C-85CF-A99378A9BC2B}r001_asset'), FALSE, FALSE, "", "", TRUE);
@@ -56,7 +56,7 @@ $sideMenu->addMenuItem(23, "mi_c9", $MenuLanguage->MenuPhrase("23", "MenuText"),
 $sideMenu->addMenuItem(16, "mci_Proses", $MenuLanguage->MenuPhrase("16", "MenuText"), "", -1, "", IsLoggedIn(), FALSE, TRUE, "", "", TRUE);
 $sideMenu->addMenuItem(38, "mci_Handover", $MenuLanguage->MenuPhrase("38", "MenuText"), "", 16, "", IsLoggedIn(), FALSE, TRUE, "", "", TRUE);
 $sideMenu->addMenuItem(5, "mi_t101_ho_head", $MenuLanguage->MenuPhrase("5", "MenuText"), $MenuRelativePath . "t101_ho_headlist.php", 38, "", AllowListMenu('{E1C6E322-15B9-474C-85CF-A99378A9BC2B}t101_ho_head'), FALSE, FALSE, "", "", TRUE);
-$sideMenu->addMenuItem(50, "mi_t105_disposalhead", $MenuLanguage->MenuPhrase("50", "MenuText"), $MenuRelativePath . "t105_disposalheadlist.php", 38, "", AllowListMenu('{E1C6E322-15B9-474C-85CF-A99378A9BC2B}t105_disposalhead'), FALSE, FALSE, "", "", TRUE);
+$sideMenu->addMenuItem(50, "mi_t105_disposalhead", $MenuLanguage->MenuPhrase("50", "MenuText"), $MenuRelativePath . "t105_disposalheadlist.php", 16, "", AllowListMenu('{E1C6E322-15B9-474C-85CF-A99378A9BC2B}t105_disposalhead'), FALSE, FALSE, "", "", TRUE);
 $sideMenu->addMenuItem(18, "mci_Report", $MenuLanguage->MenuPhrase("18", "MenuText"), "", -1, "", IsLoggedIn(), FALSE, TRUE, "", "", TRUE);
 $sideMenu->addMenuItem(49, "mi_r004_assetglobal", $MenuLanguage->MenuPhrase("49", "MenuText"), $MenuRelativePath . "r004_assetglobalsmry.php", 18, "", AllowListMenu('{E1C6E322-15B9-474C-85CF-A99378A9BC2B}r004_assetglobal'), FALSE, FALSE, "", "", TRUE);
 $sideMenu->addMenuItem(13, "mi_r001_asset", $MenuLanguage->MenuPhrase("13", "MenuText"), $MenuRelativePath . "r001_assetsmry.php", 18, "", AllowListMenu('{E1C6E322-15B9-474C-85CF-A99378A9BC2B}r001_asset'), FALSE, FALSE, "", "", TRUE);
