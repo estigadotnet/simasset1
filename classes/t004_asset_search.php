@@ -691,6 +691,8 @@ class t004_asset_search extends t004_asset
 		$this->department_id->setVisibility();
 		$this->location_id->setVisibility();
 		$this->Qty->setVisibility();
+		$this->Variance->setVisibility();
+		$this->cond_id->setVisibility();
 		$this->Remarks->setVisibility();
 		$this->ProcurementDate->setVisibility();
 		$this->ProcurementCurrentCost->setVisibility();
@@ -724,6 +726,7 @@ class t004_asset_search extends t004_asset
 		$this->setupLookupOptions($this->signature_id);
 		$this->setupLookupOptions($this->department_id);
 		$this->setupLookupOptions($this->location_id);
+		$this->setupLookupOptions($this->cond_id);
 
 		// Set up Breadcrumb
 		$this->setupBreadcrumb();
@@ -778,6 +781,8 @@ class t004_asset_search extends t004_asset
 		$this->buildSearchUrl($srchUrl, $this->department_id); // department_id
 		$this->buildSearchUrl($srchUrl, $this->location_id); // location_id
 		$this->buildSearchUrl($srchUrl, $this->Qty); // Qty
+		$this->buildSearchUrl($srchUrl, $this->Variance); // Variance
+		$this->buildSearchUrl($srchUrl, $this->cond_id); // cond_id
 		$this->buildSearchUrl($srchUrl, $this->Remarks); // Remarks
 		$this->buildSearchUrl($srchUrl, $this->ProcurementDate); // ProcurementDate
 		$this->buildSearchUrl($srchUrl, $this->ProcurementCurrentCost); // ProcurementCurrentCost
@@ -875,6 +880,10 @@ class t004_asset_search extends t004_asset
 			$got = TRUE;
 		if ($this->Qty->AdvancedSearch->post())
 			$got = TRUE;
+		if ($this->Variance->AdvancedSearch->post())
+			$got = TRUE;
+		if ($this->cond_id->AdvancedSearch->post())
+			$got = TRUE;
 		if ($this->Remarks->AdvancedSearch->post())
 			$got = TRUE;
 		if ($this->ProcurementDate->AdvancedSearch->post())
@@ -900,6 +909,10 @@ class t004_asset_search extends t004_asset
 			$this->Qty->CurrentValue = ConvertToFloatString($this->Qty->CurrentValue);
 
 		// Convert decimal values if posted back
+		if ($this->Variance->FormValue == $this->Variance->CurrentValue && is_numeric(ConvertToFloatString($this->Variance->CurrentValue)))
+			$this->Variance->CurrentValue = ConvertToFloatString($this->Variance->CurrentValue);
+
+		// Convert decimal values if posted back
 		if ($this->ProcurementCurrentCost->FormValue == $this->ProcurementCurrentCost->CurrentValue && is_numeric(ConvertToFloatString($this->ProcurementCurrentCost->CurrentValue)))
 			$this->ProcurementCurrentCost->CurrentValue = ConvertToFloatString($this->ProcurementCurrentCost->CurrentValue);
 
@@ -918,6 +931,8 @@ class t004_asset_search extends t004_asset
 		// department_id
 		// location_id
 		// Qty
+		// Variance
+		// cond_id
 		// Remarks
 		// ProcurementDate
 		// ProcurementCurrentCost
@@ -1099,6 +1114,33 @@ class t004_asset_search extends t004_asset
 			$this->Qty->CellCssStyle .= "text-align: right;";
 			$this->Qty->ViewCustomAttributes = "";
 
+			// Variance
+			$this->Variance->ViewValue = $this->Variance->CurrentValue;
+			$this->Variance->ViewValue = FormatNumber($this->Variance->ViewValue, 2, -2, -2, -2);
+			$this->Variance->ViewCustomAttributes = "";
+
+			// cond_id
+			$curVal = strval($this->cond_id->CurrentValue);
+			if ($curVal != "") {
+				$this->cond_id->ViewValue = $this->cond_id->lookupCacheOption($curVal);
+				if ($this->cond_id->ViewValue === NULL) { // Lookup from database
+					$filterWrk = "`id`" . SearchString("=", $curVal, DATATYPE_NUMBER, "");
+					$sqlWrk = $this->cond_id->Lookup->getSql(FALSE, $filterWrk, '', $this);
+					$rswrk = Conn()->execute($sqlWrk);
+					if ($rswrk && !$rswrk->EOF) { // Lookup values found
+						$arwrk = [];
+						$arwrk[1] = $rswrk->fields('df');
+						$this->cond_id->ViewValue = $this->cond_id->displayValue($arwrk);
+						$rswrk->Close();
+					} else {
+						$this->cond_id->ViewValue = $this->cond_id->CurrentValue;
+					}
+				}
+			} else {
+				$this->cond_id->ViewValue = NULL;
+			}
+			$this->cond_id->ViewCustomAttributes = "";
+
 			// Remarks
 			$this->Remarks->ViewValue = $this->Remarks->CurrentValue;
 			$this->Remarks->ViewCustomAttributes = "";
@@ -1173,6 +1215,16 @@ class t004_asset_search extends t004_asset
 			$this->Qty->LinkCustomAttributes = "";
 			$this->Qty->HrefValue = "";
 			$this->Qty->TooltipValue = "";
+
+			// Variance
+			$this->Variance->LinkCustomAttributes = "";
+			$this->Variance->HrefValue = "";
+			$this->Variance->TooltipValue = "";
+
+			// cond_id
+			$this->cond_id->LinkCustomAttributes = "";
+			$this->cond_id->HrefValue = "";
+			$this->cond_id->TooltipValue = "";
 
 			// Remarks
 			$this->Remarks->LinkCustomAttributes = "";
@@ -1439,6 +1491,44 @@ class t004_asset_search extends t004_asset
 			$this->Qty->EditValue = HtmlEncode($this->Qty->AdvancedSearch->SearchValue);
 			$this->Qty->PlaceHolder = RemoveHtml($this->Qty->caption());
 
+			// Variance
+			$this->Variance->EditAttrs["class"] = "form-control";
+			$this->Variance->EditCustomAttributes = "";
+			$this->Variance->EditValue = HtmlEncode($this->Variance->AdvancedSearch->SearchValue);
+			$this->Variance->PlaceHolder = RemoveHtml($this->Variance->caption());
+
+			// cond_id
+			$this->cond_id->EditCustomAttributes = "";
+			$curVal = trim(strval($this->cond_id->AdvancedSearch->SearchValue));
+			if ($curVal != "")
+				$this->cond_id->AdvancedSearch->ViewValue = $this->cond_id->lookupCacheOption($curVal);
+			else
+				$this->cond_id->AdvancedSearch->ViewValue = $this->cond_id->Lookup !== NULL && is_array($this->cond_id->Lookup->Options) ? $curVal : NULL;
+			if ($this->cond_id->AdvancedSearch->ViewValue !== NULL) { // Load from cache
+				$this->cond_id->EditValue = array_values($this->cond_id->Lookup->Options);
+				if ($this->cond_id->AdvancedSearch->ViewValue == "")
+					$this->cond_id->AdvancedSearch->ViewValue = $Language->phrase("PleaseSelect");
+			} else { // Lookup from database
+				if ($curVal == "") {
+					$filterWrk = "0=1";
+				} else {
+					$filterWrk = "`id`" . SearchString("=", $this->cond_id->AdvancedSearch->SearchValue, DATATYPE_NUMBER, "");
+				}
+				$sqlWrk = $this->cond_id->Lookup->getSql(TRUE, $filterWrk, '', $this);
+				$rswrk = Conn()->execute($sqlWrk);
+				if ($rswrk && !$rswrk->EOF) { // Lookup values found
+					$arwrk = [];
+					$arwrk[1] = HtmlEncode($rswrk->fields('df'));
+					$this->cond_id->AdvancedSearch->ViewValue = $this->cond_id->displayValue($arwrk);
+				} else {
+					$this->cond_id->AdvancedSearch->ViewValue = $Language->phrase("PleaseSelect");
+				}
+				$arwrk = $rswrk ? $rswrk->getRows() : [];
+				if ($rswrk)
+					$rswrk->close();
+				$this->cond_id->EditValue = $arwrk;
+			}
+
 			// Remarks
 			$this->Remarks->EditAttrs["class"] = "form-control";
 			$this->Remarks->EditCustomAttributes = "";
@@ -1494,6 +1584,9 @@ class t004_asset_search extends t004_asset
 		if (!CheckNumber($this->Qty->AdvancedSearch->SearchValue)) {
 			AddMessage($SearchError, $this->Qty->errorMessage());
 		}
+		if (!CheckNumber($this->Variance->AdvancedSearch->SearchValue)) {
+			AddMessage($SearchError, $this->Variance->errorMessage());
+		}
 		if (!CheckEuroDate($this->ProcurementDate->AdvancedSearch->SearchValue)) {
 			AddMessage($SearchError, $this->ProcurementDate->errorMessage());
 		}
@@ -1532,6 +1625,8 @@ class t004_asset_search extends t004_asset
 		$this->department_id->AdvancedSearch->load();
 		$this->location_id->AdvancedSearch->load();
 		$this->Qty->AdvancedSearch->load();
+		$this->Variance->AdvancedSearch->load();
+		$this->cond_id->AdvancedSearch->load();
 		$this->Remarks->AdvancedSearch->load();
 		$this->ProcurementDate->AdvancedSearch->load();
 		$this->ProcurementCurrentCost->AdvancedSearch->load();
@@ -1578,6 +1673,8 @@ class t004_asset_search extends t004_asset
 					break;
 				case "x_location_id":
 					break;
+				case "x_cond_id":
+					break;
 				default:
 					$lookupFilter = "";
 					break;
@@ -1611,6 +1708,8 @@ class t004_asset_search extends t004_asset
 						case "x_department_id":
 							break;
 						case "x_location_id":
+							break;
+						case "x_cond_id":
 							break;
 					}
 					$ar[strval($row[0])] = $row;

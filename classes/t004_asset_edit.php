@@ -697,6 +697,8 @@ class t004_asset_edit extends t004_asset
 		$this->department_id->setVisibility();
 		$this->location_id->setVisibility();
 		$this->Qty->setVisibility();
+		$this->Variance->setVisibility();
+		$this->cond_id->setVisibility();
 		$this->Remarks->setVisibility();
 		$this->ProcurementDate->setVisibility();
 		$this->ProcurementCurrentCost->setVisibility();
@@ -732,6 +734,7 @@ class t004_asset_edit extends t004_asset
 		$this->setupLookupOptions($this->signature_id);
 		$this->setupLookupOptions($this->department_id);
 		$this->setupLookupOptions($this->location_id);
+		$this->setupLookupOptions($this->cond_id);
 
 		// Check permission
 		if (!$Security->canEdit()) {
@@ -969,6 +972,24 @@ class t004_asset_edit extends t004_asset
 				$this->Qty->setFormValue($val);
 		}
 
+		// Check field name 'Variance' first before field var 'x_Variance'
+		$val = $CurrentForm->hasValue("Variance") ? $CurrentForm->getValue("Variance") : $CurrentForm->getValue("x_Variance");
+		if (!$this->Variance->IsDetailKey) {
+			if (IsApi() && $val == NULL)
+				$this->Variance->Visible = FALSE; // Disable update for API request
+			else
+				$this->Variance->setFormValue($val);
+		}
+
+		// Check field name 'cond_id' first before field var 'x_cond_id'
+		$val = $CurrentForm->hasValue("cond_id") ? $CurrentForm->getValue("cond_id") : $CurrentForm->getValue("x_cond_id");
+		if (!$this->cond_id->IsDetailKey) {
+			if (IsApi() && $val == NULL)
+				$this->cond_id->Visible = FALSE; // Disable update for API request
+			else
+				$this->cond_id->setFormValue($val);
+		}
+
 		// Check field name 'Remarks' first before field var 'x_Remarks'
 		$val = $CurrentForm->hasValue("Remarks") ? $CurrentForm->getValue("Remarks") : $CurrentForm->getValue("x_Remarks");
 		if (!$this->Remarks->IsDetailKey) {
@@ -1036,6 +1057,8 @@ class t004_asset_edit extends t004_asset
 		$this->department_id->CurrentValue = $this->department_id->FormValue;
 		$this->location_id->CurrentValue = $this->location_id->FormValue;
 		$this->Qty->CurrentValue = $this->Qty->FormValue;
+		$this->Variance->CurrentValue = $this->Variance->FormValue;
+		$this->cond_id->CurrentValue = $this->cond_id->FormValue;
 		$this->Remarks->CurrentValue = $this->Remarks->FormValue;
 		$this->ProcurementDate->CurrentValue = $this->ProcurementDate->FormValue;
 		$this->ProcurementDate->CurrentValue = UnFormatDateTime($this->ProcurementDate->CurrentValue, 7);
@@ -1092,6 +1115,8 @@ class t004_asset_edit extends t004_asset
 		$this->department_id->setDbValue($row['department_id']);
 		$this->location_id->setDbValue($row['location_id']);
 		$this->Qty->setDbValue($row['Qty']);
+		$this->Variance->setDbValue($row['Variance']);
+		$this->cond_id->setDbValue($row['cond_id']);
 		$this->Remarks->setDbValue($row['Remarks']);
 		$this->ProcurementDate->setDbValue($row['ProcurementDate']);
 		$this->ProcurementCurrentCost->setDbValue($row['ProcurementCurrentCost']);
@@ -1114,6 +1139,8 @@ class t004_asset_edit extends t004_asset
 		$row['department_id'] = NULL;
 		$row['location_id'] = NULL;
 		$row['Qty'] = NULL;
+		$row['Variance'] = NULL;
+		$row['cond_id'] = NULL;
 		$row['Remarks'] = NULL;
 		$row['ProcurementDate'] = NULL;
 		$row['ProcurementCurrentCost'] = NULL;
@@ -1157,6 +1184,10 @@ class t004_asset_edit extends t004_asset
 			$this->Qty->CurrentValue = ConvertToFloatString($this->Qty->CurrentValue);
 
 		// Convert decimal values if posted back
+		if ($this->Variance->FormValue == $this->Variance->CurrentValue && is_numeric(ConvertToFloatString($this->Variance->CurrentValue)))
+			$this->Variance->CurrentValue = ConvertToFloatString($this->Variance->CurrentValue);
+
+		// Convert decimal values if posted back
 		if ($this->ProcurementCurrentCost->FormValue == $this->ProcurementCurrentCost->CurrentValue && is_numeric(ConvertToFloatString($this->ProcurementCurrentCost->CurrentValue)))
 			$this->ProcurementCurrentCost->CurrentValue = ConvertToFloatString($this->ProcurementCurrentCost->CurrentValue);
 
@@ -1175,6 +1206,8 @@ class t004_asset_edit extends t004_asset
 		// department_id
 		// location_id
 		// Qty
+		// Variance
+		// cond_id
 		// Remarks
 		// ProcurementDate
 		// ProcurementCurrentCost
@@ -1356,6 +1389,33 @@ class t004_asset_edit extends t004_asset
 			$this->Qty->CellCssStyle .= "text-align: right;";
 			$this->Qty->ViewCustomAttributes = "";
 
+			// Variance
+			$this->Variance->ViewValue = $this->Variance->CurrentValue;
+			$this->Variance->ViewValue = FormatNumber($this->Variance->ViewValue, 2, -2, -2, -2);
+			$this->Variance->ViewCustomAttributes = "";
+
+			// cond_id
+			$curVal = strval($this->cond_id->CurrentValue);
+			if ($curVal != "") {
+				$this->cond_id->ViewValue = $this->cond_id->lookupCacheOption($curVal);
+				if ($this->cond_id->ViewValue === NULL) { // Lookup from database
+					$filterWrk = "`id`" . SearchString("=", $curVal, DATATYPE_NUMBER, "");
+					$sqlWrk = $this->cond_id->Lookup->getSql(FALSE, $filterWrk, '', $this);
+					$rswrk = Conn()->execute($sqlWrk);
+					if ($rswrk && !$rswrk->EOF) { // Lookup values found
+						$arwrk = [];
+						$arwrk[1] = $rswrk->fields('df');
+						$this->cond_id->ViewValue = $this->cond_id->displayValue($arwrk);
+						$rswrk->Close();
+					} else {
+						$this->cond_id->ViewValue = $this->cond_id->CurrentValue;
+					}
+				}
+			} else {
+				$this->cond_id->ViewValue = NULL;
+			}
+			$this->cond_id->ViewCustomAttributes = "";
+
 			// Remarks
 			$this->Remarks->ViewValue = $this->Remarks->CurrentValue;
 			$this->Remarks->ViewCustomAttributes = "";
@@ -1420,6 +1480,16 @@ class t004_asset_edit extends t004_asset
 			$this->Qty->LinkCustomAttributes = "";
 			$this->Qty->HrefValue = "";
 			$this->Qty->TooltipValue = "";
+
+			// Variance
+			$this->Variance->LinkCustomAttributes = "";
+			$this->Variance->HrefValue = "";
+			$this->Variance->TooltipValue = "";
+
+			// cond_id
+			$this->cond_id->LinkCustomAttributes = "";
+			$this->cond_id->HrefValue = "";
+			$this->cond_id->TooltipValue = "";
 
 			// Remarks
 			$this->Remarks->LinkCustomAttributes = "";
@@ -1656,6 +1726,47 @@ class t004_asset_edit extends t004_asset
 				$this->Qty->EditValue = FormatNumber($this->Qty->EditValue, -2, -2, -2, -2);
 			
 
+			// Variance
+			$this->Variance->EditAttrs["class"] = "form-control";
+			$this->Variance->EditCustomAttributes = "";
+			$this->Variance->EditValue = HtmlEncode($this->Variance->CurrentValue);
+			$this->Variance->PlaceHolder = RemoveHtml($this->Variance->caption());
+			if (strval($this->Variance->EditValue) != "" && is_numeric($this->Variance->EditValue))
+				$this->Variance->EditValue = FormatNumber($this->Variance->EditValue, -2, -2, -2, -2);
+			
+
+			// cond_id
+			$this->cond_id->EditCustomAttributes = "";
+			$curVal = trim(strval($this->cond_id->CurrentValue));
+			if ($curVal != "")
+				$this->cond_id->ViewValue = $this->cond_id->lookupCacheOption($curVal);
+			else
+				$this->cond_id->ViewValue = $this->cond_id->Lookup !== NULL && is_array($this->cond_id->Lookup->Options) ? $curVal : NULL;
+			if ($this->cond_id->ViewValue !== NULL) { // Load from cache
+				$this->cond_id->EditValue = array_values($this->cond_id->Lookup->Options);
+				if ($this->cond_id->ViewValue == "")
+					$this->cond_id->ViewValue = $Language->phrase("PleaseSelect");
+			} else { // Lookup from database
+				if ($curVal == "") {
+					$filterWrk = "0=1";
+				} else {
+					$filterWrk = "`id`" . SearchString("=", $this->cond_id->CurrentValue, DATATYPE_NUMBER, "");
+				}
+				$sqlWrk = $this->cond_id->Lookup->getSql(TRUE, $filterWrk, '', $this);
+				$rswrk = Conn()->execute($sqlWrk);
+				if ($rswrk && !$rswrk->EOF) { // Lookup values found
+					$arwrk = [];
+					$arwrk[1] = HtmlEncode($rswrk->fields('df'));
+					$this->cond_id->ViewValue = $this->cond_id->displayValue($arwrk);
+				} else {
+					$this->cond_id->ViewValue = $Language->phrase("PleaseSelect");
+				}
+				$arwrk = $rswrk ? $rswrk->getRows() : [];
+				if ($rswrk)
+					$rswrk->close();
+				$this->cond_id->EditValue = $arwrk;
+			}
+
 			// Remarks
 			$this->Remarks->EditAttrs["class"] = "form-control";
 			$this->Remarks->EditCustomAttributes = "";
@@ -1724,6 +1835,14 @@ class t004_asset_edit extends t004_asset
 			// Qty
 			$this->Qty->LinkCustomAttributes = "";
 			$this->Qty->HrefValue = "";
+
+			// Variance
+			$this->Variance->LinkCustomAttributes = "";
+			$this->Variance->HrefValue = "";
+
+			// cond_id
+			$this->cond_id->LinkCustomAttributes = "";
+			$this->cond_id->HrefValue = "";
 
 			// Remarks
 			$this->Remarks->LinkCustomAttributes = "";
@@ -1808,6 +1927,19 @@ class t004_asset_edit extends t004_asset
 		}
 		if (!CheckNumber($this->Qty->FormValue)) {
 			AddMessage($FormError, $this->Qty->errorMessage());
+		}
+		if ($this->Variance->Required) {
+			if (!$this->Variance->IsDetailKey && $this->Variance->FormValue != NULL && $this->Variance->FormValue == "") {
+				AddMessage($FormError, str_replace("%s", $this->Variance->caption(), $this->Variance->RequiredErrorMessage));
+			}
+		}
+		if (!CheckNumber($this->Variance->FormValue)) {
+			AddMessage($FormError, $this->Variance->errorMessage());
+		}
+		if ($this->cond_id->Required) {
+			if (!$this->cond_id->IsDetailKey && $this->cond_id->FormValue != NULL && $this->cond_id->FormValue == "") {
+				AddMessage($FormError, str_replace("%s", $this->cond_id->caption(), $this->cond_id->RequiredErrorMessage));
+			}
 		}
 		if ($this->Remarks->Required) {
 			if (!$this->Remarks->IsDetailKey && $this->Remarks->FormValue != NULL && $this->Remarks->FormValue == "") {
@@ -1912,6 +2044,12 @@ class t004_asset_edit extends t004_asset
 
 			// Qty
 			$this->Qty->setDbValueDef($rsnew, $this->Qty->CurrentValue, 0, $this->Qty->ReadOnly);
+
+			// Variance
+			$this->Variance->setDbValueDef($rsnew, $this->Variance->CurrentValue, 0, $this->Variance->ReadOnly);
+
+			// cond_id
+			$this->cond_id->setDbValueDef($rsnew, $this->cond_id->CurrentValue, 0, $this->cond_id->ReadOnly);
 
 			// Remarks
 			$this->Remarks->setDbValueDef($rsnew, $this->Remarks->CurrentValue, NULL, $this->Remarks->ReadOnly);
@@ -2069,6 +2207,8 @@ class t004_asset_edit extends t004_asset
 					break;
 				case "x_location_id":
 					break;
+				case "x_cond_id":
+					break;
 				default:
 					$lookupFilter = "";
 					break;
@@ -2102,6 +2242,8 @@ class t004_asset_edit extends t004_asset
 						case "x_department_id":
 							break;
 						case "x_location_id":
+							break;
+						case "x_cond_id":
 							break;
 					}
 					$ar[strval($row[0])] = $row;

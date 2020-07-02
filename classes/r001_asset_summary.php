@@ -695,11 +695,12 @@ class r001_asset_summary extends r001_asset
 		$this->Code->setVisibility();
 		$this->Description->setVisibility();
 		$this->brand_id->setVisibility();
-		$this->type_id->setVisibility();
 		$this->signature_id->setVisibility();
 		$this->department_id->setVisibility();
 		$this->location_id->setVisibility();
 		$this->Qty->setVisibility();
+		$this->Variance->setVisibility();
+		$this->cond_id->setVisibility();
 		$this->Remarks->setVisibility();
 		$this->ProcurementDate->setVisibility();
 		$this->ProcurementCurrentCost->setVisibility();
@@ -835,6 +836,8 @@ class r001_asset_summary extends r001_asset
 			$data["department_id"] = $record['department_id'];
 			$data["location_id"] = $record['location_id'];
 			$data["Qty"] = $record['Qty'];
+			$data["Variance"] = $record['Variance'];
+			$data["cond_id"] = $record['cond_id'];
 			$data["ProcurementDate"] = $record['ProcurementDate'];
 			$data["ProcurementCurrentCost"] = $record['ProcurementCurrentCost'];
 			$data["PeriodBegin"] = $record['PeriodBegin'];
@@ -852,6 +855,8 @@ class r001_asset_summary extends r001_asset
 		$this->department_id->setDbValue($record['department_id']);
 		$this->location_id->setDbValue($record['location_id']);
 		$this->Qty->setDbValue($record['Qty']);
+		$this->Variance->setDbValue($record['Variance']);
+		$this->cond_id->setDbValue($record['cond_id']);
 		$this->Remarks->setDbValue($record['Remarks']);
 		$this->ProcurementDate->setDbValue($record['ProcurementDate']);
 		$this->ProcurementCurrentCost->setDbValue($record['ProcurementCurrentCost']);
@@ -906,14 +911,16 @@ class r001_asset_summary extends r001_asset
 
 		// property_id
 		// group_id
+		// type_id
 		// Code
 		// Description
 		// brand_id
-		// type_id
 		// signature_id
 		// department_id
 		// location_id
 		// Qty
+		// Variance
+		// cond_id
 		// Remarks
 		// ProcurementDate
 		// ProcurementCurrentCost
@@ -927,6 +934,8 @@ class r001_asset_summary extends r001_asset
 				$this->RowAttrs["data-group"] = $this->property_id->groupValue(); // Set up group attribute
 			if ($this->RowTotalType == ROWTOTAL_GROUP && $this->RowGroupLevel >= 2)
 				$this->RowAttrs["data-group-2"] = $this->group_id->groupValue(); // Set up group attribute 2
+			if ($this->RowTotalType == ROWTOTAL_GROUP && $this->RowGroupLevel >= 3)
+				$this->RowAttrs["data-group-3"] = $this->type_id->groupValue(); // Set up group attribute 3
 
 			// property_id
 			$this->property_id->GroupViewValue = $this->property_id->groupValue();
@@ -978,11 +987,39 @@ class r001_asset_summary extends r001_asset
 			$this->group_id->ViewCustomAttributes = "";
 			$this->group_id->GroupViewValue = DisplayGroupValue($this->group_id, $this->group_id->GroupViewValue);
 
+			// type_id
+			$this->type_id->GroupViewValue = $this->type_id->groupValue();
+			$curVal = strval($this->type_id->groupValue());
+			if ($curVal != "") {
+				$this->type_id->GroupViewValue = $this->type_id->lookupCacheOption($curVal);
+				if ($this->type_id->GroupViewValue === NULL) { // Lookup from database
+					$filterWrk = "`id`" . SearchString("=", $curVal, DATATYPE_NUMBER, "");
+					$sqlWrk = $this->type_id->Lookup->getSql(FALSE, $filterWrk, '', $this);
+					$rswrk = Conn()->execute($sqlWrk);
+					if ($rswrk && !$rswrk->EOF) { // Lookup values found
+						$arwrk = [];
+						$arwrk[1] = $rswrk->fields('df');
+						$this->type_id->GroupViewValue = $this->type_id->displayValue($arwrk);
+						$rswrk->Close();
+					} else {
+						$this->type_id->GroupViewValue = $this->type_id->groupValue();
+					}
+				}
+			} else {
+				$this->type_id->GroupViewValue = NULL;
+			}
+			$this->type_id->CellCssClass = ($this->RowGroupLevel == 3 ? "ew-rpt-grp-summary-3" : "ew-rpt-grp-field-3");
+			$this->type_id->ViewCustomAttributes = "";
+			$this->type_id->GroupViewValue = DisplayGroupValue($this->type_id, $this->type_id->GroupViewValue);
+
 			// property_id
 			$this->property_id->HrefValue = "";
 
 			// group_id
 			$this->group_id->HrefValue = "";
+
+			// type_id
+			$this->type_id->HrefValue = "";
 
 			// Code
 			$this->Code->HrefValue = "";
@@ -992,9 +1029,6 @@ class r001_asset_summary extends r001_asset
 
 			// brand_id
 			$this->brand_id->HrefValue = "";
-
-			// type_id
-			$this->type_id->HrefValue = "";
 
 			// signature_id
 			$this->signature_id->HrefValue = "";
@@ -1007,6 +1041,12 @@ class r001_asset_summary extends r001_asset
 
 			// Qty
 			$this->Qty->HrefValue = "";
+
+			// Variance
+			$this->Variance->HrefValue = "";
+
+			// cond_id
+			$this->cond_id->HrefValue = "";
 
 			// Remarks
 			$this->Remarks->HrefValue = "";
@@ -1026,9 +1066,11 @@ class r001_asset_summary extends r001_asset
 			if ($this->RowTotalType == ROWTOTAL_GROUP && $this->RowTotalSubType == ROWTOTAL_HEADER) {
 			$this->RowAttrs["data-group"] = $this->property_id->groupValue(); // Set up group attribute
 			if ($this->RowGroupLevel >= 2) $this->RowAttrs["data-group-2"] = $this->group_id->groupValue(); // Set up group attribute 2
+			if ($this->RowGroupLevel >= 3) $this->RowAttrs["data-group-3"] = $this->type_id->groupValue(); // Set up group attribute 3
 			} else {
 			$this->RowAttrs["data-group"] = $this->property_id->groupValue(); // Set up group attribute
 			$this->RowAttrs["data-group-2"] = $this->group_id->groupValue(); // Set up group attribute 2
+			$this->RowAttrs["data-group-3"] = $this->type_id->groupValue(); // Set up group attribute 3
 			}
 
 			// property_id
@@ -1089,6 +1131,35 @@ class r001_asset_summary extends r001_asset
 			else
 				$this->group_id->LevelBreak = FALSE;
 
+			// type_id
+			$this->type_id->GroupViewValue = $this->type_id->groupValue();
+			$curVal = strval($this->type_id->groupValue());
+			if ($curVal != "") {
+				$this->type_id->GroupViewValue = $this->type_id->lookupCacheOption($curVal);
+				if ($this->type_id->GroupViewValue === NULL) { // Lookup from database
+					$filterWrk = "`id`" . SearchString("=", $curVal, DATATYPE_NUMBER, "");
+					$sqlWrk = $this->type_id->Lookup->getSql(FALSE, $filterWrk, '', $this);
+					$rswrk = Conn()->execute($sqlWrk);
+					if ($rswrk && !$rswrk->EOF) { // Lookup values found
+						$arwrk = [];
+						$arwrk[1] = $rswrk->fields('df');
+						$this->type_id->GroupViewValue = $this->type_id->displayValue($arwrk);
+						$rswrk->Close();
+					} else {
+						$this->type_id->GroupViewValue = $this->type_id->groupValue();
+					}
+				}
+			} else {
+				$this->type_id->GroupViewValue = NULL;
+			}
+			$this->type_id->CellCssClass = "ew-rpt-grp-field-3";
+			$this->type_id->ViewCustomAttributes = "";
+			$this->type_id->GroupViewValue = DisplayGroupValue($this->type_id, $this->type_id->GroupViewValue);
+			if (!$this->type_id->LevelBreak)
+				$this->type_id->GroupViewValue = "&nbsp;";
+			else
+				$this->type_id->LevelBreak = FALSE;
+
 			// Code
 			$this->Code->ViewValue = $this->Code->CurrentValue;
 			$this->Code->CellCssClass = ($this->RecordCount % 2 != 1 ? "ew-table-alt-row" : "ew-table-row");
@@ -1122,30 +1193,6 @@ class r001_asset_summary extends r001_asset
 			}
 			$this->brand_id->CellCssClass = ($this->RecordCount % 2 != 1 ? "ew-table-alt-row" : "ew-table-row");
 			$this->brand_id->ViewCustomAttributes = "";
-
-			// type_id
-			$this->type_id->ViewValue = $this->type_id->CurrentValue;
-			$curVal = strval($this->type_id->CurrentValue);
-			if ($curVal != "") {
-				$this->type_id->ViewValue = $this->type_id->lookupCacheOption($curVal);
-				if ($this->type_id->ViewValue === NULL) { // Lookup from database
-					$filterWrk = "`id`" . SearchString("=", $curVal, DATATYPE_NUMBER, "");
-					$sqlWrk = $this->type_id->Lookup->getSql(FALSE, $filterWrk, '', $this);
-					$rswrk = Conn()->execute($sqlWrk);
-					if ($rswrk && !$rswrk->EOF) { // Lookup values found
-						$arwrk = [];
-						$arwrk[1] = $rswrk->fields('df');
-						$this->type_id->ViewValue = $this->type_id->displayValue($arwrk);
-						$rswrk->Close();
-					} else {
-						$this->type_id->ViewValue = $this->type_id->CurrentValue;
-					}
-				}
-			} else {
-				$this->type_id->ViewValue = NULL;
-			}
-			$this->type_id->CellCssClass = ($this->RecordCount % 2 != 1 ? "ew-table-alt-row" : "ew-table-row");
-			$this->type_id->ViewCustomAttributes = "";
 
 			// signature_id
 			$this->signature_id->ViewValue = $this->signature_id->CurrentValue;
@@ -1226,6 +1273,36 @@ class r001_asset_summary extends r001_asset
 			$this->Qty->CellCssStyle .= "text-align: right;";
 			$this->Qty->ViewCustomAttributes = "";
 
+			// Variance
+			$this->Variance->ViewValue = $this->Variance->CurrentValue;
+			$this->Variance->ViewValue = FormatNumber($this->Variance->ViewValue, 2, -2, -2, -2);
+			$this->Variance->CellCssClass = ($this->RecordCount % 2 != 1 ? "ew-table-alt-row" : "ew-table-row");
+			$this->Variance->ViewCustomAttributes = "";
+
+			// cond_id
+			$this->cond_id->ViewValue = $this->cond_id->CurrentValue;
+			$curVal = strval($this->cond_id->CurrentValue);
+			if ($curVal != "") {
+				$this->cond_id->ViewValue = $this->cond_id->lookupCacheOption($curVal);
+				if ($this->cond_id->ViewValue === NULL) { // Lookup from database
+					$filterWrk = "`id`" . SearchString("=", $curVal, DATATYPE_NUMBER, "");
+					$sqlWrk = $this->cond_id->Lookup->getSql(FALSE, $filterWrk, '', $this);
+					$rswrk = Conn()->execute($sqlWrk);
+					if ($rswrk && !$rswrk->EOF) { // Lookup values found
+						$arwrk = [];
+						$arwrk[1] = $rswrk->fields('df');
+						$this->cond_id->ViewValue = $this->cond_id->displayValue($arwrk);
+						$rswrk->Close();
+					} else {
+						$this->cond_id->ViewValue = $this->cond_id->CurrentValue;
+					}
+				}
+			} else {
+				$this->cond_id->ViewValue = NULL;
+			}
+			$this->cond_id->CellCssClass = ($this->RecordCount % 2 != 1 ? "ew-table-alt-row" : "ew-table-row");
+			$this->cond_id->ViewCustomAttributes = "";
+
 			// Remarks
 			$this->Remarks->ViewValue = $this->Remarks->CurrentValue;
 			$this->Remarks->CellCssClass = ($this->RecordCount % 2 != 1 ? "ew-table-alt-row" : "ew-table-row");
@@ -1266,6 +1343,11 @@ class r001_asset_summary extends r001_asset
 			$this->group_id->HrefValue = "";
 			$this->group_id->TooltipValue = "";
 
+			// type_id
+			$this->type_id->LinkCustomAttributes = "";
+			$this->type_id->HrefValue = "";
+			$this->type_id->TooltipValue = "";
+
 			// Code
 			$this->Code->LinkCustomAttributes = "";
 			$this->Code->HrefValue = "";
@@ -1280,11 +1362,6 @@ class r001_asset_summary extends r001_asset
 			$this->brand_id->LinkCustomAttributes = "";
 			$this->brand_id->HrefValue = "";
 			$this->brand_id->TooltipValue = "";
-
-			// type_id
-			$this->type_id->LinkCustomAttributes = "";
-			$this->type_id->HrefValue = "";
-			$this->type_id->TooltipValue = "";
 
 			// signature_id
 			$this->signature_id->LinkCustomAttributes = "";
@@ -1305,6 +1382,16 @@ class r001_asset_summary extends r001_asset
 			$this->Qty->LinkCustomAttributes = "";
 			$this->Qty->HrefValue = "";
 			$this->Qty->TooltipValue = "";
+
+			// Variance
+			$this->Variance->LinkCustomAttributes = "";
+			$this->Variance->HrefValue = "";
+			$this->Variance->TooltipValue = "";
+
+			// cond_id
+			$this->cond_id->LinkCustomAttributes = "";
+			$this->cond_id->HrefValue = "";
+			$this->cond_id->TooltipValue = "";
 
 			// Remarks
 			$this->Remarks->LinkCustomAttributes = "";
@@ -1352,6 +1439,15 @@ class r001_asset_summary extends r001_asset
 			$hrefValue = &$this->group_id->HrefValue;
 			$linkAttrs = &$this->group_id->LinkAttrs;
 			$this->Cell_Rendered($this->group_id, $currentValue, $viewValue, $viewAttrs, $cellAttrs, $hrefValue, $linkAttrs);
+
+			// type_id
+			$currentValue = $this->type_id->GroupViewValue;
+			$viewValue = &$this->type_id->GroupViewValue;
+			$viewAttrs = &$this->type_id->ViewAttrs;
+			$cellAttrs = &$this->type_id->CellAttrs;
+			$hrefValue = &$this->type_id->HrefValue;
+			$linkAttrs = &$this->type_id->LinkAttrs;
+			$this->Cell_Rendered($this->type_id, $currentValue, $viewValue, $viewAttrs, $cellAttrs, $hrefValue, $linkAttrs);
 		} else {
 
 			// property_id
@@ -1371,6 +1467,15 @@ class r001_asset_summary extends r001_asset
 			$hrefValue = &$this->group_id->HrefValue;
 			$linkAttrs = &$this->group_id->LinkAttrs;
 			$this->Cell_Rendered($this->group_id, $currentValue, $viewValue, $viewAttrs, $cellAttrs, $hrefValue, $linkAttrs);
+
+			// type_id
+			$currentValue = $this->type_id->groupValue();
+			$viewValue = &$this->type_id->GroupViewValue;
+			$viewAttrs = &$this->type_id->ViewAttrs;
+			$cellAttrs = &$this->type_id->CellAttrs;
+			$hrefValue = &$this->type_id->HrefValue;
+			$linkAttrs = &$this->type_id->LinkAttrs;
+			$this->Cell_Rendered($this->type_id, $currentValue, $viewValue, $viewAttrs, $cellAttrs, $hrefValue, $linkAttrs);
 
 			// Code
 			$currentValue = $this->Code->CurrentValue;
@@ -1398,15 +1503,6 @@ class r001_asset_summary extends r001_asset
 			$hrefValue = &$this->brand_id->HrefValue;
 			$linkAttrs = &$this->brand_id->LinkAttrs;
 			$this->Cell_Rendered($this->brand_id, $currentValue, $viewValue, $viewAttrs, $cellAttrs, $hrefValue, $linkAttrs);
-
-			// type_id
-			$currentValue = $this->type_id->CurrentValue;
-			$viewValue = &$this->type_id->ViewValue;
-			$viewAttrs = &$this->type_id->ViewAttrs;
-			$cellAttrs = &$this->type_id->CellAttrs;
-			$hrefValue = &$this->type_id->HrefValue;
-			$linkAttrs = &$this->type_id->LinkAttrs;
-			$this->Cell_Rendered($this->type_id, $currentValue, $viewValue, $viewAttrs, $cellAttrs, $hrefValue, $linkAttrs);
 
 			// signature_id
 			$currentValue = $this->signature_id->CurrentValue;
@@ -1443,6 +1539,24 @@ class r001_asset_summary extends r001_asset
 			$hrefValue = &$this->Qty->HrefValue;
 			$linkAttrs = &$this->Qty->LinkAttrs;
 			$this->Cell_Rendered($this->Qty, $currentValue, $viewValue, $viewAttrs, $cellAttrs, $hrefValue, $linkAttrs);
+
+			// Variance
+			$currentValue = $this->Variance->CurrentValue;
+			$viewValue = &$this->Variance->ViewValue;
+			$viewAttrs = &$this->Variance->ViewAttrs;
+			$cellAttrs = &$this->Variance->CellAttrs;
+			$hrefValue = &$this->Variance->HrefValue;
+			$linkAttrs = &$this->Variance->LinkAttrs;
+			$this->Cell_Rendered($this->Variance, $currentValue, $viewValue, $viewAttrs, $cellAttrs, $hrefValue, $linkAttrs);
+
+			// cond_id
+			$currentValue = $this->cond_id->CurrentValue;
+			$viewValue = &$this->cond_id->ViewValue;
+			$viewAttrs = &$this->cond_id->ViewAttrs;
+			$cellAttrs = &$this->cond_id->CellAttrs;
+			$hrefValue = &$this->cond_id->HrefValue;
+			$linkAttrs = &$this->cond_id->LinkAttrs;
+			$this->Cell_Rendered($this->cond_id, $currentValue, $viewValue, $viewAttrs, $cellAttrs, $hrefValue, $linkAttrs);
 
 			// Remarks
 			$currentValue = $this->Remarks->CurrentValue;
@@ -1542,13 +1656,15 @@ class r001_asset_summary extends r001_asset
 			$this->GroupColumnCount += 1;
 			$this->SubGroupColumnCount += 1;
 		}
+		if ($this->type_id->Visible) {
+			$this->GroupColumnCount += 1;
+			$this->SubGroupColumnCount += 1;
+		}
 		if ($this->Code->Visible)
 			$this->DetailColumnCount += 1;
 		if ($this->Description->Visible)
 			$this->DetailColumnCount += 1;
 		if ($this->brand_id->Visible)
-			$this->DetailColumnCount += 1;
-		if ($this->type_id->Visible)
 			$this->DetailColumnCount += 1;
 		if ($this->signature_id->Visible)
 			$this->DetailColumnCount += 1;
@@ -1557,6 +1673,10 @@ class r001_asset_summary extends r001_asset
 		if ($this->location_id->Visible)
 			$this->DetailColumnCount += 1;
 		if ($this->Qty->Visible)
+			$this->DetailColumnCount += 1;
+		if ($this->Variance->Visible)
+			$this->DetailColumnCount += 1;
+		if ($this->cond_id->Visible)
 			$this->DetailColumnCount += 1;
 		if ($this->Remarks->Visible)
 			$this->DetailColumnCount += 1;
@@ -1699,6 +1819,8 @@ class r001_asset_summary extends r001_asset
 					break;
 				case "x_location_id":
 					break;
+				case "x_cond_id":
+					break;
 				default:
 					$lookupFilter = "";
 					break;
@@ -1732,6 +1854,8 @@ class r001_asset_summary extends r001_asset
 						case "x_department_id":
 							break;
 						case "x_location_id":
+							break;
+						case "x_cond_id":
 							break;
 					}
 					$ar[strval($row[0])] = $row;
@@ -1939,6 +2063,8 @@ class r001_asset_summary extends r001_asset
 			$this->department_id->setSort("");
 			$this->location_id->setSort("");
 			$this->Qty->setSort("");
+			$this->Variance->setSort("");
+			$this->cond_id->setSort("");
 			$this->Remarks->setSort("");
 			$this->ProcurementDate->setSort("");
 			$this->ProcurementCurrentCost->setSort("");
@@ -1959,6 +2085,8 @@ class r001_asset_summary extends r001_asset
 			$this->updateSort($this->department_id, $ctrl); // department_id
 			$this->updateSort($this->location_id, $ctrl); // location_id
 			$this->updateSort($this->Qty, $ctrl); // Qty
+			$this->updateSort($this->Variance, $ctrl); // Variance
+			$this->updateSort($this->cond_id, $ctrl); // cond_id
 			$this->updateSort($this->Remarks, $ctrl); // Remarks
 			$this->updateSort($this->ProcurementDate, $ctrl); // ProcurementDate
 			$this->updateSort($this->ProcurementCurrentCost, $ctrl); // ProcurementCurrentCost

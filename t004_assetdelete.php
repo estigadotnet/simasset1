@@ -100,6 +100,12 @@ $t004_asset_delete->showMessage();
 <?php if ($t004_asset_delete->Qty->Visible) { // Qty ?>
 		<th class="<?php echo $t004_asset_delete->Qty->headerCellClass() ?>"><span id="elh_t004_asset_Qty" class="t004_asset_Qty"><?php echo $t004_asset_delete->Qty->caption() ?></span></th>
 <?php } ?>
+<?php if ($t004_asset_delete->Variance->Visible) { // Variance ?>
+		<th class="<?php echo $t004_asset_delete->Variance->headerCellClass() ?>"><span id="elh_t004_asset_Variance" class="t004_asset_Variance"><?php echo $t004_asset_delete->Variance->caption() ?></span></th>
+<?php } ?>
+<?php if ($t004_asset_delete->cond_id->Visible) { // cond_id ?>
+		<th class="<?php echo $t004_asset_delete->cond_id->headerCellClass() ?>"><span id="elh_t004_asset_cond_id" class="t004_asset_cond_id"><?php echo $t004_asset_delete->cond_id->caption() ?></span></th>
+<?php } ?>
 <?php if ($t004_asset_delete->Remarks->Visible) { // Remarks ?>
 		<th class="<?php echo $t004_asset_delete->Remarks->headerCellClass() ?>"><span id="elh_t004_asset_Remarks" class="t004_asset_Remarks"><?php echo $t004_asset_delete->Remarks->caption() ?></span></th>
 <?php } ?>
@@ -203,6 +209,20 @@ while (!$t004_asset_delete->Recordset->EOF) {
 		<td <?php echo $t004_asset_delete->Qty->cellAttributes() ?>>
 <span id="el<?php echo $t004_asset_delete->RowCount ?>_t004_asset_Qty" class="t004_asset_Qty">
 <span<?php echo $t004_asset_delete->Qty->viewAttributes() ?>><?php echo $t004_asset_delete->Qty->getViewValue() ?></span>
+</span>
+</td>
+<?php } ?>
+<?php if ($t004_asset_delete->Variance->Visible) { // Variance ?>
+		<td <?php echo $t004_asset_delete->Variance->cellAttributes() ?>>
+<span id="el<?php echo $t004_asset_delete->RowCount ?>_t004_asset_Variance" class="t004_asset_Variance">
+<span<?php echo $t004_asset_delete->Variance->viewAttributes() ?>><?php echo $t004_asset_delete->Variance->getViewValue() ?></span>
+</span>
+</td>
+<?php } ?>
+<?php if ($t004_asset_delete->cond_id->Visible) { // cond_id ?>
+		<td <?php echo $t004_asset_delete->cond_id->cellAttributes() ?>>
+<span id="el<?php echo $t004_asset_delete->RowCount ?>_t004_asset_cond_id" class="t004_asset_cond_id">
+<span<?php echo $t004_asset_delete->cond_id->viewAttributes() ?>><?php echo $t004_asset_delete->cond_id->getViewValue() ?></span>
 </span>
 </td>
 <?php } ?>

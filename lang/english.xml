@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8" standalone="yes"?>
-<ew-language date="2020/6/30" version="16.0.1" id="en" name="English" desc="English" author="e.World Technology Ltd.">
+<ew-language date="2020/7/2" version="16.0.1" id="en" name="English" desc="English" author="e.World Technology Ltd.">
   <!--
 	*** Important Notes:
 	1. Language ID should follow: https://developers.google.com/recaptcha/docs/language,
@@ -883,6 +883,9 @@
     <menu id="44">
       <phrase id="menutext" value="Location" />
     </menu>
+    <menu id="47">
+      <phrase id="menutext" value="Status" />
+    </menu>
     <menu id="4">
       <phrase id="menutext" value="Asset" />
     </menu>
@@ -993,6 +996,12 @@
       <field id="qty">
         <phrase id="fldcaption" value="Qty" />
       </field>
+      <field id="variance">
+        <phrase id="fldcaption" value="Variance" />
+      </field>
+      <field id="cond_id">
+        <phrase id="fldcaption" value="Status" />
+      </field>
       <field id="remarks">
         <phrase id="fldcaption" value="Remarks" />
       </field>
@@ -1076,6 +1085,12 @@
       </field>
       <field id="qty">
         <phrase id="fldcaption" value="Qty." />
+      </field>
+      <field id="variance">
+        <phrase id="fldcaption" value="Variance" />
+      </field>
+      <field id="cond_id">
+        <phrase id="fldcaption" value="Status" />
       </field>
       <field id="remarks">
         <phrase id="fldcaption" value="Remarks" />
@@ -1166,6 +1181,15 @@
       </field>
       <field id="location">
         <phrase id="fldcaption" value="Location" />
+      </field>
+    </table>
+    <table id="t010_condition">
+      <phrase id="tblcaption" value="Status" />
+      <field id="id">
+        <phrase id="fldcaption" value="id" />
+      </field>
+      <field id="status">
+        <phrase id="fldcaption" value="Status" />
       </field>
     </table>
     <table id="t101_ho_head">

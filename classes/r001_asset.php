@@ -20,7 +20,7 @@ class r001_asset extends ReportTable
 	public $RightColumnClass = "col-sm-10";
 	public $OffsetColumnClass = "col-sm-10 offset-sm-2";
 	public $TableLeftColumnClass = "w-col-2";
-	public $ShowGroupHeaderAsRow = FALSE;
+	public $ShowGroupHeaderAsRow = TRUE;
 	public $ShowCompactSummaryFooter = TRUE;
 
 	// Export
@@ -38,6 +38,8 @@ class r001_asset extends ReportTable
 	public $department_id;
 	public $location_id;
 	public $Qty;
+	public $Variance;
+	public $cond_id;
 	public $Remarks;
 	public $ProcurementDate;
 	public $ProcurementCurrentCost;
@@ -140,6 +142,12 @@ class r001_asset extends ReportTable
 
 		// type_id
 		$this->type_id = new ReportField('r001_asset', 'r001_asset', 'x_type_id', 'type_id', '`type_id`', '`type_id`', 3, 11, -1, FALSE, '`type_id`', FALSE, FALSE, FALSE, 'FORMATTED TEXT', 'TEXT');
+		$this->type_id->GroupingFieldId = 3;
+		$this->type_id->ShowGroupHeaderAsRow = $this->ShowGroupHeaderAsRow;
+		$this->type_id->ShowCompactSummaryFooter = $this->ShowCompactSummaryFooter;
+		$this->type_id->GroupByType = "";
+		$this->type_id->GroupInterval = "0";
+		$this->type_id->GroupSql = "";
 		$this->type_id->Nullable = FALSE; // NOT NULL field
 		$this->type_id->Required = TRUE; // Required field
 		$this->type_id->Sortable = TRUE; // Allow sort
@@ -186,6 +194,24 @@ class r001_asset extends ReportTable
 		$this->Qty->DefaultErrorMessage = $Language->phrase("IncorrectFloat");
 		$this->Qty->SourceTableVar = 't004_asset';
 		$this->fields['Qty'] = &$this->Qty;
+
+		// Variance
+		$this->Variance = new ReportField('r001_asset', 'r001_asset', 'x_Variance', 'Variance', '`Variance`', '`Variance`', 4, 14, -1, FALSE, '`Variance`', FALSE, FALSE, FALSE, 'FORMATTED TEXT', 'TEXT');
+		$this->Variance->Nullable = FALSE; // NOT NULL field
+		$this->Variance->Sortable = TRUE; // Allow sort
+		$this->Variance->DefaultErrorMessage = $Language->phrase("IncorrectFloat");
+		$this->Variance->SourceTableVar = 't004_asset';
+		$this->fields['Variance'] = &$this->Variance;
+
+		// cond_id
+		$this->cond_id = new ReportField('r001_asset', 'r001_asset', 'x_cond_id', 'cond_id', '`cond_id`', '`cond_id`', 3, 11, -1, FALSE, '`cond_id`', FALSE, FALSE, FALSE, 'FORMATTED TEXT', 'TEXT');
+		$this->cond_id->Nullable = FALSE; // NOT NULL field
+		$this->cond_id->Required = TRUE; // Required field
+		$this->cond_id->Sortable = TRUE; // Allow sort
+		$this->cond_id->Lookup = new Lookup('cond_id', 't010_condition', FALSE, 'id', ["Status","","",""], [], [], [], [], [], [], '', '');
+		$this->cond_id->DefaultErrorMessage = $Language->phrase("IncorrectInteger");
+		$this->cond_id->SourceTableVar = 't004_asset';
+		$this->fields['cond_id'] = &$this->cond_id;
 
 		// Remarks
 		$this->Remarks = new ReportField('r001_asset', 'r001_asset', 'x_Remarks', 'Remarks', '`Remarks`', '`Remarks`', 201, 65535, -1, FALSE, '`Remarks`', FALSE, FALSE, FALSE, 'FORMATTED TEXT', 'TEXTAREA');
@@ -417,6 +443,11 @@ class r001_asset extends ReportTable
 			$select .= ", " . $expr;
 		}
 		$groupField = &$this->group_id;
+		if ($groupField->GroupSql != "") {
+			$expr = str_replace("%s", $groupField->Expression, $groupField->GroupSql) . " AS " . QuotedName($groupField->getGroupName(), $this->Dbid);
+			$select .= ", " . $expr;
+		}
+		$groupField = &$this->type_id;
 		if ($groupField->GroupSql != "") {
 			$expr = str_replace("%s", $groupField->Expression, $groupField->GroupSql) . " AS " . QuotedName($groupField->getGroupName(), $this->Dbid);
 			$select .= ", " . $expr;

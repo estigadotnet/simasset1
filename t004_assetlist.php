@@ -203,6 +203,24 @@ $t004_asset_list->ListOptions->render("header", "left");
 		</div></div></th>
 	<?php } ?>
 <?php } ?>
+<?php if ($t004_asset_list->Variance->Visible) { // Variance ?>
+	<?php if ($t004_asset_list->SortUrl($t004_asset_list->Variance) == "") { ?>
+		<th data-name="Variance" class="<?php echo $t004_asset_list->Variance->headerCellClass() ?>"><div id="elh_t004_asset_Variance" class="t004_asset_Variance"><div class="ew-table-header-caption"><?php echo $t004_asset_list->Variance->caption() ?></div></div></th>
+	<?php } else { ?>
+		<th data-name="Variance" class="<?php echo $t004_asset_list->Variance->headerCellClass() ?>"><div class="ew-pointer" onclick="ew.sort(event, '<?php echo $t004_asset_list->SortUrl($t004_asset_list->Variance) ?>', 2);"><div id="elh_t004_asset_Variance" class="t004_asset_Variance">
+			<div class="ew-table-header-btn"><span class="ew-table-header-caption"><?php echo $t004_asset_list->Variance->caption() ?></span><span class="ew-table-header-sort"><?php if ($t004_asset_list->Variance->getSort() == "ASC") { ?><i class="fas fa-sort-up"></i><?php } elseif ($t004_asset_list->Variance->getSort() == "DESC") { ?><i class="fas fa-sort-down"></i><?php } ?></span></div>
+		</div></div></th>
+	<?php } ?>
+<?php } ?>
+<?php if ($t004_asset_list->cond_id->Visible) { // cond_id ?>
+	<?php if ($t004_asset_list->SortUrl($t004_asset_list->cond_id) == "") { ?>
+		<th data-name="cond_id" class="<?php echo $t004_asset_list->cond_id->headerCellClass() ?>"><div id="elh_t004_asset_cond_id" class="t004_asset_cond_id"><div class="ew-table-header-caption"><?php echo $t004_asset_list->cond_id->caption() ?></div></div></th>
+	<?php } else { ?>
+		<th data-name="cond_id" class="<?php echo $t004_asset_list->cond_id->headerCellClass() ?>"><div class="ew-pointer" onclick="ew.sort(event, '<?php echo $t004_asset_list->SortUrl($t004_asset_list->cond_id) ?>', 2);"><div id="elh_t004_asset_cond_id" class="t004_asset_cond_id">
+			<div class="ew-table-header-btn"><span class="ew-table-header-caption"><?php echo $t004_asset_list->cond_id->caption() ?></span><span class="ew-table-header-sort"><?php if ($t004_asset_list->cond_id->getSort() == "ASC") { ?><i class="fas fa-sort-up"></i><?php } elseif ($t004_asset_list->cond_id->getSort() == "DESC") { ?><i class="fas fa-sort-down"></i><?php } ?></span></div>
+		</div></div></th>
+	<?php } ?>
+<?php } ?>
 <?php if ($t004_asset_list->Remarks->Visible) { // Remarks ?>
 	<?php if ($t004_asset_list->SortUrl($t004_asset_list->Remarks) == "") { ?>
 		<th data-name="Remarks" class="<?php echo $t004_asset_list->Remarks->headerCellClass() ?>"><div id="elh_t004_asset_Remarks" class="t004_asset_Remarks"><div class="ew-table-header-caption"><?php echo $t004_asset_list->Remarks->caption() ?></div></div></th>
@@ -380,6 +398,20 @@ $t004_asset_list->ListOptions->render("body", "left", $t004_asset_list->RowCount
 		<td data-name="Qty" <?php echo $t004_asset_list->Qty->cellAttributes() ?>>
 <span id="el<?php echo $t004_asset_list->RowCount ?>_t004_asset_Qty">
 <span<?php echo $t004_asset_list->Qty->viewAttributes() ?>><?php echo $t004_asset_list->Qty->getViewValue() ?></span>
+</span>
+</td>
+	<?php } ?>
+	<?php if ($t004_asset_list->Variance->Visible) { // Variance ?>
+		<td data-name="Variance" <?php echo $t004_asset_list->Variance->cellAttributes() ?>>
+<span id="el<?php echo $t004_asset_list->RowCount ?>_t004_asset_Variance">
+<span<?php echo $t004_asset_list->Variance->viewAttributes() ?>><?php echo $t004_asset_list->Variance->getViewValue() ?></span>
+</span>
+</td>
+	<?php } ?>
+	<?php if ($t004_asset_list->cond_id->Visible) { // cond_id ?>
+		<td data-name="cond_id" <?php echo $t004_asset_list->cond_id->cellAttributes() ?>>
+<span id="el<?php echo $t004_asset_list->RowCount ?>_t004_asset_cond_id">
+<span<?php echo $t004_asset_list->cond_id->viewAttributes() ?>><?php echo $t004_asset_list->cond_id->getViewValue() ?></span>
 </span>
 </td>
 	<?php } ?>

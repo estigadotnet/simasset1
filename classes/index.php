@@ -311,6 +311,8 @@ class index
 			$this->terminate("t008_brandlist.php");
 		if ($Security->allowList(CurrentProjectID() . 't009_location'))
 			$this->terminate("t009_locationlist.php");
+		if ($Security->allowList(CurrentProjectID() . 't010_condition'))
+			$this->terminate("t010_conditionlist.php");
 		if ($Security->allowList(CurrentProjectID() . 't101_ho_head'))
 			$this->terminate("t101_ho_headlist.php");
 		if ($Security->allowList(CurrentProjectID() . 't102_ho_detail'))

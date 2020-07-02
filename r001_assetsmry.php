@@ -136,6 +136,19 @@ while ($r001_asset_summary->GroupCount <= count($r001_asset_summary->GroupRecord
 		<?php } ?>
 	<?php } ?>
 <?php } ?>
+<?php if ($r001_asset_summary->type_id->Visible) { ?>
+	<?php if ($r001_asset_summary->type_id->ShowGroupHeaderAsRow) { ?>
+	<th data-name="type_id">&nbsp;</th>
+	<?php } else { ?>
+		<?php if ($r001_asset_summary->sortUrl($r001_asset_summary->type_id) == "") { ?>
+	<th data-name="type_id" class="<?php echo $r001_asset_summary->type_id->headerCellClass() ?>"><div class="r001_asset_type_id"><div class="ew-table-header-caption"><?php echo $r001_asset_summary->type_id->caption() ?></div></div></th>
+		<?php } else { ?>
+	<th data-name="type_id" class="<?php echo $r001_asset_summary->type_id->headerCellClass() ?>"><div class="ew-pointer" onclick="ew.sort(event, '<?php echo $r001_asset_summary->sortUrl($r001_asset_summary->type_id) ?>', 2);"><div class="r001_asset_type_id">
+		<div class="ew-table-header-btn"><span class="ew-table-header-caption"><?php echo $r001_asset_summary->type_id->caption() ?></span><span class="ew-table-header-sort"><?php if ($r001_asset_summary->type_id->getSort() == "ASC") { ?><i class="fas fa-sort-up"></i><?php } elseif ($r001_asset_summary->type_id->getSort() == "DESC") { ?><i class="fas fa-sort-down"></i><?php } ?></span></div>
+	</div></div></th>
+		<?php } ?>
+	<?php } ?>
+<?php } ?>
 <?php if ($r001_asset_summary->Code->Visible) { ?>
 	<?php if ($r001_asset_summary->sortUrl($r001_asset_summary->Code) == "") { ?>
 	<th data-name="Code" class="<?php echo $r001_asset_summary->Code->headerCellClass() ?>"><div class="r001_asset_Code"><div class="ew-table-header-caption"><?php echo $r001_asset_summary->Code->caption() ?></div></div></th>
@@ -160,15 +173,6 @@ while ($r001_asset_summary->GroupCount <= count($r001_asset_summary->GroupRecord
 	<?php } else { ?>
 	<th data-name="brand_id" class="<?php echo $r001_asset_summary->brand_id->headerCellClass() ?>"><div class="ew-pointer" onclick="ew.sort(event, '<?php echo $r001_asset_summary->sortUrl($r001_asset_summary->brand_id) ?>', 2);"><div class="r001_asset_brand_id">
 		<div class="ew-table-header-btn"><span class="ew-table-header-caption"><?php echo $r001_asset_summary->brand_id->caption() ?></span><span class="ew-table-header-sort"><?php if ($r001_asset_summary->brand_id->getSort() == "ASC") { ?><i class="fas fa-sort-up"></i><?php } elseif ($r001_asset_summary->brand_id->getSort() == "DESC") { ?><i class="fas fa-sort-down"></i><?php } ?></span></div>
-	</div></div></th>
-	<?php } ?>
-<?php } ?>
-<?php if ($r001_asset_summary->type_id->Visible) { ?>
-	<?php if ($r001_asset_summary->sortUrl($r001_asset_summary->type_id) == "") { ?>
-	<th data-name="type_id" class="<?php echo $r001_asset_summary->type_id->headerCellClass() ?>"><div class="r001_asset_type_id"><div class="ew-table-header-caption"><?php echo $r001_asset_summary->type_id->caption() ?></div></div></th>
-	<?php } else { ?>
-	<th data-name="type_id" class="<?php echo $r001_asset_summary->type_id->headerCellClass() ?>"><div class="ew-pointer" onclick="ew.sort(event, '<?php echo $r001_asset_summary->sortUrl($r001_asset_summary->type_id) ?>', 2);"><div class="r001_asset_type_id">
-		<div class="ew-table-header-btn"><span class="ew-table-header-caption"><?php echo $r001_asset_summary->type_id->caption() ?></span><span class="ew-table-header-sort"><?php if ($r001_asset_summary->type_id->getSort() == "ASC") { ?><i class="fas fa-sort-up"></i><?php } elseif ($r001_asset_summary->type_id->getSort() == "DESC") { ?><i class="fas fa-sort-down"></i><?php } ?></span></div>
 	</div></div></th>
 	<?php } ?>
 <?php } ?>
@@ -205,6 +209,24 @@ while ($r001_asset_summary->GroupCount <= count($r001_asset_summary->GroupRecord
 	<?php } else { ?>
 	<th data-name="Qty" class="<?php echo $r001_asset_summary->Qty->headerCellClass() ?>"><div class="ew-pointer" onclick="ew.sort(event, '<?php echo $r001_asset_summary->sortUrl($r001_asset_summary->Qty) ?>', 2);"><div class="r001_asset_Qty">
 		<div class="ew-table-header-btn"><span class="ew-table-header-caption"><?php echo $r001_asset_summary->Qty->caption() ?></span><span class="ew-table-header-sort"><?php if ($r001_asset_summary->Qty->getSort() == "ASC") { ?><i class="fas fa-sort-up"></i><?php } elseif ($r001_asset_summary->Qty->getSort() == "DESC") { ?><i class="fas fa-sort-down"></i><?php } ?></span></div>
+	</div></div></th>
+	<?php } ?>
+<?php } ?>
+<?php if ($r001_asset_summary->Variance->Visible) { ?>
+	<?php if ($r001_asset_summary->sortUrl($r001_asset_summary->Variance) == "") { ?>
+	<th data-name="Variance" class="<?php echo $r001_asset_summary->Variance->headerCellClass() ?>"><div class="r001_asset_Variance"><div class="ew-table-header-caption"><?php echo $r001_asset_summary->Variance->caption() ?></div></div></th>
+	<?php } else { ?>
+	<th data-name="Variance" class="<?php echo $r001_asset_summary->Variance->headerCellClass() ?>"><div class="ew-pointer" onclick="ew.sort(event, '<?php echo $r001_asset_summary->sortUrl($r001_asset_summary->Variance) ?>', 2);"><div class="r001_asset_Variance">
+		<div class="ew-table-header-btn"><span class="ew-table-header-caption"><?php echo $r001_asset_summary->Variance->caption() ?></span><span class="ew-table-header-sort"><?php if ($r001_asset_summary->Variance->getSort() == "ASC") { ?><i class="fas fa-sort-up"></i><?php } elseif ($r001_asset_summary->Variance->getSort() == "DESC") { ?><i class="fas fa-sort-down"></i><?php } ?></span></div>
+	</div></div></th>
+	<?php } ?>
+<?php } ?>
+<?php if ($r001_asset_summary->cond_id->Visible) { ?>
+	<?php if ($r001_asset_summary->sortUrl($r001_asset_summary->cond_id) == "") { ?>
+	<th data-name="cond_id" class="<?php echo $r001_asset_summary->cond_id->headerCellClass() ?>"><div class="r001_asset_cond_id"><div class="ew-table-header-caption"><?php echo $r001_asset_summary->cond_id->caption() ?></div></div></th>
+	<?php } else { ?>
+	<th data-name="cond_id" class="<?php echo $r001_asset_summary->cond_id->headerCellClass() ?>"><div class="ew-pointer" onclick="ew.sort(event, '<?php echo $r001_asset_summary->sortUrl($r001_asset_summary->cond_id) ?>', 2);"><div class="r001_asset_cond_id">
+		<div class="ew-table-header-btn"><span class="ew-table-header-caption"><?php echo $r001_asset_summary->cond_id->caption() ?></span><span class="ew-table-header-sort"><?php if ($r001_asset_summary->cond_id->getSort() == "ASC") { ?><i class="fas fa-sort-up"></i><?php } elseif ($r001_asset_summary->cond_id->getSort() == "DESC") { ?><i class="fas fa-sort-down"></i><?php } ?></span></div>
 	</div></div></th>
 	<?php } ?>
 <?php } ?>
@@ -320,7 +342,6 @@ while ($r001_asset_summary->GroupCount <= count($r001_asset_summary->GroupRecord
 		$r001_asset_summary->group_id->LevelBreak = TRUE; // Set field level break
 		$r001_asset_summary->GroupCounter[2]++;
 		$r001_asset_summary->group_id->getCnt($r001_asset_summary->group_id->Records); // Get record count
-		$r001_asset_summary->setGroupCount($r001_asset_summary->group_id->Count, $r001_asset_summary->GroupCounter[1], $r001_asset_summary->GroupCounter[2]);
 ?>
 <?php if ($r001_asset_summary->group_id->Visible && $r001_asset_summary->group_id->ShowGroupHeaderAsRow) { ?>
 <?php
@@ -356,8 +377,56 @@ while ($r001_asset_summary->GroupCount <= count($r001_asset_summary->GroupRecord
 	</tr>
 <?php } ?>
 <?php
+	$r001_asset_summary->type_id->getDistinctValues($r001_asset_summary->group_id->Records);
+	$r001_asset_summary->setGroupCount(count($r001_asset_summary->type_id->DistinctValues), $r001_asset_summary->GroupCounter[1], $r001_asset_summary->GroupCounter[2]);
+	$r001_asset_summary->GroupCounter[3] = 0; // Init group count index
+	foreach ($r001_asset_summary->type_id->DistinctValues as $type_id) { // Load records for this distinct value
+		$r001_asset_summary->type_id->setGroupValue($type_id); // Set group value
+		$r001_asset_summary->type_id->getDistinctRecords($r001_asset_summary->group_id->Records, $r001_asset_summary->type_id->groupValue());
+		$r001_asset_summary->type_id->LevelBreak = TRUE; // Set field level break
+		$r001_asset_summary->GroupCounter[3]++;
+		$r001_asset_summary->type_id->getCnt($r001_asset_summary->type_id->Records); // Get record count
+		$r001_asset_summary->setGroupCount($r001_asset_summary->type_id->Count, $r001_asset_summary->GroupCounter[1], $r001_asset_summary->GroupCounter[2], $r001_asset_summary->GroupCounter[3]);
+?>
+<?php if ($r001_asset_summary->type_id->Visible && $r001_asset_summary->type_id->ShowGroupHeaderAsRow) { ?>
+<?php
+
+		// Render header row
+		$r001_asset_summary->type_id->setDbValue($type_id); // Set current value for type_id
+		$r001_asset_summary->resetAttributes();
+		$r001_asset_summary->RowType = ROWTYPE_TOTAL;
+		$r001_asset_summary->RowTotalType = ROWTOTAL_GROUP;
+		$r001_asset_summary->RowTotalSubType = ROWTOTAL_HEADER;
+		$r001_asset_summary->RowGroupLevel = 3;
+		$r001_asset_summary->renderRow();
+?>
+	<tr<?php echo $r001_asset_summary->rowAttributes(); ?>>
+<?php if ($r001_asset_summary->property_id->Visible) { ?>
+		<td data-field="property_id"<?php echo $r001_asset_summary->property_id->cellAttributes(); ?>></td>
+<?php } ?>
+<?php if ($r001_asset_summary->group_id->Visible) { ?>
+		<td data-field="group_id"<?php echo $r001_asset_summary->group_id->cellAttributes(); ?>></td>
+<?php } ?>
+<?php if ($r001_asset_summary->type_id->Visible) { ?>
+		<td data-field="type_id"<?php echo $r001_asset_summary->type_id->cellAttributes(); ?>><span class="ew-group-toggle icon-collapse"></span></td>
+<?php } ?>
+		<td data-field="type_id" colspan="<?php echo ($Page->GroupColumnCount + $Page->DetailColumnCount - 3) ?>"<?php echo $r001_asset_summary->type_id->cellAttributes() ?>>
+<?php if ($r001_asset_summary->sortUrl($r001_asset_summary->type_id) == "") { ?>
+		<span class="ew-summary-caption r001_asset_type_id"><span class="ew-table-header-caption"><?php echo $r001_asset_summary->type_id->caption() ?></span></span>
+<?php } else { ?>
+		<span class="ew-table-header-btn ew-pointer ew-summary-caption r001_asset_type_id" onclick="ew.sort(event, '<?php echo $r001_asset_summary->sortUrl($r001_asset_summary->type_id) ?>', 2);">
+			<span class="ew-table-header-caption"><?php echo $r001_asset_summary->type_id->caption() ?></span>
+			<span class="ew-table-header-sort"><?php if ($r001_asset_summary->type_id->getSort() == "ASC") { ?><i class="fas fa-sort-up"></i><?php } elseif ($r001_asset_summary->type_id->getSort() == "DESC") { ?><i class="fas fa-sort-down"></i><?php } ?></span>
+		</span>
+<?php } ?>
+		<?php echo $Language->phrase("SummaryColon") ?><span<?php echo $r001_asset_summary->type_id->viewAttributes() ?>><?php echo $r001_asset_summary->type_id->GroupViewValue ?></span>
+		<span class="ew-summary-count">(<span class="ew-aggregate-caption"><?php echo $Language->phrase("RptCnt") ?></span><?php echo $Language->phrase("AggregateEqual") ?><span class="ew-aggregate-value"><?php echo FormatNumber($r001_asset_summary->type_id->Count, 0); ?></span>)</span>
+		</td>
+	</tr>
+<?php } ?>
+<?php
 	$r001_asset_summary->RecordCount = 0; // Reset record count
-	foreach ($r001_asset_summary->group_id->Records as $record) {
+	foreach ($r001_asset_summary->type_id->Records as $record) {
 		$r001_asset_summary->RecordCount++;
 		$r001_asset_summary->RecordIndex++;
 		$r001_asset_summary->loadRowValues($record);
@@ -384,6 +453,13 @@ while ($r001_asset_summary->GroupCount <= count($r001_asset_summary->GroupRecord
 		<td data-field="group_id"<?php echo $r001_asset_summary->group_id->cellAttributes(); ?>><span<?php echo $r001_asset_summary->group_id->viewAttributes() ?>><?php echo $r001_asset_summary->group_id->GroupViewValue ?></span></td>
 	<?php } ?>
 <?php } ?>
+<?php if ($r001_asset_summary->type_id->Visible) { ?>
+	<?php if ($r001_asset_summary->type_id->ShowGroupHeaderAsRow) { ?>
+		<td data-field="type_id"<?php echo $r001_asset_summary->type_id->cellAttributes(); ?>>&nbsp;</td>
+	<?php } else { ?>
+		<td data-field="type_id"<?php echo $r001_asset_summary->type_id->cellAttributes(); ?>><span<?php echo $r001_asset_summary->type_id->viewAttributes() ?>><?php echo $r001_asset_summary->type_id->GroupViewValue ?></span></td>
+	<?php } ?>
+<?php } ?>
 <?php if ($r001_asset_summary->Code->Visible) { ?>
 		<td data-field="Code"<?php echo $r001_asset_summary->Code->cellAttributes() ?>>
 <span<?php echo $r001_asset_summary->Code->viewAttributes() ?>><?php echo $r001_asset_summary->Code->getViewValue() ?></span>
@@ -397,11 +473,6 @@ while ($r001_asset_summary->GroupCount <= count($r001_asset_summary->GroupRecord
 <?php if ($r001_asset_summary->brand_id->Visible) { ?>
 		<td data-field="brand_id"<?php echo $r001_asset_summary->brand_id->cellAttributes() ?>>
 <span<?php echo $r001_asset_summary->brand_id->viewAttributes() ?>><?php echo $r001_asset_summary->brand_id->getViewValue() ?></span>
-</td>
-<?php } ?>
-<?php if ($r001_asset_summary->type_id->Visible) { ?>
-		<td data-field="type_id"<?php echo $r001_asset_summary->type_id->cellAttributes() ?>>
-<span<?php echo $r001_asset_summary->type_id->viewAttributes() ?>><?php echo $r001_asset_summary->type_id->getViewValue() ?></span>
 </td>
 <?php } ?>
 <?php if ($r001_asset_summary->signature_id->Visible) { ?>
@@ -422,6 +493,16 @@ while ($r001_asset_summary->GroupCount <= count($r001_asset_summary->GroupRecord
 <?php if ($r001_asset_summary->Qty->Visible) { ?>
 		<td data-field="Qty"<?php echo $r001_asset_summary->Qty->cellAttributes() ?>>
 <span<?php echo $r001_asset_summary->Qty->viewAttributes() ?>><?php echo $r001_asset_summary->Qty->getViewValue() ?></span>
+</td>
+<?php } ?>
+<?php if ($r001_asset_summary->Variance->Visible) { ?>
+		<td data-field="Variance"<?php echo $r001_asset_summary->Variance->cellAttributes() ?>>
+<span<?php echo $r001_asset_summary->Variance->viewAttributes() ?>><?php echo $r001_asset_summary->Variance->getViewValue() ?></span>
+</td>
+<?php } ?>
+<?php if ($r001_asset_summary->cond_id->Visible) { ?>
+		<td data-field="cond_id"<?php echo $r001_asset_summary->cond_id->cellAttributes() ?>>
+<span<?php echo $r001_asset_summary->cond_id->viewAttributes() ?>><?php echo $r001_asset_summary->cond_id->getViewValue() ?></span>
 </td>
 <?php } ?>
 <?php if ($r001_asset_summary->Remarks->Visible) { ?>
@@ -452,6 +533,7 @@ while ($r001_asset_summary->GroupCount <= count($r001_asset_summary->GroupRecord
 	</tr>
 <?php
 	}
+	} // End group level 2
 	} // End group level 1
 ?>
 <?php

@@ -105,6 +105,26 @@ namespace PHPMaker2020\p_simasset1;
 </td>
 		</tr>
 <?php } ?>
+<?php if ($t004_asset->Variance->Visible) { // Variance ?>
+		<tr id="r_Variance">
+			<td class="<?php echo $t004_asset->TableLeftColumnClass ?>"><?php echo $t004_asset->Variance->caption() ?></td>
+			<td <?php echo $t004_asset->Variance->cellAttributes() ?>>
+<span id="el_t004_asset_Variance">
+<span<?php echo $t004_asset->Variance->viewAttributes() ?>><?php echo $t004_asset->Variance->getViewValue() ?></span>
+</span>
+</td>
+		</tr>
+<?php } ?>
+<?php if ($t004_asset->cond_id->Visible) { // cond_id ?>
+		<tr id="r_cond_id">
+			<td class="<?php echo $t004_asset->TableLeftColumnClass ?>"><?php echo $t004_asset->cond_id->caption() ?></td>
+			<td <?php echo $t004_asset->cond_id->cellAttributes() ?>>
+<span id="el_t004_asset_cond_id">
+<span<?php echo $t004_asset->cond_id->viewAttributes() ?>><?php echo $t004_asset->cond_id->getViewValue() ?></span>
+</span>
+</td>
+		</tr>
+<?php } ?>
 <?php if ($t004_asset->Remarks->Visible) { // Remarks ?>
 		<tr id="r_Remarks">
 			<td class="<?php echo $t004_asset->TableLeftColumnClass ?>"><?php echo $t004_asset->Remarks->caption() ?></td>

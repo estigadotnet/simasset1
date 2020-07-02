@@ -44,6 +44,8 @@ class t004_asset extends DbTable
 	public $department_id;
 	public $location_id;
 	public $Qty;
+	public $Variance;
+	public $cond_id;
 	public $Remarks;
 	public $ProcurementDate;
 	public $ProcurementCurrentCost;
@@ -188,6 +190,24 @@ class t004_asset extends DbTable
 		$this->Qty->Sortable = TRUE; // Allow sort
 		$this->Qty->DefaultErrorMessage = $Language->phrase("IncorrectFloat");
 		$this->fields['Qty'] = &$this->Qty;
+
+		// Variance
+		$this->Variance = new DbField('t004_asset', 't004_asset', 'x_Variance', 'Variance', '`Variance`', '`Variance`', 4, 14, -1, FALSE, '`Variance`', FALSE, FALSE, FALSE, 'FORMATTED TEXT', 'TEXT');
+		$this->Variance->Nullable = FALSE; // NOT NULL field
+		$this->Variance->Sortable = TRUE; // Allow sort
+		$this->Variance->DefaultErrorMessage = $Language->phrase("IncorrectFloat");
+		$this->fields['Variance'] = &$this->Variance;
+
+		// cond_id
+		$this->cond_id = new DbField('t004_asset', 't004_asset', 'x_cond_id', 'cond_id', '`cond_id`', '`cond_id`', 3, 11, -1, FALSE, '`cond_id`', FALSE, FALSE, FALSE, 'FORMATTED TEXT', 'SELECT');
+		$this->cond_id->Nullable = FALSE; // NOT NULL field
+		$this->cond_id->Required = TRUE; // Required field
+		$this->cond_id->Sortable = TRUE; // Allow sort
+		$this->cond_id->UsePleaseSelect = TRUE; // Use PleaseSelect by default
+		$this->cond_id->PleaseSelectText = $Language->phrase("PleaseSelect"); // "PleaseSelect" text
+		$this->cond_id->Lookup = new Lookup('cond_id', 't010_condition', FALSE, 'id', ["Status","","",""], [], [], [], [], [], [], '', '');
+		$this->cond_id->DefaultErrorMessage = $Language->phrase("IncorrectInteger");
+		$this->fields['cond_id'] = &$this->cond_id;
 
 		// Remarks
 		$this->Remarks = new DbField('t004_asset', 't004_asset', 'x_Remarks', 'Remarks', '`Remarks`', '`Remarks`', 201, 65535, -1, FALSE, '`Remarks`', FALSE, FALSE, FALSE, 'FORMATTED TEXT', 'TEXTAREA');
@@ -697,6 +717,8 @@ class t004_asset extends DbTable
 		$this->department_id->DbValue = $row['department_id'];
 		$this->location_id->DbValue = $row['location_id'];
 		$this->Qty->DbValue = $row['Qty'];
+		$this->Variance->DbValue = $row['Variance'];
+		$this->cond_id->DbValue = $row['cond_id'];
 		$this->Remarks->DbValue = $row['Remarks'];
 		$this->ProcurementDate->DbValue = $row['ProcurementDate'];
 		$this->ProcurementCurrentCost->DbValue = $row['ProcurementCurrentCost'];
@@ -949,6 +971,8 @@ class t004_asset extends DbTable
 		$this->department_id->setDbValue($rs->fields('department_id'));
 		$this->location_id->setDbValue($rs->fields('location_id'));
 		$this->Qty->setDbValue($rs->fields('Qty'));
+		$this->Variance->setDbValue($rs->fields('Variance'));
+		$this->cond_id->setDbValue($rs->fields('cond_id'));
 		$this->Remarks->setDbValue($rs->fields('Remarks'));
 		$this->ProcurementDate->setDbValue($rs->fields('ProcurementDate'));
 		$this->ProcurementCurrentCost->setDbValue($rs->fields('ProcurementCurrentCost'));
@@ -976,6 +1000,8 @@ class t004_asset extends DbTable
 		// department_id
 		// location_id
 		// Qty
+		// Variance
+		// cond_id
 		// Remarks
 		// ProcurementDate
 		// ProcurementCurrentCost
@@ -1155,6 +1181,33 @@ class t004_asset extends DbTable
 		$this->Qty->CellCssStyle .= "text-align: right;";
 		$this->Qty->ViewCustomAttributes = "";
 
+		// Variance
+		$this->Variance->ViewValue = $this->Variance->CurrentValue;
+		$this->Variance->ViewValue = FormatNumber($this->Variance->ViewValue, 2, -2, -2, -2);
+		$this->Variance->ViewCustomAttributes = "";
+
+		// cond_id
+		$curVal = strval($this->cond_id->CurrentValue);
+		if ($curVal != "") {
+			$this->cond_id->ViewValue = $this->cond_id->lookupCacheOption($curVal);
+			if ($this->cond_id->ViewValue === NULL) { // Lookup from database
+				$filterWrk = "`id`" . SearchString("=", $curVal, DATATYPE_NUMBER, "");
+				$sqlWrk = $this->cond_id->Lookup->getSql(FALSE, $filterWrk, '', $this);
+				$rswrk = Conn()->execute($sqlWrk);
+				if ($rswrk && !$rswrk->EOF) { // Lookup values found
+					$arwrk = [];
+					$arwrk[1] = $rswrk->fields('df');
+					$this->cond_id->ViewValue = $this->cond_id->displayValue($arwrk);
+					$rswrk->Close();
+				} else {
+					$this->cond_id->ViewValue = $this->cond_id->CurrentValue;
+				}
+			}
+		} else {
+			$this->cond_id->ViewValue = NULL;
+		}
+		$this->cond_id->ViewCustomAttributes = "";
+
 		// Remarks
 		$this->Remarks->ViewValue = $this->Remarks->CurrentValue;
 		$this->Remarks->ViewCustomAttributes = "";
@@ -1234,6 +1287,16 @@ class t004_asset extends DbTable
 		$this->Qty->LinkCustomAttributes = "";
 		$this->Qty->HrefValue = "";
 		$this->Qty->TooltipValue = "";
+
+		// Variance
+		$this->Variance->LinkCustomAttributes = "";
+		$this->Variance->HrefValue = "";
+		$this->Variance->TooltipValue = "";
+
+		// cond_id
+		$this->cond_id->LinkCustomAttributes = "";
+		$this->cond_id->HrefValue = "";
+		$this->cond_id->TooltipValue = "";
 
 		// Remarks
 		$this->Remarks->LinkCustomAttributes = "";
@@ -1336,6 +1399,19 @@ class t004_asset extends DbTable
 			$this->Qty->EditValue = FormatNumber($this->Qty->EditValue, -2, -2, -2, -2);
 		
 
+		// Variance
+		$this->Variance->EditAttrs["class"] = "form-control";
+		$this->Variance->EditCustomAttributes = "";
+		$this->Variance->EditValue = $this->Variance->CurrentValue;
+		$this->Variance->PlaceHolder = RemoveHtml($this->Variance->caption());
+		if (strval($this->Variance->EditValue) != "" && is_numeric($this->Variance->EditValue))
+			$this->Variance->EditValue = FormatNumber($this->Variance->EditValue, -2, -2, -2, -2);
+		
+
+		// cond_id
+		$this->cond_id->EditAttrs["class"] = "form-control";
+		$this->cond_id->EditCustomAttributes = "";
+
 		// Remarks
 		$this->Remarks->EditAttrs["class"] = "form-control";
 		$this->Remarks->EditCustomAttributes = "";
@@ -1410,6 +1486,8 @@ class t004_asset extends DbTable
 					$doc->exportCaption($this->department_id);
 					$doc->exportCaption($this->location_id);
 					$doc->exportCaption($this->Qty);
+					$doc->exportCaption($this->Variance);
+					$doc->exportCaption($this->cond_id);
 					$doc->exportCaption($this->Remarks);
 					$doc->exportCaption($this->ProcurementDate);
 					$doc->exportCaption($this->ProcurementCurrentCost);
@@ -1427,6 +1505,8 @@ class t004_asset extends DbTable
 					$doc->exportCaption($this->department_id);
 					$doc->exportCaption($this->location_id);
 					$doc->exportCaption($this->Qty);
+					$doc->exportCaption($this->Variance);
+					$doc->exportCaption($this->cond_id);
 					$doc->exportCaption($this->Remarks);
 					$doc->exportCaption($this->ProcurementDate);
 					$doc->exportCaption($this->ProcurementCurrentCost);
@@ -1473,6 +1553,8 @@ class t004_asset extends DbTable
 						$doc->exportField($this->department_id);
 						$doc->exportField($this->location_id);
 						$doc->exportField($this->Qty);
+						$doc->exportField($this->Variance);
+						$doc->exportField($this->cond_id);
 						$doc->exportField($this->Remarks);
 						$doc->exportField($this->ProcurementDate);
 						$doc->exportField($this->ProcurementCurrentCost);
@@ -1490,6 +1572,8 @@ class t004_asset extends DbTable
 						$doc->exportField($this->department_id);
 						$doc->exportField($this->location_id);
 						$doc->exportField($this->Qty);
+						$doc->exportField($this->Variance);
+						$doc->exportField($this->cond_id);
 						$doc->exportField($this->Remarks);
 						$doc->exportField($this->ProcurementDate);
 						$doc->exportField($this->ProcurementCurrentCost);

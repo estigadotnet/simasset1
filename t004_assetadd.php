@@ -99,6 +99,19 @@ loadjs.ready("head", function() {
 				elm = this.getElements("x" + infix + "_Qty");
 				if (elm && !ew.checkNumber(elm.value))
 					return this.onError(elm, "<?php echo JsEncode($t004_asset_add->Qty->errorMessage()) ?>");
+			<?php if ($t004_asset_add->Variance->Required) { ?>
+				elm = this.getElements("x" + infix + "_Variance");
+				if (elm && !ew.isHidden(elm) && !ew.hasValue(elm))
+					return this.onError(elm, "<?php echo JsEncode(str_replace("%s", $t004_asset_add->Variance->caption(), $t004_asset_add->Variance->RequiredErrorMessage)) ?>");
+			<?php } ?>
+				elm = this.getElements("x" + infix + "_Variance");
+				if (elm && !ew.checkNumber(elm.value))
+					return this.onError(elm, "<?php echo JsEncode($t004_asset_add->Variance->errorMessage()) ?>");
+			<?php if ($t004_asset_add->cond_id->Required) { ?>
+				elm = this.getElements("x" + infix + "_cond_id");
+				if (elm && !ew.isHidden(elm) && !ew.hasValue(elm))
+					return this.onError(elm, "<?php echo JsEncode(str_replace("%s", $t004_asset_add->cond_id->caption(), $t004_asset_add->cond_id->RequiredErrorMessage)) ?>");
+			<?php } ?>
 			<?php if ($t004_asset_add->Remarks->Required) { ?>
 				elm = this.getElements("x" + infix + "_Remarks");
 				if (elm && !ew.isHidden(elm) && !ew.hasValue(elm))
@@ -160,6 +173,8 @@ loadjs.ready("head", function() {
 	ft004_assetadd.lists["x_department_id"].options = <?php echo JsonEncode($t004_asset_add->department_id->lookupOptions()) ?>;
 	ft004_assetadd.lists["x_location_id"] = <?php echo $t004_asset_add->location_id->Lookup->toClientList($t004_asset_add) ?>;
 	ft004_assetadd.lists["x_location_id"].options = <?php echo JsonEncode($t004_asset_add->location_id->lookupOptions()) ?>;
+	ft004_assetadd.lists["x_cond_id"] = <?php echo $t004_asset_add->cond_id->Lookup->toClientList($t004_asset_add) ?>;
+	ft004_assetadd.lists["x_cond_id"].options = <?php echo JsonEncode($t004_asset_add->cond_id->lookupOptions()) ?>;
 	loadjs.done("ft004_assetadd");
 });
 </script>
@@ -315,6 +330,33 @@ $t004_asset_add->showMessage();
 <input type="text" data-table="t004_asset" data-field="x_Qty" name="x_Qty" id="x_Qty" size="5" maxlength="14" placeholder="<?php echo HtmlEncode($t004_asset_add->Qty->getPlaceHolder()) ?>" value="<?php echo $t004_asset_add->Qty->EditValue ?>"<?php echo $t004_asset_add->Qty->editAttributes() ?>>
 </span>
 <?php echo $t004_asset_add->Qty->CustomMsg ?></div></div>
+	</div>
+<?php } ?>
+<?php if ($t004_asset_add->Variance->Visible) { // Variance ?>
+	<div id="r_Variance" class="form-group row">
+		<label id="elh_t004_asset_Variance" for="x_Variance" class="<?php echo $t004_asset_add->LeftColumnClass ?>"><?php echo $t004_asset_add->Variance->caption() ?><?php echo $t004_asset_add->Variance->Required ? $Language->phrase("FieldRequiredIndicator") : "" ?></label>
+		<div class="<?php echo $t004_asset_add->RightColumnClass ?>"><div <?php echo $t004_asset_add->Variance->cellAttributes() ?>>
+<span id="el_t004_asset_Variance">
+<input type="text" data-table="t004_asset" data-field="x_Variance" name="x_Variance" id="x_Variance" size="30" maxlength="14" placeholder="<?php echo HtmlEncode($t004_asset_add->Variance->getPlaceHolder()) ?>" value="<?php echo $t004_asset_add->Variance->EditValue ?>"<?php echo $t004_asset_add->Variance->editAttributes() ?>>
+</span>
+<?php echo $t004_asset_add->Variance->CustomMsg ?></div></div>
+	</div>
+<?php } ?>
+<?php if ($t004_asset_add->cond_id->Visible) { // cond_id ?>
+	<div id="r_cond_id" class="form-group row">
+		<label id="elh_t004_asset_cond_id" for="x_cond_id" class="<?php echo $t004_asset_add->LeftColumnClass ?>"><?php echo $t004_asset_add->cond_id->caption() ?><?php echo $t004_asset_add->cond_id->Required ? $Language->phrase("FieldRequiredIndicator") : "" ?></label>
+		<div class="<?php echo $t004_asset_add->RightColumnClass ?>"><div <?php echo $t004_asset_add->cond_id->cellAttributes() ?>>
+<span id="el_t004_asset_cond_id">
+<div class="input-group ew-lookup-list">
+	<div class="form-control ew-lookup-text" tabindex="-1" id="lu_x_cond_id"><?php echo EmptyValue(strval($t004_asset_add->cond_id->ViewValue)) ? $Language->phrase("PleaseSelect") : $t004_asset_add->cond_id->ViewValue ?></div>
+	<div class="input-group-append">
+		<button type="button" title="<?php echo HtmlEncode(str_replace("%s", RemoveHtml($t004_asset_add->cond_id->caption()), $Language->phrase("LookupLink", TRUE))) ?>" class="ew-lookup-btn btn btn-default"<?php echo ($t004_asset_add->cond_id->ReadOnly || $t004_asset_add->cond_id->Disabled) ? " disabled" : "" ?> onclick="ew.modalLookupShow({lnk:this,el:'x_cond_id',m:0,n:10});"><i class="fas fa-search ew-icon"></i></button>
+	</div>
+</div>
+<?php echo $t004_asset_add->cond_id->Lookup->getParamTag($t004_asset_add, "p_x_cond_id") ?>
+<input type="hidden" data-table="t004_asset" data-field="x_cond_id" data-multiple="0" data-lookup="1" data-value-separator="<?php echo $t004_asset_add->cond_id->displayValueSeparatorAttribute() ?>" name="x_cond_id" id="x_cond_id" value="<?php echo $t004_asset_add->cond_id->CurrentValue ?>"<?php echo $t004_asset_add->cond_id->editAttributes() ?>>
+</span>
+<?php echo $t004_asset_add->cond_id->CustomMsg ?></div></div>
 	</div>
 <?php } ?>
 <?php if ($t004_asset_add->Remarks->Visible) { // Remarks ?>

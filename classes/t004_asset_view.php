@@ -756,6 +756,8 @@ class t004_asset_view extends t004_asset
 		$this->department_id->setVisibility();
 		$this->location_id->setVisibility();
 		$this->Qty->setVisibility();
+		$this->Variance->setVisibility();
+		$this->cond_id->setVisibility();
 		$this->Remarks->setVisibility();
 		$this->ProcurementDate->setVisibility();
 		$this->ProcurementCurrentCost->setVisibility();
@@ -789,6 +791,7 @@ class t004_asset_view extends t004_asset
 		$this->setupLookupOptions($this->signature_id);
 		$this->setupLookupOptions($this->department_id);
 		$this->setupLookupOptions($this->location_id);
+		$this->setupLookupOptions($this->cond_id);
 
 		// Check permission
 		if (!$Security->canView()) {
@@ -1082,6 +1085,8 @@ class t004_asset_view extends t004_asset
 		$this->department_id->setDbValue($row['department_id']);
 		$this->location_id->setDbValue($row['location_id']);
 		$this->Qty->setDbValue($row['Qty']);
+		$this->Variance->setDbValue($row['Variance']);
+		$this->cond_id->setDbValue($row['cond_id']);
 		$this->Remarks->setDbValue($row['Remarks']);
 		$this->ProcurementDate->setDbValue($row['ProcurementDate']);
 		$this->ProcurementCurrentCost->setDbValue($row['ProcurementCurrentCost']);
@@ -1104,6 +1109,8 @@ class t004_asset_view extends t004_asset
 		$row['department_id'] = NULL;
 		$row['location_id'] = NULL;
 		$row['Qty'] = NULL;
+		$row['Variance'] = NULL;
+		$row['cond_id'] = NULL;
 		$row['Remarks'] = NULL;
 		$row['ProcurementDate'] = NULL;
 		$row['ProcurementCurrentCost'] = NULL;
@@ -1130,6 +1137,10 @@ class t004_asset_view extends t004_asset
 			$this->Qty->CurrentValue = ConvertToFloatString($this->Qty->CurrentValue);
 
 		// Convert decimal values if posted back
+		if ($this->Variance->FormValue == $this->Variance->CurrentValue && is_numeric(ConvertToFloatString($this->Variance->CurrentValue)))
+			$this->Variance->CurrentValue = ConvertToFloatString($this->Variance->CurrentValue);
+
+		// Convert decimal values if posted back
 		if ($this->ProcurementCurrentCost->FormValue == $this->ProcurementCurrentCost->CurrentValue && is_numeric(ConvertToFloatString($this->ProcurementCurrentCost->CurrentValue)))
 			$this->ProcurementCurrentCost->CurrentValue = ConvertToFloatString($this->ProcurementCurrentCost->CurrentValue);
 
@@ -1148,6 +1159,8 @@ class t004_asset_view extends t004_asset
 		// department_id
 		// location_id
 		// Qty
+		// Variance
+		// cond_id
 		// Remarks
 		// ProcurementDate
 		// ProcurementCurrentCost
@@ -1329,6 +1342,33 @@ class t004_asset_view extends t004_asset
 			$this->Qty->CellCssStyle .= "text-align: right;";
 			$this->Qty->ViewCustomAttributes = "";
 
+			// Variance
+			$this->Variance->ViewValue = $this->Variance->CurrentValue;
+			$this->Variance->ViewValue = FormatNumber($this->Variance->ViewValue, 2, -2, -2, -2);
+			$this->Variance->ViewCustomAttributes = "";
+
+			// cond_id
+			$curVal = strval($this->cond_id->CurrentValue);
+			if ($curVal != "") {
+				$this->cond_id->ViewValue = $this->cond_id->lookupCacheOption($curVal);
+				if ($this->cond_id->ViewValue === NULL) { // Lookup from database
+					$filterWrk = "`id`" . SearchString("=", $curVal, DATATYPE_NUMBER, "");
+					$sqlWrk = $this->cond_id->Lookup->getSql(FALSE, $filterWrk, '', $this);
+					$rswrk = Conn()->execute($sqlWrk);
+					if ($rswrk && !$rswrk->EOF) { // Lookup values found
+						$arwrk = [];
+						$arwrk[1] = $rswrk->fields('df');
+						$this->cond_id->ViewValue = $this->cond_id->displayValue($arwrk);
+						$rswrk->Close();
+					} else {
+						$this->cond_id->ViewValue = $this->cond_id->CurrentValue;
+					}
+				}
+			} else {
+				$this->cond_id->ViewValue = NULL;
+			}
+			$this->cond_id->ViewCustomAttributes = "";
+
 			// Remarks
 			$this->Remarks->ViewValue = $this->Remarks->CurrentValue;
 			$this->Remarks->ViewCustomAttributes = "";
@@ -1403,6 +1443,16 @@ class t004_asset_view extends t004_asset
 			$this->Qty->LinkCustomAttributes = "";
 			$this->Qty->HrefValue = "";
 			$this->Qty->TooltipValue = "";
+
+			// Variance
+			$this->Variance->LinkCustomAttributes = "";
+			$this->Variance->HrefValue = "";
+			$this->Variance->TooltipValue = "";
+
+			// cond_id
+			$this->cond_id->LinkCustomAttributes = "";
+			$this->cond_id->HrefValue = "";
+			$this->cond_id->TooltipValue = "";
 
 			// Remarks
 			$this->Remarks->LinkCustomAttributes = "";
@@ -1504,6 +1554,8 @@ class t004_asset_view extends t004_asset
 					break;
 				case "x_location_id":
 					break;
+				case "x_cond_id":
+					break;
 				default:
 					$lookupFilter = "";
 					break;
@@ -1537,6 +1589,8 @@ class t004_asset_view extends t004_asset
 						case "x_department_id":
 							break;
 						case "x_location_id":
+							break;
+						case "x_cond_id":
 							break;
 					}
 					$ar[strval($row[0])] = $row;

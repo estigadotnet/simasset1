@@ -171,6 +171,26 @@ $t004_asset_view->showMessage();
 </td>
 	</tr>
 <?php } ?>
+<?php if ($t004_asset_view->Variance->Visible) { // Variance ?>
+	<tr id="r_Variance">
+		<td class="<?php echo $t004_asset_view->TableLeftColumnClass ?>"><span id="elh_t004_asset_Variance"><?php echo $t004_asset_view->Variance->caption() ?></span></td>
+		<td data-name="Variance" <?php echo $t004_asset_view->Variance->cellAttributes() ?>>
+<span id="el_t004_asset_Variance">
+<span<?php echo $t004_asset_view->Variance->viewAttributes() ?>><?php echo $t004_asset_view->Variance->getViewValue() ?></span>
+</span>
+</td>
+	</tr>
+<?php } ?>
+<?php if ($t004_asset_view->cond_id->Visible) { // cond_id ?>
+	<tr id="r_cond_id">
+		<td class="<?php echo $t004_asset_view->TableLeftColumnClass ?>"><span id="elh_t004_asset_cond_id"><?php echo $t004_asset_view->cond_id->caption() ?></span></td>
+		<td data-name="cond_id" <?php echo $t004_asset_view->cond_id->cellAttributes() ?>>
+<span id="el_t004_asset_cond_id">
+<span<?php echo $t004_asset_view->cond_id->viewAttributes() ?>><?php echo $t004_asset_view->cond_id->getViewValue() ?></span>
+</span>
+</td>
+	</tr>
+<?php } ?>
 <?php if ($t004_asset_view->Remarks->Visible) { // Remarks ?>
 	<tr id="r_Remarks">
 		<td class="<?php echo $t004_asset_view->TableLeftColumnClass ?>"><span id="elh_t004_asset_Remarks"><?php echo $t004_asset_view->Remarks->caption() ?></span></td>
