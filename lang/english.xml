@@ -904,8 +904,14 @@
     <menu id="38">
       <phrase id="menutext" value="Handover" />
     </menu>
+    <menu id="39">
+      <phrase id="menutext" value="Property to Personnel/Dept." />
+    </menu>
+    <menu id="40">
+      <phrase id="menutext" value="Asset" />
+    </menu>
     <menu id="5">
-      <phrase id="menutext" value="Owner to Property" />
+      <phrase id="menutext" value="Handover" />
     </menu>
     <menu id="6">
       <phrase id="menutext" value="Asset" />
@@ -921,12 +927,6 @@
     </menu>
     <menu id="45">
       <phrase id="menutext" value="viewHandover_2" />
-    </menu>
-    <menu id="39">
-      <phrase id="menutext" value="Property to Personnel/Dept." />
-    </menu>
-    <menu id="40">
-      <phrase id="menutext" value="Asset" />
     </menu>
     <menu id="50">
       <phrase id="menutext" value="Disposal" />
