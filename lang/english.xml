@@ -893,7 +893,7 @@
       <phrase id="menutext" value="Depreciation List" />
     </menu>
     <menu id="23">
-      <phrase id="menutext" value="Trial" />
+      <phrase id="menutext" value="Dashboard (Trial)" />
     </menu>
     <menu id="16">
       <phrase id="menutext" value="Proses" />
@@ -956,7 +956,7 @@
       <phrase id="tblcaption" value="Cetak Handover Form" />
     </table>
     <table id="c9">
-      <phrase id="tblcaption" value="Trial" />
+      <phrase id="tblcaption" value="Dashboard (Trial)" />
     </table>
     <table id="d301_home">
       <phrase id="tblcaption" value="Home" />

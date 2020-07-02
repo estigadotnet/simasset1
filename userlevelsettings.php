@@ -66,7 +66,7 @@ $USER_LEVEL_PRIVS = [["{E1C6E322-15B9-474C-85CF-A99378A9BC2B}c101_ho.php","-2","
 // User level table info
 $USER_LEVEL_TABLES = [["c101_ho.php","c101_ho","Cetak Handover Form",true,"{E1C6E322-15B9-474C-85CF-A99378A9BC2B}"],
 	["c101_ho_2.php","c101_ho_2","Cetak Handover Form",true,"{E1C6E322-15B9-474C-85CF-A99378A9BC2B}"],
-	["c9.php","c9","Trial",true,"{E1C6E322-15B9-474C-85CF-A99378A9BC2B}"],
+	["c9.php","c9","Dashboard (Trial)",true,"{E1C6E322-15B9-474C-85CF-A99378A9BC2B}"],
 	["d301_home","d301_home","Home",true,"{E1C6E322-15B9-474C-85CF-A99378A9BC2B}"],
 	["r001_asset","r001_asset","Asset",true,"{E1C6E322-15B9-474C-85CF-A99378A9BC2B}"],
 	["t001_property","t001_property","Property",true,"{E1C6E322-15B9-474C-85CF-A99378A9BC2B}"],
