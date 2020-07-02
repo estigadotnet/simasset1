@@ -1353,10 +1353,10 @@
         <phrase id="fldcaption" value="Recommended By" />
       </field>
       <field id="ce">
-        <phrase id="fldcaption" value="CE" />
+        <phrase id="fldcaption" value="Chief Engineer" />
       </field>
       <field id="itm">
-        <phrase id="fldcaption" value="ITM" />
+        <phrase id="fldcaption" value="IT Manager" />
       </field>
       <field id="sign1">
         <phrase id="fldcaption" value="Sign 1" />
