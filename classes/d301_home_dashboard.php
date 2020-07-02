@@ -338,6 +338,10 @@ class d301_home_dashboard extends ReportTable
 		if (!isset($Language))
 			$Language = new Language();
 
+		// Table object (r001_asset)
+		if (!isset($GLOBALS['r001_asset']))
+			$GLOBALS['r001_asset'] = new r001_asset();
+
 		// Table object (t201_users)
 		if (!isset($GLOBALS['t201_users']))
 			$GLOBALS['t201_users'] = new t201_users();
@@ -421,7 +425,7 @@ class d301_home_dashboard extends ReportTable
 		$Security->UserID_Loaded();
 	}
 	public $DashboardType = "custom";
-	public $ItemClassNames = ["col-sm-12"];
+	public $ItemClassNames = ["col-sm-12","col-sm-12"];
 
 	//
 	// Page run

@@ -347,9 +347,11 @@ class personaldata
 	public function terminate($url = "")
 	{
 		global $ExportFileName, $TempImages, $DashboardReport;
+		if (Post("customexport") === NULL) {
 
 		// Global Page Unloaded event (in userfn*.php)
 		Page_Unloaded();
+		}
 
 		// Export
 		// Close connection
