@@ -56,72 +56,54 @@ loadjs.ready("head", function() {
 		for (var i = startcnt; i <= rowcnt; i++) {
 			var infix = ($k[0]) ? String(i) : "";
 			$fobj.data("rowindex", infix);
-			<?php if ($t105_disposalhead_edit->id->Required) { ?>
-				elm = this.getElements("x" + infix + "_id");
-				if (elm && !ew.isHidden(elm) && !ew.hasValue(elm))
-					return this.onError(elm, "<?php echo JsEncode(str_replace("%s", $t105_disposalhead_edit->id->caption(), $t105_disposalhead_edit->id->RequiredErrorMessage)) ?>");
-			<?php } ?>
 			<?php if ($t105_disposalhead_edit->property_id->Required) { ?>
 				elm = this.getElements("x" + infix + "_property_id");
 				if (elm && !ew.isHidden(elm) && !ew.hasValue(elm))
 					return this.onError(elm, "<?php echo JsEncode(str_replace("%s", $t105_disposalhead_edit->property_id->caption(), $t105_disposalhead_edit->property_id->RequiredErrorMessage)) ?>");
 			<?php } ?>
-				elm = this.getElements("x" + infix + "_property_id");
-				if (elm && !ew.checkInteger(elm.value))
-					return this.onError(elm, "<?php echo JsEncode($t105_disposalhead_edit->property_id->errorMessage()) ?>");
 			<?php if ($t105_disposalhead_edit->TransactionNo->Required) { ?>
 				elm = this.getElements("x" + infix + "_TransactionNo");
 				if (elm && !ew.isHidden(elm) && !ew.hasValue(elm))
 					return this.onError(elm, "<?php echo JsEncode(str_replace("%s", $t105_disposalhead_edit->TransactionNo->caption(), $t105_disposalhead_edit->TransactionNo->RequiredErrorMessage)) ?>");
 			<?php } ?>
+			<?php if ($t105_disposalhead_edit->TransactionDate->Required) { ?>
+				elm = this.getElements("x" + infix + "_TransactionDate");
+				if (elm && !ew.isHidden(elm) && !ew.hasValue(elm))
+					return this.onError(elm, "<?php echo JsEncode(str_replace("%s", $t105_disposalhead_edit->TransactionDate->caption(), $t105_disposalhead_edit->TransactionDate->RequiredErrorMessage)) ?>");
+			<?php } ?>
+				elm = this.getElements("x" + infix + "_TransactionDate");
+				if (elm && !ew.checkEuroDate(elm.value))
+					return this.onError(elm, "<?php echo JsEncode($t105_disposalhead_edit->TransactionDate->errorMessage()) ?>");
 			<?php if ($t105_disposalhead_edit->RecommendedBy->Required) { ?>
 				elm = this.getElements("x" + infix + "_RecommendedBy");
 				if (elm && !ew.isHidden(elm) && !ew.hasValue(elm))
 					return this.onError(elm, "<?php echo JsEncode(str_replace("%s", $t105_disposalhead_edit->RecommendedBy->caption(), $t105_disposalhead_edit->RecommendedBy->RequiredErrorMessage)) ?>");
 			<?php } ?>
-				elm = this.getElements("x" + infix + "_RecommendedBy");
-				if (elm && !ew.checkInteger(elm.value))
-					return this.onError(elm, "<?php echo JsEncode($t105_disposalhead_edit->RecommendedBy->errorMessage()) ?>");
 			<?php if ($t105_disposalhead_edit->CE->Required) { ?>
 				elm = this.getElements("x" + infix + "_CE");
 				if (elm && !ew.isHidden(elm) && !ew.hasValue(elm))
 					return this.onError(elm, "<?php echo JsEncode(str_replace("%s", $t105_disposalhead_edit->CE->caption(), $t105_disposalhead_edit->CE->RequiredErrorMessage)) ?>");
 			<?php } ?>
-				elm = this.getElements("x" + infix + "_CE");
-				if (elm && !ew.checkInteger(elm.value))
-					return this.onError(elm, "<?php echo JsEncode($t105_disposalhead_edit->CE->errorMessage()) ?>");
 			<?php if ($t105_disposalhead_edit->ITM->Required) { ?>
 				elm = this.getElements("x" + infix + "_ITM");
 				if (elm && !ew.isHidden(elm) && !ew.hasValue(elm))
 					return this.onError(elm, "<?php echo JsEncode(str_replace("%s", $t105_disposalhead_edit->ITM->caption(), $t105_disposalhead_edit->ITM->RequiredErrorMessage)) ?>");
 			<?php } ?>
-				elm = this.getElements("x" + infix + "_ITM");
-				if (elm && !ew.checkInteger(elm.value))
-					return this.onError(elm, "<?php echo JsEncode($t105_disposalhead_edit->ITM->errorMessage()) ?>");
 			<?php if ($t105_disposalhead_edit->Sign1->Required) { ?>
 				elm = this.getElements("x" + infix + "_Sign1");
 				if (elm && !ew.isHidden(elm) && !ew.hasValue(elm))
 					return this.onError(elm, "<?php echo JsEncode(str_replace("%s", $t105_disposalhead_edit->Sign1->caption(), $t105_disposalhead_edit->Sign1->RequiredErrorMessage)) ?>");
 			<?php } ?>
-				elm = this.getElements("x" + infix + "_Sign1");
-				if (elm && !ew.checkInteger(elm.value))
-					return this.onError(elm, "<?php echo JsEncode($t105_disposalhead_edit->Sign1->errorMessage()) ?>");
 			<?php if ($t105_disposalhead_edit->Sign2->Required) { ?>
 				elm = this.getElements("x" + infix + "_Sign2");
 				if (elm && !ew.isHidden(elm) && !ew.hasValue(elm))
 					return this.onError(elm, "<?php echo JsEncode(str_replace("%s", $t105_disposalhead_edit->Sign2->caption(), $t105_disposalhead_edit->Sign2->RequiredErrorMessage)) ?>");
 			<?php } ?>
-				elm = this.getElements("x" + infix + "_Sign2");
-				if (elm && !ew.checkInteger(elm.value))
-					return this.onError(elm, "<?php echo JsEncode($t105_disposalhead_edit->Sign2->errorMessage()) ?>");
 			<?php if ($t105_disposalhead_edit->Sign3->Required) { ?>
 				elm = this.getElements("x" + infix + "_Sign3");
 				if (elm && !ew.isHidden(elm) && !ew.hasValue(elm))
 					return this.onError(elm, "<?php echo JsEncode(str_replace("%s", $t105_disposalhead_edit->Sign3->caption(), $t105_disposalhead_edit->Sign3->RequiredErrorMessage)) ?>");
 			<?php } ?>
-				elm = this.getElements("x" + infix + "_Sign3");
-				if (elm && !ew.checkInteger(elm.value))
-					return this.onError(elm, "<?php echo JsEncode($t105_disposalhead_edit->Sign3->errorMessage()) ?>");
 
 				// Call Form_CustomValidate event
 				if (!this.Form_CustomValidate(fobj))
@@ -150,6 +132,20 @@ loadjs.ready("head", function() {
 	ft105_disposalheadedit.validateRequired = <?php echo Config("CLIENT_VALIDATE") ? "true" : "false" ?>;
 
 	// Dynamic selection lists
+	ft105_disposalheadedit.lists["x_property_id"] = <?php echo $t105_disposalhead_edit->property_id->Lookup->toClientList($t105_disposalhead_edit) ?>;
+	ft105_disposalheadedit.lists["x_property_id"].options = <?php echo JsonEncode($t105_disposalhead_edit->property_id->lookupOptions()) ?>;
+	ft105_disposalheadedit.lists["x_RecommendedBy"] = <?php echo $t105_disposalhead_edit->RecommendedBy->Lookup->toClientList($t105_disposalhead_edit) ?>;
+	ft105_disposalheadedit.lists["x_RecommendedBy"].options = <?php echo JsonEncode($t105_disposalhead_edit->RecommendedBy->lookupOptions()) ?>;
+	ft105_disposalheadedit.lists["x_CE"] = <?php echo $t105_disposalhead_edit->CE->Lookup->toClientList($t105_disposalhead_edit) ?>;
+	ft105_disposalheadedit.lists["x_CE"].options = <?php echo JsonEncode($t105_disposalhead_edit->CE->lookupOptions()) ?>;
+	ft105_disposalheadedit.lists["x_ITM"] = <?php echo $t105_disposalhead_edit->ITM->Lookup->toClientList($t105_disposalhead_edit) ?>;
+	ft105_disposalheadedit.lists["x_ITM"].options = <?php echo JsonEncode($t105_disposalhead_edit->ITM->lookupOptions()) ?>;
+	ft105_disposalheadedit.lists["x_Sign1"] = <?php echo $t105_disposalhead_edit->Sign1->Lookup->toClientList($t105_disposalhead_edit) ?>;
+	ft105_disposalheadedit.lists["x_Sign1"].options = <?php echo JsonEncode($t105_disposalhead_edit->Sign1->lookupOptions()) ?>;
+	ft105_disposalheadedit.lists["x_Sign2"] = <?php echo $t105_disposalhead_edit->Sign2->Lookup->toClientList($t105_disposalhead_edit) ?>;
+	ft105_disposalheadedit.lists["x_Sign2"].options = <?php echo JsonEncode($t105_disposalhead_edit->Sign2->lookupOptions()) ?>;
+	ft105_disposalheadedit.lists["x_Sign3"] = <?php echo $t105_disposalhead_edit->Sign3->Lookup->toClientList($t105_disposalhead_edit) ?>;
+	ft105_disposalheadedit.lists["x_Sign3"].options = <?php echo JsonEncode($t105_disposalhead_edit->Sign3->lookupOptions()) ?>;
 	loadjs.done("ft105_disposalheadedit");
 });
 </script>
@@ -173,23 +169,19 @@ $t105_disposalhead_edit->showMessage();
 <input type="hidden" name="action" id="action" value="update">
 <input type="hidden" name="modal" value="<?php echo (int)$t105_disposalhead_edit->IsModal ?>">
 <div class="ew-edit-div"><!-- page* -->
-<?php if ($t105_disposalhead_edit->id->Visible) { // id ?>
-	<div id="r_id" class="form-group row">
-		<label id="elh_t105_disposalhead_id" class="<?php echo $t105_disposalhead_edit->LeftColumnClass ?>"><?php echo $t105_disposalhead_edit->id->caption() ?><?php echo $t105_disposalhead_edit->id->Required ? $Language->phrase("FieldRequiredIndicator") : "" ?></label>
-		<div class="<?php echo $t105_disposalhead_edit->RightColumnClass ?>"><div <?php echo $t105_disposalhead_edit->id->cellAttributes() ?>>
-<span id="el_t105_disposalhead_id">
-<span<?php echo $t105_disposalhead_edit->id->viewAttributes() ?>><input type="text" readonly class="form-control-plaintext" value="<?php echo HtmlEncode(RemoveHtml($t105_disposalhead_edit->id->EditValue)) ?>"></span>
-</span>
-<input type="hidden" data-table="t105_disposalhead" data-field="x_id" name="x_id" id="x_id" value="<?php echo HtmlEncode($t105_disposalhead_edit->id->CurrentValue) ?>">
-<?php echo $t105_disposalhead_edit->id->CustomMsg ?></div></div>
-	</div>
-<?php } ?>
 <?php if ($t105_disposalhead_edit->property_id->Visible) { // property_id ?>
 	<div id="r_property_id" class="form-group row">
 		<label id="elh_t105_disposalhead_property_id" for="x_property_id" class="<?php echo $t105_disposalhead_edit->LeftColumnClass ?>"><?php echo $t105_disposalhead_edit->property_id->caption() ?><?php echo $t105_disposalhead_edit->property_id->Required ? $Language->phrase("FieldRequiredIndicator") : "" ?></label>
 		<div class="<?php echo $t105_disposalhead_edit->RightColumnClass ?>"><div <?php echo $t105_disposalhead_edit->property_id->cellAttributes() ?>>
 <span id="el_t105_disposalhead_property_id">
-<input type="text" data-table="t105_disposalhead" data-field="x_property_id" name="x_property_id" id="x_property_id" size="30" maxlength="11" placeholder="<?php echo HtmlEncode($t105_disposalhead_edit->property_id->getPlaceHolder()) ?>" value="<?php echo $t105_disposalhead_edit->property_id->EditValue ?>"<?php echo $t105_disposalhead_edit->property_id->editAttributes() ?>>
+<div class="input-group ew-lookup-list">
+	<div class="form-control ew-lookup-text" tabindex="-1" id="lu_x_property_id"><?php echo EmptyValue(strval($t105_disposalhead_edit->property_id->ViewValue)) ? $Language->phrase("PleaseSelect") : $t105_disposalhead_edit->property_id->ViewValue ?></div>
+	<div class="input-group-append">
+		<button type="button" title="<?php echo HtmlEncode(str_replace("%s", RemoveHtml($t105_disposalhead_edit->property_id->caption()), $Language->phrase("LookupLink", TRUE))) ?>" class="ew-lookup-btn btn btn-default"<?php echo ($t105_disposalhead_edit->property_id->ReadOnly || $t105_disposalhead_edit->property_id->Disabled) ? " disabled" : "" ?> onclick="ew.modalLookupShow({lnk:this,el:'x_property_id',m:0,n:10});"><i class="fas fa-search ew-icon"></i></button>
+	</div>
+</div>
+<?php echo $t105_disposalhead_edit->property_id->Lookup->getParamTag($t105_disposalhead_edit, "p_x_property_id") ?>
+<input type="hidden" data-table="t105_disposalhead" data-field="x_property_id" data-multiple="0" data-lookup="1" data-value-separator="<?php echo $t105_disposalhead_edit->property_id->displayValueSeparatorAttribute() ?>" name="x_property_id" id="x_property_id" value="<?php echo $t105_disposalhead_edit->property_id->CurrentValue ?>"<?php echo $t105_disposalhead_edit->property_id->editAttributes() ?>>
 </span>
 <?php echo $t105_disposalhead_edit->property_id->CustomMsg ?></div></div>
 	</div>
@@ -199,9 +191,26 @@ $t105_disposalhead_edit->showMessage();
 		<label id="elh_t105_disposalhead_TransactionNo" for="x_TransactionNo" class="<?php echo $t105_disposalhead_edit->LeftColumnClass ?>"><?php echo $t105_disposalhead_edit->TransactionNo->caption() ?><?php echo $t105_disposalhead_edit->TransactionNo->Required ? $Language->phrase("FieldRequiredIndicator") : "" ?></label>
 		<div class="<?php echo $t105_disposalhead_edit->RightColumnClass ?>"><div <?php echo $t105_disposalhead_edit->TransactionNo->cellAttributes() ?>>
 <span id="el_t105_disposalhead_TransactionNo">
-<input type="text" data-table="t105_disposalhead" data-field="x_TransactionNo" name="x_TransactionNo" id="x_TransactionNo" size="30" maxlength="25" placeholder="<?php echo HtmlEncode($t105_disposalhead_edit->TransactionNo->getPlaceHolder()) ?>" value="<?php echo $t105_disposalhead_edit->TransactionNo->EditValue ?>"<?php echo $t105_disposalhead_edit->TransactionNo->editAttributes() ?>>
+<input type="text" data-table="t105_disposalhead" data-field="x_TransactionNo" name="x_TransactionNo" id="x_TransactionNo" size="10" maxlength="25" placeholder="<?php echo HtmlEncode($t105_disposalhead_edit->TransactionNo->getPlaceHolder()) ?>" value="<?php echo $t105_disposalhead_edit->TransactionNo->EditValue ?>"<?php echo $t105_disposalhead_edit->TransactionNo->editAttributes() ?>>
 </span>
 <?php echo $t105_disposalhead_edit->TransactionNo->CustomMsg ?></div></div>
+	</div>
+<?php } ?>
+<?php if ($t105_disposalhead_edit->TransactionDate->Visible) { // TransactionDate ?>
+	<div id="r_TransactionDate" class="form-group row">
+		<label id="elh_t105_disposalhead_TransactionDate" for="x_TransactionDate" class="<?php echo $t105_disposalhead_edit->LeftColumnClass ?>"><?php echo $t105_disposalhead_edit->TransactionDate->caption() ?><?php echo $t105_disposalhead_edit->TransactionDate->Required ? $Language->phrase("FieldRequiredIndicator") : "" ?></label>
+		<div class="<?php echo $t105_disposalhead_edit->RightColumnClass ?>"><div <?php echo $t105_disposalhead_edit->TransactionDate->cellAttributes() ?>>
+<span id="el_t105_disposalhead_TransactionDate">
+<input type="text" data-table="t105_disposalhead" data-field="x_TransactionDate" data-format="7" name="x_TransactionDate" id="x_TransactionDate" size="10" maxlength="10" placeholder="<?php echo HtmlEncode($t105_disposalhead_edit->TransactionDate->getPlaceHolder()) ?>" value="<?php echo $t105_disposalhead_edit->TransactionDate->EditValue ?>"<?php echo $t105_disposalhead_edit->TransactionDate->editAttributes() ?>>
+<?php if (!$t105_disposalhead_edit->TransactionDate->ReadOnly && !$t105_disposalhead_edit->TransactionDate->Disabled && !isset($t105_disposalhead_edit->TransactionDate->EditAttrs["readonly"]) && !isset($t105_disposalhead_edit->TransactionDate->EditAttrs["disabled"])) { ?>
+<script>
+loadjs.ready(["ft105_disposalheadedit", "datetimepicker"], function() {
+	ew.createDateTimePicker("ft105_disposalheadedit", "x_TransactionDate", {"ignoreReadonly":true,"useCurrent":false,"format":7});
+});
+</script>
+<?php } ?>
+</span>
+<?php echo $t105_disposalhead_edit->TransactionDate->CustomMsg ?></div></div>
 	</div>
 <?php } ?>
 <?php if ($t105_disposalhead_edit->RecommendedBy->Visible) { // RecommendedBy ?>
@@ -209,7 +218,14 @@ $t105_disposalhead_edit->showMessage();
 		<label id="elh_t105_disposalhead_RecommendedBy" for="x_RecommendedBy" class="<?php echo $t105_disposalhead_edit->LeftColumnClass ?>"><?php echo $t105_disposalhead_edit->RecommendedBy->caption() ?><?php echo $t105_disposalhead_edit->RecommendedBy->Required ? $Language->phrase("FieldRequiredIndicator") : "" ?></label>
 		<div class="<?php echo $t105_disposalhead_edit->RightColumnClass ?>"><div <?php echo $t105_disposalhead_edit->RecommendedBy->cellAttributes() ?>>
 <span id="el_t105_disposalhead_RecommendedBy">
-<input type="text" data-table="t105_disposalhead" data-field="x_RecommendedBy" name="x_RecommendedBy" id="x_RecommendedBy" size="30" maxlength="11" placeholder="<?php echo HtmlEncode($t105_disposalhead_edit->RecommendedBy->getPlaceHolder()) ?>" value="<?php echo $t105_disposalhead_edit->RecommendedBy->EditValue ?>"<?php echo $t105_disposalhead_edit->RecommendedBy->editAttributes() ?>>
+<div class="input-group ew-lookup-list">
+	<div class="form-control ew-lookup-text" tabindex="-1" id="lu_x_RecommendedBy"><?php echo EmptyValue(strval($t105_disposalhead_edit->RecommendedBy->ViewValue)) ? $Language->phrase("PleaseSelect") : $t105_disposalhead_edit->RecommendedBy->ViewValue ?></div>
+	<div class="input-group-append">
+		<button type="button" title="<?php echo HtmlEncode(str_replace("%s", RemoveHtml($t105_disposalhead_edit->RecommendedBy->caption()), $Language->phrase("LookupLink", TRUE))) ?>" class="ew-lookup-btn btn btn-default"<?php echo ($t105_disposalhead_edit->RecommendedBy->ReadOnly || $t105_disposalhead_edit->RecommendedBy->Disabled) ? " disabled" : "" ?> onclick="ew.modalLookupShow({lnk:this,el:'x_RecommendedBy',m:0,n:10});"><i class="fas fa-search ew-icon"></i></button>
+	</div>
+</div>
+<?php echo $t105_disposalhead_edit->RecommendedBy->Lookup->getParamTag($t105_disposalhead_edit, "p_x_RecommendedBy") ?>
+<input type="hidden" data-table="t105_disposalhead" data-field="x_RecommendedBy" data-multiple="0" data-lookup="1" data-value-separator="<?php echo $t105_disposalhead_edit->RecommendedBy->displayValueSeparatorAttribute() ?>" name="x_RecommendedBy" id="x_RecommendedBy" value="<?php echo $t105_disposalhead_edit->RecommendedBy->CurrentValue ?>"<?php echo $t105_disposalhead_edit->RecommendedBy->editAttributes() ?>>
 </span>
 <?php echo $t105_disposalhead_edit->RecommendedBy->CustomMsg ?></div></div>
 	</div>
@@ -219,7 +235,14 @@ $t105_disposalhead_edit->showMessage();
 		<label id="elh_t105_disposalhead_CE" for="x_CE" class="<?php echo $t105_disposalhead_edit->LeftColumnClass ?>"><?php echo $t105_disposalhead_edit->CE->caption() ?><?php echo $t105_disposalhead_edit->CE->Required ? $Language->phrase("FieldRequiredIndicator") : "" ?></label>
 		<div class="<?php echo $t105_disposalhead_edit->RightColumnClass ?>"><div <?php echo $t105_disposalhead_edit->CE->cellAttributes() ?>>
 <span id="el_t105_disposalhead_CE">
-<input type="text" data-table="t105_disposalhead" data-field="x_CE" name="x_CE" id="x_CE" size="30" maxlength="11" placeholder="<?php echo HtmlEncode($t105_disposalhead_edit->CE->getPlaceHolder()) ?>" value="<?php echo $t105_disposalhead_edit->CE->EditValue ?>"<?php echo $t105_disposalhead_edit->CE->editAttributes() ?>>
+<div class="input-group ew-lookup-list">
+	<div class="form-control ew-lookup-text" tabindex="-1" id="lu_x_CE"><?php echo EmptyValue(strval($t105_disposalhead_edit->CE->ViewValue)) ? $Language->phrase("PleaseSelect") : $t105_disposalhead_edit->CE->ViewValue ?></div>
+	<div class="input-group-append">
+		<button type="button" title="<?php echo HtmlEncode(str_replace("%s", RemoveHtml($t105_disposalhead_edit->CE->caption()), $Language->phrase("LookupLink", TRUE))) ?>" class="ew-lookup-btn btn btn-default"<?php echo ($t105_disposalhead_edit->CE->ReadOnly || $t105_disposalhead_edit->CE->Disabled) ? " disabled" : "" ?> onclick="ew.modalLookupShow({lnk:this,el:'x_CE',m:0,n:10});"><i class="fas fa-search ew-icon"></i></button>
+	</div>
+</div>
+<?php echo $t105_disposalhead_edit->CE->Lookup->getParamTag($t105_disposalhead_edit, "p_x_CE") ?>
+<input type="hidden" data-table="t105_disposalhead" data-field="x_CE" data-multiple="0" data-lookup="1" data-value-separator="<?php echo $t105_disposalhead_edit->CE->displayValueSeparatorAttribute() ?>" name="x_CE" id="x_CE" value="<?php echo $t105_disposalhead_edit->CE->CurrentValue ?>"<?php echo $t105_disposalhead_edit->CE->editAttributes() ?>>
 </span>
 <?php echo $t105_disposalhead_edit->CE->CustomMsg ?></div></div>
 	</div>
@@ -229,7 +252,14 @@ $t105_disposalhead_edit->showMessage();
 		<label id="elh_t105_disposalhead_ITM" for="x_ITM" class="<?php echo $t105_disposalhead_edit->LeftColumnClass ?>"><?php echo $t105_disposalhead_edit->ITM->caption() ?><?php echo $t105_disposalhead_edit->ITM->Required ? $Language->phrase("FieldRequiredIndicator") : "" ?></label>
 		<div class="<?php echo $t105_disposalhead_edit->RightColumnClass ?>"><div <?php echo $t105_disposalhead_edit->ITM->cellAttributes() ?>>
 <span id="el_t105_disposalhead_ITM">
-<input type="text" data-table="t105_disposalhead" data-field="x_ITM" name="x_ITM" id="x_ITM" size="30" maxlength="11" placeholder="<?php echo HtmlEncode($t105_disposalhead_edit->ITM->getPlaceHolder()) ?>" value="<?php echo $t105_disposalhead_edit->ITM->EditValue ?>"<?php echo $t105_disposalhead_edit->ITM->editAttributes() ?>>
+<div class="input-group ew-lookup-list">
+	<div class="form-control ew-lookup-text" tabindex="-1" id="lu_x_ITM"><?php echo EmptyValue(strval($t105_disposalhead_edit->ITM->ViewValue)) ? $Language->phrase("PleaseSelect") : $t105_disposalhead_edit->ITM->ViewValue ?></div>
+	<div class="input-group-append">
+		<button type="button" title="<?php echo HtmlEncode(str_replace("%s", RemoveHtml($t105_disposalhead_edit->ITM->caption()), $Language->phrase("LookupLink", TRUE))) ?>" class="ew-lookup-btn btn btn-default"<?php echo ($t105_disposalhead_edit->ITM->ReadOnly || $t105_disposalhead_edit->ITM->Disabled) ? " disabled" : "" ?> onclick="ew.modalLookupShow({lnk:this,el:'x_ITM',m:0,n:10});"><i class="fas fa-search ew-icon"></i></button>
+	</div>
+</div>
+<?php echo $t105_disposalhead_edit->ITM->Lookup->getParamTag($t105_disposalhead_edit, "p_x_ITM") ?>
+<input type="hidden" data-table="t105_disposalhead" data-field="x_ITM" data-multiple="0" data-lookup="1" data-value-separator="<?php echo $t105_disposalhead_edit->ITM->displayValueSeparatorAttribute() ?>" name="x_ITM" id="x_ITM" value="<?php echo $t105_disposalhead_edit->ITM->CurrentValue ?>"<?php echo $t105_disposalhead_edit->ITM->editAttributes() ?>>
 </span>
 <?php echo $t105_disposalhead_edit->ITM->CustomMsg ?></div></div>
 	</div>
@@ -239,7 +269,14 @@ $t105_disposalhead_edit->showMessage();
 		<label id="elh_t105_disposalhead_Sign1" for="x_Sign1" class="<?php echo $t105_disposalhead_edit->LeftColumnClass ?>"><?php echo $t105_disposalhead_edit->Sign1->caption() ?><?php echo $t105_disposalhead_edit->Sign1->Required ? $Language->phrase("FieldRequiredIndicator") : "" ?></label>
 		<div class="<?php echo $t105_disposalhead_edit->RightColumnClass ?>"><div <?php echo $t105_disposalhead_edit->Sign1->cellAttributes() ?>>
 <span id="el_t105_disposalhead_Sign1">
-<input type="text" data-table="t105_disposalhead" data-field="x_Sign1" name="x_Sign1" id="x_Sign1" size="30" maxlength="11" placeholder="<?php echo HtmlEncode($t105_disposalhead_edit->Sign1->getPlaceHolder()) ?>" value="<?php echo $t105_disposalhead_edit->Sign1->EditValue ?>"<?php echo $t105_disposalhead_edit->Sign1->editAttributes() ?>>
+<div class="input-group ew-lookup-list">
+	<div class="form-control ew-lookup-text" tabindex="-1" id="lu_x_Sign1"><?php echo EmptyValue(strval($t105_disposalhead_edit->Sign1->ViewValue)) ? $Language->phrase("PleaseSelect") : $t105_disposalhead_edit->Sign1->ViewValue ?></div>
+	<div class="input-group-append">
+		<button type="button" title="<?php echo HtmlEncode(str_replace("%s", RemoveHtml($t105_disposalhead_edit->Sign1->caption()), $Language->phrase("LookupLink", TRUE))) ?>" class="ew-lookup-btn btn btn-default"<?php echo ($t105_disposalhead_edit->Sign1->ReadOnly || $t105_disposalhead_edit->Sign1->Disabled) ? " disabled" : "" ?> onclick="ew.modalLookupShow({lnk:this,el:'x_Sign1',m:0,n:10});"><i class="fas fa-search ew-icon"></i></button>
+	</div>
+</div>
+<?php echo $t105_disposalhead_edit->Sign1->Lookup->getParamTag($t105_disposalhead_edit, "p_x_Sign1") ?>
+<input type="hidden" data-table="t105_disposalhead" data-field="x_Sign1" data-multiple="0" data-lookup="1" data-value-separator="<?php echo $t105_disposalhead_edit->Sign1->displayValueSeparatorAttribute() ?>" name="x_Sign1" id="x_Sign1" value="<?php echo $t105_disposalhead_edit->Sign1->CurrentValue ?>"<?php echo $t105_disposalhead_edit->Sign1->editAttributes() ?>>
 </span>
 <?php echo $t105_disposalhead_edit->Sign1->CustomMsg ?></div></div>
 	</div>
@@ -249,7 +286,14 @@ $t105_disposalhead_edit->showMessage();
 		<label id="elh_t105_disposalhead_Sign2" for="x_Sign2" class="<?php echo $t105_disposalhead_edit->LeftColumnClass ?>"><?php echo $t105_disposalhead_edit->Sign2->caption() ?><?php echo $t105_disposalhead_edit->Sign2->Required ? $Language->phrase("FieldRequiredIndicator") : "" ?></label>
 		<div class="<?php echo $t105_disposalhead_edit->RightColumnClass ?>"><div <?php echo $t105_disposalhead_edit->Sign2->cellAttributes() ?>>
 <span id="el_t105_disposalhead_Sign2">
-<input type="text" data-table="t105_disposalhead" data-field="x_Sign2" name="x_Sign2" id="x_Sign2" size="30" maxlength="11" placeholder="<?php echo HtmlEncode($t105_disposalhead_edit->Sign2->getPlaceHolder()) ?>" value="<?php echo $t105_disposalhead_edit->Sign2->EditValue ?>"<?php echo $t105_disposalhead_edit->Sign2->editAttributes() ?>>
+<div class="input-group ew-lookup-list">
+	<div class="form-control ew-lookup-text" tabindex="-1" id="lu_x_Sign2"><?php echo EmptyValue(strval($t105_disposalhead_edit->Sign2->ViewValue)) ? $Language->phrase("PleaseSelect") : $t105_disposalhead_edit->Sign2->ViewValue ?></div>
+	<div class="input-group-append">
+		<button type="button" title="<?php echo HtmlEncode(str_replace("%s", RemoveHtml($t105_disposalhead_edit->Sign2->caption()), $Language->phrase("LookupLink", TRUE))) ?>" class="ew-lookup-btn btn btn-default"<?php echo ($t105_disposalhead_edit->Sign2->ReadOnly || $t105_disposalhead_edit->Sign2->Disabled) ? " disabled" : "" ?> onclick="ew.modalLookupShow({lnk:this,el:'x_Sign2',m:0,n:10});"><i class="fas fa-search ew-icon"></i></button>
+	</div>
+</div>
+<?php echo $t105_disposalhead_edit->Sign2->Lookup->getParamTag($t105_disposalhead_edit, "p_x_Sign2") ?>
+<input type="hidden" data-table="t105_disposalhead" data-field="x_Sign2" data-multiple="0" data-lookup="1" data-value-separator="<?php echo $t105_disposalhead_edit->Sign2->displayValueSeparatorAttribute() ?>" name="x_Sign2" id="x_Sign2" value="<?php echo $t105_disposalhead_edit->Sign2->CurrentValue ?>"<?php echo $t105_disposalhead_edit->Sign2->editAttributes() ?>>
 </span>
 <?php echo $t105_disposalhead_edit->Sign2->CustomMsg ?></div></div>
 	</div>
@@ -259,12 +303,28 @@ $t105_disposalhead_edit->showMessage();
 		<label id="elh_t105_disposalhead_Sign3" for="x_Sign3" class="<?php echo $t105_disposalhead_edit->LeftColumnClass ?>"><?php echo $t105_disposalhead_edit->Sign3->caption() ?><?php echo $t105_disposalhead_edit->Sign3->Required ? $Language->phrase("FieldRequiredIndicator") : "" ?></label>
 		<div class="<?php echo $t105_disposalhead_edit->RightColumnClass ?>"><div <?php echo $t105_disposalhead_edit->Sign3->cellAttributes() ?>>
 <span id="el_t105_disposalhead_Sign3">
-<input type="text" data-table="t105_disposalhead" data-field="x_Sign3" name="x_Sign3" id="x_Sign3" size="30" maxlength="11" placeholder="<?php echo HtmlEncode($t105_disposalhead_edit->Sign3->getPlaceHolder()) ?>" value="<?php echo $t105_disposalhead_edit->Sign3->EditValue ?>"<?php echo $t105_disposalhead_edit->Sign3->editAttributes() ?>>
+<div class="input-group ew-lookup-list">
+	<div class="form-control ew-lookup-text" tabindex="-1" id="lu_x_Sign3"><?php echo EmptyValue(strval($t105_disposalhead_edit->Sign3->ViewValue)) ? $Language->phrase("PleaseSelect") : $t105_disposalhead_edit->Sign3->ViewValue ?></div>
+	<div class="input-group-append">
+		<button type="button" title="<?php echo HtmlEncode(str_replace("%s", RemoveHtml($t105_disposalhead_edit->Sign3->caption()), $Language->phrase("LookupLink", TRUE))) ?>" class="ew-lookup-btn btn btn-default"<?php echo ($t105_disposalhead_edit->Sign3->ReadOnly || $t105_disposalhead_edit->Sign3->Disabled) ? " disabled" : "" ?> onclick="ew.modalLookupShow({lnk:this,el:'x_Sign3',m:0,n:10});"><i class="fas fa-search ew-icon"></i></button>
+	</div>
+</div>
+<?php echo $t105_disposalhead_edit->Sign3->Lookup->getParamTag($t105_disposalhead_edit, "p_x_Sign3") ?>
+<input type="hidden" data-table="t105_disposalhead" data-field="x_Sign3" data-multiple="0" data-lookup="1" data-value-separator="<?php echo $t105_disposalhead_edit->Sign3->displayValueSeparatorAttribute() ?>" name="x_Sign3" id="x_Sign3" value="<?php echo $t105_disposalhead_edit->Sign3->CurrentValue ?>"<?php echo $t105_disposalhead_edit->Sign3->editAttributes() ?>>
 </span>
 <?php echo $t105_disposalhead_edit->Sign3->CustomMsg ?></div></div>
 	</div>
 <?php } ?>
 </div><!-- /page* -->
+	<input type="hidden" data-table="t105_disposalhead" data-field="x_id" name="x_id" id="x_id" value="<?php echo HtmlEncode($t105_disposalhead_edit->id->CurrentValue) ?>">
+<?php
+	if (in_array("t106_disposaldetail", explode(",", $t105_disposalhead->getCurrentDetailTable())) && $t106_disposaldetail->DetailEdit) {
+?>
+<?php if ($t105_disposalhead->getCurrentDetailTable() != "") { ?>
+<h4 class="ew-detail-caption"><?php echo $Language->tablePhrase("t106_disposaldetail", "TblCaption") ?></h4>
+<?php } ?>
+<?php include_once "t106_disposaldetailgrid.php" ?>
+<?php } ?>
 <?php if (!$t105_disposalhead_edit->IsModal) { ?>
 <div class="form-group row"><!-- buttons .form-group -->
 	<div class="<?php echo $t105_disposalhead_edit->OffsetColumnClass ?>"><!-- buttons offset -->

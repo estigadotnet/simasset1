@@ -141,15 +141,6 @@ $t105_disposalhead_list->renderListOptions();
 // Render list options (header, left)
 $t105_disposalhead_list->ListOptions->render("header", "left");
 ?>
-<?php if ($t105_disposalhead_list->id->Visible) { // id ?>
-	<?php if ($t105_disposalhead_list->SortUrl($t105_disposalhead_list->id) == "") { ?>
-		<th data-name="id" class="<?php echo $t105_disposalhead_list->id->headerCellClass() ?>"><div id="elh_t105_disposalhead_id" class="t105_disposalhead_id"><div class="ew-table-header-caption"><?php echo $t105_disposalhead_list->id->caption() ?></div></div></th>
-	<?php } else { ?>
-		<th data-name="id" class="<?php echo $t105_disposalhead_list->id->headerCellClass() ?>"><div class="ew-pointer" onclick="ew.sort(event, '<?php echo $t105_disposalhead_list->SortUrl($t105_disposalhead_list->id) ?>', 2);"><div id="elh_t105_disposalhead_id" class="t105_disposalhead_id">
-			<div class="ew-table-header-btn"><span class="ew-table-header-caption"><?php echo $t105_disposalhead_list->id->caption() ?></span><span class="ew-table-header-sort"><?php if ($t105_disposalhead_list->id->getSort() == "ASC") { ?><i class="fas fa-sort-up"></i><?php } elseif ($t105_disposalhead_list->id->getSort() == "DESC") { ?><i class="fas fa-sort-down"></i><?php } ?></span></div>
-		</div></div></th>
-	<?php } ?>
-<?php } ?>
 <?php if ($t105_disposalhead_list->property_id->Visible) { // property_id ?>
 	<?php if ($t105_disposalhead_list->SortUrl($t105_disposalhead_list->property_id) == "") { ?>
 		<th data-name="property_id" class="<?php echo $t105_disposalhead_list->property_id->headerCellClass() ?>"><div id="elh_t105_disposalhead_property_id" class="t105_disposalhead_property_id"><div class="ew-table-header-caption"><?php echo $t105_disposalhead_list->property_id->caption() ?></div></div></th>
@@ -165,6 +156,15 @@ $t105_disposalhead_list->ListOptions->render("header", "left");
 	<?php } else { ?>
 		<th data-name="TransactionNo" class="<?php echo $t105_disposalhead_list->TransactionNo->headerCellClass() ?>"><div class="ew-pointer" onclick="ew.sort(event, '<?php echo $t105_disposalhead_list->SortUrl($t105_disposalhead_list->TransactionNo) ?>', 2);"><div id="elh_t105_disposalhead_TransactionNo" class="t105_disposalhead_TransactionNo">
 			<div class="ew-table-header-btn"><span class="ew-table-header-caption"><?php echo $t105_disposalhead_list->TransactionNo->caption() ?><?php echo $Language->phrase("SrchLegend") ?></span><span class="ew-table-header-sort"><?php if ($t105_disposalhead_list->TransactionNo->getSort() == "ASC") { ?><i class="fas fa-sort-up"></i><?php } elseif ($t105_disposalhead_list->TransactionNo->getSort() == "DESC") { ?><i class="fas fa-sort-down"></i><?php } ?></span></div>
+		</div></div></th>
+	<?php } ?>
+<?php } ?>
+<?php if ($t105_disposalhead_list->TransactionDate->Visible) { // TransactionDate ?>
+	<?php if ($t105_disposalhead_list->SortUrl($t105_disposalhead_list->TransactionDate) == "") { ?>
+		<th data-name="TransactionDate" class="<?php echo $t105_disposalhead_list->TransactionDate->headerCellClass() ?>"><div id="elh_t105_disposalhead_TransactionDate" class="t105_disposalhead_TransactionDate"><div class="ew-table-header-caption"><?php echo $t105_disposalhead_list->TransactionDate->caption() ?></div></div></th>
+	<?php } else { ?>
+		<th data-name="TransactionDate" class="<?php echo $t105_disposalhead_list->TransactionDate->headerCellClass() ?>"><div class="ew-pointer" onclick="ew.sort(event, '<?php echo $t105_disposalhead_list->SortUrl($t105_disposalhead_list->TransactionDate) ?>', 2);"><div id="elh_t105_disposalhead_TransactionDate" class="t105_disposalhead_TransactionDate">
+			<div class="ew-table-header-btn"><span class="ew-table-header-caption"><?php echo $t105_disposalhead_list->TransactionDate->caption() ?></span><span class="ew-table-header-sort"><?php if ($t105_disposalhead_list->TransactionDate->getSort() == "ASC") { ?><i class="fas fa-sort-up"></i><?php } elseif ($t105_disposalhead_list->TransactionDate->getSort() == "DESC") { ?><i class="fas fa-sort-down"></i><?php } ?></span></div>
 		</div></div></th>
 	<?php } ?>
 <?php } ?>
@@ -287,13 +287,6 @@ while ($t105_disposalhead_list->RecordCount < $t105_disposalhead_list->StopRecor
 // Render list options (body, left)
 $t105_disposalhead_list->ListOptions->render("body", "left", $t105_disposalhead_list->RowCount);
 ?>
-	<?php if ($t105_disposalhead_list->id->Visible) { // id ?>
-		<td data-name="id" <?php echo $t105_disposalhead_list->id->cellAttributes() ?>>
-<span id="el<?php echo $t105_disposalhead_list->RowCount ?>_t105_disposalhead_id">
-<span<?php echo $t105_disposalhead_list->id->viewAttributes() ?>><?php echo $t105_disposalhead_list->id->getViewValue() ?></span>
-</span>
-</td>
-	<?php } ?>
 	<?php if ($t105_disposalhead_list->property_id->Visible) { // property_id ?>
 		<td data-name="property_id" <?php echo $t105_disposalhead_list->property_id->cellAttributes() ?>>
 <span id="el<?php echo $t105_disposalhead_list->RowCount ?>_t105_disposalhead_property_id">
@@ -305,6 +298,13 @@ $t105_disposalhead_list->ListOptions->render("body", "left", $t105_disposalhead_
 		<td data-name="TransactionNo" <?php echo $t105_disposalhead_list->TransactionNo->cellAttributes() ?>>
 <span id="el<?php echo $t105_disposalhead_list->RowCount ?>_t105_disposalhead_TransactionNo">
 <span<?php echo $t105_disposalhead_list->TransactionNo->viewAttributes() ?>><?php echo $t105_disposalhead_list->TransactionNo->getViewValue() ?></span>
+</span>
+</td>
+	<?php } ?>
+	<?php if ($t105_disposalhead_list->TransactionDate->Visible) { // TransactionDate ?>
+		<td data-name="TransactionDate" <?php echo $t105_disposalhead_list->TransactionDate->cellAttributes() ?>>
+<span id="el<?php echo $t105_disposalhead_list->RowCount ?>_t105_disposalhead_TransactionDate">
+<span<?php echo $t105_disposalhead_list->TransactionDate->viewAttributes() ?>><?php echo $t105_disposalhead_list->TransactionDate->getViewValue() ?></span>
 </span>
 </td>
 	<?php } ?>

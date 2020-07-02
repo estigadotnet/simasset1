@@ -4,7 +4,7 @@ namespace PHPMaker2020\p_simasset1;
 /**
  * Page class
  */
-class t105_disposalhead_add extends t105_disposalhead
+class t106_disposaldetail_add extends t106_disposaldetail
 {
 
 	// Page ID
@@ -14,10 +14,10 @@ class t105_disposalhead_add extends t105_disposalhead
 	public $ProjectID = "{E1C6E322-15B9-474C-85CF-A99378A9BC2B}";
 
 	// Table name
-	public $TableName = 't105_disposalhead';
+	public $TableName = 't106_disposaldetail';
 
 	// Page object name
-	public $PageObjName = "t105_disposalhead_add";
+	public $PageObjName = "t106_disposaldetail_add";
 
 	// Audit Trail
 	public $AuditTrailOnAdd = TRUE;
@@ -349,11 +349,15 @@ class t105_disposalhead_add extends t105_disposalhead
 		// Parent constuctor
 		parent::__construct();
 
-		// Table object (t105_disposalhead)
-		if (!isset($GLOBALS["t105_disposalhead"]) || get_class($GLOBALS["t105_disposalhead"]) == PROJECT_NAMESPACE . "t105_disposalhead") {
-			$GLOBALS["t105_disposalhead"] = &$this;
-			$GLOBALS["Table"] = &$GLOBALS["t105_disposalhead"];
+		// Table object (t106_disposaldetail)
+		if (!isset($GLOBALS["t106_disposaldetail"]) || get_class($GLOBALS["t106_disposaldetail"]) == PROJECT_NAMESPACE . "t106_disposaldetail") {
+			$GLOBALS["t106_disposaldetail"] = &$this;
+			$GLOBALS["Table"] = &$GLOBALS["t106_disposaldetail"];
 		}
+
+		// Table object (t105_disposalhead)
+		if (!isset($GLOBALS['t105_disposalhead']))
+			$GLOBALS['t105_disposalhead'] = new t105_disposalhead();
 
 		// Table object (t201_users)
 		if (!isset($GLOBALS['t201_users']))
@@ -365,7 +369,7 @@ class t105_disposalhead_add extends t105_disposalhead
 
 		// Table name (for backward compatibility only)
 		if (!defined(PROJECT_NAMESPACE . "TABLE_NAME"))
-			define(PROJECT_NAMESPACE . "TABLE_NAME", 't105_disposalhead');
+			define(PROJECT_NAMESPACE . "TABLE_NAME", 't106_disposaldetail');
 
 		// Start timer
 		if (!isset($GLOBALS["DebugTimer"]))
@@ -394,14 +398,14 @@ class t105_disposalhead_add extends t105_disposalhead
 		Page_Unloaded();
 
 		// Export
-		global $t105_disposalhead;
+		global $t106_disposaldetail;
 		if ($this->CustomExport && $this->CustomExport == $this->Export && array_key_exists($this->CustomExport, Config("EXPORT_CLASSES"))) {
 				$content = ob_get_contents();
 			if ($ExportFileName == "")
 				$ExportFileName = $this->TableVar;
 			$class = PROJECT_NAMESPACE . Config("EXPORT_CLASSES." . $this->CustomExport);
 			if (class_exists($class)) {
-				$doc = new $class($t105_disposalhead);
+				$doc = new $class($t106_disposaldetail);
 				$doc->Text = @$content;
 				if ($this->isExport("email"))
 					echo $this->exportEmail($doc->Text);
@@ -436,7 +440,7 @@ class t105_disposalhead_add extends t105_disposalhead
 				$pageName = GetPageName($url);
 				if ($pageName != $this->getListUrl()) { // Not List page
 					$row["caption"] = $this->getModalCaption($pageName);
-					if ($pageName == "t105_disposalheadview.php")
+					if ($pageName == "t106_disposaldetailview.php")
 						$row["view"] = "1";
 				} else { // List page should not be shown as modal => error
 					$row["error"] = $this->getFailureMessage();
@@ -675,7 +679,7 @@ class t105_disposalhead_add extends t105_disposalhead
 				$Security->saveLastUrl();
 				$this->setFailureMessage(DeniedMessage()); // Set no permission
 				if ($Security->canList())
-					$this->terminate(GetUrl("t105_disposalheadlist.php"));
+					$this->terminate(GetUrl("t106_disposaldetaillist.php"));
 				else
 					$this->terminate(GetUrl("login.php"));
 				return;
@@ -691,15 +695,11 @@ class t105_disposalhead_add extends t105_disposalhead
 		$CurrentForm = new HttpForm();
 		$this->CurrentAction = Param("action"); // Set up current action
 		$this->id->Visible = FALSE;
-		$this->property_id->setVisibility();
-		$this->TransactionNo->setVisibility();
-		$this->TransactionDate->setVisibility();
-		$this->RecommendedBy->setVisibility();
-		$this->CE->setVisibility();
-		$this->ITM->setVisibility();
-		$this->Sign1->setVisibility();
-		$this->Sign2->setVisibility();
-		$this->Sign3->setVisibility();
+		$this->disposalhead_id->setVisibility();
+		$this->asset_id->setVisibility();
+		$this->depreciation_id->Visible = FALSE;
+		$this->cond_id->setVisibility();
+		$this->reason_id->setVisibility();
 		$this->hideFieldsForAddEdit();
 
 		// Do not use lookup cache
@@ -721,18 +721,14 @@ class t105_disposalhead_add extends t105_disposalhead
 		$this->createToken();
 
 		// Set up lookup cache
-		$this->setupLookupOptions($this->property_id);
-		$this->setupLookupOptions($this->RecommendedBy);
-		$this->setupLookupOptions($this->CE);
-		$this->setupLookupOptions($this->ITM);
-		$this->setupLookupOptions($this->Sign1);
-		$this->setupLookupOptions($this->Sign2);
-		$this->setupLookupOptions($this->Sign3);
+		$this->setupLookupOptions($this->asset_id);
+		$this->setupLookupOptions($this->cond_id);
+		$this->setupLookupOptions($this->reason_id);
 
 		// Check permission
 		if (!$Security->canAdd()) {
 			$this->setFailureMessage(DeniedMessage()); // No permission
-			$this->terminate("t105_disposalheadlist.php");
+			$this->terminate("t106_disposaldetaillist.php");
 			return;
 		}
 
@@ -771,13 +767,15 @@ class t105_disposalhead_add extends t105_disposalhead
 		// Load old record / default values
 		$loaded = $this->loadOldRecord();
 
+		// Set up master/detail parameters
+		// NOTE: must be after loadOldRecord to prevent master key values overwritten
+
+		$this->setupMasterParms();
+
 		// Load form values
 		if ($postBack) {
 			$this->loadFormValues(); // Load form values
 		}
-
-		// Set up detail parameters
-		$this->setupDetailParms();
 
 		// Validate form if post back
 		if ($postBack) {
@@ -800,24 +798,18 @@ class t105_disposalhead_add extends t105_disposalhead
 				if (!$loaded) { // Record not loaded
 					if ($this->getFailureMessage() == "")
 						$this->setFailureMessage($Language->phrase("NoRecord")); // No record found
-					$this->terminate("t105_disposalheadlist.php"); // No matching record, return to list
+					$this->terminate("t106_disposaldetaillist.php"); // No matching record, return to list
 				}
-
-				// Set up detail parameters
-				$this->setupDetailParms();
 				break;
 			case "insert": // Add new record
 				$this->SendEmail = TRUE; // Send email on add success
 				if ($this->addRow($this->OldRecordset)) { // Add successful
 					if ($this->getSuccessMessage() == "")
 						$this->setSuccessMessage($Language->phrase("AddSuccess")); // Set up success message
-					if ($this->getCurrentDetailTable() != "") // Master/detail add
-						$returnUrl = $this->getDetailUrl();
-					else
-						$returnUrl = $this->getReturnUrl();
-					if (GetPageName($returnUrl) == "t105_disposalheadlist.php")
+					$returnUrl = $this->getReturnUrl();
+					if (GetPageName($returnUrl) == "t106_disposaldetaillist.php")
 						$returnUrl = $this->addMasterUrl($returnUrl); // List page, return to List page with correct master key if necessary
-					elseif (GetPageName($returnUrl) == "t105_disposalheadview.php")
+					elseif (GetPageName($returnUrl) == "t106_disposaldetailview.php")
 						$returnUrl = $this->getViewUrl(); // View page, return to View page with keyurl directly
 					if (IsApi()) { // Return to caller
 						$this->terminate(TRUE);
@@ -831,9 +823,6 @@ class t105_disposalhead_add extends t105_disposalhead
 				} else {
 					$this->EventCancelled = TRUE; // Event cancelled
 					$this->restoreFormValues(); // Add failed, restore form values
-
-					// Set up detail parameters
-					$this->setupDetailParms();
 				}
 		}
 
@@ -859,24 +848,16 @@ class t105_disposalhead_add extends t105_disposalhead
 	{
 		$this->id->CurrentValue = NULL;
 		$this->id->OldValue = $this->id->CurrentValue;
-		$this->property_id->CurrentValue = NULL;
-		$this->property_id->OldValue = $this->property_id->CurrentValue;
-		$this->TransactionNo->CurrentValue = NULL;
-		$this->TransactionNo->OldValue = $this->TransactionNo->CurrentValue;
-		$this->TransactionDate->CurrentValue = NULL;
-		$this->TransactionDate->OldValue = $this->TransactionDate->CurrentValue;
-		$this->RecommendedBy->CurrentValue = NULL;
-		$this->RecommendedBy->OldValue = $this->RecommendedBy->CurrentValue;
-		$this->CE->CurrentValue = NULL;
-		$this->CE->OldValue = $this->CE->CurrentValue;
-		$this->ITM->CurrentValue = NULL;
-		$this->ITM->OldValue = $this->ITM->CurrentValue;
-		$this->Sign1->CurrentValue = NULL;
-		$this->Sign1->OldValue = $this->Sign1->CurrentValue;
-		$this->Sign2->CurrentValue = NULL;
-		$this->Sign2->OldValue = $this->Sign2->CurrentValue;
-		$this->Sign3->CurrentValue = NULL;
-		$this->Sign3->OldValue = $this->Sign3->CurrentValue;
+		$this->disposalhead_id->CurrentValue = NULL;
+		$this->disposalhead_id->OldValue = $this->disposalhead_id->CurrentValue;
+		$this->asset_id->CurrentValue = NULL;
+		$this->asset_id->OldValue = $this->asset_id->CurrentValue;
+		$this->depreciation_id->CurrentValue = NULL;
+		$this->depreciation_id->OldValue = $this->depreciation_id->CurrentValue;
+		$this->cond_id->CurrentValue = NULL;
+		$this->cond_id->OldValue = $this->cond_id->CurrentValue;
+		$this->reason_id->CurrentValue = NULL;
+		$this->reason_id->OldValue = $this->reason_id->CurrentValue;
 	}
 
 	// Load form values
@@ -886,86 +867,40 @@ class t105_disposalhead_add extends t105_disposalhead
 		// Load from form
 		global $CurrentForm;
 
-		// Check field name 'property_id' first before field var 'x_property_id'
-		$val = $CurrentForm->hasValue("property_id") ? $CurrentForm->getValue("property_id") : $CurrentForm->getValue("x_property_id");
-		if (!$this->property_id->IsDetailKey) {
+		// Check field name 'disposalhead_id' first before field var 'x_disposalhead_id'
+		$val = $CurrentForm->hasValue("disposalhead_id") ? $CurrentForm->getValue("disposalhead_id") : $CurrentForm->getValue("x_disposalhead_id");
+		if (!$this->disposalhead_id->IsDetailKey) {
 			if (IsApi() && $val == NULL)
-				$this->property_id->Visible = FALSE; // Disable update for API request
+				$this->disposalhead_id->Visible = FALSE; // Disable update for API request
 			else
-				$this->property_id->setFormValue($val);
+				$this->disposalhead_id->setFormValue($val);
 		}
 
-		// Check field name 'TransactionNo' first before field var 'x_TransactionNo'
-		$val = $CurrentForm->hasValue("TransactionNo") ? $CurrentForm->getValue("TransactionNo") : $CurrentForm->getValue("x_TransactionNo");
-		if (!$this->TransactionNo->IsDetailKey) {
+		// Check field name 'asset_id' first before field var 'x_asset_id'
+		$val = $CurrentForm->hasValue("asset_id") ? $CurrentForm->getValue("asset_id") : $CurrentForm->getValue("x_asset_id");
+		if (!$this->asset_id->IsDetailKey) {
 			if (IsApi() && $val == NULL)
-				$this->TransactionNo->Visible = FALSE; // Disable update for API request
+				$this->asset_id->Visible = FALSE; // Disable update for API request
 			else
-				$this->TransactionNo->setFormValue($val);
+				$this->asset_id->setFormValue($val);
 		}
 
-		// Check field name 'TransactionDate' first before field var 'x_TransactionDate'
-		$val = $CurrentForm->hasValue("TransactionDate") ? $CurrentForm->getValue("TransactionDate") : $CurrentForm->getValue("x_TransactionDate");
-		if (!$this->TransactionDate->IsDetailKey) {
+		// Check field name 'cond_id' first before field var 'x_cond_id'
+		$val = $CurrentForm->hasValue("cond_id") ? $CurrentForm->getValue("cond_id") : $CurrentForm->getValue("x_cond_id");
+		if (!$this->cond_id->IsDetailKey) {
 			if (IsApi() && $val == NULL)
-				$this->TransactionDate->Visible = FALSE; // Disable update for API request
+				$this->cond_id->Visible = FALSE; // Disable update for API request
 			else
-				$this->TransactionDate->setFormValue($val);
-			$this->TransactionDate->CurrentValue = UnFormatDateTime($this->TransactionDate->CurrentValue, 7);
+				$this->cond_id->setFormValue($val);
 		}
 
-		// Check field name 'RecommendedBy' first before field var 'x_RecommendedBy'
-		$val = $CurrentForm->hasValue("RecommendedBy") ? $CurrentForm->getValue("RecommendedBy") : $CurrentForm->getValue("x_RecommendedBy");
-		if (!$this->RecommendedBy->IsDetailKey) {
+		// Check field name 'reason_id' first before field var 'x_reason_id'
+		$val = $CurrentForm->hasValue("reason_id") ? $CurrentForm->getValue("reason_id") : $CurrentForm->getValue("x_reason_id");
+		if (!$this->reason_id->IsDetailKey) {
 			if (IsApi() && $val == NULL)
-				$this->RecommendedBy->Visible = FALSE; // Disable update for API request
+				$this->reason_id->Visible = FALSE; // Disable update for API request
 			else
-				$this->RecommendedBy->setFormValue($val);
-		}
-
-		// Check field name 'CE' first before field var 'x_CE'
-		$val = $CurrentForm->hasValue("CE") ? $CurrentForm->getValue("CE") : $CurrentForm->getValue("x_CE");
-		if (!$this->CE->IsDetailKey) {
-			if (IsApi() && $val == NULL)
-				$this->CE->Visible = FALSE; // Disable update for API request
-			else
-				$this->CE->setFormValue($val);
-		}
-
-		// Check field name 'ITM' first before field var 'x_ITM'
-		$val = $CurrentForm->hasValue("ITM") ? $CurrentForm->getValue("ITM") : $CurrentForm->getValue("x_ITM");
-		if (!$this->ITM->IsDetailKey) {
-			if (IsApi() && $val == NULL)
-				$this->ITM->Visible = FALSE; // Disable update for API request
-			else
-				$this->ITM->setFormValue($val);
-		}
-
-		// Check field name 'Sign1' first before field var 'x_Sign1'
-		$val = $CurrentForm->hasValue("Sign1") ? $CurrentForm->getValue("Sign1") : $CurrentForm->getValue("x_Sign1");
-		if (!$this->Sign1->IsDetailKey) {
-			if (IsApi() && $val == NULL)
-				$this->Sign1->Visible = FALSE; // Disable update for API request
-			else
-				$this->Sign1->setFormValue($val);
-		}
-
-		// Check field name 'Sign2' first before field var 'x_Sign2'
-		$val = $CurrentForm->hasValue("Sign2") ? $CurrentForm->getValue("Sign2") : $CurrentForm->getValue("x_Sign2");
-		if (!$this->Sign2->IsDetailKey) {
-			if (IsApi() && $val == NULL)
-				$this->Sign2->Visible = FALSE; // Disable update for API request
-			else
-				$this->Sign2->setFormValue($val);
-		}
-
-		// Check field name 'Sign3' first before field var 'x_Sign3'
-		$val = $CurrentForm->hasValue("Sign3") ? $CurrentForm->getValue("Sign3") : $CurrentForm->getValue("x_Sign3");
-		if (!$this->Sign3->IsDetailKey) {
-			if (IsApi() && $val == NULL)
-				$this->Sign3->Visible = FALSE; // Disable update for API request
-			else
-				$this->Sign3->setFormValue($val);
+				$this->reason_id->setFormValue($val);
 		}
 
 		// Check field name 'id' first before field var 'x_id'
@@ -976,16 +911,10 @@ class t105_disposalhead_add extends t105_disposalhead
 	public function restoreFormValues()
 	{
 		global $CurrentForm;
-		$this->property_id->CurrentValue = $this->property_id->FormValue;
-		$this->TransactionNo->CurrentValue = $this->TransactionNo->FormValue;
-		$this->TransactionDate->CurrentValue = $this->TransactionDate->FormValue;
-		$this->TransactionDate->CurrentValue = UnFormatDateTime($this->TransactionDate->CurrentValue, 7);
-		$this->RecommendedBy->CurrentValue = $this->RecommendedBy->FormValue;
-		$this->CE->CurrentValue = $this->CE->FormValue;
-		$this->ITM->CurrentValue = $this->ITM->FormValue;
-		$this->Sign1->CurrentValue = $this->Sign1->FormValue;
-		$this->Sign2->CurrentValue = $this->Sign2->FormValue;
-		$this->Sign3->CurrentValue = $this->Sign3->FormValue;
+		$this->disposalhead_id->CurrentValue = $this->disposalhead_id->FormValue;
+		$this->asset_id->CurrentValue = $this->asset_id->FormValue;
+		$this->cond_id->CurrentValue = $this->cond_id->FormValue;
+		$this->reason_id->CurrentValue = $this->reason_id->FormValue;
 	}
 
 	// Load row based on key values
@@ -1024,15 +953,11 @@ class t105_disposalhead_add extends t105_disposalhead
 		if (!$rs || $rs->EOF)
 			return;
 		$this->id->setDbValue($row['id']);
-		$this->property_id->setDbValue($row['property_id']);
-		$this->TransactionNo->setDbValue($row['TransactionNo']);
-		$this->TransactionDate->setDbValue($row['TransactionDate']);
-		$this->RecommendedBy->setDbValue($row['RecommendedBy']);
-		$this->CE->setDbValue($row['CE']);
-		$this->ITM->setDbValue($row['ITM']);
-		$this->Sign1->setDbValue($row['Sign1']);
-		$this->Sign2->setDbValue($row['Sign2']);
-		$this->Sign3->setDbValue($row['Sign3']);
+		$this->disposalhead_id->setDbValue($row['disposalhead_id']);
+		$this->asset_id->setDbValue($row['asset_id']);
+		$this->depreciation_id->setDbValue($row['depreciation_id']);
+		$this->cond_id->setDbValue($row['cond_id']);
+		$this->reason_id->setDbValue($row['reason_id']);
 	}
 
 	// Return a row with default values
@@ -1041,15 +966,11 @@ class t105_disposalhead_add extends t105_disposalhead
 		$this->loadDefaultValues();
 		$row = [];
 		$row['id'] = $this->id->CurrentValue;
-		$row['property_id'] = $this->property_id->CurrentValue;
-		$row['TransactionNo'] = $this->TransactionNo->CurrentValue;
-		$row['TransactionDate'] = $this->TransactionDate->CurrentValue;
-		$row['RecommendedBy'] = $this->RecommendedBy->CurrentValue;
-		$row['CE'] = $this->CE->CurrentValue;
-		$row['ITM'] = $this->ITM->CurrentValue;
-		$row['Sign1'] = $this->Sign1->CurrentValue;
-		$row['Sign2'] = $this->Sign2->CurrentValue;
-		$row['Sign3'] = $this->Sign3->CurrentValue;
+		$row['disposalhead_id'] = $this->disposalhead_id->CurrentValue;
+		$row['asset_id'] = $this->asset_id->CurrentValue;
+		$row['depreciation_id'] = $this->depreciation_id->CurrentValue;
+		$row['cond_id'] = $this->cond_id->CurrentValue;
+		$row['reason_id'] = $this->reason_id->CurrentValue;
 		return $row;
 	}
 
@@ -1088,15 +1009,11 @@ class t105_disposalhead_add extends t105_disposalhead
 
 		// Common render codes for all row types
 		// id
-		// property_id
-		// TransactionNo
-		// TransactionDate
-		// RecommendedBy
-		// CE
-		// ITM
-		// Sign1
-		// Sign2
-		// Sign3
+		// disposalhead_id
+		// asset_id
+		// depreciation_id
+		// cond_id
+		// reason_id
 
 		if ($this->RowType == ROWTYPE_VIEW) { // View row
 
@@ -1104,490 +1021,231 @@ class t105_disposalhead_add extends t105_disposalhead
 			$this->id->ViewValue = $this->id->CurrentValue;
 			$this->id->ViewCustomAttributes = "";
 
-			// property_id
-			$curVal = strval($this->property_id->CurrentValue);
+			// disposalhead_id
+			$this->disposalhead_id->ViewValue = $this->disposalhead_id->CurrentValue;
+			$this->disposalhead_id->ViewValue = FormatNumber($this->disposalhead_id->ViewValue, 0, -2, -2, -2);
+			$this->disposalhead_id->ViewCustomAttributes = "";
+
+			// asset_id
+			$curVal = strval($this->asset_id->CurrentValue);
 			if ($curVal != "") {
-				$this->property_id->ViewValue = $this->property_id->lookupCacheOption($curVal);
-				if ($this->property_id->ViewValue === NULL) { // Lookup from database
+				$this->asset_id->ViewValue = $this->asset_id->lookupCacheOption($curVal);
+				if ($this->asset_id->ViewValue === NULL) { // Lookup from database
 					$filterWrk = "`id`" . SearchString("=", $curVal, DATATYPE_NUMBER, "");
-					$sqlWrk = $this->property_id->Lookup->getSql(FALSE, $filterWrk, '', $this);
+					$sqlWrk = $this->asset_id->Lookup->getSql(FALSE, $filterWrk, '', $this);
 					$rswrk = Conn()->execute($sqlWrk);
 					if ($rswrk && !$rswrk->EOF) { // Lookup values found
 						$arwrk = [];
 						$arwrk[1] = $rswrk->fields('df');
-						$this->property_id->ViewValue = $this->property_id->displayValue($arwrk);
+						$arwrk[2] = $rswrk->fields('df2');
+						$this->asset_id->ViewValue = $this->asset_id->displayValue($arwrk);
 						$rswrk->Close();
 					} else {
-						$this->property_id->ViewValue = $this->property_id->CurrentValue;
+						$this->asset_id->ViewValue = $this->asset_id->CurrentValue;
 					}
 				}
 			} else {
-				$this->property_id->ViewValue = NULL;
+				$this->asset_id->ViewValue = NULL;
 			}
-			$this->property_id->ViewCustomAttributes = "";
+			$this->asset_id->ViewCustomAttributes = "";
 
-			// TransactionNo
-			$this->TransactionNo->ViewValue = $this->TransactionNo->CurrentValue;
-			$this->TransactionNo->ViewCustomAttributes = "";
+			// depreciation_id
+			$this->depreciation_id->ViewValue = $this->depreciation_id->CurrentValue;
+			$this->depreciation_id->ViewValue = FormatNumber($this->depreciation_id->ViewValue, 0, -2, -2, -2);
+			$this->depreciation_id->ViewCustomAttributes = "";
 
-			// TransactionDate
-			$this->TransactionDate->ViewValue = $this->TransactionDate->CurrentValue;
-			$this->TransactionDate->ViewValue = FormatDateTime($this->TransactionDate->ViewValue, 7);
-			$this->TransactionDate->ViewCustomAttributes = "";
-
-			// RecommendedBy
-			$curVal = strval($this->RecommendedBy->CurrentValue);
+			// cond_id
+			$curVal = strval($this->cond_id->CurrentValue);
 			if ($curVal != "") {
-				$this->RecommendedBy->ViewValue = $this->RecommendedBy->lookupCacheOption($curVal);
-				if ($this->RecommendedBy->ViewValue === NULL) { // Lookup from database
+				$this->cond_id->ViewValue = $this->cond_id->lookupCacheOption($curVal);
+				if ($this->cond_id->ViewValue === NULL) { // Lookup from database
 					$filterWrk = "`id`" . SearchString("=", $curVal, DATATYPE_NUMBER, "");
-					$sqlWrk = $this->RecommendedBy->Lookup->getSql(FALSE, $filterWrk, '', $this);
+					$sqlWrk = $this->cond_id->Lookup->getSql(FALSE, $filterWrk, '', $this);
 					$rswrk = Conn()->execute($sqlWrk);
 					if ($rswrk && !$rswrk->EOF) { // Lookup values found
 						$arwrk = [];
 						$arwrk[1] = $rswrk->fields('df');
-						$this->RecommendedBy->ViewValue = $this->RecommendedBy->displayValue($arwrk);
+						$this->cond_id->ViewValue = $this->cond_id->displayValue($arwrk);
 						$rswrk->Close();
 					} else {
-						$this->RecommendedBy->ViewValue = $this->RecommendedBy->CurrentValue;
+						$this->cond_id->ViewValue = $this->cond_id->CurrentValue;
 					}
 				}
 			} else {
-				$this->RecommendedBy->ViewValue = NULL;
+				$this->cond_id->ViewValue = NULL;
 			}
-			$this->RecommendedBy->ViewCustomAttributes = "";
+			$this->cond_id->ViewCustomAttributes = "";
 
-			// CE
-			$curVal = strval($this->CE->CurrentValue);
+			// reason_id
+			$curVal = strval($this->reason_id->CurrentValue);
 			if ($curVal != "") {
-				$this->CE->ViewValue = $this->CE->lookupCacheOption($curVal);
-				if ($this->CE->ViewValue === NULL) { // Lookup from database
+				$this->reason_id->ViewValue = $this->reason_id->lookupCacheOption($curVal);
+				if ($this->reason_id->ViewValue === NULL) { // Lookup from database
 					$filterWrk = "`id`" . SearchString("=", $curVal, DATATYPE_NUMBER, "");
-					$sqlWrk = $this->CE->Lookup->getSql(FALSE, $filterWrk, '', $this);
+					$sqlWrk = $this->reason_id->Lookup->getSql(FALSE, $filterWrk, '', $this);
 					$rswrk = Conn()->execute($sqlWrk);
 					if ($rswrk && !$rswrk->EOF) { // Lookup values found
 						$arwrk = [];
 						$arwrk[1] = $rswrk->fields('df');
-						$this->CE->ViewValue = $this->CE->displayValue($arwrk);
+						$this->reason_id->ViewValue = $this->reason_id->displayValue($arwrk);
 						$rswrk->Close();
 					} else {
-						$this->CE->ViewValue = $this->CE->CurrentValue;
+						$this->reason_id->ViewValue = $this->reason_id->CurrentValue;
 					}
 				}
 			} else {
-				$this->CE->ViewValue = NULL;
+				$this->reason_id->ViewValue = NULL;
 			}
-			$this->CE->ViewCustomAttributes = "";
+			$this->reason_id->ViewCustomAttributes = "";
 
-			// ITM
-			$curVal = strval($this->ITM->CurrentValue);
-			if ($curVal != "") {
-				$this->ITM->ViewValue = $this->ITM->lookupCacheOption($curVal);
-				if ($this->ITM->ViewValue === NULL) { // Lookup from database
-					$filterWrk = "`id`" . SearchString("=", $curVal, DATATYPE_NUMBER, "");
-					$sqlWrk = $this->ITM->Lookup->getSql(FALSE, $filterWrk, '', $this);
-					$rswrk = Conn()->execute($sqlWrk);
-					if ($rswrk && !$rswrk->EOF) { // Lookup values found
-						$arwrk = [];
-						$arwrk[1] = $rswrk->fields('df');
-						$this->ITM->ViewValue = $this->ITM->displayValue($arwrk);
-						$rswrk->Close();
-					} else {
-						$this->ITM->ViewValue = $this->ITM->CurrentValue;
-					}
-				}
-			} else {
-				$this->ITM->ViewValue = NULL;
-			}
-			$this->ITM->ViewCustomAttributes = "";
+			// disposalhead_id
+			$this->disposalhead_id->LinkCustomAttributes = "";
+			$this->disposalhead_id->HrefValue = "";
+			$this->disposalhead_id->TooltipValue = "";
 
-			// Sign1
-			$curVal = strval($this->Sign1->CurrentValue);
-			if ($curVal != "") {
-				$this->Sign1->ViewValue = $this->Sign1->lookupCacheOption($curVal);
-				if ($this->Sign1->ViewValue === NULL) { // Lookup from database
-					$filterWrk = "`id`" . SearchString("=", $curVal, DATATYPE_NUMBER, "");
-					$sqlWrk = $this->Sign1->Lookup->getSql(FALSE, $filterWrk, '', $this);
-					$rswrk = Conn()->execute($sqlWrk);
-					if ($rswrk && !$rswrk->EOF) { // Lookup values found
-						$arwrk = [];
-						$arwrk[1] = $rswrk->fields('df');
-						$this->Sign1->ViewValue = $this->Sign1->displayValue($arwrk);
-						$rswrk->Close();
-					} else {
-						$this->Sign1->ViewValue = $this->Sign1->CurrentValue;
-					}
-				}
-			} else {
-				$this->Sign1->ViewValue = NULL;
-			}
-			$this->Sign1->ViewCustomAttributes = "";
+			// asset_id
+			$this->asset_id->LinkCustomAttributes = "";
+			$this->asset_id->HrefValue = "";
+			$this->asset_id->TooltipValue = "";
 
-			// Sign2
-			$curVal = strval($this->Sign2->CurrentValue);
-			if ($curVal != "") {
-				$this->Sign2->ViewValue = $this->Sign2->lookupCacheOption($curVal);
-				if ($this->Sign2->ViewValue === NULL) { // Lookup from database
-					$filterWrk = "`id`" . SearchString("=", $curVal, DATATYPE_NUMBER, "");
-					$sqlWrk = $this->Sign2->Lookup->getSql(FALSE, $filterWrk, '', $this);
-					$rswrk = Conn()->execute($sqlWrk);
-					if ($rswrk && !$rswrk->EOF) { // Lookup values found
-						$arwrk = [];
-						$arwrk[1] = $rswrk->fields('df');
-						$this->Sign2->ViewValue = $this->Sign2->displayValue($arwrk);
-						$rswrk->Close();
-					} else {
-						$this->Sign2->ViewValue = $this->Sign2->CurrentValue;
-					}
-				}
-			} else {
-				$this->Sign2->ViewValue = NULL;
-			}
-			$this->Sign2->ViewCustomAttributes = "";
+			// cond_id
+			$this->cond_id->LinkCustomAttributes = "";
+			$this->cond_id->HrefValue = "";
+			$this->cond_id->TooltipValue = "";
 
-			// Sign3
-			$curVal = strval($this->Sign3->CurrentValue);
-			if ($curVal != "") {
-				$this->Sign3->ViewValue = $this->Sign3->lookupCacheOption($curVal);
-				if ($this->Sign3->ViewValue === NULL) { // Lookup from database
-					$filterWrk = "`id`" . SearchString("=", $curVal, DATATYPE_NUMBER, "");
-					$sqlWrk = $this->Sign3->Lookup->getSql(FALSE, $filterWrk, '', $this);
-					$rswrk = Conn()->execute($sqlWrk);
-					if ($rswrk && !$rswrk->EOF) { // Lookup values found
-						$arwrk = [];
-						$arwrk[1] = $rswrk->fields('df');
-						$this->Sign3->ViewValue = $this->Sign3->displayValue($arwrk);
-						$rswrk->Close();
-					} else {
-						$this->Sign3->ViewValue = $this->Sign3->CurrentValue;
-					}
-				}
-			} else {
-				$this->Sign3->ViewValue = NULL;
-			}
-			$this->Sign3->ViewCustomAttributes = "";
-
-			// property_id
-			$this->property_id->LinkCustomAttributes = "";
-			$this->property_id->HrefValue = "";
-			$this->property_id->TooltipValue = "";
-
-			// TransactionNo
-			$this->TransactionNo->LinkCustomAttributes = "";
-			$this->TransactionNo->HrefValue = "";
-			$this->TransactionNo->TooltipValue = "";
-
-			// TransactionDate
-			$this->TransactionDate->LinkCustomAttributes = "";
-			$this->TransactionDate->HrefValue = "";
-			$this->TransactionDate->TooltipValue = "";
-
-			// RecommendedBy
-			$this->RecommendedBy->LinkCustomAttributes = "";
-			$this->RecommendedBy->HrefValue = "";
-			$this->RecommendedBy->TooltipValue = "";
-
-			// CE
-			$this->CE->LinkCustomAttributes = "";
-			$this->CE->HrefValue = "";
-			$this->CE->TooltipValue = "";
-
-			// ITM
-			$this->ITM->LinkCustomAttributes = "";
-			$this->ITM->HrefValue = "";
-			$this->ITM->TooltipValue = "";
-
-			// Sign1
-			$this->Sign1->LinkCustomAttributes = "";
-			$this->Sign1->HrefValue = "";
-			$this->Sign1->TooltipValue = "";
-
-			// Sign2
-			$this->Sign2->LinkCustomAttributes = "";
-			$this->Sign2->HrefValue = "";
-			$this->Sign2->TooltipValue = "";
-
-			// Sign3
-			$this->Sign3->LinkCustomAttributes = "";
-			$this->Sign3->HrefValue = "";
-			$this->Sign3->TooltipValue = "";
+			// reason_id
+			$this->reason_id->LinkCustomAttributes = "";
+			$this->reason_id->HrefValue = "";
+			$this->reason_id->TooltipValue = "";
 		} elseif ($this->RowType == ROWTYPE_ADD) { // Add row
 
-			// property_id
-			$this->property_id->EditCustomAttributes = "";
-			$curVal = trim(strval($this->property_id->CurrentValue));
-			if ($curVal != "")
-				$this->property_id->ViewValue = $this->property_id->lookupCacheOption($curVal);
-			else
-				$this->property_id->ViewValue = $this->property_id->Lookup !== NULL && is_array($this->property_id->Lookup->Options) ? $curVal : NULL;
-			if ($this->property_id->ViewValue !== NULL) { // Load from cache
-				$this->property_id->EditValue = array_values($this->property_id->Lookup->Options);
-				if ($this->property_id->ViewValue == "")
-					$this->property_id->ViewValue = $Language->phrase("PleaseSelect");
-			} else { // Lookup from database
-				if ($curVal == "") {
-					$filterWrk = "0=1";
-				} else {
-					$filterWrk = "`id`" . SearchString("=", $this->property_id->CurrentValue, DATATYPE_NUMBER, "");
-				}
-				$sqlWrk = $this->property_id->Lookup->getSql(TRUE, $filterWrk, '', $this);
-				$rswrk = Conn()->execute($sqlWrk);
-				if ($rswrk && !$rswrk->EOF) { // Lookup values found
-					$arwrk = [];
-					$arwrk[1] = HtmlEncode($rswrk->fields('df'));
-					$this->property_id->ViewValue = $this->property_id->displayValue($arwrk);
-				} else {
-					$this->property_id->ViewValue = $Language->phrase("PleaseSelect");
-				}
-				$arwrk = $rswrk ? $rswrk->getRows() : [];
-				if ($rswrk)
-					$rswrk->close();
-				$this->property_id->EditValue = $arwrk;
+			// disposalhead_id
+			$this->disposalhead_id->EditAttrs["class"] = "form-control";
+			$this->disposalhead_id->EditCustomAttributes = "";
+			if ($this->disposalhead_id->getSessionValue() != "") {
+				$this->disposalhead_id->CurrentValue = $this->disposalhead_id->getSessionValue();
+				$this->disposalhead_id->ViewValue = $this->disposalhead_id->CurrentValue;
+				$this->disposalhead_id->ViewValue = FormatNumber($this->disposalhead_id->ViewValue, 0, -2, -2, -2);
+				$this->disposalhead_id->ViewCustomAttributes = "";
+			} else {
+				$this->disposalhead_id->EditValue = HtmlEncode($this->disposalhead_id->CurrentValue);
+				$this->disposalhead_id->PlaceHolder = RemoveHtml($this->disposalhead_id->caption());
 			}
 
-			// TransactionNo
-			$this->TransactionNo->EditAttrs["class"] = "form-control";
-			$this->TransactionNo->EditCustomAttributes = "";
-			if (!$this->TransactionNo->Raw)
-				$this->TransactionNo->CurrentValue = HtmlDecode($this->TransactionNo->CurrentValue);
-			$this->TransactionNo->EditValue = HtmlEncode($this->TransactionNo->CurrentValue);
-			$this->TransactionNo->PlaceHolder = RemoveHtml($this->TransactionNo->caption());
-
-			// TransactionDate
-			$this->TransactionDate->EditAttrs["class"] = "form-control";
-			$this->TransactionDate->EditCustomAttributes = "";
-			$this->TransactionDate->EditValue = HtmlEncode(FormatDateTime($this->TransactionDate->CurrentValue, 7));
-			$this->TransactionDate->PlaceHolder = RemoveHtml($this->TransactionDate->caption());
-
-			// RecommendedBy
-			$this->RecommendedBy->EditCustomAttributes = "";
-			$curVal = trim(strval($this->RecommendedBy->CurrentValue));
+			// asset_id
+			$this->asset_id->EditCustomAttributes = "";
+			$curVal = trim(strval($this->asset_id->CurrentValue));
 			if ($curVal != "")
-				$this->RecommendedBy->ViewValue = $this->RecommendedBy->lookupCacheOption($curVal);
+				$this->asset_id->ViewValue = $this->asset_id->lookupCacheOption($curVal);
 			else
-				$this->RecommendedBy->ViewValue = $this->RecommendedBy->Lookup !== NULL && is_array($this->RecommendedBy->Lookup->Options) ? $curVal : NULL;
-			if ($this->RecommendedBy->ViewValue !== NULL) { // Load from cache
-				$this->RecommendedBy->EditValue = array_values($this->RecommendedBy->Lookup->Options);
-				if ($this->RecommendedBy->ViewValue == "")
-					$this->RecommendedBy->ViewValue = $Language->phrase("PleaseSelect");
+				$this->asset_id->ViewValue = $this->asset_id->Lookup !== NULL && is_array($this->asset_id->Lookup->Options) ? $curVal : NULL;
+			if ($this->asset_id->ViewValue !== NULL) { // Load from cache
+				$this->asset_id->EditValue = array_values($this->asset_id->Lookup->Options);
+				if ($this->asset_id->ViewValue == "")
+					$this->asset_id->ViewValue = $Language->phrase("PleaseSelect");
 			} else { // Lookup from database
 				if ($curVal == "") {
 					$filterWrk = "0=1";
 				} else {
-					$filterWrk = "`id`" . SearchString("=", $this->RecommendedBy->CurrentValue, DATATYPE_NUMBER, "");
+					$filterWrk = "`id`" . SearchString("=", $this->asset_id->CurrentValue, DATATYPE_NUMBER, "");
 				}
-				$sqlWrk = $this->RecommendedBy->Lookup->getSql(TRUE, $filterWrk, '', $this);
+				$sqlWrk = $this->asset_id->Lookup->getSql(TRUE, $filterWrk, '', $this);
 				$rswrk = Conn()->execute($sqlWrk);
 				if ($rswrk && !$rswrk->EOF) { // Lookup values found
 					$arwrk = [];
 					$arwrk[1] = HtmlEncode($rswrk->fields('df'));
-					$this->RecommendedBy->ViewValue = $this->RecommendedBy->displayValue($arwrk);
+					$arwrk[2] = HtmlEncode($rswrk->fields('df2'));
+					$this->asset_id->ViewValue = $this->asset_id->displayValue($arwrk);
 				} else {
-					$this->RecommendedBy->ViewValue = $Language->phrase("PleaseSelect");
+					$this->asset_id->ViewValue = $Language->phrase("PleaseSelect");
 				}
 				$arwrk = $rswrk ? $rswrk->getRows() : [];
 				if ($rswrk)
 					$rswrk->close();
-				$this->RecommendedBy->EditValue = $arwrk;
+				$this->asset_id->EditValue = $arwrk;
 			}
 
-			// CE
-			$this->CE->EditCustomAttributes = "";
-			$curVal = trim(strval($this->CE->CurrentValue));
+			// cond_id
+			$this->cond_id->EditCustomAttributes = "";
+			$curVal = trim(strval($this->cond_id->CurrentValue));
 			if ($curVal != "")
-				$this->CE->ViewValue = $this->CE->lookupCacheOption($curVal);
+				$this->cond_id->ViewValue = $this->cond_id->lookupCacheOption($curVal);
 			else
-				$this->CE->ViewValue = $this->CE->Lookup !== NULL && is_array($this->CE->Lookup->Options) ? $curVal : NULL;
-			if ($this->CE->ViewValue !== NULL) { // Load from cache
-				$this->CE->EditValue = array_values($this->CE->Lookup->Options);
-				if ($this->CE->ViewValue == "")
-					$this->CE->ViewValue = $Language->phrase("PleaseSelect");
+				$this->cond_id->ViewValue = $this->cond_id->Lookup !== NULL && is_array($this->cond_id->Lookup->Options) ? $curVal : NULL;
+			if ($this->cond_id->ViewValue !== NULL) { // Load from cache
+				$this->cond_id->EditValue = array_values($this->cond_id->Lookup->Options);
+				if ($this->cond_id->ViewValue == "")
+					$this->cond_id->ViewValue = $Language->phrase("PleaseSelect");
 			} else { // Lookup from database
 				if ($curVal == "") {
 					$filterWrk = "0=1";
 				} else {
-					$filterWrk = "`id`" . SearchString("=", $this->CE->CurrentValue, DATATYPE_NUMBER, "");
+					$filterWrk = "`id`" . SearchString("=", $this->cond_id->CurrentValue, DATATYPE_NUMBER, "");
 				}
-				$sqlWrk = $this->CE->Lookup->getSql(TRUE, $filterWrk, '', $this);
+				$sqlWrk = $this->cond_id->Lookup->getSql(TRUE, $filterWrk, '', $this);
 				$rswrk = Conn()->execute($sqlWrk);
 				if ($rswrk && !$rswrk->EOF) { // Lookup values found
 					$arwrk = [];
 					$arwrk[1] = HtmlEncode($rswrk->fields('df'));
-					$this->CE->ViewValue = $this->CE->displayValue($arwrk);
+					$this->cond_id->ViewValue = $this->cond_id->displayValue($arwrk);
 				} else {
-					$this->CE->ViewValue = $Language->phrase("PleaseSelect");
+					$this->cond_id->ViewValue = $Language->phrase("PleaseSelect");
 				}
 				$arwrk = $rswrk ? $rswrk->getRows() : [];
 				if ($rswrk)
 					$rswrk->close();
-				$this->CE->EditValue = $arwrk;
+				$this->cond_id->EditValue = $arwrk;
 			}
 
-			// ITM
-			$this->ITM->EditCustomAttributes = "";
-			$curVal = trim(strval($this->ITM->CurrentValue));
+			// reason_id
+			$this->reason_id->EditCustomAttributes = "";
+			$curVal = trim(strval($this->reason_id->CurrentValue));
 			if ($curVal != "")
-				$this->ITM->ViewValue = $this->ITM->lookupCacheOption($curVal);
+				$this->reason_id->ViewValue = $this->reason_id->lookupCacheOption($curVal);
 			else
-				$this->ITM->ViewValue = $this->ITM->Lookup !== NULL && is_array($this->ITM->Lookup->Options) ? $curVal : NULL;
-			if ($this->ITM->ViewValue !== NULL) { // Load from cache
-				$this->ITM->EditValue = array_values($this->ITM->Lookup->Options);
-				if ($this->ITM->ViewValue == "")
-					$this->ITM->ViewValue = $Language->phrase("PleaseSelect");
+				$this->reason_id->ViewValue = $this->reason_id->Lookup !== NULL && is_array($this->reason_id->Lookup->Options) ? $curVal : NULL;
+			if ($this->reason_id->ViewValue !== NULL) { // Load from cache
+				$this->reason_id->EditValue = array_values($this->reason_id->Lookup->Options);
+				if ($this->reason_id->ViewValue == "")
+					$this->reason_id->ViewValue = $Language->phrase("PleaseSelect");
 			} else { // Lookup from database
 				if ($curVal == "") {
 					$filterWrk = "0=1";
 				} else {
-					$filterWrk = "`id`" . SearchString("=", $this->ITM->CurrentValue, DATATYPE_NUMBER, "");
+					$filterWrk = "`id`" . SearchString("=", $this->reason_id->CurrentValue, DATATYPE_NUMBER, "");
 				}
-				$sqlWrk = $this->ITM->Lookup->getSql(TRUE, $filterWrk, '', $this);
+				$sqlWrk = $this->reason_id->Lookup->getSql(TRUE, $filterWrk, '', $this);
 				$rswrk = Conn()->execute($sqlWrk);
 				if ($rswrk && !$rswrk->EOF) { // Lookup values found
 					$arwrk = [];
 					$arwrk[1] = HtmlEncode($rswrk->fields('df'));
-					$this->ITM->ViewValue = $this->ITM->displayValue($arwrk);
+					$this->reason_id->ViewValue = $this->reason_id->displayValue($arwrk);
 				} else {
-					$this->ITM->ViewValue = $Language->phrase("PleaseSelect");
+					$this->reason_id->ViewValue = $Language->phrase("PleaseSelect");
 				}
 				$arwrk = $rswrk ? $rswrk->getRows() : [];
 				if ($rswrk)
 					$rswrk->close();
-				$this->ITM->EditValue = $arwrk;
-			}
-
-			// Sign1
-			$this->Sign1->EditCustomAttributes = "";
-			$curVal = trim(strval($this->Sign1->CurrentValue));
-			if ($curVal != "")
-				$this->Sign1->ViewValue = $this->Sign1->lookupCacheOption($curVal);
-			else
-				$this->Sign1->ViewValue = $this->Sign1->Lookup !== NULL && is_array($this->Sign1->Lookup->Options) ? $curVal : NULL;
-			if ($this->Sign1->ViewValue !== NULL) { // Load from cache
-				$this->Sign1->EditValue = array_values($this->Sign1->Lookup->Options);
-				if ($this->Sign1->ViewValue == "")
-					$this->Sign1->ViewValue = $Language->phrase("PleaseSelect");
-			} else { // Lookup from database
-				if ($curVal == "") {
-					$filterWrk = "0=1";
-				} else {
-					$filterWrk = "`id`" . SearchString("=", $this->Sign1->CurrentValue, DATATYPE_NUMBER, "");
-				}
-				$sqlWrk = $this->Sign1->Lookup->getSql(TRUE, $filterWrk, '', $this);
-				$rswrk = Conn()->execute($sqlWrk);
-				if ($rswrk && !$rswrk->EOF) { // Lookup values found
-					$arwrk = [];
-					$arwrk[1] = HtmlEncode($rswrk->fields('df'));
-					$this->Sign1->ViewValue = $this->Sign1->displayValue($arwrk);
-				} else {
-					$this->Sign1->ViewValue = $Language->phrase("PleaseSelect");
-				}
-				$arwrk = $rswrk ? $rswrk->getRows() : [];
-				if ($rswrk)
-					$rswrk->close();
-				$this->Sign1->EditValue = $arwrk;
-			}
-
-			// Sign2
-			$this->Sign2->EditCustomAttributes = "";
-			$curVal = trim(strval($this->Sign2->CurrentValue));
-			if ($curVal != "")
-				$this->Sign2->ViewValue = $this->Sign2->lookupCacheOption($curVal);
-			else
-				$this->Sign2->ViewValue = $this->Sign2->Lookup !== NULL && is_array($this->Sign2->Lookup->Options) ? $curVal : NULL;
-			if ($this->Sign2->ViewValue !== NULL) { // Load from cache
-				$this->Sign2->EditValue = array_values($this->Sign2->Lookup->Options);
-				if ($this->Sign2->ViewValue == "")
-					$this->Sign2->ViewValue = $Language->phrase("PleaseSelect");
-			} else { // Lookup from database
-				if ($curVal == "") {
-					$filterWrk = "0=1";
-				} else {
-					$filterWrk = "`id`" . SearchString("=", $this->Sign2->CurrentValue, DATATYPE_NUMBER, "");
-				}
-				$sqlWrk = $this->Sign2->Lookup->getSql(TRUE, $filterWrk, '', $this);
-				$rswrk = Conn()->execute($sqlWrk);
-				if ($rswrk && !$rswrk->EOF) { // Lookup values found
-					$arwrk = [];
-					$arwrk[1] = HtmlEncode($rswrk->fields('df'));
-					$this->Sign2->ViewValue = $this->Sign2->displayValue($arwrk);
-				} else {
-					$this->Sign2->ViewValue = $Language->phrase("PleaseSelect");
-				}
-				$arwrk = $rswrk ? $rswrk->getRows() : [];
-				if ($rswrk)
-					$rswrk->close();
-				$this->Sign2->EditValue = $arwrk;
-			}
-
-			// Sign3
-			$this->Sign3->EditCustomAttributes = "";
-			$curVal = trim(strval($this->Sign3->CurrentValue));
-			if ($curVal != "")
-				$this->Sign3->ViewValue = $this->Sign3->lookupCacheOption($curVal);
-			else
-				$this->Sign3->ViewValue = $this->Sign3->Lookup !== NULL && is_array($this->Sign3->Lookup->Options) ? $curVal : NULL;
-			if ($this->Sign3->ViewValue !== NULL) { // Load from cache
-				$this->Sign3->EditValue = array_values($this->Sign3->Lookup->Options);
-				if ($this->Sign3->ViewValue == "")
-					$this->Sign3->ViewValue = $Language->phrase("PleaseSelect");
-			} else { // Lookup from database
-				if ($curVal == "") {
-					$filterWrk = "0=1";
-				} else {
-					$filterWrk = "`id`" . SearchString("=", $this->Sign3->CurrentValue, DATATYPE_NUMBER, "");
-				}
-				$sqlWrk = $this->Sign3->Lookup->getSql(TRUE, $filterWrk, '', $this);
-				$rswrk = Conn()->execute($sqlWrk);
-				if ($rswrk && !$rswrk->EOF) { // Lookup values found
-					$arwrk = [];
-					$arwrk[1] = HtmlEncode($rswrk->fields('df'));
-					$this->Sign3->ViewValue = $this->Sign3->displayValue($arwrk);
-				} else {
-					$this->Sign3->ViewValue = $Language->phrase("PleaseSelect");
-				}
-				$arwrk = $rswrk ? $rswrk->getRows() : [];
-				if ($rswrk)
-					$rswrk->close();
-				$this->Sign3->EditValue = $arwrk;
+				$this->reason_id->EditValue = $arwrk;
 			}
 
 			// Add refer script
-			// property_id
+			// disposalhead_id
 
-			$this->property_id->LinkCustomAttributes = "";
-			$this->property_id->HrefValue = "";
+			$this->disposalhead_id->LinkCustomAttributes = "";
+			$this->disposalhead_id->HrefValue = "";
 
-			// TransactionNo
-			$this->TransactionNo->LinkCustomAttributes = "";
-			$this->TransactionNo->HrefValue = "";
+			// asset_id
+			$this->asset_id->LinkCustomAttributes = "";
+			$this->asset_id->HrefValue = "";
 
-			// TransactionDate
-			$this->TransactionDate->LinkCustomAttributes = "";
-			$this->TransactionDate->HrefValue = "";
+			// cond_id
+			$this->cond_id->LinkCustomAttributes = "";
+			$this->cond_id->HrefValue = "";
 
-			// RecommendedBy
-			$this->RecommendedBy->LinkCustomAttributes = "";
-			$this->RecommendedBy->HrefValue = "";
-
-			// CE
-			$this->CE->LinkCustomAttributes = "";
-			$this->CE->HrefValue = "";
-
-			// ITM
-			$this->ITM->LinkCustomAttributes = "";
-			$this->ITM->HrefValue = "";
-
-			// Sign1
-			$this->Sign1->LinkCustomAttributes = "";
-			$this->Sign1->HrefValue = "";
-
-			// Sign2
-			$this->Sign2->LinkCustomAttributes = "";
-			$this->Sign2->HrefValue = "";
-
-			// Sign3
-			$this->Sign3->LinkCustomAttributes = "";
-			$this->Sign3->HrefValue = "";
+			// reason_id
+			$this->reason_id->LinkCustomAttributes = "";
+			$this->reason_id->HrefValue = "";
 		}
 		if ($this->RowType == ROWTYPE_ADD || $this->RowType == ROWTYPE_EDIT || $this->RowType == ROWTYPE_SEARCH) // Add/Edit/Search row
 			$this->setupFieldTitles();
@@ -1608,61 +1266,28 @@ class t105_disposalhead_add extends t105_disposalhead
 		// Check if validation required
 		if (!Config("SERVER_VALIDATE"))
 			return ($FormError == "");
-		if ($this->property_id->Required) {
-			if (!$this->property_id->IsDetailKey && $this->property_id->FormValue != NULL && $this->property_id->FormValue == "") {
-				AddMessage($FormError, str_replace("%s", $this->property_id->caption(), $this->property_id->RequiredErrorMessage));
+		if ($this->disposalhead_id->Required) {
+			if (!$this->disposalhead_id->IsDetailKey && $this->disposalhead_id->FormValue != NULL && $this->disposalhead_id->FormValue == "") {
+				AddMessage($FormError, str_replace("%s", $this->disposalhead_id->caption(), $this->disposalhead_id->RequiredErrorMessage));
 			}
 		}
-		if ($this->TransactionNo->Required) {
-			if (!$this->TransactionNo->IsDetailKey && $this->TransactionNo->FormValue != NULL && $this->TransactionNo->FormValue == "") {
-				AddMessage($FormError, str_replace("%s", $this->TransactionNo->caption(), $this->TransactionNo->RequiredErrorMessage));
+		if (!CheckInteger($this->disposalhead_id->FormValue)) {
+			AddMessage($FormError, $this->disposalhead_id->errorMessage());
+		}
+		if ($this->asset_id->Required) {
+			if (!$this->asset_id->IsDetailKey && $this->asset_id->FormValue != NULL && $this->asset_id->FormValue == "") {
+				AddMessage($FormError, str_replace("%s", $this->asset_id->caption(), $this->asset_id->RequiredErrorMessage));
 			}
 		}
-		if ($this->TransactionDate->Required) {
-			if (!$this->TransactionDate->IsDetailKey && $this->TransactionDate->FormValue != NULL && $this->TransactionDate->FormValue == "") {
-				AddMessage($FormError, str_replace("%s", $this->TransactionDate->caption(), $this->TransactionDate->RequiredErrorMessage));
+		if ($this->cond_id->Required) {
+			if (!$this->cond_id->IsDetailKey && $this->cond_id->FormValue != NULL && $this->cond_id->FormValue == "") {
+				AddMessage($FormError, str_replace("%s", $this->cond_id->caption(), $this->cond_id->RequiredErrorMessage));
 			}
 		}
-		if (!CheckEuroDate($this->TransactionDate->FormValue)) {
-			AddMessage($FormError, $this->TransactionDate->errorMessage());
-		}
-		if ($this->RecommendedBy->Required) {
-			if (!$this->RecommendedBy->IsDetailKey && $this->RecommendedBy->FormValue != NULL && $this->RecommendedBy->FormValue == "") {
-				AddMessage($FormError, str_replace("%s", $this->RecommendedBy->caption(), $this->RecommendedBy->RequiredErrorMessage));
+		if ($this->reason_id->Required) {
+			if (!$this->reason_id->IsDetailKey && $this->reason_id->FormValue != NULL && $this->reason_id->FormValue == "") {
+				AddMessage($FormError, str_replace("%s", $this->reason_id->caption(), $this->reason_id->RequiredErrorMessage));
 			}
-		}
-		if ($this->CE->Required) {
-			if (!$this->CE->IsDetailKey && $this->CE->FormValue != NULL && $this->CE->FormValue == "") {
-				AddMessage($FormError, str_replace("%s", $this->CE->caption(), $this->CE->RequiredErrorMessage));
-			}
-		}
-		if ($this->ITM->Required) {
-			if (!$this->ITM->IsDetailKey && $this->ITM->FormValue != NULL && $this->ITM->FormValue == "") {
-				AddMessage($FormError, str_replace("%s", $this->ITM->caption(), $this->ITM->RequiredErrorMessage));
-			}
-		}
-		if ($this->Sign1->Required) {
-			if (!$this->Sign1->IsDetailKey && $this->Sign1->FormValue != NULL && $this->Sign1->FormValue == "") {
-				AddMessage($FormError, str_replace("%s", $this->Sign1->caption(), $this->Sign1->RequiredErrorMessage));
-			}
-		}
-		if ($this->Sign2->Required) {
-			if (!$this->Sign2->IsDetailKey && $this->Sign2->FormValue != NULL && $this->Sign2->FormValue == "") {
-				AddMessage($FormError, str_replace("%s", $this->Sign2->caption(), $this->Sign2->RequiredErrorMessage));
-			}
-		}
-		if ($this->Sign3->Required) {
-			if (!$this->Sign3->IsDetailKey && $this->Sign3->FormValue != NULL && $this->Sign3->FormValue == "") {
-				AddMessage($FormError, str_replace("%s", $this->Sign3->caption(), $this->Sign3->RequiredErrorMessage));
-			}
-		}
-
-		// Validate detail grid
-		$detailTblVar = explode(",", $this->getCurrentDetailTable());
-		if (in_array("t106_disposaldetail", $detailTblVar) && $GLOBALS["t106_disposaldetail"]->DetailAdd) {
-			if (!isset($GLOBALS["t106_disposaldetail_grid"]))
-				$GLOBALS["t106_disposaldetail_grid"] = new t106_disposaldetail_grid(); // Get detail page object
-			$GLOBALS["t106_disposaldetail_grid"]->validateGridForm();
 		}
 
 		// Return validate result
@@ -1681,11 +1306,28 @@ class t105_disposalhead_add extends t105_disposalhead
 	protected function addRow($rsold = NULL)
 	{
 		global $Language, $Security;
-		$conn = $this->getConnection();
 
-		// Begin transaction
-		if ($this->getCurrentDetailTable() != "")
-			$conn->beginTrans();
+		// Check referential integrity for master table 't106_disposaldetail'
+		$validMasterRecord = TRUE;
+		$masterFilter = $this->sqlMasterFilter_t105_disposalhead();
+		if (strval($this->disposalhead_id->CurrentValue) != "") {
+			$masterFilter = str_replace("@id@", AdjustSql($this->disposalhead_id->CurrentValue, "DB"), $masterFilter);
+		} else {
+			$validMasterRecord = FALSE;
+		}
+		if ($validMasterRecord) {
+			if (!isset($GLOBALS["t105_disposalhead"]))
+				$GLOBALS["t105_disposalhead"] = new t105_disposalhead();
+			$rsmaster = $GLOBALS["t105_disposalhead"]->loadRs($masterFilter);
+			$validMasterRecord = ($rsmaster && !$rsmaster->EOF);
+			$rsmaster->close();
+		}
+		if (!$validMasterRecord) {
+			$relatedRecordMsg = str_replace("%t", "t105_disposalhead", $Language->phrase("RelatedRecordRequired"));
+			$this->setFailureMessage($relatedRecordMsg);
+			return FALSE;
+		}
+		$conn = $this->getConnection();
 
 		// Load db values from rsold
 		$this->loadDbValues($rsold);
@@ -1693,32 +1335,17 @@ class t105_disposalhead_add extends t105_disposalhead
 		}
 		$rsnew = [];
 
-		// property_id
-		$this->property_id->setDbValueDef($rsnew, $this->property_id->CurrentValue, 0, FALSE);
+		// disposalhead_id
+		$this->disposalhead_id->setDbValueDef($rsnew, $this->disposalhead_id->CurrentValue, 0, FALSE);
 
-		// TransactionNo
-		$this->TransactionNo->setDbValueDef($rsnew, $this->TransactionNo->CurrentValue, "", FALSE);
+		// asset_id
+		$this->asset_id->setDbValueDef($rsnew, $this->asset_id->CurrentValue, 0, FALSE);
 
-		// TransactionDate
-		$this->TransactionDate->setDbValueDef($rsnew, UnFormatDateTime($this->TransactionDate->CurrentValue, 7), CurrentDate(), FALSE);
+		// cond_id
+		$this->cond_id->setDbValueDef($rsnew, $this->cond_id->CurrentValue, 0, FALSE);
 
-		// RecommendedBy
-		$this->RecommendedBy->setDbValueDef($rsnew, $this->RecommendedBy->CurrentValue, 0, FALSE);
-
-		// CE
-		$this->CE->setDbValueDef($rsnew, $this->CE->CurrentValue, 0, FALSE);
-
-		// ITM
-		$this->ITM->setDbValueDef($rsnew, $this->ITM->CurrentValue, 0, FALSE);
-
-		// Sign1
-		$this->Sign1->setDbValueDef($rsnew, $this->Sign1->CurrentValue, 0, FALSE);
-
-		// Sign2
-		$this->Sign2->setDbValueDef($rsnew, $this->Sign2->CurrentValue, 0, FALSE);
-
-		// Sign3
-		$this->Sign3->setDbValueDef($rsnew, $this->Sign3->CurrentValue, 0, FALSE);
+		// reason_id
+		$this->reason_id->setDbValueDef($rsnew, $this->reason_id->CurrentValue, 0, FALSE);
 
 		// Call Row Inserting event
 		$rs = ($rsold) ? $rsold->fields : NULL;
@@ -1741,31 +1368,6 @@ class t105_disposalhead_add extends t105_disposalhead
 			}
 			$addRow = FALSE;
 		}
-
-		// Add detail records
-		if ($addRow) {
-			$detailTblVar = explode(",", $this->getCurrentDetailTable());
-			if (in_array("t106_disposaldetail", $detailTblVar) && $GLOBALS["t106_disposaldetail"]->DetailAdd) {
-				$GLOBALS["t106_disposaldetail"]->disposalhead_id->setSessionValue($this->id->CurrentValue); // Set master key
-				if (!isset($GLOBALS["t106_disposaldetail_grid"]))
-					$GLOBALS["t106_disposaldetail_grid"] = new t106_disposaldetail_grid(); // Get detail page object
-				$Security->loadCurrentUserLevel($this->ProjectID . "t106_disposaldetail"); // Load user level of detail table
-				$addRow = $GLOBALS["t106_disposaldetail_grid"]->gridInsert();
-				$Security->loadCurrentUserLevel($this->ProjectID . $this->TableName); // Restore user level of master table
-				if (!$addRow) {
-					$GLOBALS["t106_disposaldetail"]->disposalhead_id->setSessionValue(""); // Clear master key if insert failed
-				}
-			}
-		}
-
-		// Commit/Rollback transaction
-		if ($this->getCurrentDetailTable() != "") {
-			if ($addRow) {
-				$conn->commitTrans(); // Commit transaction
-			} else {
-				$conn->rollbackTrans(); // Rollback transaction
-			}
-		}
 		if ($addRow) {
 
 			// Call Row Inserted event
@@ -1785,38 +1387,70 @@ class t105_disposalhead_add extends t105_disposalhead
 		return $addRow;
 	}
 
-	// Set up detail parms based on QueryString
-	protected function setupDetailParms()
+	// Set up master/detail based on QueryString
+	protected function setupMasterParms()
 	{
+		$validMaster = FALSE;
 
 		// Get the keys for master table
-		$detailTblVar = Get(Config("TABLE_SHOW_DETAIL"));
-		if ($detailTblVar !== NULL) {
-			$this->setCurrentDetailTable($detailTblVar);
-		} else {
-			$detailTblVar = $this->getCurrentDetailTable();
-		}
-		if ($detailTblVar != "") {
-			$detailTblVar = explode(",", $detailTblVar);
-			if (in_array("t106_disposaldetail", $detailTblVar)) {
-				if (!isset($GLOBALS["t106_disposaldetail_grid"]))
-					$GLOBALS["t106_disposaldetail_grid"] = new t106_disposaldetail_grid();
-				if ($GLOBALS["t106_disposaldetail_grid"]->DetailAdd) {
-					if ($this->CopyRecord)
-						$GLOBALS["t106_disposaldetail_grid"]->CurrentMode = "copy";
-					else
-						$GLOBALS["t106_disposaldetail_grid"]->CurrentMode = "add";
-					$GLOBALS["t106_disposaldetail_grid"]->CurrentAction = "gridadd";
-
-					// Save current master table to detail table
-					$GLOBALS["t106_disposaldetail_grid"]->setCurrentMasterTable($this->TableVar);
-					$GLOBALS["t106_disposaldetail_grid"]->setStartRecordNumber(1);
-					$GLOBALS["t106_disposaldetail_grid"]->disposalhead_id->IsDetailKey = TRUE;
-					$GLOBALS["t106_disposaldetail_grid"]->disposalhead_id->CurrentValue = $this->id->CurrentValue;
-					$GLOBALS["t106_disposaldetail_grid"]->disposalhead_id->setSessionValue($GLOBALS["t106_disposaldetail_grid"]->disposalhead_id->CurrentValue);
+		if (($master = Get(Config("TABLE_SHOW_MASTER"), Get(Config("TABLE_MASTER")))) !== NULL) {
+			$masterTblVar = $master;
+			if ($masterTblVar == "") {
+				$validMaster = TRUE;
+				$this->DbMasterFilter = "";
+				$this->DbDetailFilter = "";
+			}
+			if ($masterTblVar == "t105_disposalhead") {
+				$validMaster = TRUE;
+				if (($parm = Get("fk_id", Get("disposalhead_id"))) !== NULL) {
+					$GLOBALS["t105_disposalhead"]->id->setQueryStringValue($parm);
+					$this->disposalhead_id->setQueryStringValue($GLOBALS["t105_disposalhead"]->id->QueryStringValue);
+					$this->disposalhead_id->setSessionValue($this->disposalhead_id->QueryStringValue);
+					if (!is_numeric($GLOBALS["t105_disposalhead"]->id->QueryStringValue))
+						$validMaster = FALSE;
+				} else {
+					$validMaster = FALSE;
+				}
+			}
+		} elseif (($master = Post(Config("TABLE_SHOW_MASTER"), Post(Config("TABLE_MASTER")))) !== NULL) {
+			$masterTblVar = $master;
+			if ($masterTblVar == "") {
+				$validMaster = TRUE;
+				$this->DbMasterFilter = "";
+				$this->DbDetailFilter = "";
+			}
+			if ($masterTblVar == "t105_disposalhead") {
+				$validMaster = TRUE;
+				if (($parm = Post("fk_id", Post("disposalhead_id"))) !== NULL) {
+					$GLOBALS["t105_disposalhead"]->id->setFormValue($parm);
+					$this->disposalhead_id->setFormValue($GLOBALS["t105_disposalhead"]->id->FormValue);
+					$this->disposalhead_id->setSessionValue($this->disposalhead_id->FormValue);
+					if (!is_numeric($GLOBALS["t105_disposalhead"]->id->FormValue))
+						$validMaster = FALSE;
+				} else {
+					$validMaster = FALSE;
 				}
 			}
 		}
+		if ($validMaster) {
+
+			// Save current master table
+			$this->setCurrentMasterTable($masterTblVar);
+
+			// Reset start record counter (new master key)
+			if (!$this->isAddOrEdit()) {
+				$this->StartRecord = 1;
+				$this->setStartRecordNumber($this->StartRecord);
+			}
+
+			// Clear previous master key from Session
+			if ($masterTblVar != "t105_disposalhead") {
+				if ($this->disposalhead_id->CurrentValue == "")
+					$this->disposalhead_id->setSessionValue("");
+			}
+		}
+		$this->DbMasterFilter = $this->getMasterFilter(); // Get master filter
+		$this->DbDetailFilter = $this->getDetailFilter(); // Get detail filter
 	}
 
 	// Set up Breadcrumb
@@ -1825,7 +1459,7 @@ class t105_disposalhead_add extends t105_disposalhead
 		global $Breadcrumb, $Language;
 		$Breadcrumb = new Breadcrumb();
 		$url = substr(CurrentUrl(), strrpos(CurrentUrl(), "/")+1);
-		$Breadcrumb->add("list", $this->TableVar, $this->addMasterUrl("t105_disposalheadlist.php"), "", $this->TableVar, TRUE);
+		$Breadcrumb->add("list", $this->TableVar, $this->addMasterUrl("t106_disposaldetaillist.php"), "", $this->TableVar, TRUE);
 		$pageId = ($this->isCopy()) ? "Copy" : "Add";
 		$Breadcrumb->add("add", $pageId, $url);
 	}
@@ -1844,19 +1478,11 @@ class t105_disposalhead_add extends t105_disposalhead
 
 			// Set up lookup SQL and connection
 			switch ($fld->FieldVar) {
-				case "x_property_id":
+				case "x_asset_id":
 					break;
-				case "x_RecommendedBy":
+				case "x_cond_id":
 					break;
-				case "x_CE":
-					break;
-				case "x_ITM":
-					break;
-				case "x_Sign1":
-					break;
-				case "x_Sign2":
-					break;
-				case "x_Sign3":
+				case "x_reason_id":
 					break;
 				default:
 					$lookupFilter = "";
@@ -1878,19 +1504,11 @@ class t105_disposalhead_add extends t105_disposalhead
 
 					// Format the field values
 					switch ($fld->FieldVar) {
-						case "x_property_id":
+						case "x_asset_id":
 							break;
-						case "x_RecommendedBy":
+						case "x_cond_id":
 							break;
-						case "x_CE":
-							break;
-						case "x_ITM":
-							break;
-						case "x_Sign1":
-							break;
-						case "x_Sign2":
-							break;
-						case "x_Sign3":
+						case "x_reason_id":
 							break;
 					}
 					$ar[strval($row[0])] = $row;

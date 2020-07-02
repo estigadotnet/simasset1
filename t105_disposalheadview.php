@@ -71,16 +71,6 @@ $t105_disposalhead_view->showMessage();
 <input type="hidden" name="t" value="t105_disposalhead">
 <input type="hidden" name="modal" value="<?php echo (int)$t105_disposalhead_view->IsModal ?>">
 <table class="table table-striped table-sm ew-view-table">
-<?php if ($t105_disposalhead_view->id->Visible) { // id ?>
-	<tr id="r_id">
-		<td class="<?php echo $t105_disposalhead_view->TableLeftColumnClass ?>"><span id="elh_t105_disposalhead_id"><?php echo $t105_disposalhead_view->id->caption() ?></span></td>
-		<td data-name="id" <?php echo $t105_disposalhead_view->id->cellAttributes() ?>>
-<span id="el_t105_disposalhead_id">
-<span<?php echo $t105_disposalhead_view->id->viewAttributes() ?>><?php echo $t105_disposalhead_view->id->getViewValue() ?></span>
-</span>
-</td>
-	</tr>
-<?php } ?>
 <?php if ($t105_disposalhead_view->property_id->Visible) { // property_id ?>
 	<tr id="r_property_id">
 		<td class="<?php echo $t105_disposalhead_view->TableLeftColumnClass ?>"><span id="elh_t105_disposalhead_property_id"><?php echo $t105_disposalhead_view->property_id->caption() ?></span></td>
@@ -97,6 +87,16 @@ $t105_disposalhead_view->showMessage();
 		<td data-name="TransactionNo" <?php echo $t105_disposalhead_view->TransactionNo->cellAttributes() ?>>
 <span id="el_t105_disposalhead_TransactionNo">
 <span<?php echo $t105_disposalhead_view->TransactionNo->viewAttributes() ?>><?php echo $t105_disposalhead_view->TransactionNo->getViewValue() ?></span>
+</span>
+</td>
+	</tr>
+<?php } ?>
+<?php if ($t105_disposalhead_view->TransactionDate->Visible) { // TransactionDate ?>
+	<tr id="r_TransactionDate">
+		<td class="<?php echo $t105_disposalhead_view->TableLeftColumnClass ?>"><span id="elh_t105_disposalhead_TransactionDate"><?php echo $t105_disposalhead_view->TransactionDate->caption() ?></span></td>
+		<td data-name="TransactionDate" <?php echo $t105_disposalhead_view->TransactionDate->cellAttributes() ?>>
+<span id="el_t105_disposalhead_TransactionDate">
+<span<?php echo $t105_disposalhead_view->TransactionDate->viewAttributes() ?>><?php echo $t105_disposalhead_view->TransactionDate->getViewValue() ?></span>
 </span>
 </td>
 	</tr>
@@ -167,6 +167,14 @@ $t105_disposalhead_view->showMessage();
 <?php echo $t105_disposalhead_view->Pager->render() ?>
 <div class="clearfix"></div>
 <?php } ?>
+<?php } ?>
+<?php
+	if (in_array("t106_disposaldetail", explode(",", $t105_disposalhead->getCurrentDetailTable())) && $t106_disposaldetail->DetailView) {
+?>
+<?php if ($t105_disposalhead->getCurrentDetailTable() != "") { ?>
+<h4 class="ew-detail-caption"><?php echo $Language->tablePhrase("t106_disposaldetail", "TblCaption") ?></h4>
+<?php } ?>
+<?php include_once "t106_disposaldetailgrid.php" ?>
 <?php } ?>
 </form>
 <?php

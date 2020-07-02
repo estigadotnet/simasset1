@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1:3307
--- Generation Time: Jul 02, 2020 at 08:17 PM
+-- Generation Time: Jul 03, 2020 at 01:11 AM
 -- Server version: 10.4.8-MariaDB
 -- PHP Version: 7.3.11
 
@@ -85,14 +85,16 @@ CREATE TABLE `t003_signature` (
 --
 
 INSERT INTO `t003_signature` (`id`, `Signature`, `JobTitle`) VALUES
-(1, 'Intan', '-'),
-(2, 'Lonike', '-'),
-(3, 'Cyntia', '-'),
-(4, 'Ricky', '-'),
-(5, 'Roga', '-'),
-(6, 'Chef Sinyo', '-'),
-(7, 'Dias', '-'),
-(8, 'Ulum', '-');
+(1, 'Intan', 'Finance Controller'),
+(2, 'Lonike', 'Human Resources Coordinator'),
+(3, 'Cyntia', 'Senior Sales Executice'),
+(4, 'Ricky', 'Front Office Manager'),
+(5, 'Roga', 'Chief Engineer'),
+(6, 'Chef Sinyo', 'Senior Sous Chef'),
+(7, 'Dias', 'Food &amp; Beverage Manager'),
+(8, 'Ulum', 'Executive Housekeeper'),
+(9, 'General Manager', 'General Manager'),
+(10, 'Owner', 'Owner');
 
 -- --------------------------------------------------------
 
@@ -1906,6 +1908,27 @@ INSERT INTO `t010_condition` (`id`, `Status`) VALUES
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `t011_reason`
+--
+
+CREATE TABLE `t011_reason` (
+  `id` int(11) NOT NULL,
+  `Status` varchar(50) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `t011_reason`
+--
+
+INSERT INTO `t011_reason` (`id`, `Status`) VALUES
+(1, 'Obsolete'),
+(2, 'Replaced by upgrade'),
+(3, 'Surplus to requirements'),
+(4, 'Theft');
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `t101_ho_head`
 --
 
@@ -1924,6 +1947,13 @@ CREATE TABLE `t101_ho_head` (
   `Sign4` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
+--
+-- Dumping data for table `t101_ho_head`
+--
+
+INSERT INTO `t101_ho_head` (`id`, `property_id`, `TransactionNo`, `TransactionDate`, `HandedOverTo`, `DepartmentTo`, `HandedOverBy`, `DepartmentBy`, `Sign1`, `Sign2`, `Sign3`, `Sign4`) VALUES
+(1, 1, '0001', '2020-07-03', 1, 1, 1, 1, 1, 1, 1, 1);
+
 -- --------------------------------------------------------
 
 --
@@ -1935,6 +1965,13 @@ CREATE TABLE `t102_ho_detail` (
   `hohead_id` int(11) NOT NULL,
   `asset_id` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `t102_ho_detail`
+--
+
+INSERT INTO `t102_ho_detail` (`id`, `hohead_id`, `asset_id`) VALUES
+(1, 1, 119);
 
 -- --------------------------------------------------------
 
@@ -1968,6 +2005,54 @@ CREATE TABLE `t104_ho1_detail` (
   `hohead_id` int(11) NOT NULL,
   `asset_id` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `t105_disposalhead`
+--
+
+CREATE TABLE `t105_disposalhead` (
+  `id` int(11) NOT NULL,
+  `property_id` int(11) NOT NULL,
+  `TransactionNo` varchar(25) NOT NULL,
+  `TransactionDate` date NOT NULL,
+  `RecommendedBy` int(11) NOT NULL,
+  `CE` int(11) NOT NULL,
+  `ITM` int(11) NOT NULL,
+  `Sign1` int(11) NOT NULL,
+  `Sign2` int(11) NOT NULL,
+  `Sign3` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `t105_disposalhead`
+--
+
+INSERT INTO `t105_disposalhead` (`id`, `property_id`, `TransactionNo`, `TransactionDate`, `RecommendedBy`, `CE`, `ITM`, `Sign1`, `Sign2`, `Sign3`) VALUES
+(1, 1, '0001', '2020-07-03', 5, 5, 1, 1, 9, 10);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `t106_disposaldetail`
+--
+
+CREATE TABLE `t106_disposaldetail` (
+  `id` int(11) NOT NULL,
+  `disposalhead_id` int(11) NOT NULL,
+  `asset_id` int(11) NOT NULL,
+  `depreciation_id` int(11) NOT NULL,
+  `cond_id` int(11) NOT NULL,
+  `reason_id` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `t106_disposaldetail`
+--
+
+INSERT INTO `t106_disposaldetail` (`id`, `disposalhead_id`, `asset_id`, `depreciation_id`, `cond_id`, `reason_id`) VALUES
+(1, 1, 1, 0, 1, 1);
 
 -- --------------------------------------------------------
 
@@ -2049,36 +2134,68 @@ CREATE TABLE `t203_userlevelpermissions` (
 --
 
 INSERT INTO `t203_userlevelpermissions` (`userlevelid`, `tablename`, `permission`) VALUES
+(-2, '{E1C6E322-15B9-474C-85CF-A99378A9BC2B}c101_ho.php', 0),
+(-2, '{E1C6E322-15B9-474C-85CF-A99378A9BC2B}c101_ho_2.php', 0),
+(-2, '{E1C6E322-15B9-474C-85CF-A99378A9BC2B}c9.php', 0),
 (-2, '{E1C6E322-15B9-474C-85CF-A99378A9BC2B}d301_home', 72),
 (-2, '{E1C6E322-15B9-474C-85CF-A99378A9BC2B}Dashboard1', 72),
 (-2, '{E1C6E322-15B9-474C-85CF-A99378A9BC2B}r001_asset', 72),
+(-2, '{E1C6E322-15B9-474C-85CF-A99378A9BC2B}r004_assetglobal', 72),
 (-2, '{E1C6E322-15B9-474C-85CF-A99378A9BC2B}t001_property', 0),
 (-2, '{E1C6E322-15B9-474C-85CF-A99378A9BC2B}t002_department', 0),
 (-2, '{E1C6E322-15B9-474C-85CF-A99378A9BC2B}t003_signature', 0),
 (-2, '{E1C6E322-15B9-474C-85CF-A99378A9BC2B}t004_asset', 0),
+(-2, '{E1C6E322-15B9-474C-85CF-A99378A9BC2B}t005_assetgroup', 0),
+(-2, '{E1C6E322-15B9-474C-85CF-A99378A9BC2B}t006_assetdepreciation', 0),
+(-2, '{E1C6E322-15B9-474C-85CF-A99378A9BC2B}t007_assettype', 0),
+(-2, '{E1C6E322-15B9-474C-85CF-A99378A9BC2B}t008_brand', 0),
+(-2, '{E1C6E322-15B9-474C-85CF-A99378A9BC2B}t009_location', 0),
+(-2, '{E1C6E322-15B9-474C-85CF-A99378A9BC2B}t010_condition', 0),
 (-2, '{E1C6E322-15B9-474C-85CF-A99378A9BC2B}t101_ho_head', 0),
 (-2, '{E1C6E322-15B9-474C-85CF-A99378A9BC2B}t102_ho_detail', 0),
+(-2, '{E1C6E322-15B9-474C-85CF-A99378A9BC2B}t103_ho1_head', 0),
 (-2, '{E1C6E322-15B9-474C-85CF-A99378A9BC2B}t103_opname', 0),
+(-2, '{E1C6E322-15B9-474C-85CF-A99378A9BC2B}t104_ho1_detail', 0),
+(-2, '{E1C6E322-15B9-474C-85CF-A99378A9BC2B}t105_disposalhead', 0),
 (-2, '{E1C6E322-15B9-474C-85CF-A99378A9BC2B}t201_users', 0),
 (-2, '{E1C6E322-15B9-474C-85CF-A99378A9BC2B}t202_userlevels', 0),
 (-2, '{E1C6E322-15B9-474C-85CF-A99378A9BC2B}t203_userlevelpermissions', 0),
 (-2, '{E1C6E322-15B9-474C-85CF-A99378A9BC2B}t204_audittrail', 0),
 (-2, '{E1C6E322-15B9-474C-85CF-A99378A9BC2B}t205_parameter', 0),
+(-2, '{E1C6E322-15B9-474C-85CF-A99378A9BC2B}v101_ho', 0),
+(-2, '{E1C6E322-15B9-474C-85CF-A99378A9BC2B}v101_ho_2', 0),
+(-2, '{E1C6E322-15B9-474C-85CF-A99378A9BC2B}v104_assetglobal', 0),
+(0, '{E1C6E322-15B9-474C-85CF-A99378A9BC2B}c101_ho.php', 0),
+(0, '{E1C6E322-15B9-474C-85CF-A99378A9BC2B}c101_ho_2.php', 0),
+(0, '{E1C6E322-15B9-474C-85CF-A99378A9BC2B}c9.php', 0),
 (0, '{E1C6E322-15B9-474C-85CF-A99378A9BC2B}d301_home', 0),
 (0, '{E1C6E322-15B9-474C-85CF-A99378A9BC2B}Dashboard1', 0),
 (0, '{E1C6E322-15B9-474C-85CF-A99378A9BC2B}r001_asset', 0),
+(0, '{E1C6E322-15B9-474C-85CF-A99378A9BC2B}r004_assetglobal', 0),
 (0, '{E1C6E322-15B9-474C-85CF-A99378A9BC2B}t001_property', 0),
 (0, '{E1C6E322-15B9-474C-85CF-A99378A9BC2B}t002_department', 0),
 (0, '{E1C6E322-15B9-474C-85CF-A99378A9BC2B}t003_signature', 0),
 (0, '{E1C6E322-15B9-474C-85CF-A99378A9BC2B}t004_asset', 0),
+(0, '{E1C6E322-15B9-474C-85CF-A99378A9BC2B}t005_assetgroup', 0),
+(0, '{E1C6E322-15B9-474C-85CF-A99378A9BC2B}t006_assetdepreciation', 0),
+(0, '{E1C6E322-15B9-474C-85CF-A99378A9BC2B}t007_assettype', 0),
+(0, '{E1C6E322-15B9-474C-85CF-A99378A9BC2B}t008_brand', 0),
+(0, '{E1C6E322-15B9-474C-85CF-A99378A9BC2B}t009_location', 0),
+(0, '{E1C6E322-15B9-474C-85CF-A99378A9BC2B}t010_condition', 0),
 (0, '{E1C6E322-15B9-474C-85CF-A99378A9BC2B}t101_ho_head', 0),
 (0, '{E1C6E322-15B9-474C-85CF-A99378A9BC2B}t102_ho_detail', 0),
+(0, '{E1C6E322-15B9-474C-85CF-A99378A9BC2B}t103_ho1_head', 0),
 (0, '{E1C6E322-15B9-474C-85CF-A99378A9BC2B}t103_opname', 0),
+(0, '{E1C6E322-15B9-474C-85CF-A99378A9BC2B}t104_ho1_detail', 0),
+(0, '{E1C6E322-15B9-474C-85CF-A99378A9BC2B}t105_disposalhead', 0),
 (0, '{E1C6E322-15B9-474C-85CF-A99378A9BC2B}t201_users', 0),
 (0, '{E1C6E322-15B9-474C-85CF-A99378A9BC2B}t202_userlevels', 0),
 (0, '{E1C6E322-15B9-474C-85CF-A99378A9BC2B}t203_userlevelpermissions', 0),
 (0, '{E1C6E322-15B9-474C-85CF-A99378A9BC2B}t204_audittrail', 0),
-(0, '{E1C6E322-15B9-474C-85CF-A99378A9BC2B}t205_parameter', 0);
+(0, '{E1C6E322-15B9-474C-85CF-A99378A9BC2B}t205_parameter', 0),
+(0, '{E1C6E322-15B9-474C-85CF-A99378A9BC2B}v101_ho', 0),
+(0, '{E1C6E322-15B9-474C-85CF-A99378A9BC2B}v101_ho_2', 0),
+(0, '{E1C6E322-15B9-474C-85CF-A99378A9BC2B}v104_assetglobal', 0);
 
 -- --------------------------------------------------------
 
@@ -2108,7 +2225,87 @@ INSERT INTO `t204_audittrail` (`id`, `datetime`, `script`, `user`, `action`, `ta
 (2, '2020-07-02 23:38:13', '/simasset1/t004_assetedit.php', '4', 'U', 't004_asset', 'Remarks', '1', '', NULL),
 (3, '2020-07-02 23:38:13', '/simasset1/t004_assetedit.php', '4', 'U', 't004_asset', 'PeriodBegin', '1', '0000-00-00', '2013-10-31'),
 (4, '2020-07-02 23:38:13', '/simasset1/t004_assetedit.php', '4', 'U', 't004_asset', 'PeriodEnd', '1', '0000-00-00', '2017-09-30'),
-(5, '2020-07-02 23:39:25', '/simasset1/t004_assetedit.php', '4', 'U', 't004_asset', 'ProcurementCurrentCost', '1', '0.00', '1500000');
+(5, '2020-07-02 23:39:25', '/simasset1/t004_assetedit.php', '4', 'U', 't004_asset', 'ProcurementCurrentCost', '1', '0.00', '1500000'),
+(6, '2020-07-03 01:31:46', '/simasset1/t101_ho_headadd.php', '4', 'A', 't101_ho_head', 'property_id', '1', '', '1'),
+(7, '2020-07-03 01:31:46', '/simasset1/t101_ho_headadd.php', '4', 'A', 't101_ho_head', 'TransactionNo', '1', '', '0001'),
+(8, '2020-07-03 01:31:46', '/simasset1/t101_ho_headadd.php', '4', 'A', 't101_ho_head', 'TransactionDate', '1', '', '2020-07-03'),
+(9, '2020-07-03 01:31:46', '/simasset1/t101_ho_headadd.php', '4', 'A', 't101_ho_head', 'HandedOverTo', '1', '', '1'),
+(10, '2020-07-03 01:31:46', '/simasset1/t101_ho_headadd.php', '4', 'A', 't101_ho_head', 'DepartmentTo', '1', '', '1'),
+(11, '2020-07-03 01:31:46', '/simasset1/t101_ho_headadd.php', '4', 'A', 't101_ho_head', 'HandedOverBy', '1', '', '1'),
+(12, '2020-07-03 01:31:46', '/simasset1/t101_ho_headadd.php', '4', 'A', 't101_ho_head', 'DepartmentBy', '1', '', '1'),
+(13, '2020-07-03 01:31:46', '/simasset1/t101_ho_headadd.php', '4', 'A', 't101_ho_head', 'Sign1', '1', '', '1'),
+(14, '2020-07-03 01:31:46', '/simasset1/t101_ho_headadd.php', '4', 'A', 't101_ho_head', 'Sign2', '1', '', '1'),
+(15, '2020-07-03 01:31:46', '/simasset1/t101_ho_headadd.php', '4', 'A', 't101_ho_head', 'Sign3', '1', '', '1'),
+(16, '2020-07-03 01:31:46', '/simasset1/t101_ho_headadd.php', '4', 'A', 't101_ho_head', 'Sign4', '1', '', '1'),
+(17, '2020-07-03 01:31:46', '/simasset1/t101_ho_headadd.php', '4', 'A', 't101_ho_head', 'id', '1', '', '1'),
+(18, '2020-07-03 01:31:46', '/simasset1/t101_ho_headadd.php', '4', '*** Batch insert begin ***', 't102_ho_detail', '', '', '', ''),
+(19, '2020-07-03 01:31:46', '/simasset1/t101_ho_headadd.php', '4', 'A', 't102_ho_detail', 'asset_id', '1', '', '119'),
+(20, '2020-07-03 01:31:46', '/simasset1/t101_ho_headadd.php', '4', 'A', 't102_ho_detail', 'hohead_id', '1', '', '1'),
+(21, '2020-07-03 01:31:46', '/simasset1/t101_ho_headadd.php', '4', 'A', 't102_ho_detail', 'id', '1', '', '1'),
+(22, '2020-07-03 01:31:46', '/simasset1/t101_ho_headadd.php', '4', '*** Batch insert successful ***', 't102_ho_detail', '', '', '', ''),
+(23, '2020-07-03 04:23:32', '/simasset1/login.php', 'admin', 'login', '::1', '', '', '', ''),
+(24, '2020-07-03 04:24:10', '/simasset1/logout.php', 'admin', 'logout', '::1', '', '', '', ''),
+(25, '2020-07-03 04:24:26', '/simasset1/login.php', 'admin', 'login', '::1', '', '', '', ''),
+(26, '2020-07-03 04:28:35', '/simasset1/logout.php', 'admin', 'logout', '::1', '', '', '', ''),
+(27, '2020-07-03 04:28:55', '/simasset1/login.php', 'admin', 'login', '::1', '', '', '', ''),
+(28, '2020-07-03 04:30:23', '/simasset1/logout.php', 'admin', 'logout', '::1', '', '', '', ''),
+(29, '2020-07-03 04:30:39', '/simasset1/login.php', 'admin', 'login', '::1', '', '', '', ''),
+(30, '2020-07-03 04:38:15', '/simasset1/logout.php', 'admin', 'logout', '::1', '', '', '', ''),
+(31, '2020-07-03 04:54:47', '/simasset1/login.php', 'admin', 'login', '::1', '', '', '', ''),
+(32, '2020-07-03 04:56:47', '/simasset1/logout.php', 'admin', 'logout', '::1', '', '', '', ''),
+(33, '2020-07-03 05:02:13', '/simasset1/login.php', 'admin', 'login', '::1', '', '', '', ''),
+(34, '2020-07-03 05:02:20', '/simasset1/logout.php', 'admin', 'logout', '::1', '', '', '', ''),
+(35, '2020-07-03 05:12:47', '/simasset1/login.php', 'admin', 'login', '::1', '', '', '', ''),
+(36, '2020-07-03 05:13:31', '/simasset1/logout.php', 'admin', 'logout', '::1', '', '', '', ''),
+(37, '2020-07-03 05:13:55', '/simasset1/login.php', 'admin', 'login', '::1', '', '', '', ''),
+(38, '2020-07-03 05:15:08', '/simasset1/logout.php', 'admin', 'logout', '::1', '', '', '', ''),
+(39, '2020-07-03 05:15:24', '/simasset1/login.php', 'admin', 'login', '::1', '', '', '', ''),
+(40, '2020-07-03 05:52:28', '/simasset1/t011_reasonlist.php', '4', '*** Batch insert begin ***', 't011_reason', '', '', '', ''),
+(41, '2020-07-03 05:52:28', '/simasset1/t011_reasonlist.php', '4', 'A', 't011_reason', 'Status', '1', '', 'OBSOLETE'),
+(42, '2020-07-03 05:52:28', '/simasset1/t011_reasonlist.php', '4', 'A', 't011_reason', 'id', '1', '', '1'),
+(43, '2020-07-03 05:52:28', '/simasset1/t011_reasonlist.php', '4', 'A', 't011_reason', 'Status', '2', '', 'Replaced by upgrade'),
+(44, '2020-07-03 05:52:28', '/simasset1/t011_reasonlist.php', '4', 'A', 't011_reason', 'id', '2', '', '2'),
+(45, '2020-07-03 05:52:28', '/simasset1/t011_reasonlist.php', '4', 'A', 't011_reason', 'Status', '3', '', 'Surplus to requirements'),
+(46, '2020-07-03 05:52:28', '/simasset1/t011_reasonlist.php', '4', 'A', 't011_reason', 'id', '3', '', '3'),
+(47, '2020-07-03 05:52:28', '/simasset1/t011_reasonlist.php', '4', 'A', 't011_reason', 'Status', '4', '', 'Theft'),
+(48, '2020-07-03 05:52:28', '/simasset1/t011_reasonlist.php', '4', 'A', 't011_reason', 'id', '4', '', '4'),
+(49, '2020-07-03 05:52:28', '/simasset1/t011_reasonlist.php', '4', '*** Batch insert successful ***', 't011_reason', '', '', '', ''),
+(50, '2020-07-03 05:52:45', '/simasset1/t011_reasonlist.php', '4', '*** Batch update begin ***', 't011_reason', '', '', '', ''),
+(51, '2020-07-03 05:52:45', '/simasset1/t011_reasonlist.php', '4', 'U', 't011_reason', 'Status', '1', 'OBSOLETE', 'Obsolete'),
+(52, '2020-07-03 05:52:45', '/simasset1/t011_reasonlist.php', '4', '*** Batch update successful ***', 't011_reason', '', '', '', ''),
+(53, '2020-07-03 06:09:57', '/simasset1/t003_signaturelist.php', '4', '*** Batch update begin ***', 't003_signature', '', '', '', ''),
+(54, '2020-07-03 06:09:57', '/simasset1/t003_signaturelist.php', '4', 'U', 't003_signature', 'JobTitle', '1', '-', 'Finance Controller'),
+(55, '2020-07-03 06:09:57', '/simasset1/t003_signaturelist.php', '4', 'U', 't003_signature', 'JobTitle', '2', '-', 'Human Resources Coordinator'),
+(56, '2020-07-03 06:09:57', '/simasset1/t003_signaturelist.php', '4', 'U', 't003_signature', 'JobTitle', '3', '-', 'Senior Sales Executice'),
+(57, '2020-07-03 06:09:57', '/simasset1/t003_signaturelist.php', '4', 'U', 't003_signature', 'JobTitle', '4', '-', 'Front Office Manager'),
+(58, '2020-07-03 06:09:57', '/simasset1/t003_signaturelist.php', '4', 'U', 't003_signature', 'JobTitle', '5', '-', 'Chief Engineer'),
+(59, '2020-07-03 06:09:57', '/simasset1/t003_signaturelist.php', '4', 'U', 't003_signature', 'JobTitle', '6', '-', 'Senior Sous Chef'),
+(60, '2020-07-03 06:09:57', '/simasset1/t003_signaturelist.php', '4', 'U', 't003_signature', 'JobTitle', '7', '-', 'Food &amp; Beverage Manager'),
+(61, '2020-07-03 06:09:57', '/simasset1/t003_signaturelist.php', '4', 'U', 't003_signature', 'JobTitle', '8', '-', 'Executive Housekeeper'),
+(62, '2020-07-03 06:09:57', '/simasset1/t003_signaturelist.php', '4', 'A', 't003_signature', 'Signature', '9', '', 'General Manager'),
+(63, '2020-07-03 06:09:57', '/simasset1/t003_signaturelist.php', '4', 'A', 't003_signature', 'JobTitle', '9', '', 'General Manager'),
+(64, '2020-07-03 06:09:57', '/simasset1/t003_signaturelist.php', '4', 'A', 't003_signature', 'id', '9', '', '9'),
+(65, '2020-07-03 06:09:57', '/simasset1/t003_signaturelist.php', '4', 'A', 't003_signature', 'Signature', '10', '', 'Owner'),
+(66, '2020-07-03 06:09:57', '/simasset1/t003_signaturelist.php', '4', 'A', 't003_signature', 'JobTitle', '10', '', 'Owner'),
+(67, '2020-07-03 06:09:57', '/simasset1/t003_signaturelist.php', '4', 'A', 't003_signature', 'id', '10', '', '10'),
+(68, '2020-07-03 06:09:57', '/simasset1/t003_signaturelist.php', '4', '*** Batch update successful ***', 't003_signature', '', '', '', ''),
+(69, '2020-07-03 06:11:11', '/simasset1/t105_disposalheadadd.php', '4', 'A', 't105_disposalhead', 'property_id', '1', '', '1'),
+(70, '2020-07-03 06:11:11', '/simasset1/t105_disposalheadadd.php', '4', 'A', 't105_disposalhead', 'TransactionNo', '1', '', '0001'),
+(71, '2020-07-03 06:11:11', '/simasset1/t105_disposalheadadd.php', '4', 'A', 't105_disposalhead', 'TransactionDate', '1', '', '2020-07-03'),
+(72, '2020-07-03 06:11:11', '/simasset1/t105_disposalheadadd.php', '4', 'A', 't105_disposalhead', 'RecommendedBy', '1', '', '5'),
+(73, '2020-07-03 06:11:11', '/simasset1/t105_disposalheadadd.php', '4', 'A', 't105_disposalhead', 'CE', '1', '', '5'),
+(74, '2020-07-03 06:11:11', '/simasset1/t105_disposalheadadd.php', '4', 'A', 't105_disposalhead', 'ITM', '1', '', '1'),
+(75, '2020-07-03 06:11:11', '/simasset1/t105_disposalheadadd.php', '4', 'A', 't105_disposalhead', 'Sign1', '1', '', '1'),
+(76, '2020-07-03 06:11:11', '/simasset1/t105_disposalheadadd.php', '4', 'A', 't105_disposalhead', 'Sign2', '1', '', '9'),
+(77, '2020-07-03 06:11:11', '/simasset1/t105_disposalheadadd.php', '4', 'A', 't105_disposalhead', 'Sign3', '1', '', '10'),
+(78, '2020-07-03 06:11:11', '/simasset1/t105_disposalheadadd.php', '4', 'A', 't105_disposalhead', 'id', '1', '', '1'),
+(79, '2020-07-03 06:11:12', '/simasset1/t105_disposalheadadd.php', '4', '*** Batch insert begin ***', 't106_disposaldetail', '', '', '', ''),
+(80, '2020-07-03 06:11:12', '/simasset1/t105_disposalheadadd.php', '4', 'A', 't106_disposaldetail', 'disposalhead_id', '1', '', '1'),
+(81, '2020-07-03 06:11:12', '/simasset1/t105_disposalheadadd.php', '4', 'A', 't106_disposaldetail', 'asset_id', '1', '', '1'),
+(82, '2020-07-03 06:11:12', '/simasset1/t105_disposalheadadd.php', '4', 'A', 't106_disposaldetail', 'cond_id', '1', '', '1'),
+(83, '2020-07-03 06:11:12', '/simasset1/t105_disposalheadadd.php', '4', 'A', 't106_disposaldetail', 'reason_id', '1', '', '1'),
+(84, '2020-07-03 06:11:12', '/simasset1/t105_disposalheadadd.php', '4', 'A', 't106_disposaldetail', 'id', '1', '', '1'),
+(85, '2020-07-03 06:11:12', '/simasset1/t105_disposalheadadd.php', '4', '*** Batch insert successful ***', 't106_disposaldetail', '', '', '', '');
 
 -- --------------------------------------------------------
 
@@ -2188,6 +2385,12 @@ ALTER TABLE `t010_condition`
   ADD PRIMARY KEY (`id`);
 
 --
+-- Indexes for table `t011_reason`
+--
+ALTER TABLE `t011_reason`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- Indexes for table `t101_ho_head`
 --
 ALTER TABLE `t101_ho_head`
@@ -2209,6 +2412,18 @@ ALTER TABLE `t103_ho1_head`
 -- Indexes for table `t104_ho1_detail`
 --
 ALTER TABLE `t104_ho1_detail`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `t105_disposalhead`
+--
+ALTER TABLE `t105_disposalhead`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `t106_disposaldetail`
+--
+ALTER TABLE `t106_disposaldetail`
   ADD PRIMARY KEY (`id`);
 
 --
@@ -2262,7 +2477,7 @@ ALTER TABLE `t002_department`
 -- AUTO_INCREMENT for table `t003_signature`
 --
 ALTER TABLE `t003_signature`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
 
 --
 -- AUTO_INCREMENT for table `t004_asset`
@@ -2307,16 +2522,22 @@ ALTER TABLE `t010_condition`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
+-- AUTO_INCREMENT for table `t011_reason`
+--
+ALTER TABLE `t011_reason`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+
+--
 -- AUTO_INCREMENT for table `t101_ho_head`
 --
 ALTER TABLE `t101_ho_head`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT for table `t102_ho_detail`
 --
 ALTER TABLE `t102_ho_detail`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT for table `t103_ho1_head`
@@ -2331,6 +2552,18 @@ ALTER TABLE `t104_ho1_detail`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
+-- AUTO_INCREMENT for table `t105_disposalhead`
+--
+ALTER TABLE `t105_disposalhead`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+
+--
+-- AUTO_INCREMENT for table `t106_disposaldetail`
+--
+ALTER TABLE `t106_disposaldetail`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+
+--
 -- AUTO_INCREMENT for table `t201_users`
 --
 ALTER TABLE `t201_users`
@@ -2340,7 +2573,7 @@ ALTER TABLE `t201_users`
 -- AUTO_INCREMENT for table `t204_audittrail`
 --
 ALTER TABLE `t204_audittrail`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=86;
 
 --
 -- AUTO_INCREMENT for table `t205_parameter`

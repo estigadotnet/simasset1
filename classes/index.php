@@ -315,6 +315,8 @@ class index
 			$this->terminate("t009_locationlist.php");
 		if ($Security->allowList(CurrentProjectID() . 't010_condition'))
 			$this->terminate("t010_conditionlist.php");
+		if ($Security->allowList(CurrentProjectID() . 't011_reason'))
+			$this->terminate("t011_reasonlist.php");
 		if ($Security->allowList(CurrentProjectID() . 't101_ho_head'))
 			$this->terminate("t101_ho_headlist.php");
 		if ($Security->allowList(CurrentProjectID() . 't102_ho_detail'))
@@ -325,6 +327,8 @@ class index
 			$this->terminate("t104_ho1_detaillist.php");
 		if ($Security->allowList(CurrentProjectID() . 't105_disposalhead'))
 			$this->terminate("t105_disposalheadlist.php");
+		if ($Security->allowList(CurrentProjectID() . 't106_disposaldetail'))
+			$this->terminate("t106_disposaldetaillist.php");
 		if ($Security->allowList(CurrentProjectID() . 't201_users'))
 			$this->terminate("t201_userslist.php");
 		if ($Security->allowList(CurrentProjectID() . 't202_userlevels'))

@@ -4,7 +4,7 @@ namespace PHPMaker2020\p_simasset1;
 /**
  * Page class
  */
-class t105_disposalhead_list extends t105_disposalhead
+class t011_reason_list extends t011_reason
 {
 
 	// Page ID
@@ -14,13 +14,13 @@ class t105_disposalhead_list extends t105_disposalhead
 	public $ProjectID = "{E1C6E322-15B9-474C-85CF-A99378A9BC2B}";
 
 	// Table name
-	public $TableName = 't105_disposalhead';
+	public $TableName = 't011_reason';
 
 	// Page object name
-	public $PageObjName = "t105_disposalhead_list";
+	public $PageObjName = "t011_reason_list";
 
 	// Grid form hidden field names
-	public $FormName = "ft105_disposalheadlist";
+	public $FormName = "ft011_reasonlist";
 	public $FormActionName = "k_action";
 	public $FormKeyName = "k_key";
 	public $FormOldKeyName = "k_oldkey";
@@ -389,10 +389,10 @@ class t105_disposalhead_list extends t105_disposalhead
 		// Parent constuctor
 		parent::__construct();
 
-		// Table object (t105_disposalhead)
-		if (!isset($GLOBALS["t105_disposalhead"]) || get_class($GLOBALS["t105_disposalhead"]) == PROJECT_NAMESPACE . "t105_disposalhead") {
-			$GLOBALS["t105_disposalhead"] = &$this;
-			$GLOBALS["Table"] = &$GLOBALS["t105_disposalhead"];
+		// Table object (t011_reason)
+		if (!isset($GLOBALS["t011_reason"]) || get_class($GLOBALS["t011_reason"]) == PROJECT_NAMESPACE . "t011_reason") {
+			$GLOBALS["t011_reason"] = &$this;
+			$GLOBALS["Table"] = &$GLOBALS["t011_reason"];
 		}
 
 		// Initialize URLs
@@ -403,12 +403,12 @@ class t105_disposalhead_list extends t105_disposalhead
 		$this->ExportHtmlUrl = $this->pageUrl() . "export=html";
 		$this->ExportXmlUrl = $this->pageUrl() . "export=xml";
 		$this->ExportCsvUrl = $this->pageUrl() . "export=csv";
-		$this->AddUrl = "t105_disposalheadadd.php?" . Config("TABLE_SHOW_DETAIL") . "=";
+		$this->AddUrl = "t011_reasonadd.php";
 		$this->InlineAddUrl = $this->pageUrl() . "action=add";
 		$this->GridAddUrl = $this->pageUrl() . "action=gridadd";
 		$this->GridEditUrl = $this->pageUrl() . "action=gridedit";
-		$this->MultiDeleteUrl = "t105_disposalheaddelete.php";
-		$this->MultiUpdateUrl = "t105_disposalheadupdate.php";
+		$this->MultiDeleteUrl = "t011_reasondelete.php";
+		$this->MultiUpdateUrl = "t011_reasonupdate.php";
 
 		// Table object (t201_users)
 		if (!isset($GLOBALS['t201_users']))
@@ -420,7 +420,7 @@ class t105_disposalhead_list extends t105_disposalhead
 
 		// Table name (for backward compatibility only)
 		if (!defined(PROJECT_NAMESPACE . "TABLE_NAME"))
-			define(PROJECT_NAMESPACE . "TABLE_NAME", 't105_disposalhead');
+			define(PROJECT_NAMESPACE . "TABLE_NAME", 't011_reason');
 
 		// Start timer
 		if (!isset($GLOBALS["DebugTimer"]))
@@ -460,7 +460,7 @@ class t105_disposalhead_list extends t105_disposalhead
 
 		// Filter options
 		$this->FilterOptions = new ListOptions("div");
-		$this->FilterOptions->TagClassName = "ew-filter-option ft105_disposalheadlistsrch";
+		$this->FilterOptions->TagClassName = "ew-filter-option ft011_reasonlistsrch";
 
 		// List actions
 		$this->ListActions = new ListActions();
@@ -478,14 +478,14 @@ class t105_disposalhead_list extends t105_disposalhead
 		Page_Unloaded();
 
 		// Export
-		global $t105_disposalhead;
+		global $t011_reason;
 		if ($this->CustomExport && $this->CustomExport == $this->Export && array_key_exists($this->CustomExport, Config("EXPORT_CLASSES"))) {
 				$content = ob_get_contents();
 			if ($ExportFileName == "")
 				$ExportFileName = $this->TableVar;
 			$class = PROJECT_NAMESPACE . Config("EXPORT_CLASSES." . $this->CustomExport);
 			if (class_exists($class)) {
-				$doc = new $class($t105_disposalhead);
+				$doc = new $class($t011_reason);
 				$doc->Text = @$content;
 				if ($this->isExport("email"))
 					echo $this->exportEmail($doc->Text);
@@ -784,6 +784,9 @@ class t105_disposalhead_list extends t105_disposalhead
 			}
 		}
 
+		// Create form object
+		$CurrentForm = new HttpForm();
+
 		// Get export parameters
 		$custom = "";
 		if (Param("export") !== NULL) {
@@ -832,15 +835,7 @@ class t105_disposalhead_list extends t105_disposalhead
 		// Setup export options
 		$this->setupExportOptions();
 		$this->id->Visible = FALSE;
-		$this->property_id->setVisibility();
-		$this->TransactionNo->setVisibility();
-		$this->TransactionDate->setVisibility();
-		$this->RecommendedBy->setVisibility();
-		$this->CE->setVisibility();
-		$this->ITM->setVisibility();
-		$this->Sign1->setVisibility();
-		$this->Sign2->setVisibility();
-		$this->Sign3->setVisibility();
+		$this->Status->setVisibility();
 		$this->hideFieldsForAddEdit();
 
 		// Global Page Loading event (in userfn*.php)
@@ -874,15 +869,8 @@ class t105_disposalhead_list extends t105_disposalhead
 		}
 
 		// Set up lookup cache
-		$this->setupLookupOptions($this->property_id);
-		$this->setupLookupOptions($this->RecommendedBy);
-		$this->setupLookupOptions($this->CE);
-		$this->setupLookupOptions($this->ITM);
-		$this->setupLookupOptions($this->Sign1);
-		$this->setupLookupOptions($this->Sign2);
-		$this->setupLookupOptions($this->Sign3);
-
 		// Search filters
+
 		$srchAdvanced = ""; // Advanced search filter
 		$srchBasic = ""; // Basic search filter
 		$filter = "";
@@ -904,6 +892,62 @@ class t105_disposalhead_list extends t105_disposalhead
 			// Set up Breadcrumb
 			if (!$this->isExport())
 				$this->setupBreadcrumb();
+
+			// Check QueryString parameters
+			if (Get("action") !== NULL) {
+				$this->CurrentAction = Get("action");
+
+				// Clear inline mode
+				if ($this->isCancel())
+					$this->clearInlineMode();
+
+				// Switch to grid edit mode
+				if ($this->isGridEdit())
+					$this->gridEditMode();
+
+				// Switch to grid add mode
+				if ($this->isGridAdd())
+					$this->gridAddMode();
+			} else {
+				if (Post("action") !== NULL) {
+					$this->CurrentAction = Post("action"); // Get action
+
+					// Grid Update
+					if (($this->isGridUpdate() || $this->isGridOverwrite()) && @$_SESSION[SESSION_INLINE_MODE] == "gridedit") {
+						if ($this->validateGridForm()) {
+							$gridUpdate = $this->gridUpdate();
+						} else {
+							$gridUpdate = FALSE;
+							$this->setFailureMessage($FormError);
+						}
+						if ($gridUpdate) {
+						} else {
+							$this->EventCancelled = TRUE;
+							$this->gridEditMode(); // Stay in Grid edit mode
+						}
+					}
+
+					// Grid Insert
+					if ($this->isGridInsert() && @$_SESSION[SESSION_INLINE_MODE] == "gridadd") {
+						if ($this->validateGridForm()) {
+							$gridInsert = $this->gridInsert();
+						} else {
+							$gridInsert = FALSE;
+							$this->setFailureMessage($FormError);
+						}
+						if ($gridInsert) {
+						} else {
+							$this->EventCancelled = TRUE;
+							$this->gridAddMode(); // Stay in Grid add mode
+						}
+					}
+				} elseif (@$_SESSION[SESSION_INLINE_MODE] == "gridedit") { // Previously in grid edit mode
+					if (Get(Config("TABLE_START_REC")) !== NULL || Get(Config("TABLE_PAGE_NO")) !== NULL) // Stay in grid edit mode if paging
+						$this->gridEditMode();
+					else // Reset grid edit
+						$this->clearInlineMode();
+				}
+			}
 
 			// Hide list options
 			if ($this->isExport()) {
@@ -927,15 +971,26 @@ class t105_disposalhead_list extends t105_disposalhead
 			if ($this->isExport())
 				$this->OtherOptions->hideAllOptions();
 
-			// Get default search criteria
-			AddFilter($this->DefaultSearchWhere, $this->basicSearchWhere(TRUE));
+			// Show grid delete link for grid add / grid edit
+			if ($this->AllowAddDeleteRow) {
+				if ($this->isGridAdd() || $this->isGridEdit()) {
+					$item = $this->ListOptions["griddelete"];
+					if ($item)
+						$item->Visible = TRUE;
+				}
+			}
 
-			// Get basic search values
-			$this->loadBasicSearchValues();
+			// Get default search criteria
+			AddFilter($this->DefaultSearchWhere, $this->advancedSearchWhere(TRUE));
+
+			// Get and validate search values for advanced search
+			$this->loadSearchValues(); // Get search values
 
 			// Process filter list
 			if ($this->processFilterList())
 				$this->terminate();
+			if (!$this->validateSearch())
+				$this->setFailureMessage($SearchError);
 
 			// Restore search parms from Session if not searching / reset / export
 			if (($this->isExport() || $this->Command != "search" && $this->Command != "reset" && $this->Command != "resetall") && $this->Command != "json" && $this->checkSearchParms())
@@ -947,9 +1002,9 @@ class t105_disposalhead_list extends t105_disposalhead
 			// Set up sorting order
 			$this->setupSortOrder();
 
-			// Get basic search criteria
+			// Get search criteria for advanced search
 			if ($SearchError == "")
-				$srchBasic = $this->basicSearchWhere();
+				$srchAdvanced = $this->advancedSearchWhere();
 		}
 
 		// Restore display records
@@ -967,11 +1022,15 @@ class t105_disposalhead_list extends t105_disposalhead
 		// Load search default if no existing search criteria
 		if (!$this->checkSearchParms()) {
 
-			// Load basic search from default
-			$this->BasicSearch->loadDefault();
-			if ($this->BasicSearch->Keyword != "")
-				$srchBasic = $this->basicSearchWhere();
+			// Load advanced search from default
+			if ($this->loadAdvancedSearchDefault()) {
+				$srchAdvanced = $this->advancedSearchWhere();
+			}
 		}
+
+		// Restore search settings from Session
+		if ($SearchError == "")
+			$this->loadAdvancedSearch();
 
 		// Build search criteria
 		AddFilter($this->SearchWhere, $srchAdvanced);
@@ -1091,6 +1150,140 @@ class t105_disposalhead_list extends t105_disposalhead
 		}
 	}
 
+	// Exit inline mode
+	protected function clearInlineMode()
+	{
+		$this->LastAction = $this->CurrentAction; // Save last action
+		$this->CurrentAction = ""; // Clear action
+		$_SESSION[SESSION_INLINE_MODE] = ""; // Clear inline mode
+	}
+
+	// Switch to Grid Add mode
+	protected function gridAddMode()
+	{
+		$this->CurrentAction = "gridadd";
+		$_SESSION[SESSION_INLINE_MODE] = "gridadd";
+		$this->hideFieldsForAddEdit();
+	}
+
+	// Switch to Grid Edit mode
+	protected function gridEditMode()
+	{
+		$this->CurrentAction = "gridedit";
+		$_SESSION[SESSION_INLINE_MODE] = "gridedit";
+		$this->hideFieldsForAddEdit();
+	}
+
+	// Perform update to grid
+	public function gridUpdate()
+	{
+		global $Language, $CurrentForm, $FormError;
+		$gridUpdate = TRUE;
+
+		// Get old recordset
+		$this->CurrentFilter = $this->buildKeyFilter();
+		if ($this->CurrentFilter == "")
+			$this->CurrentFilter = "0=1";
+		$sql = $this->getCurrentSql();
+		$conn = $this->getConnection();
+		if ($rs = $conn->execute($sql)) {
+			$rsold = $rs->getRows();
+			$rs->close();
+		}
+
+		// Call Grid Updating event
+		if (!$this->Grid_Updating($rsold)) {
+			if ($this->getFailureMessage() == "")
+				$this->setFailureMessage($Language->phrase("GridEditCancelled")); // Set grid edit cancelled message
+			return FALSE;
+		}
+
+		// Begin transaction
+		$conn->beginTrans();
+		if ($this->AuditTrailOnEdit)
+			$this->writeAuditTrailDummy($Language->phrase("BatchUpdateBegin")); // Batch update begin
+		$key = "";
+
+		// Update row index and get row key
+		$CurrentForm->Index = -1;
+		$rowcnt = strval($CurrentForm->getValue($this->FormKeyCountName));
+		if ($rowcnt == "" || !is_numeric($rowcnt))
+			$rowcnt = 0;
+
+		// Update all rows based on key
+		for ($rowindex = 1; $rowindex <= $rowcnt; $rowindex++) {
+			$CurrentForm->Index = $rowindex;
+			$rowkey = strval($CurrentForm->getValue($this->FormKeyName));
+			$rowaction = strval($CurrentForm->getValue($this->FormActionName));
+
+			// Load all values and keys
+			if ($rowaction != "insertdelete") { // Skip insert then deleted rows
+				$this->loadFormValues(); // Get form values
+				if ($rowaction == "" || $rowaction == "edit" || $rowaction == "delete") {
+					$gridUpdate = $this->setupKeyValues($rowkey); // Set up key values
+				} else {
+					$gridUpdate = TRUE;
+				}
+
+				// Skip empty row
+				if ($rowaction == "insert" && $this->emptyRow()) {
+
+					// No action required
+				// Validate form and insert/update/delete record
+
+				} elseif ($gridUpdate) {
+					if ($rowaction == "delete") {
+						$this->CurrentFilter = $this->getRecordFilter();
+						$gridUpdate = $this->deleteRows(); // Delete this row
+					} else if (!$this->validateForm()) {
+						$gridUpdate = FALSE; // Form error, reset action
+						$this->setFailureMessage($FormError);
+					} else {
+						if ($rowaction == "insert") {
+							$gridUpdate = $this->addRow(); // Insert this row
+						} else {
+							if ($rowkey != "") {
+								$this->SendEmail = FALSE; // Do not send email on update success
+								$gridUpdate = $this->editRow(); // Update this row
+							}
+						} // End update
+					}
+				}
+				if ($gridUpdate) {
+					if ($key != "")
+						$key .= ", ";
+					$key .= $rowkey;
+				} else {
+					break;
+				}
+			}
+		}
+		if ($gridUpdate) {
+			$conn->commitTrans(); // Commit transaction
+
+			// Get new recordset
+			if ($rs = $conn->execute($sql)) {
+				$rsnew = $rs->getRows();
+				$rs->close();
+			}
+
+			// Call Grid_Updated event
+			$this->Grid_Updated($rsold, $rsnew);
+			if ($this->AuditTrailOnEdit)
+				$this->writeAuditTrailDummy($Language->phrase("BatchUpdateSuccess")); // Batch update success
+			if ($this->getSuccessMessage() == "")
+				$this->setSuccessMessage($Language->phrase("UpdateSuccess")); // Set up update success message
+			$this->clearInlineMode(); // Clear inline edit mode
+		} else {
+			$conn->rollbackTrans(); // Rollback transaction
+			if ($this->AuditTrailOnEdit)
+				$this->writeAuditTrailDummy($Language->phrase("BatchUpdateRollback")); // Batch update rollback
+			if ($this->getFailureMessage() == "")
+				$this->setFailureMessage($Language->phrase("UpdateFailed")); // Set update failed message
+		}
+		return $gridUpdate;
+	}
+
 	// Build filter for all keys
 	protected function buildKeyFilter()
 	{
@@ -1132,6 +1325,184 @@ class t105_disposalhead_list extends t105_disposalhead
 		return TRUE;
 	}
 
+	// Perform Grid Add
+	public function gridInsert()
+	{
+		global $Language, $CurrentForm, $FormError;
+		$rowindex = 1;
+		$gridInsert = FALSE;
+		$conn = $this->getConnection();
+
+		// Call Grid Inserting event
+		if (!$this->Grid_Inserting()) {
+			if ($this->getFailureMessage() == "")
+				$this->setFailureMessage($Language->phrase("GridAddCancelled")); // Set grid add cancelled message
+			return FALSE;
+		}
+
+		// Begin transaction
+		$conn->beginTrans();
+
+		// Init key filter
+		$wrkfilter = "";
+		$addcnt = 0;
+		if ($this->AuditTrailOnAdd)
+			$this->writeAuditTrailDummy($Language->phrase("BatchInsertBegin")); // Batch insert begin
+		$key = "";
+
+		// Get row count
+		$CurrentForm->Index = -1;
+		$rowcnt = strval($CurrentForm->getValue($this->FormKeyCountName));
+		if ($rowcnt == "" || !is_numeric($rowcnt))
+			$rowcnt = 0;
+
+		// Insert all rows
+		for ($rowindex = 1; $rowindex <= $rowcnt; $rowindex++) {
+
+			// Load current row values
+			$CurrentForm->Index = $rowindex;
+			$rowaction = strval($CurrentForm->getValue($this->FormActionName));
+			if ($rowaction != "" && $rowaction != "insert")
+				continue; // Skip
+			$this->loadFormValues(); // Get form values
+			if (!$this->emptyRow()) {
+				$addcnt++;
+				$this->SendEmail = FALSE; // Do not send email on insert success
+
+				// Validate form
+				if (!$this->validateForm()) {
+					$gridInsert = FALSE; // Form error, reset action
+					$this->setFailureMessage($FormError);
+				} else {
+					$gridInsert = $this->addRow($this->OldRecordset); // Insert this row
+				}
+				if ($gridInsert) {
+					if ($key != "")
+						$key .= Config("COMPOSITE_KEY_SEPARATOR");
+					$key .= $this->id->CurrentValue;
+
+					// Add filter for this record
+					$filter = $this->getRecordFilter();
+					if ($wrkfilter != "")
+						$wrkfilter .= " OR ";
+					$wrkfilter .= $filter;
+				} else {
+					break;
+				}
+			}
+		}
+		if ($addcnt == 0) { // No record inserted
+			$this->setFailureMessage($Language->phrase("NoAddRecord"));
+			$gridInsert = FALSE;
+		}
+		if ($gridInsert) {
+			$conn->commitTrans(); // Commit transaction
+
+			// Get new recordset
+			$this->CurrentFilter = $wrkfilter;
+			$sql = $this->getCurrentSql();
+			if ($rs = $conn->execute($sql)) {
+				$rsnew = $rs->getRows();
+				$rs->close();
+			}
+
+			// Call Grid_Inserted event
+			$this->Grid_Inserted($rsnew);
+			if ($this->AuditTrailOnAdd)
+				$this->writeAuditTrailDummy($Language->phrase("BatchInsertSuccess")); // Batch insert success
+			if ($this->getSuccessMessage() == "")
+				$this->setSuccessMessage($Language->phrase("InsertSuccess")); // Set up insert success message
+			$this->clearInlineMode(); // Clear grid add mode
+		} else {
+			$conn->rollbackTrans(); // Rollback transaction
+			if ($this->AuditTrailOnAdd)
+				$this->writeAuditTrailDummy($Language->phrase("BatchInsertRollback")); // Batch insert rollback
+			if ($this->getFailureMessage() == "")
+				$this->setFailureMessage($Language->phrase("InsertFailed")); // Set insert failed message
+		}
+		return $gridInsert;
+	}
+
+	// Check if empty row
+	public function emptyRow()
+	{
+		global $CurrentForm;
+		if ($CurrentForm->hasValue("x_Status") && $CurrentForm->hasValue("o_Status") && $this->Status->CurrentValue != $this->Status->OldValue)
+			return FALSE;
+		return TRUE;
+	}
+
+	// Validate grid form
+	public function validateGridForm()
+	{
+		global $CurrentForm;
+
+		// Get row count
+		$CurrentForm->Index = -1;
+		$rowcnt = strval($CurrentForm->getValue($this->FormKeyCountName));
+		if ($rowcnt == "" || !is_numeric($rowcnt))
+			$rowcnt = 0;
+
+		// Validate all records
+		for ($rowindex = 1; $rowindex <= $rowcnt; $rowindex++) {
+
+			// Load current row values
+			$CurrentForm->Index = $rowindex;
+			$rowaction = strval($CurrentForm->getValue($this->FormActionName));
+			if ($rowaction != "delete" && $rowaction != "insertdelete") {
+				$this->loadFormValues(); // Get form values
+				if ($rowaction == "insert" && $this->emptyRow()) {
+
+					// Ignore
+				} else if (!$this->validateForm()) {
+					return FALSE;
+				}
+			}
+		}
+		return TRUE;
+	}
+
+	// Get all form values of the grid
+	public function getGridFormValues()
+	{
+		global $CurrentForm;
+
+		// Get row count
+		$CurrentForm->Index = -1;
+		$rowcnt = strval($CurrentForm->getValue($this->FormKeyCountName));
+		if ($rowcnt == "" || !is_numeric($rowcnt))
+			$rowcnt = 0;
+		$rows = [];
+
+		// Loop through all records
+		for ($rowindex = 1; $rowindex <= $rowcnt; $rowindex++) {
+
+			// Load current row values
+			$CurrentForm->Index = $rowindex;
+			$rowaction = strval($CurrentForm->getValue($this->FormActionName));
+			if ($rowaction != "delete" && $rowaction != "insertdelete") {
+				$this->loadFormValues(); // Get form values
+				if ($rowaction == "insert" && $this->emptyRow()) {
+
+					// Ignore
+				} else {
+					$rows[] = $this->getFieldValues("FormValue"); // Return row as array
+				}
+			}
+		}
+		return $rows; // Return as array of array
+	}
+
+	// Restore form values for current row
+	public function restoreCurrentRowFormValues($idx)
+	{
+		global $CurrentForm;
+
+		// Get row based on current index
+		$CurrentForm->Index = $idx;
+		$this->loadFormValues(); // Load form values
+	}
+
 	// Get list of filters
 	public function getFilterList()
 	{
@@ -1141,19 +1512,7 @@ class t105_disposalhead_list extends t105_disposalhead
 		$filterList = "";
 		$savedFilterList = "";
 		$filterList = Concat($filterList, $this->id->AdvancedSearch->toJson(), ","); // Field id
-		$filterList = Concat($filterList, $this->property_id->AdvancedSearch->toJson(), ","); // Field property_id
-		$filterList = Concat($filterList, $this->TransactionNo->AdvancedSearch->toJson(), ","); // Field TransactionNo
-		$filterList = Concat($filterList, $this->TransactionDate->AdvancedSearch->toJson(), ","); // Field TransactionDate
-		$filterList = Concat($filterList, $this->RecommendedBy->AdvancedSearch->toJson(), ","); // Field RecommendedBy
-		$filterList = Concat($filterList, $this->CE->AdvancedSearch->toJson(), ","); // Field CE
-		$filterList = Concat($filterList, $this->ITM->AdvancedSearch->toJson(), ","); // Field ITM
-		$filterList = Concat($filterList, $this->Sign1->AdvancedSearch->toJson(), ","); // Field Sign1
-		$filterList = Concat($filterList, $this->Sign2->AdvancedSearch->toJson(), ","); // Field Sign2
-		$filterList = Concat($filterList, $this->Sign3->AdvancedSearch->toJson(), ","); // Field Sign3
-		if ($this->BasicSearch->Keyword != "") {
-			$wrk = "\"" . Config("TABLE_BASIC_SEARCH") . "\":\"" . JsEncode($this->BasicSearch->Keyword) . "\",\"" . Config("TABLE_BASIC_SEARCH_TYPE") . "\":\"" . JsEncode($this->BasicSearch->Type) . "\"";
-			$filterList = Concat($filterList, $wrk, ",");
-		}
+		$filterList = Concat($filterList, $this->Status->AdvancedSearch->toJson(), ","); // Field Status
 
 		// Return filter list in JSON
 		if ($filterList != "")
@@ -1169,7 +1528,7 @@ class t105_disposalhead_list extends t105_disposalhead
 		global $UserProfile;
 		if (Post("ajax") == "savefilters") { // Save filter request (Ajax)
 			$filters = Post("filters");
-			$UserProfile->setSearchFilters(CurrentUserName(), "ft105_disposalheadlistsrch", $filters);
+			$UserProfile->setSearchFilters(CurrentUserName(), "ft011_reasonlistsrch", $filters);
 			WriteJson([["success" => TRUE]]); // Success
 			return TRUE;
 		} elseif (Post("cmd") == "resetfilter") {
@@ -1196,199 +1555,94 @@ class t105_disposalhead_list extends t105_disposalhead
 		$this->id->AdvancedSearch->SearchOperator2 = @$filter["w_id"];
 		$this->id->AdvancedSearch->save();
 
-		// Field property_id
-		$this->property_id->AdvancedSearch->SearchValue = @$filter["x_property_id"];
-		$this->property_id->AdvancedSearch->SearchOperator = @$filter["z_property_id"];
-		$this->property_id->AdvancedSearch->SearchCondition = @$filter["v_property_id"];
-		$this->property_id->AdvancedSearch->SearchValue2 = @$filter["y_property_id"];
-		$this->property_id->AdvancedSearch->SearchOperator2 = @$filter["w_property_id"];
-		$this->property_id->AdvancedSearch->save();
-
-		// Field TransactionNo
-		$this->TransactionNo->AdvancedSearch->SearchValue = @$filter["x_TransactionNo"];
-		$this->TransactionNo->AdvancedSearch->SearchOperator = @$filter["z_TransactionNo"];
-		$this->TransactionNo->AdvancedSearch->SearchCondition = @$filter["v_TransactionNo"];
-		$this->TransactionNo->AdvancedSearch->SearchValue2 = @$filter["y_TransactionNo"];
-		$this->TransactionNo->AdvancedSearch->SearchOperator2 = @$filter["w_TransactionNo"];
-		$this->TransactionNo->AdvancedSearch->save();
-
-		// Field TransactionDate
-		$this->TransactionDate->AdvancedSearch->SearchValue = @$filter["x_TransactionDate"];
-		$this->TransactionDate->AdvancedSearch->SearchOperator = @$filter["z_TransactionDate"];
-		$this->TransactionDate->AdvancedSearch->SearchCondition = @$filter["v_TransactionDate"];
-		$this->TransactionDate->AdvancedSearch->SearchValue2 = @$filter["y_TransactionDate"];
-		$this->TransactionDate->AdvancedSearch->SearchOperator2 = @$filter["w_TransactionDate"];
-		$this->TransactionDate->AdvancedSearch->save();
-
-		// Field RecommendedBy
-		$this->RecommendedBy->AdvancedSearch->SearchValue = @$filter["x_RecommendedBy"];
-		$this->RecommendedBy->AdvancedSearch->SearchOperator = @$filter["z_RecommendedBy"];
-		$this->RecommendedBy->AdvancedSearch->SearchCondition = @$filter["v_RecommendedBy"];
-		$this->RecommendedBy->AdvancedSearch->SearchValue2 = @$filter["y_RecommendedBy"];
-		$this->RecommendedBy->AdvancedSearch->SearchOperator2 = @$filter["w_RecommendedBy"];
-		$this->RecommendedBy->AdvancedSearch->save();
-
-		// Field CE
-		$this->CE->AdvancedSearch->SearchValue = @$filter["x_CE"];
-		$this->CE->AdvancedSearch->SearchOperator = @$filter["z_CE"];
-		$this->CE->AdvancedSearch->SearchCondition = @$filter["v_CE"];
-		$this->CE->AdvancedSearch->SearchValue2 = @$filter["y_CE"];
-		$this->CE->AdvancedSearch->SearchOperator2 = @$filter["w_CE"];
-		$this->CE->AdvancedSearch->save();
-
-		// Field ITM
-		$this->ITM->AdvancedSearch->SearchValue = @$filter["x_ITM"];
-		$this->ITM->AdvancedSearch->SearchOperator = @$filter["z_ITM"];
-		$this->ITM->AdvancedSearch->SearchCondition = @$filter["v_ITM"];
-		$this->ITM->AdvancedSearch->SearchValue2 = @$filter["y_ITM"];
-		$this->ITM->AdvancedSearch->SearchOperator2 = @$filter["w_ITM"];
-		$this->ITM->AdvancedSearch->save();
-
-		// Field Sign1
-		$this->Sign1->AdvancedSearch->SearchValue = @$filter["x_Sign1"];
-		$this->Sign1->AdvancedSearch->SearchOperator = @$filter["z_Sign1"];
-		$this->Sign1->AdvancedSearch->SearchCondition = @$filter["v_Sign1"];
-		$this->Sign1->AdvancedSearch->SearchValue2 = @$filter["y_Sign1"];
-		$this->Sign1->AdvancedSearch->SearchOperator2 = @$filter["w_Sign1"];
-		$this->Sign1->AdvancedSearch->save();
-
-		// Field Sign2
-		$this->Sign2->AdvancedSearch->SearchValue = @$filter["x_Sign2"];
-		$this->Sign2->AdvancedSearch->SearchOperator = @$filter["z_Sign2"];
-		$this->Sign2->AdvancedSearch->SearchCondition = @$filter["v_Sign2"];
-		$this->Sign2->AdvancedSearch->SearchValue2 = @$filter["y_Sign2"];
-		$this->Sign2->AdvancedSearch->SearchOperator2 = @$filter["w_Sign2"];
-		$this->Sign2->AdvancedSearch->save();
-
-		// Field Sign3
-		$this->Sign3->AdvancedSearch->SearchValue = @$filter["x_Sign3"];
-		$this->Sign3->AdvancedSearch->SearchOperator = @$filter["z_Sign3"];
-		$this->Sign3->AdvancedSearch->SearchCondition = @$filter["v_Sign3"];
-		$this->Sign3->AdvancedSearch->SearchValue2 = @$filter["y_Sign3"];
-		$this->Sign3->AdvancedSearch->SearchOperator2 = @$filter["w_Sign3"];
-		$this->Sign3->AdvancedSearch->save();
-		$this->BasicSearch->setKeyword(@$filter[Config("TABLE_BASIC_SEARCH")]);
-		$this->BasicSearch->setType(@$filter[Config("TABLE_BASIC_SEARCH_TYPE")]);
+		// Field Status
+		$this->Status->AdvancedSearch->SearchValue = @$filter["x_Status"];
+		$this->Status->AdvancedSearch->SearchOperator = @$filter["z_Status"];
+		$this->Status->AdvancedSearch->SearchCondition = @$filter["v_Status"];
+		$this->Status->AdvancedSearch->SearchValue2 = @$filter["y_Status"];
+		$this->Status->AdvancedSearch->SearchOperator2 = @$filter["w_Status"];
+		$this->Status->AdvancedSearch->save();
 	}
 
-	// Return basic search SQL
-	protected function basicSearchSql($arKeywords, $type)
+	// Advanced search WHERE clause based on QueryString
+	protected function advancedSearchWhere($default = FALSE)
 	{
+		global $Security;
 		$where = "";
-		$this->buildBasicSearchSql($where, $this->TransactionNo, $arKeywords, $type);
+		if (!$Security->canSearch())
+			return "";
+		$this->buildSearchSql($where, $this->id, $default, FALSE); // id
+		$this->buildSearchSql($where, $this->Status, $default, FALSE); // Status
+
+		// Set up search parm
+		if (!$default && $where != "" && in_array($this->Command, ["", "reset", "resetall"])) {
+			$this->Command = "search";
+		}
+		if (!$default && $this->Command == "search") {
+			$this->id->AdvancedSearch->save(); // id
+			$this->Status->AdvancedSearch->save(); // Status
+		}
 		return $where;
 	}
 
-	// Build basic search SQL
-	protected function buildBasicSearchSql(&$where, &$fld, $arKeywords, $type)
+	// Build search SQL
+	protected function buildSearchSql(&$where, &$fld, $default, $multiValue)
 	{
-		$defCond = ($type == "OR") ? "OR" : "AND";
-		$arSql = []; // Array for SQL parts
-		$arCond = []; // Array for search conditions
-		$cnt = count($arKeywords);
-		$j = 0; // Number of SQL parts
-		for ($i = 0; $i < $cnt; $i++) {
-			$keyword = $arKeywords[$i];
-			$keyword = trim($keyword);
-			if (Config("BASIC_SEARCH_IGNORE_PATTERN") != "") {
-				$keyword = preg_replace(Config("BASIC_SEARCH_IGNORE_PATTERN"), "\\", $keyword);
-				$ar = explode("\\", $keyword);
-			} else {
-				$ar = [$keyword];
-			}
-			foreach ($ar as $keyword) {
-				if ($keyword != "") {
-					$wrk = "";
-					if ($keyword == "OR" && $type == "") {
-						if ($j > 0)
-							$arCond[$j - 1] = "OR";
-					} elseif ($keyword == Config("NULL_VALUE")) {
-						$wrk = $fld->Expression . " IS NULL";
-					} elseif ($keyword == Config("NOT_NULL_VALUE")) {
-						$wrk = $fld->Expression . " IS NOT NULL";
-					} elseif ($fld->IsVirtual) {
-						$wrk = $fld->VirtualExpression . Like(QuotedValue("%" . $keyword . "%", DATATYPE_STRING, $this->Dbid), $this->Dbid);
-					} elseif ($fld->DataType != DATATYPE_NUMBER || is_numeric($keyword)) {
-						$wrk = $fld->BasicSearchExpression . Like(QuotedValue("%" . $keyword . "%", DATATYPE_STRING, $this->Dbid), $this->Dbid);
-					}
-					if ($wrk != "") {
-						$arSql[$j] = $wrk;
-						$arCond[$j] = $defCond;
-						$j += 1;
-					}
-				}
-			}
+		$fldParm = $fld->Param;
+		$fldVal = ($default) ? $fld->AdvancedSearch->SearchValueDefault : $fld->AdvancedSearch->SearchValue;
+		$fldOpr = ($default) ? $fld->AdvancedSearch->SearchOperatorDefault : $fld->AdvancedSearch->SearchOperator;
+		$fldCond = ($default) ? $fld->AdvancedSearch->SearchConditionDefault : $fld->AdvancedSearch->SearchCondition;
+		$fldVal2 = ($default) ? $fld->AdvancedSearch->SearchValue2Default : $fld->AdvancedSearch->SearchValue2;
+		$fldOpr2 = ($default) ? $fld->AdvancedSearch->SearchOperator2Default : $fld->AdvancedSearch->SearchOperator2;
+		$wrk = "";
+		if (is_array($fldVal))
+			$fldVal = implode(Config("MULTIPLE_OPTION_SEPARATOR"), $fldVal);
+		if (is_array($fldVal2))
+			$fldVal2 = implode(Config("MULTIPLE_OPTION_SEPARATOR"), $fldVal2);
+		$fldOpr = strtoupper(trim($fldOpr));
+		if ($fldOpr == "")
+			$fldOpr = "=";
+		$fldOpr2 = strtoupper(trim($fldOpr2));
+		if ($fldOpr2 == "")
+			$fldOpr2 = "=";
+		if (Config("SEARCH_MULTI_VALUE_OPTION") == 1 || !IsMultiSearchOperator($fldOpr))
+			$multiValue = FALSE;
+		if ($multiValue) {
+			$wrk1 = ($fldVal != "") ? GetMultiSearchSql($fld, $fldOpr, $fldVal, $this->Dbid) : ""; // Field value 1
+			$wrk2 = ($fldVal2 != "") ? GetMultiSearchSql($fld, $fldOpr2, $fldVal2, $this->Dbid) : ""; // Field value 2
+			$wrk = $wrk1; // Build final SQL
+			if ($wrk2 != "")
+				$wrk = ($wrk != "") ? "($wrk) $fldCond ($wrk2)" : $wrk2;
+		} else {
+			$fldVal = $this->convertSearchValue($fld, $fldVal);
+			$fldVal2 = $this->convertSearchValue($fld, $fldVal2);
+			$wrk = GetSearchSql($fld, $fldVal, $fldOpr, $fldCond, $fldVal2, $fldOpr2, $this->Dbid);
 		}
-		$cnt = count($arSql);
-		$quoted = FALSE;
-		$sql = "";
-		if ($cnt > 0) {
-			for ($i = 0; $i < $cnt - 1; $i++) {
-				if ($arCond[$i] == "OR") {
-					if (!$quoted)
-						$sql .= "(";
-					$quoted = TRUE;
-				}
-				$sql .= $arSql[$i];
-				if ($quoted && $arCond[$i] != "OR") {
-					$sql .= ")";
-					$quoted = FALSE;
-				}
-				$sql .= " " . $arCond[$i] . " ";
-			}
-			$sql .= $arSql[$cnt - 1];
-			if ($quoted)
-				$sql .= ")";
-		}
-		if ($sql != "") {
-			if ($where != "")
-				$where .= " OR ";
-			$where .= "(" . $sql . ")";
-		}
+		AddFilter($where, $wrk);
 	}
 
-	// Return basic search WHERE clause based on search keyword and type
-	protected function basicSearchWhere($default = FALSE)
+	// Convert search value
+	protected function convertSearchValue(&$fld, $fldVal)
 	{
-		global $Security;
-		$searchStr = "";
-		if (!$Security->canSearch())
-			return "";
-		$searchKeyword = ($default) ? $this->BasicSearch->KeywordDefault : $this->BasicSearch->Keyword;
-		$searchType = ($default) ? $this->BasicSearch->TypeDefault : $this->BasicSearch->Type;
-
-		// Get search SQL
-		if ($searchKeyword != "") {
-			$ar = $this->BasicSearch->keywordList($default);
-
-			// Search keyword in any fields
-			if (($searchType == "OR" || $searchType == "AND") && $this->BasicSearch->BasicSearchAnyFields) {
-				foreach ($ar as $keyword) {
-					if ($keyword != "") {
-						if ($searchStr != "")
-							$searchStr .= " " . $searchType . " ";
-						$searchStr .= "(" . $this->basicSearchSql([$keyword], $searchType) . ")";
-					}
-				}
-			} else {
-				$searchStr = $this->basicSearchSql($ar, $searchType);
-			}
-			if (!$default && in_array($this->Command, ["", "reset", "resetall"]))
-				$this->Command = "search";
+		if ($fldVal == Config("NULL_VALUE") || $fldVal == Config("NOT_NULL_VALUE"))
+			return $fldVal;
+		$value = $fldVal;
+		if ($fld->isBoolean()) {
+			if ($fldVal != "")
+				$value = (SameText($fldVal, "1") || SameText($fldVal, "y") || SameText($fldVal, "t")) ? $fld->TrueValue : $fld->FalseValue;
+		} elseif ($fld->DataType == DATATYPE_DATE || $fld->DataType == DATATYPE_TIME) {
+			if ($fldVal != "")
+				$value = UnFormatDateTime($fldVal, $fld->DateTimeFormat);
 		}
-		if (!$default && $this->Command == "search") {
-			$this->BasicSearch->setKeyword($searchKeyword);
-			$this->BasicSearch->setType($searchType);
-		}
-		return $searchStr;
+		return $value;
 	}
 
 	// Check if search parm exists
 	protected function checkSearchParms()
 	{
-
-		// Check basic search
-		if ($this->BasicSearch->issetSession())
+		if ($this->id->AdvancedSearch->issetSession())
+			return TRUE;
+		if ($this->Status->AdvancedSearch->issetSession())
 			return TRUE;
 		return FALSE;
 	}
@@ -1401,8 +1655,8 @@ class t105_disposalhead_list extends t105_disposalhead
 		$this->SearchWhere = "";
 		$this->setSearchWhere($this->SearchWhere);
 
-		// Clear basic search parameters
-		$this->resetBasicSearchParms();
+		// Clear advanced search parameters
+		$this->resetAdvancedSearchParms();
 	}
 
 	// Load advanced search default values
@@ -1411,10 +1665,11 @@ class t105_disposalhead_list extends t105_disposalhead
 		return FALSE;
 	}
 
-	// Clear all basic search parameters
-	protected function resetBasicSearchParms()
+	// Clear all advanced search parameters
+	protected function resetAdvancedSearchParms()
 	{
-		$this->BasicSearch->unsetSession();
+		$this->id->AdvancedSearch->unsetSession();
+		$this->Status->AdvancedSearch->unsetSession();
 	}
 
 	// Restore all search parameters
@@ -1422,8 +1677,9 @@ class t105_disposalhead_list extends t105_disposalhead
 	{
 		$this->RestoreSearch = TRUE;
 
-		// Restore basic search values
-		$this->BasicSearch->load();
+		// Restore advanced search values
+		$this->id->AdvancedSearch->load();
+		$this->Status->AdvancedSearch->load();
 	}
 
 	// Set up sort parameters
@@ -1437,15 +1693,7 @@ class t105_disposalhead_list extends t105_disposalhead
 		if (Get("order") !== NULL) {
 			$this->CurrentOrder = Get("order");
 			$this->CurrentOrderType = Get("ordertype", "");
-			$this->updateSort($this->property_id, $ctrl); // property_id
-			$this->updateSort($this->TransactionNo, $ctrl); // TransactionNo
-			$this->updateSort($this->TransactionDate, $ctrl); // TransactionDate
-			$this->updateSort($this->RecommendedBy, $ctrl); // RecommendedBy
-			$this->updateSort($this->CE, $ctrl); // CE
-			$this->updateSort($this->ITM, $ctrl); // ITM
-			$this->updateSort($this->Sign1, $ctrl); // Sign1
-			$this->updateSort($this->Sign2, $ctrl); // Sign2
-			$this->updateSort($this->Sign3, $ctrl); // Sign3
+			$this->updateSort($this->Status, $ctrl); // Status
 			$this->setStartRecordNumber(1); // Reset start position
 		}
 	}
@@ -1481,15 +1729,7 @@ class t105_disposalhead_list extends t105_disposalhead
 			if ($this->Command == "resetsort") {
 				$orderBy = "";
 				$this->setSessionOrderBy($orderBy);
-				$this->property_id->setSort("");
-				$this->TransactionNo->setSort("");
-				$this->TransactionDate->setSort("");
-				$this->RecommendedBy->setSort("");
-				$this->CE->setSort("");
-				$this->ITM->setSort("");
-				$this->Sign1->setSort("");
-				$this->Sign2->setSort("");
-				$this->Sign3->setSort("");
+				$this->Status->setSort("");
 			}
 
 			// Reset start position
@@ -1503,17 +1743,19 @@ class t105_disposalhead_list extends t105_disposalhead
 	{
 		global $Security, $Language;
 
+		// "griddelete"
+		if ($this->AllowAddDeleteRow) {
+			$item = &$this->ListOptions->add("griddelete");
+			$item->CssClass = "text-nowrap";
+			$item->OnLeft = TRUE;
+			$item->Visible = FALSE; // Default hidden
+		}
+
 		// Add group option item
 		$item = &$this->ListOptions->add($this->ListOptions->GroupOptionName);
 		$item->Body = "";
 		$item->OnLeft = TRUE;
 		$item->Visible = FALSE;
-
-		// "view"
-		$item = &$this->ListOptions->add("view");
-		$item->CssClass = "text-nowrap";
-		$item->Visible = $Security->canView();
-		$item->OnLeft = TRUE;
 
 		// "edit"
 		$item = &$this->ListOptions->add("edit");
@@ -1533,29 +1775,6 @@ class t105_disposalhead_list extends t105_disposalhead
 		$item->Visible = $Security->canDelete();
 		$item->OnLeft = TRUE;
 
-		// "detail_t106_disposaldetail"
-		$item = &$this->ListOptions->add("detail_t106_disposaldetail");
-		$item->CssClass = "text-nowrap";
-		$item->Visible = $Security->allowList(CurrentProjectID() . 't106_disposaldetail') && !$this->ShowMultipleDetails;
-		$item->OnLeft = TRUE;
-		$item->ShowInButtonGroup = FALSE;
-		if (!isset($GLOBALS["t106_disposaldetail_grid"]))
-			$GLOBALS["t106_disposaldetail_grid"] = new t106_disposaldetail_grid();
-
-		// Multiple details
-		if ($this->ShowMultipleDetails) {
-			$item = &$this->ListOptions->add("details");
-			$item->CssClass = "text-nowrap";
-			$item->Visible = $this->ShowMultipleDetails;
-			$item->OnLeft = TRUE;
-			$item->ShowInButtonGroup = FALSE;
-		}
-
-		// Set up detail pages
-		$pages = new SubPages();
-		$pages->add("t106_disposaldetail");
-		$this->DetailPages = $pages;
-
 		// List actions
 		$item = &$this->ListOptions->add("listactions");
 		$item->CssClass = "text-nowrap";
@@ -1570,6 +1789,14 @@ class t105_disposalhead_list extends t105_disposalhead
 		$item->OnLeft = TRUE;
 		$item->Header = "<div class=\"custom-control custom-checkbox d-inline-block\"><input type=\"checkbox\" name=\"key\" id=\"key\" class=\"custom-control-input\" onclick=\"ew.selectAllKey(this);\"><label class=\"custom-control-label\" for=\"key\"></label></div>";
 		$item->moveTo(0);
+		$item->ShowInDropDown = FALSE;
+		$item->ShowInButtonGroup = FALSE;
+
+		// "sequence"
+		$item = &$this->ListOptions->add("sequence");
+		$item->CssClass = "text-nowrap";
+		$item->Visible = TRUE;
+		$item->OnLeft = TRUE; // Always on left
 		$item->ShowInDropDown = FALSE;
 		$item->ShowInButtonGroup = FALSE;
 
@@ -1598,20 +1825,52 @@ class t105_disposalhead_list extends t105_disposalhead
 		// Call ListOptions_Rendering event
 		$this->ListOptions_Rendering();
 
-		// "view"
-		$opt = $this->ListOptions["view"];
-		$viewcaption = HtmlTitle($Language->phrase("ViewLink"));
-		if ($Security->canView()) {
-			$opt->Body = "<a class=\"ew-row-link ew-view\" title=\"" . $viewcaption . "\" data-caption=\"" . $viewcaption . "\" href=\"" . HtmlEncode($this->ViewUrl) . "\">" . $Language->phrase("ViewLink") . "</a>";
-		} else {
-			$opt->Body = "";
+		// Set up row action and key
+		if (is_numeric($this->RowIndex) && $this->CurrentMode != "view") {
+			$CurrentForm->Index = $this->RowIndex;
+			$actionName = str_replace("k_", "k" . $this->RowIndex . "_", $this->FormActionName);
+			$oldKeyName = str_replace("k_", "k" . $this->RowIndex . "_", $this->FormOldKeyName);
+			$keyName = str_replace("k_", "k" . $this->RowIndex . "_", $this->FormKeyName);
+			$blankRowName = str_replace("k_", "k" . $this->RowIndex . "_", $this->FormBlankRowName);
+			if ($this->RowAction != "")
+				$this->MultiSelectKey .= "<input type=\"hidden\" name=\"" . $actionName . "\" id=\"" . $actionName . "\" value=\"" . $this->RowAction . "\">";
+			if ($this->RowAction == "delete") {
+				$rowkey = $CurrentForm->getValue($this->FormKeyName);
+				$this->setupKeyValues($rowkey);
+
+				// Reload hidden key for delete
+				$this->MultiSelectKey .= "<input type=\"hidden\" name=\"" . $keyName . "\" id=\"" . $keyName . "\" value=\"" . HtmlEncode($rowkey) . "\">";
+			}
+			if ($this->RowAction == "insert" && $this->isConfirm() && $this->emptyRow())
+				$this->MultiSelectKey .= "<input type=\"hidden\" name=\"" . $blankRowName . "\" id=\"" . $blankRowName . "\" value=\"1\">";
 		}
+
+		// "delete"
+		if ($this->AllowAddDeleteRow) {
+			if ($this->isGridAdd() || $this->isGridEdit()) {
+				$options = &$this->ListOptions;
+				$options->UseButtonGroup = TRUE; // Use button group for grid delete button
+				$opt = $options["griddelete"];
+				if (!$Security->canDelete() && is_numeric($this->RowIndex) && ($this->RowAction == "" || $this->RowAction == "edit")) { // Do not allow delete existing record
+					$opt->Body = "&nbsp;";
+				} else {
+					$opt->Body = "<a class=\"ew-grid-link ew-grid-delete\" title=\"" . HtmlTitle($Language->phrase("DeleteLink")) . "\" data-caption=\"" . HtmlTitle($Language->phrase("DeleteLink")) . "\" onclick=\"return ew.deleteGridRow(this, " . $this->RowIndex . ");\">" . $Language->phrase("DeleteLink") . "</a>";
+				}
+			}
+		}
+
+		// "sequence"
+		$opt = $this->ListOptions["sequence"];
+		$opt->Body = FormatSequenceNumber($this->RecordCount);
 
 		// "edit"
 		$opt = $this->ListOptions["edit"];
 		$editcaption = HtmlTitle($Language->phrase("EditLink"));
 		if ($Security->canEdit()) {
-			$opt->Body = "<a class=\"ew-row-link ew-edit\" title=\"" . HtmlTitle($Language->phrase("EditLink")) . "\" data-caption=\"" . HtmlTitle($Language->phrase("EditLink")) . "\" href=\"" . HtmlEncode($this->EditUrl) . "\">" . $Language->phrase("EditLink") . "</a>";
+			if (IsMobile())
+				$opt->Body = "<a class=\"ew-row-link ew-edit\" title=\"" . $editcaption . "\" data-caption=\"" . $editcaption . "\" href=\"" . HtmlEncode($this->EditUrl) . "\">" . $Language->phrase("EditLink") . "</a>";
+			else
+				$opt->Body = "<a class=\"ew-row-link ew-edit\" title=\"" . $editcaption . "\" data-table=\"t011_reason\" data-caption=\"" . $editcaption . "\" href=\"#\" onclick=\"return ew.modalDialogShow({lnk:this,btn:'SaveBtn',url:'" . HtmlEncode($this->EditUrl) . "'});\">" . $Language->phrase("EditLink") . "</a>";
 		} else {
 			$opt->Body = "";
 		}
@@ -1620,7 +1879,10 @@ class t105_disposalhead_list extends t105_disposalhead
 		$opt = $this->ListOptions["copy"];
 		$copycaption = HtmlTitle($Language->phrase("CopyLink"));
 		if ($Security->canAdd()) {
-			$opt->Body = "<a class=\"ew-row-link ew-copy\" title=\"" . $copycaption . "\" data-caption=\"" . $copycaption . "\" href=\"" . HtmlEncode($this->CopyUrl) . "\">" . $Language->phrase("CopyLink") . "</a>";
+			if (IsMobile())
+				$opt->Body = "<a class=\"ew-row-link ew-copy\" title=\"" . $copycaption . "\" data-caption=\"" . $copycaption . "\" href=\"" . HtmlEncode($this->CopyUrl) . "\">" . $Language->phrase("CopyLink") . "</a>";
+			else
+				$opt->Body = "<a class=\"ew-row-link ew-copy\" title=\"" . $copycaption . "\" data-table=\"t011_reason\" data-caption=\"" . $copycaption . "\" href=\"#\" onclick=\"return ew.modalDialogShow({lnk:this,btn:'AddBtn',url:'" . HtmlEncode($this->CopyUrl) . "'});\">" . $Language->phrase("CopyLink") . "</a>";
 		} else {
 			$opt->Body = "";
 		}
@@ -1628,7 +1890,7 @@ class t105_disposalhead_list extends t105_disposalhead
 		// "delete"
 		$opt = $this->ListOptions["delete"];
 		if ($Security->canDelete())
-			$opt->Body = "<a class=\"ew-row-link ew-delete\"" . "" . " title=\"" . HtmlTitle($Language->phrase("DeleteLink")) . "\" data-caption=\"" . HtmlTitle($Language->phrase("DeleteLink")) . "\" href=\"" . HtmlEncode($this->DeleteUrl) . "\">" . $Language->phrase("DeleteLink") . "</a>";
+			$opt->Body = "<a class=\"ew-row-link ew-delete\"" . " onclick=\"return ew.confirmDelete(this);\"" . " title=\"" . HtmlTitle($Language->phrase("DeleteLink")) . "\" data-caption=\"" . HtmlTitle($Language->phrase("DeleteLink")) . "\" href=\"" . HtmlEncode($this->DeleteUrl) . "\">" . $Language->phrase("DeleteLink") . "</a>";
 		else
 			$opt->Body = "";
 
@@ -1660,75 +1922,13 @@ class t105_disposalhead_list extends t105_disposalhead
 				$opt->Visible = TRUE;
 			}
 		}
-		$detailViewTblVar = "";
-		$detailCopyTblVar = "";
-		$detailEditTblVar = "";
-
-		// "detail_t106_disposaldetail"
-		$opt = $this->ListOptions["detail_t106_disposaldetail"];
-		if ($Security->allowList(CurrentProjectID() . 't106_disposaldetail')) {
-			$body = $Language->phrase("DetailLink") . $Language->TablePhrase("t106_disposaldetail", "TblCaption");
-			$body = "<a class=\"btn btn-default ew-row-link ew-detail\" data-action=\"list\" href=\"" . HtmlEncode("t106_disposaldetaillist.php?" . Config("TABLE_SHOW_MASTER") . "=t105_disposalhead&fk_id=" . urlencode(strval($this->id->CurrentValue)) . "") . "\">" . $body . "</a>";
-			$links = "";
-			if ($GLOBALS["t106_disposaldetail_grid"]->DetailView && $Security->canView() && $Security->allowView(CurrentProjectID() . 't105_disposalhead')) {
-				$caption = $Language->phrase("MasterDetailViewLink");
-				$url = $this->getViewUrl(Config("TABLE_SHOW_DETAIL") . "=t106_disposaldetail");
-				$links .= "<li><a class=\"dropdown-item ew-row-link ew-detail-view\" data-action=\"view\" data-caption=\"" . HtmlTitle($caption) . "\" href=\"" . HtmlEncode($url) . "\">" . HtmlImageAndText($caption) . "</a></li>";
-				if ($detailViewTblVar != "")
-					$detailViewTblVar .= ",";
-				$detailViewTblVar .= "t106_disposaldetail";
-			}
-			if ($GLOBALS["t106_disposaldetail_grid"]->DetailEdit && $Security->canEdit() && $Security->allowEdit(CurrentProjectID() . 't105_disposalhead')) {
-				$caption = $Language->phrase("MasterDetailEditLink");
-				$url = $this->getEditUrl(Config("TABLE_SHOW_DETAIL") . "=t106_disposaldetail");
-				$links .= "<li><a class=\"dropdown-item ew-row-link ew-detail-edit\" data-action=\"edit\" data-caption=\"" . HtmlTitle($caption) . "\" href=\"" . HtmlEncode($url) . "\">" . HtmlImageAndText($caption) . "</a></li>";
-				if ($detailEditTblVar != "")
-					$detailEditTblVar .= ",";
-				$detailEditTblVar .= "t106_disposaldetail";
-			}
-			if ($GLOBALS["t106_disposaldetail_grid"]->DetailAdd && $Security->canAdd() && $Security->allowAdd(CurrentProjectID() . 't105_disposalhead')) {
-				$caption = $Language->phrase("MasterDetailCopyLink");
-				$url = $this->getCopyUrl(Config("TABLE_SHOW_DETAIL") . "=t106_disposaldetail");
-				$links .= "<li><a class=\"dropdown-item ew-row-link ew-detail-copy\" data-action=\"add\" data-caption=\"" . HtmlTitle($caption) . "\" href=\"" . HtmlEncode($url) . "\">" . HtmlImageAndText($caption) . "</a></li>";
-				if ($detailCopyTblVar != "")
-					$detailCopyTblVar .= ",";
-				$detailCopyTblVar .= "t106_disposaldetail";
-			}
-			if ($links != "") {
-				$body .= "<button class=\"dropdown-toggle btn btn-default ew-detail\" data-toggle=\"dropdown\"></button>";
-				$body .= "<ul class=\"dropdown-menu\">". $links . "</ul>";
-			}
-			$body = "<div class=\"btn-group btn-group-sm ew-btn-group\">" . $body . "</div>";
-			$opt->Body = $body;
-			if ($this->ShowMultipleDetails)
-				$opt->Visible = FALSE;
-		}
-		if ($this->ShowMultipleDetails) {
-			$body = "<div class=\"btn-group btn-group-sm ew-btn-group\">";
-			$links = "";
-			if ($detailViewTblVar != "") {
-				$links .= "<li><a class=\"dropdown-item ew-row-link ew-detail-view\" data-action=\"view\" data-caption=\"" . HtmlTitle($Language->phrase("MasterDetailViewLink")) . "\" href=\"" . HtmlEncode($this->getViewUrl(Config("TABLE_SHOW_DETAIL") . "=" . $detailViewTblVar)) . "\">" . HtmlImageAndText($Language->phrase("MasterDetailViewLink")) . "</a></li>";
-			}
-			if ($detailEditTblVar != "") {
-				$links .= "<li><a class=\"dropdown-item ew-row-link ew-detail-edit\" data-action=\"edit\" data-caption=\"" . HtmlTitle($Language->phrase("MasterDetailEditLink")) . "\" href=\"" . HtmlEncode($this->getEditUrl(Config("TABLE_SHOW_DETAIL") . "=" . $detailEditTblVar)) . "\">" . HtmlImageAndText($Language->phrase("MasterDetailEditLink")) . "</a></li>";
-			}
-			if ($detailCopyTblVar != "") {
-				$links .= "<li><a class=\"dropdown-item ew-row-link ew-detail-copy\" data-action=\"add\" data-caption=\"" . HtmlTitle($Language->phrase("MasterDetailCopyLink")) . "\" href=\"" . HtmlEncode($this->GetCopyUrl(Config("TABLE_SHOW_DETAIL") . "=" . $detailCopyTblVar)) . "\">" . HtmlImageAndText($Language->phrase("MasterDetailCopyLink")) . "</a></li>";
-			}
-			if ($links != "") {
-				$body .= "<button class=\"dropdown-toggle btn btn-default ew-master-detail\" title=\"" . HtmlTitle($Language->phrase("MultipleMasterDetails")) . "\" data-toggle=\"dropdown\">" . $Language->phrase("MultipleMasterDetails") . "</button>";
-				$body .= "<ul class=\"dropdown-menu ew-menu\">". $links . "</ul>";
-			}
-			$body .= "</div>";
-
-			// Multiple details
-			$opt = $this->ListOptions["details"];
-			$opt->Body = $body;
-		}
 
 		// "checkbox"
 		$opt = $this->ListOptions["checkbox"];
 		$opt->Body = "<div class=\"custom-control custom-checkbox d-inline-block\"><input type=\"checkbox\" id=\"key_m_" . $this->RowCount . "\" name=\"key_m[]\" class=\"custom-control-input ew-multi-select\" value=\"" . HtmlEncode($this->id->CurrentValue) . "\" onclick=\"ew.clickMultiCheckbox(event);\"><label class=\"custom-control-label\" for=\"key_m_" . $this->RowCount . "\"></label></div>";
+		if ($this->isGridEdit() && is_numeric($this->RowIndex)) {
+			$this->MultiSelectKey .= "<input type=\"hidden\" name=\"" . $keyName . "\" id=\"" . $keyName . "\" value=\"" . $this->id->CurrentValue . "\">";
+		}
 		$this->renderListOptionsExt();
 
 		// Call ListOptions_Rendered event
@@ -1745,39 +1945,20 @@ class t105_disposalhead_list extends t105_disposalhead
 		// Add
 		$item = &$option->add("add");
 		$addcaption = HtmlTitle($Language->phrase("AddLink"));
-		$item->Body = "<a class=\"ew-add-edit ew-add\" title=\"" . $addcaption . "\" data-caption=\"" . $addcaption . "\" href=\"" . HtmlEncode($this->AddUrl) . "\">" . $Language->phrase("AddLink") . "</a>";
+		if (IsMobile())
+			$item->Body = "<a class=\"ew-add-edit ew-add\" title=\"" . $addcaption . "\" data-caption=\"" . $addcaption . "\" href=\"" . HtmlEncode($this->AddUrl) . "\">" . $Language->phrase("AddLink") . "</a>";
+		else
+			$item->Body = "<a class=\"ew-add-edit ew-add\" title=\"" . $addcaption . "\" data-table=\"t011_reason\" data-caption=\"" . $addcaption . "\" href=\"#\" onclick=\"return ew.modalDialogShow({lnk:this,btn:'AddBtn',url:'" . HtmlEncode($this->AddUrl) . "'});\">" . $Language->phrase("AddLink") . "</a>";
 		$item->Visible = $this->AddUrl != "" && $Security->canAdd();
-		$option = $options["detail"];
-		$detailTableLink = "";
-		$item = &$option->add("detailadd_t106_disposaldetail");
-		$url = $this->getAddUrl(Config("TABLE_SHOW_DETAIL") . "=t106_disposaldetail");
-		if (!isset($GLOBALS["t106_disposaldetail"]))
-			$GLOBALS["t106_disposaldetail"] = new t106_disposaldetail();
-		$caption = $Language->phrase("Add") . "&nbsp;" . $this->tableCaption() . "/" . $GLOBALS["t106_disposaldetail"]->tableCaption();
-		$item->Body = "<a class=\"ew-detail-add-group ew-detail-add\" title=\"" . HtmlTitle($caption) . "\" data-caption=\"" . HtmlTitle($caption) . "\" href=\"" . HtmlEncode($url) . "\">" . $caption . "</a>";
-		$item->Visible = ($GLOBALS["t106_disposaldetail"]->DetailAdd && $Security->allowAdd(CurrentProjectID() . 't105_disposalhead') && $Security->canAdd());
-		if ($item->Visible) {
-			if ($detailTableLink != "")
-				$detailTableLink .= ",";
-			$detailTableLink .= "t106_disposaldetail";
-		}
+		$item = &$option->add("gridadd");
+		$item->Body = "<a class=\"ew-add-edit ew-grid-add\" title=\"" . HtmlTitle($Language->phrase("GridAddLink")) . "\" data-caption=\"" . HtmlTitle($Language->phrase("GridAddLink")) . "\" href=\"" . HtmlEncode($this->GridAddUrl) . "\">" . $Language->phrase("GridAddLink") . "</a>";
+		$item->Visible = $this->GridAddUrl != "" && $Security->canAdd();
 
-		// Add multiple details
-		if ($this->ShowMultipleDetails) {
-			$item = &$option->add("detailsadd");
-			$url = $this->getAddUrl(Config("TABLE_SHOW_DETAIL") . "=" . $detailTableLink);
-			$caption = $Language->phrase("AddMasterDetailLink");
-			$item->Body = "<a class=\"ew-detail-add-group ew-detail-add\" title=\"" . HtmlTitle($caption) . "\" data-caption=\"" . HtmlTitle($caption) . "\" href=\"" . HtmlEncode($url) . "\">" . $caption . "</a>";
-			$item->Visible = $detailTableLink != "" && $Security->canAdd();
-
-			// Hide single master/detail items
-			$ar = explode(",", $detailTableLink);
-			$cnt = count($ar);
-			for ($i = 0; $i < $cnt; $i++) {
-				if ($item = $option["detailadd_" . $ar[$i]])
-					$item->Visible = FALSE;
-			}
-		}
+		// Add grid edit
+		$option = $options["addedit"];
+		$item = &$option->add("gridedit");
+		$item->Body = "<a class=\"ew-add-edit ew-grid-edit\" title=\"" . HtmlTitle($Language->phrase("GridEditLink")) . "\" data-caption=\"" . HtmlTitle($Language->phrase("GridEditLink")) . "\" href=\"" . HtmlEncode($this->GridEditUrl) . "\">" . $Language->phrase("GridEditLink") . "</a>";
+		$item->Visible = $this->GridEditUrl != "" && $Security->canEdit();
 		$option = $options["action"];
 
 		// Set up options default
@@ -1796,10 +1977,10 @@ class t105_disposalhead_list extends t105_disposalhead
 
 		// Filter button
 		$item = &$this->FilterOptions->add("savecurrentfilter");
-		$item->Body = "<a class=\"ew-save-filter\" data-form=\"ft105_disposalheadlistsrch\" href=\"#\" onclick=\"return false;\">" . $Language->phrase("SaveCurrentFilter") . "</a>";
+		$item->Body = "<a class=\"ew-save-filter\" data-form=\"ft011_reasonlistsrch\" href=\"#\" onclick=\"return false;\">" . $Language->phrase("SaveCurrentFilter") . "</a>";
 		$item->Visible = TRUE;
 		$item = &$this->FilterOptions->add("deletefilter");
-		$item->Body = "<a class=\"ew-delete-filter\" data-form=\"ft105_disposalheadlistsrch\" href=\"#\" onclick=\"return false;\">" . $Language->phrase("DeleteFilter") . "</a>";
+		$item->Body = "<a class=\"ew-delete-filter\" data-form=\"ft011_reasonlistsrch\" href=\"#\" onclick=\"return false;\">" . $Language->phrase("DeleteFilter") . "</a>";
 		$item->Visible = TRUE;
 		$this->FilterOptions->UseDropDownButton = TRUE;
 		$this->FilterOptions->UseButtonGroup = !$this->FilterOptions->UseDropDownButton;
@@ -1816,6 +1997,7 @@ class t105_disposalhead_list extends t105_disposalhead
 	{
 		global $Language, $Security;
 		$options = &$this->OtherOptions;
+		if (!$this->isGridAdd() && !$this->isGridEdit()) { // Not grid add/edit mode
 			$option = $options["action"];
 
 			// Set up list action buttons
@@ -1824,7 +2006,7 @@ class t105_disposalhead_list extends t105_disposalhead
 					$item = &$option->add("custom_" . $listaction->Action);
 					$caption = $listaction->Caption;
 					$icon = ($listaction->Icon != "") ? "<i class=\"" . HtmlEncode($listaction->Icon) . "\" data-caption=\"" . HtmlEncode($caption) . "\"></i> " . $caption : $caption;
-					$item->Body = "<a class=\"ew-action ew-list-action\" title=\"" . HtmlEncode($caption) . "\" data-caption=\"" . HtmlEncode($caption) . "\" href=\"#\" onclick=\"return ew.submitAction(event,jQuery.extend({f:document.ft105_disposalheadlist}," . $listaction->toJson(TRUE) . "));\">" . $icon . "</a>";
+					$item->Body = "<a class=\"ew-action ew-list-action\" title=\"" . HtmlEncode($caption) . "\" data-caption=\"" . HtmlEncode($caption) . "\" href=\"#\" onclick=\"return ew.submitAction(event,jQuery.extend({f:document.ft011_reasonlist}," . $listaction->toJson(TRUE) . "));\">" . $icon . "</a>";
 					$item->Visible = $listaction->Allow;
 				}
 			}
@@ -1838,6 +2020,56 @@ class t105_disposalhead_list extends t105_disposalhead
 				$option = $options["action"];
 				$option->hideAllOptions();
 			}
+		} else { // Grid add/edit mode
+
+			// Hide all options first
+			foreach ($options as $option)
+				$option->hideAllOptions();
+
+			// Grid-Add
+			if ($this->isGridAdd()) {
+				if ($this->AllowAddDeleteRow) {
+
+					// Add add blank row
+					$option = $options["addedit"];
+					$option->UseDropDownButton = FALSE;
+					$item = &$option->add("addblankrow");
+					$item->Body = "<a class=\"ew-add-edit ew-add-blank-row\" title=\"" . HtmlTitle($Language->phrase("AddBlankRow")) . "\" data-caption=\"" . HtmlTitle($Language->phrase("AddBlankRow")) . "\" href=\"#\" onclick=\"return ew.addGridRow(this);\">" . $Language->phrase("AddBlankRow") . "</a>";
+					$item->Visible = $Security->canAdd();
+				}
+				$option = $options["action"];
+				$option->UseDropDownButton = FALSE;
+
+				// Add grid insert
+				$item = &$option->add("gridinsert");
+				$item->Body = "<a class=\"ew-action ew-grid-insert\" title=\"" . HtmlTitle($Language->phrase("GridInsertLink")) . "\" data-caption=\"" . HtmlTitle($Language->phrase("GridInsertLink")) . "\" href=\"#\" onclick=\"return ew.forms(this).submit('" . $this->pageName() . "');\">" . $Language->phrase("GridInsertLink") . "</a>";
+
+				// Add grid cancel
+				$item = &$option->add("gridcancel");
+				$cancelurl = $this->addMasterUrl($this->pageUrl() . "action=cancel");
+				$item->Body = "<a class=\"ew-action ew-grid-cancel\" title=\"" . HtmlTitle($Language->phrase("GridCancelLink")) . "\" data-caption=\"" . HtmlTitle($Language->phrase("GridCancelLink")) . "\" href=\"" . $cancelurl . "\">" . $Language->phrase("GridCancelLink") . "</a>";
+			}
+
+			// Grid-Edit
+			if ($this->isGridEdit()) {
+				if ($this->AllowAddDeleteRow) {
+
+					// Add add blank row
+					$option = $options["addedit"];
+					$option->UseDropDownButton = FALSE;
+					$item = &$option->add("addblankrow");
+					$item->Body = "<a class=\"ew-add-edit ew-add-blank-row\" title=\"" . HtmlTitle($Language->phrase("AddBlankRow")) . "\" data-caption=\"" . HtmlTitle($Language->phrase("AddBlankRow")) . "\" href=\"#\" onclick=\"return ew.addGridRow(this);\">" . $Language->phrase("AddBlankRow") . "</a>";
+					$item->Visible = $Security->canAdd();
+				}
+				$option = $options["action"];
+				$option->UseDropDownButton = FALSE;
+					$item = &$option->add("gridsave");
+					$item->Body = "<a class=\"ew-action ew-grid-save\" title=\"" . HtmlTitle($Language->phrase("GridSaveLink")) . "\" data-caption=\"" . HtmlTitle($Language->phrase("GridSaveLink")) . "\" href=\"#\" onclick=\"return ew.forms(this).submit('" . $this->pageName() . "');\">" . $Language->phrase("GridSaveLink") . "</a>";
+					$item = &$option->add("gridcancel");
+					$cancelurl = $this->addMasterUrl($this->pageUrl() . "action=cancel");
+					$item->Body = "<a class=\"ew-action ew-grid-cancel\" title=\"" . HtmlTitle($Language->phrase("GridCancelLink")) . "\" data-caption=\"" . HtmlTitle($Language->phrase("GridCancelLink")) . "\" href=\"" . $cancelurl . "\">" . $Language->phrase("GridCancelLink") . "</a>";
+			}
+		}
 	}
 
 	// Process list action
@@ -1931,13 +2163,69 @@ class t105_disposalhead_list extends t105_disposalhead
 	{
 	}
 
-	// Load basic search values
-	protected function loadBasicSearchValues()
+	// Load default values
+	protected function loadDefaultValues()
 	{
-		$this->BasicSearch->setKeyword(Get(Config("TABLE_BASIC_SEARCH"), ""), FALSE);
-		if ($this->BasicSearch->Keyword != "" && $this->Command == "")
-			$this->Command = "search";
-		$this->BasicSearch->setType(Get(Config("TABLE_BASIC_SEARCH_TYPE"), ""), FALSE);
+		$this->id->CurrentValue = NULL;
+		$this->id->OldValue = $this->id->CurrentValue;
+		$this->Status->CurrentValue = NULL;
+		$this->Status->OldValue = $this->Status->CurrentValue;
+	}
+
+	// Load search values for validation
+	protected function loadSearchValues()
+	{
+
+		// Load search values
+		$got = FALSE;
+
+		// id
+		if (!$this->isAddOrEdit() && $this->id->AdvancedSearch->get()) {
+			$got = TRUE;
+			if (($this->id->AdvancedSearch->SearchValue != "" || $this->id->AdvancedSearch->SearchValue2 != "") && $this->Command == "")
+				$this->Command = "search";
+		}
+
+		// Status
+		if (!$this->isAddOrEdit() && $this->Status->AdvancedSearch->get()) {
+			$got = TRUE;
+			if (($this->Status->AdvancedSearch->SearchValue != "" || $this->Status->AdvancedSearch->SearchValue2 != "") && $this->Command == "")
+				$this->Command = "search";
+		}
+		return $got;
+	}
+
+	// Load form values
+	protected function loadFormValues()
+	{
+
+		// Load from form
+		global $CurrentForm;
+
+		// Check field name 'Status' first before field var 'x_Status'
+		$val = $CurrentForm->hasValue("Status") ? $CurrentForm->getValue("Status") : $CurrentForm->getValue("x_Status");
+		if (!$this->Status->IsDetailKey) {
+			if (IsApi() && $val == NULL)
+				$this->Status->Visible = FALSE; // Disable update for API request
+			else
+				$this->Status->setFormValue($val);
+		}
+		if ($CurrentForm->hasValue("o_Status"))
+			$this->Status->setOldValue($CurrentForm->getValue("o_Status"));
+
+		// Check field name 'id' first before field var 'x_id'
+		$val = $CurrentForm->hasValue("id") ? $CurrentForm->getValue("id") : $CurrentForm->getValue("x_id");
+		if (!$this->id->IsDetailKey && !$this->isGridAdd() && !$this->isAdd())
+			$this->id->setFormValue($val);
+	}
+
+	// Restore form values
+	public function restoreFormValues()
+	{
+		global $CurrentForm;
+		if (!$this->isGridAdd() && !$this->isAdd())
+			$this->id->CurrentValue = $this->id->FormValue;
+		$this->Status->CurrentValue = $this->Status->FormValue;
 	}
 
 	// Load recordset
@@ -1985,6 +2273,8 @@ class t105_disposalhead_list extends t105_disposalhead
 		if ($rs && !$rs->EOF) {
 			$res = TRUE;
 			$this->loadRowValues($rs); // Load row values
+			if (!$this->EventCancelled)
+				$this->HashValue = $this->getRowHash($rs); // Get hash value for record
 			$rs->close();
 		}
 		return $res;
@@ -2003,31 +2293,16 @@ class t105_disposalhead_list extends t105_disposalhead
 		if (!$rs || $rs->EOF)
 			return;
 		$this->id->setDbValue($row['id']);
-		$this->property_id->setDbValue($row['property_id']);
-		$this->TransactionNo->setDbValue($row['TransactionNo']);
-		$this->TransactionDate->setDbValue($row['TransactionDate']);
-		$this->RecommendedBy->setDbValue($row['RecommendedBy']);
-		$this->CE->setDbValue($row['CE']);
-		$this->ITM->setDbValue($row['ITM']);
-		$this->Sign1->setDbValue($row['Sign1']);
-		$this->Sign2->setDbValue($row['Sign2']);
-		$this->Sign3->setDbValue($row['Sign3']);
+		$this->Status->setDbValue($row['Status']);
 	}
 
 	// Return a row with default values
 	protected function newRow()
 	{
+		$this->loadDefaultValues();
 		$row = [];
-		$row['id'] = NULL;
-		$row['property_id'] = NULL;
-		$row['TransactionNo'] = NULL;
-		$row['TransactionDate'] = NULL;
-		$row['RecommendedBy'] = NULL;
-		$row['CE'] = NULL;
-		$row['ITM'] = NULL;
-		$row['Sign1'] = NULL;
-		$row['Sign2'] = NULL;
-		$row['Sign3'] = NULL;
+		$row['id'] = $this->id->CurrentValue;
+		$row['Status'] = $this->Status->CurrentValue;
 		return $row;
 	}
 
@@ -2072,15 +2347,7 @@ class t105_disposalhead_list extends t105_disposalhead
 
 		// Common render codes for all row types
 		// id
-		// property_id
-		// TransactionNo
-		// TransactionDate
-		// RecommendedBy
-		// CE
-		// ITM
-		// Sign1
-		// Sign2
-		// Sign3
+		// Status
 
 		if ($this->RowType == ROWTYPE_VIEW) { // View row
 
@@ -2088,218 +2355,359 @@ class t105_disposalhead_list extends t105_disposalhead
 			$this->id->ViewValue = $this->id->CurrentValue;
 			$this->id->ViewCustomAttributes = "";
 
-			// property_id
-			$curVal = strval($this->property_id->CurrentValue);
-			if ($curVal != "") {
-				$this->property_id->ViewValue = $this->property_id->lookupCacheOption($curVal);
-				if ($this->property_id->ViewValue === NULL) { // Lookup from database
-					$filterWrk = "`id`" . SearchString("=", $curVal, DATATYPE_NUMBER, "");
-					$sqlWrk = $this->property_id->Lookup->getSql(FALSE, $filterWrk, '', $this);
-					$rswrk = Conn()->execute($sqlWrk);
-					if ($rswrk && !$rswrk->EOF) { // Lookup values found
-						$arwrk = [];
-						$arwrk[1] = $rswrk->fields('df');
-						$this->property_id->ViewValue = $this->property_id->displayValue($arwrk);
-						$rswrk->Close();
-					} else {
-						$this->property_id->ViewValue = $this->property_id->CurrentValue;
-					}
-				}
-			} else {
-				$this->property_id->ViewValue = NULL;
-			}
-			$this->property_id->ViewCustomAttributes = "";
+			// Status
+			$this->Status->ViewValue = $this->Status->CurrentValue;
+			$this->Status->ViewCustomAttributes = "";
 
-			// TransactionNo
-			$this->TransactionNo->ViewValue = $this->TransactionNo->CurrentValue;
-			$this->TransactionNo->ViewCustomAttributes = "";
+			// Status
+			$this->Status->LinkCustomAttributes = "";
+			$this->Status->HrefValue = "";
+			$this->Status->TooltipValue = "";
+		} elseif ($this->RowType == ROWTYPE_ADD) { // Add row
 
-			// TransactionDate
-			$this->TransactionDate->ViewValue = $this->TransactionDate->CurrentValue;
-			$this->TransactionDate->ViewValue = FormatDateTime($this->TransactionDate->ViewValue, 7);
-			$this->TransactionDate->ViewCustomAttributes = "";
+			// Status
+			$this->Status->EditAttrs["class"] = "form-control";
+			$this->Status->EditCustomAttributes = "";
+			if (!$this->Status->Raw)
+				$this->Status->CurrentValue = HtmlDecode($this->Status->CurrentValue);
+			$this->Status->EditValue = HtmlEncode($this->Status->CurrentValue);
+			$this->Status->PlaceHolder = RemoveHtml($this->Status->caption());
 
-			// RecommendedBy
-			$curVal = strval($this->RecommendedBy->CurrentValue);
-			if ($curVal != "") {
-				$this->RecommendedBy->ViewValue = $this->RecommendedBy->lookupCacheOption($curVal);
-				if ($this->RecommendedBy->ViewValue === NULL) { // Lookup from database
-					$filterWrk = "`id`" . SearchString("=", $curVal, DATATYPE_NUMBER, "");
-					$sqlWrk = $this->RecommendedBy->Lookup->getSql(FALSE, $filterWrk, '', $this);
-					$rswrk = Conn()->execute($sqlWrk);
-					if ($rswrk && !$rswrk->EOF) { // Lookup values found
-						$arwrk = [];
-						$arwrk[1] = $rswrk->fields('df');
-						$this->RecommendedBy->ViewValue = $this->RecommendedBy->displayValue($arwrk);
-						$rswrk->Close();
-					} else {
-						$this->RecommendedBy->ViewValue = $this->RecommendedBy->CurrentValue;
-					}
-				}
-			} else {
-				$this->RecommendedBy->ViewValue = NULL;
-			}
-			$this->RecommendedBy->ViewCustomAttributes = "";
+			// Add refer script
+			// Status
 
-			// CE
-			$curVal = strval($this->CE->CurrentValue);
-			if ($curVal != "") {
-				$this->CE->ViewValue = $this->CE->lookupCacheOption($curVal);
-				if ($this->CE->ViewValue === NULL) { // Lookup from database
-					$filterWrk = "`id`" . SearchString("=", $curVal, DATATYPE_NUMBER, "");
-					$sqlWrk = $this->CE->Lookup->getSql(FALSE, $filterWrk, '', $this);
-					$rswrk = Conn()->execute($sqlWrk);
-					if ($rswrk && !$rswrk->EOF) { // Lookup values found
-						$arwrk = [];
-						$arwrk[1] = $rswrk->fields('df');
-						$this->CE->ViewValue = $this->CE->displayValue($arwrk);
-						$rswrk->Close();
-					} else {
-						$this->CE->ViewValue = $this->CE->CurrentValue;
-					}
-				}
-			} else {
-				$this->CE->ViewValue = NULL;
-			}
-			$this->CE->ViewCustomAttributes = "";
+			$this->Status->LinkCustomAttributes = "";
+			$this->Status->HrefValue = "";
+		} elseif ($this->RowType == ROWTYPE_EDIT) { // Edit row
 
-			// ITM
-			$curVal = strval($this->ITM->CurrentValue);
-			if ($curVal != "") {
-				$this->ITM->ViewValue = $this->ITM->lookupCacheOption($curVal);
-				if ($this->ITM->ViewValue === NULL) { // Lookup from database
-					$filterWrk = "`id`" . SearchString("=", $curVal, DATATYPE_NUMBER, "");
-					$sqlWrk = $this->ITM->Lookup->getSql(FALSE, $filterWrk, '', $this);
-					$rswrk = Conn()->execute($sqlWrk);
-					if ($rswrk && !$rswrk->EOF) { // Lookup values found
-						$arwrk = [];
-						$arwrk[1] = $rswrk->fields('df');
-						$this->ITM->ViewValue = $this->ITM->displayValue($arwrk);
-						$rswrk->Close();
-					} else {
-						$this->ITM->ViewValue = $this->ITM->CurrentValue;
-					}
-				}
-			} else {
-				$this->ITM->ViewValue = NULL;
-			}
-			$this->ITM->ViewCustomAttributes = "";
+			// Status
+			$this->Status->EditAttrs["class"] = "form-control";
+			$this->Status->EditCustomAttributes = "";
+			if (!$this->Status->Raw)
+				$this->Status->CurrentValue = HtmlDecode($this->Status->CurrentValue);
+			$this->Status->EditValue = HtmlEncode($this->Status->CurrentValue);
+			$this->Status->PlaceHolder = RemoveHtml($this->Status->caption());
 
-			// Sign1
-			$curVal = strval($this->Sign1->CurrentValue);
-			if ($curVal != "") {
-				$this->Sign1->ViewValue = $this->Sign1->lookupCacheOption($curVal);
-				if ($this->Sign1->ViewValue === NULL) { // Lookup from database
-					$filterWrk = "`id`" . SearchString("=", $curVal, DATATYPE_NUMBER, "");
-					$sqlWrk = $this->Sign1->Lookup->getSql(FALSE, $filterWrk, '', $this);
-					$rswrk = Conn()->execute($sqlWrk);
-					if ($rswrk && !$rswrk->EOF) { // Lookup values found
-						$arwrk = [];
-						$arwrk[1] = $rswrk->fields('df');
-						$this->Sign1->ViewValue = $this->Sign1->displayValue($arwrk);
-						$rswrk->Close();
-					} else {
-						$this->Sign1->ViewValue = $this->Sign1->CurrentValue;
-					}
-				}
-			} else {
-				$this->Sign1->ViewValue = NULL;
-			}
-			$this->Sign1->ViewCustomAttributes = "";
+			// Edit refer script
+			// Status
 
-			// Sign2
-			$curVal = strval($this->Sign2->CurrentValue);
-			if ($curVal != "") {
-				$this->Sign2->ViewValue = $this->Sign2->lookupCacheOption($curVal);
-				if ($this->Sign2->ViewValue === NULL) { // Lookup from database
-					$filterWrk = "`id`" . SearchString("=", $curVal, DATATYPE_NUMBER, "");
-					$sqlWrk = $this->Sign2->Lookup->getSql(FALSE, $filterWrk, '', $this);
-					$rswrk = Conn()->execute($sqlWrk);
-					if ($rswrk && !$rswrk->EOF) { // Lookup values found
-						$arwrk = [];
-						$arwrk[1] = $rswrk->fields('df');
-						$this->Sign2->ViewValue = $this->Sign2->displayValue($arwrk);
-						$rswrk->Close();
-					} else {
-						$this->Sign2->ViewValue = $this->Sign2->CurrentValue;
-					}
-				}
-			} else {
-				$this->Sign2->ViewValue = NULL;
-			}
-			$this->Sign2->ViewCustomAttributes = "";
-
-			// Sign3
-			$curVal = strval($this->Sign3->CurrentValue);
-			if ($curVal != "") {
-				$this->Sign3->ViewValue = $this->Sign3->lookupCacheOption($curVal);
-				if ($this->Sign3->ViewValue === NULL) { // Lookup from database
-					$filterWrk = "`id`" . SearchString("=", $curVal, DATATYPE_NUMBER, "");
-					$sqlWrk = $this->Sign3->Lookup->getSql(FALSE, $filterWrk, '', $this);
-					$rswrk = Conn()->execute($sqlWrk);
-					if ($rswrk && !$rswrk->EOF) { // Lookup values found
-						$arwrk = [];
-						$arwrk[1] = $rswrk->fields('df');
-						$this->Sign3->ViewValue = $this->Sign3->displayValue($arwrk);
-						$rswrk->Close();
-					} else {
-						$this->Sign3->ViewValue = $this->Sign3->CurrentValue;
-					}
-				}
-			} else {
-				$this->Sign3->ViewValue = NULL;
-			}
-			$this->Sign3->ViewCustomAttributes = "";
-
-			// property_id
-			$this->property_id->LinkCustomAttributes = "";
-			$this->property_id->HrefValue = "";
-			$this->property_id->TooltipValue = "";
-
-			// TransactionNo
-			$this->TransactionNo->LinkCustomAttributes = "";
-			$this->TransactionNo->HrefValue = "";
-			$this->TransactionNo->TooltipValue = "";
-
-			// TransactionDate
-			$this->TransactionDate->LinkCustomAttributes = "";
-			$this->TransactionDate->HrefValue = "";
-			$this->TransactionDate->TooltipValue = "";
-
-			// RecommendedBy
-			$this->RecommendedBy->LinkCustomAttributes = "";
-			$this->RecommendedBy->HrefValue = "";
-			$this->RecommendedBy->TooltipValue = "";
-
-			// CE
-			$this->CE->LinkCustomAttributes = "";
-			$this->CE->HrefValue = "";
-			$this->CE->TooltipValue = "";
-
-			// ITM
-			$this->ITM->LinkCustomAttributes = "";
-			$this->ITM->HrefValue = "";
-			$this->ITM->TooltipValue = "";
-
-			// Sign1
-			$this->Sign1->LinkCustomAttributes = "";
-			$this->Sign1->HrefValue = "";
-			$this->Sign1->TooltipValue = "";
-
-			// Sign2
-			$this->Sign2->LinkCustomAttributes = "";
-			$this->Sign2->HrefValue = "";
-			$this->Sign2->TooltipValue = "";
-
-			// Sign3
-			$this->Sign3->LinkCustomAttributes = "";
-			$this->Sign3->HrefValue = "";
-			$this->Sign3->TooltipValue = "";
+			$this->Status->LinkCustomAttributes = "";
+			$this->Status->HrefValue = "";
 		}
+		if ($this->RowType == ROWTYPE_ADD || $this->RowType == ROWTYPE_EDIT || $this->RowType == ROWTYPE_SEARCH) // Add/Edit/Search row
+			$this->setupFieldTitles();
 
 		// Call Row Rendered event
 		if ($this->RowType != ROWTYPE_AGGREGATEINIT)
 			$this->Row_Rendered();
+	}
+
+	// Validate search
+	protected function validateSearch()
+	{
+		global $SearchError;
+
+		// Initialize
+		$SearchError = "";
+
+		// Check if validation required
+		if (!Config("SERVER_VALIDATE"))
+			return TRUE;
+
+		// Return validate result
+		$validateSearch = ($SearchError == "");
+
+		// Call Form_CustomValidate event
+		$formCustomError = "";
+		$validateSearch = $validateSearch && $this->Form_CustomValidate($formCustomError);
+		if ($formCustomError != "") {
+			AddMessage($SearchError, $formCustomError);
+		}
+		return $validateSearch;
+	}
+
+	// Validate form
+	protected function validateForm()
+	{
+		global $Language, $FormError;
+
+		// Initialize form error message
+		$FormError = "";
+
+		// Check if validation required
+		if (!Config("SERVER_VALIDATE"))
+			return ($FormError == "");
+		if ($this->Status->Required) {
+			if (!$this->Status->IsDetailKey && $this->Status->FormValue != NULL && $this->Status->FormValue == "") {
+				AddMessage($FormError, str_replace("%s", $this->Status->caption(), $this->Status->RequiredErrorMessage));
+			}
+		}
+
+		// Return validate result
+		$validateForm = ($FormError == "");
+
+		// Call Form_CustomValidate event
+		$formCustomError = "";
+		$validateForm = $validateForm && $this->Form_CustomValidate($formCustomError);
+		if ($formCustomError != "") {
+			AddMessage($FormError, $formCustomError);
+		}
+		return $validateForm;
+	}
+
+	// Delete records based on current filter
+	protected function deleteRows()
+	{
+		global $Language, $Security;
+		if (!$Security->canDelete()) {
+			$this->setFailureMessage($Language->phrase("NoDeletePermission")); // No delete permission
+			return FALSE;
+		}
+		$deleteRows = TRUE;
+		$sql = $this->getCurrentSql();
+		$conn = $this->getConnection();
+		$conn->raiseErrorFn = Config("ERROR_FUNC");
+		$rs = $conn->execute($sql);
+		$conn->raiseErrorFn = "";
+		if ($rs === FALSE) {
+			return FALSE;
+		} elseif ($rs->EOF) {
+			$this->setFailureMessage($Language->phrase("NoRecord")); // No record found
+			$rs->close();
+			return FALSE;
+		}
+		$rows = ($rs) ? $rs->getRows() : [];
+		if ($this->AuditTrailOnDelete)
+			$this->writeAuditTrailDummy($Language->phrase("BatchDeleteBegin")); // Batch delete begin
+
+		// Clone old rows
+		$rsold = $rows;
+		if ($rs)
+			$rs->close();
+
+		// Call row deleting event
+		if ($deleteRows) {
+			foreach ($rsold as $row) {
+				$deleteRows = $this->Row_Deleting($row);
+				if (!$deleteRows)
+					break;
+			}
+		}
+		if ($deleteRows) {
+			$key = "";
+			foreach ($rsold as $row) {
+				$thisKey = "";
+				if ($thisKey != "")
+					$thisKey .= Config("COMPOSITE_KEY_SEPARATOR");
+				$thisKey .= $row['id'];
+				if (Config("DELETE_UPLOADED_FILES")) // Delete old files
+					$this->deleteUploadedFiles($row);
+				$conn->raiseErrorFn = Config("ERROR_FUNC");
+				$deleteRows = $this->delete($row); // Delete
+				$conn->raiseErrorFn = "";
+				if ($deleteRows === FALSE)
+					break;
+				if ($key != "")
+					$key .= ", ";
+				$key .= $thisKey;
+			}
+		}
+		if (!$deleteRows) {
+
+			// Set up error message
+			if ($this->getSuccessMessage() != "" || $this->getFailureMessage() != "") {
+
+				// Use the message, do nothing
+			} elseif ($this->CancelMessage != "") {
+				$this->setFailureMessage($this->CancelMessage);
+				$this->CancelMessage = "";
+			} else {
+				$this->setFailureMessage($Language->phrase("DeleteCancelled"));
+			}
+		}
+
+		// Call Row Deleted event
+		if ($deleteRows) {
+			foreach ($rsold as $row) {
+				$this->Row_Deleted($row);
+			}
+		}
+
+		// Write JSON for API request (Support single row only)
+		if (IsApi() && $deleteRows) {
+			$row = $this->getRecordsFromRecordset($rsold, TRUE);
+			WriteJson(["success" => TRUE, $this->TableVar => $row]);
+		}
+		return $deleteRows;
+	}
+
+	// Update record based on key values
+	protected function editRow()
+	{
+		global $Security, $Language;
+		$oldKeyFilter = $this->getRecordFilter();
+		$filter = $this->applyUserIDFilters($oldKeyFilter);
+		$conn = $this->getConnection();
+		$this->CurrentFilter = $filter;
+		$sql = $this->getCurrentSql();
+		$conn->raiseErrorFn = Config("ERROR_FUNC");
+		$rs = $conn->execute($sql);
+		$conn->raiseErrorFn = "";
+		if ($rs === FALSE)
+			return FALSE;
+		if ($rs->EOF) {
+			$this->setFailureMessage($Language->phrase("NoRecord")); // Set no record message
+			$editRow = FALSE; // Update Failed
+		} else {
+
+			// Save old values
+			$rsold = &$rs->fields;
+			$this->loadDbValues($rsold);
+			$rsnew = [];
+
+			// Status
+			$this->Status->setDbValueDef($rsnew, $this->Status->CurrentValue, "", $this->Status->ReadOnly);
+
+			// Call Row Updating event
+			$updateRow = $this->Row_Updating($rsold, $rsnew);
+
+			// Check for duplicate key when key changed
+			if ($updateRow) {
+				$newKeyFilter = $this->getRecordFilter($rsnew);
+				if ($newKeyFilter != $oldKeyFilter) {
+					$rsChk = $this->loadRs($newKeyFilter);
+					if ($rsChk && !$rsChk->EOF) {
+						$keyErrMsg = str_replace("%f", $newKeyFilter, $Language->phrase("DupKey"));
+						$this->setFailureMessage($keyErrMsg);
+						$rsChk->close();
+						$updateRow = FALSE;
+					}
+				}
+			}
+			if ($updateRow) {
+				$conn->raiseErrorFn = Config("ERROR_FUNC");
+				if (count($rsnew) > 0)
+					$editRow = $this->update($rsnew, "", $rsold);
+				else
+					$editRow = TRUE; // No field to update
+				$conn->raiseErrorFn = "";
+				if ($editRow) {
+				}
+			} else {
+				if ($this->getSuccessMessage() != "" || $this->getFailureMessage() != "") {
+
+					// Use the message, do nothing
+				} elseif ($this->CancelMessage != "") {
+					$this->setFailureMessage($this->CancelMessage);
+					$this->CancelMessage = "";
+				} else {
+					$this->setFailureMessage($Language->phrase("UpdateCancelled"));
+				}
+				$editRow = FALSE;
+			}
+		}
+
+		// Call Row_Updated event
+		if ($editRow)
+			$this->Row_Updated($rsold, $rsnew);
+		$rs->close();
+
+		// Clean upload path if any
+		if ($editRow) {
+		}
+
+		// Write JSON for API request
+		if (IsApi() && $editRow) {
+			$row = $this->getRecordsFromRecordset([$rsnew], TRUE);
+			WriteJson(["success" => TRUE, $this->TableVar => $row]);
+		}
+		return $editRow;
+	}
+
+	// Load row hash
+	protected function loadRowHash()
+	{
+		$filter = $this->getRecordFilter();
+
+		// Load SQL based on filter
+		$this->CurrentFilter = $filter;
+		$sql = $this->getCurrentSql();
+		$conn = $this->getConnection();
+		$rsRow = $conn->Execute($sql);
+		$this->HashValue = ($rsRow && !$rsRow->EOF) ? $this->getRowHash($rsRow) : ""; // Get hash value for record
+		$rsRow->close();
+	}
+
+	// Get Row Hash
+	public function getRowHash(&$rs)
+	{
+		if (!$rs)
+			return "";
+		$hash = "";
+		$hash .= GetFieldHash($rs->fields('Status')); // Status
+		return md5($hash);
+	}
+
+	// Add record
+	protected function addRow($rsold = NULL)
+	{
+		global $Language, $Security;
+		$conn = $this->getConnection();
+
+		// Load db values from rsold
+		$this->loadDbValues($rsold);
+		if ($rsold) {
+		}
+		$rsnew = [];
+
+		// Status
+		$this->Status->setDbValueDef($rsnew, $this->Status->CurrentValue, "", FALSE);
+
+		// Call Row Inserting event
+		$rs = ($rsold) ? $rsold->fields : NULL;
+		$insertRow = $this->Row_Inserting($rs, $rsnew);
+		if ($insertRow) {
+			$conn->raiseErrorFn = Config("ERROR_FUNC");
+			$addRow = $this->insert($rsnew);
+			$conn->raiseErrorFn = "";
+			if ($addRow) {
+			}
+		} else {
+			if ($this->getSuccessMessage() != "" || $this->getFailureMessage() != "") {
+
+				// Use the message, do nothing
+			} elseif ($this->CancelMessage != "") {
+				$this->setFailureMessage($this->CancelMessage);
+				$this->CancelMessage = "";
+			} else {
+				$this->setFailureMessage($Language->phrase("InsertCancelled"));
+			}
+			$addRow = FALSE;
+		}
+		if ($addRow) {
+
+			// Call Row Inserted event
+			$rs = ($rsold) ? $rsold->fields : NULL;
+			$this->Row_Inserted($rs, $rsnew);
+		}
+
+		// Clean upload path if any
+		if ($addRow) {
+		}
+
+		// Write JSON for API request
+		if (IsApi() && $addRow) {
+			$row = $this->getRecordsFromRecordset([$rsnew], TRUE);
+			WriteJson(["success" => TRUE, $this->TableVar => $row]);
+		}
+		return $addRow;
+	}
+
+	// Load advanced search
+	public function loadAdvancedSearch()
+	{
+		$this->id->AdvancedSearch->load();
+		$this->Status->AdvancedSearch->load();
 	}
 
 	// Get export HTML tag
@@ -2308,17 +2716,17 @@ class t105_disposalhead_list extends t105_disposalhead
 		global $Language;
 		if (SameText($type, "excel")) {
 			if ($custom)
-				return "<a href=\"#\" class=\"ew-export-link ew-excel\" title=\"" . HtmlEncode($Language->phrase("ExportToExcelText")) . "\" data-caption=\"" . HtmlEncode($Language->phrase("ExportToExcelText")) . "\" onclick=\"return ew.export(document.ft105_disposalheadlist, '" . $this->ExportExcelUrl . "', 'excel', true);\">" . $Language->phrase("ExportToExcel") . "</a>";
+				return "<a href=\"#\" class=\"ew-export-link ew-excel\" title=\"" . HtmlEncode($Language->phrase("ExportToExcelText")) . "\" data-caption=\"" . HtmlEncode($Language->phrase("ExportToExcelText")) . "\" onclick=\"return ew.export(document.ft011_reasonlist, '" . $this->ExportExcelUrl . "', 'excel', true);\">" . $Language->phrase("ExportToExcel") . "</a>";
 			else
 				return "<a href=\"" . $this->ExportExcelUrl . "\" class=\"ew-export-link ew-excel\" title=\"" . HtmlEncode($Language->phrase("ExportToExcelText")) . "\" data-caption=\"" . HtmlEncode($Language->phrase("ExportToExcelText")) . "\">" . $Language->phrase("ExportToExcel") . "</a>";
 		} elseif (SameText($type, "word")) {
 			if ($custom)
-				return "<a href=\"#\" class=\"ew-export-link ew-word\" title=\"" . HtmlEncode($Language->phrase("ExportToWordText")) . "\" data-caption=\"" . HtmlEncode($Language->phrase("ExportToWordText")) . "\" onclick=\"return ew.export(document.ft105_disposalheadlist, '" . $this->ExportWordUrl . "', 'word', true);\">" . $Language->phrase("ExportToWord") . "</a>";
+				return "<a href=\"#\" class=\"ew-export-link ew-word\" title=\"" . HtmlEncode($Language->phrase("ExportToWordText")) . "\" data-caption=\"" . HtmlEncode($Language->phrase("ExportToWordText")) . "\" onclick=\"return ew.export(document.ft011_reasonlist, '" . $this->ExportWordUrl . "', 'word', true);\">" . $Language->phrase("ExportToWord") . "</a>";
 			else
 				return "<a href=\"" . $this->ExportWordUrl . "\" class=\"ew-export-link ew-word\" title=\"" . HtmlEncode($Language->phrase("ExportToWordText")) . "\" data-caption=\"" . HtmlEncode($Language->phrase("ExportToWordText")) . "\">" . $Language->phrase("ExportToWord") . "</a>";
 		} elseif (SameText($type, "pdf")) {
 			if ($custom)
-				return "<a href=\"#\" class=\"ew-export-link ew-pdf\" title=\"" . HtmlEncode($Language->phrase("ExportToPDFText")) . "\" data-caption=\"" . HtmlEncode($Language->phrase("ExportToPDFText")) . "\" onclick=\"return ew.export(document.ft105_disposalheadlist, '" . $this->ExportPdfUrl . "', 'pdf', true);\">" . $Language->phrase("ExportToPDF") . "</a>";
+				return "<a href=\"#\" class=\"ew-export-link ew-pdf\" title=\"" . HtmlEncode($Language->phrase("ExportToPDFText")) . "\" data-caption=\"" . HtmlEncode($Language->phrase("ExportToPDFText")) . "\" onclick=\"return ew.export(document.ft011_reasonlist, '" . $this->ExportPdfUrl . "', 'pdf', true);\">" . $Language->phrase("ExportToPDF") . "</a>";
 			else
 				return "<a href=\"" . $this->ExportPdfUrl . "\" class=\"ew-export-link ew-pdf\" title=\"" . HtmlEncode($Language->phrase("ExportToPDFText")) . "\" data-caption=\"" . HtmlEncode($Language->phrase("ExportToPDFText")) . "\">" . $Language->phrase("ExportToPDF") . "</a>";
 		} elseif (SameText($type, "html")) {
@@ -2329,7 +2737,7 @@ class t105_disposalhead_list extends t105_disposalhead
 			return "<a href=\"" . $this->ExportCsvUrl . "\" class=\"ew-export-link ew-csv\" title=\"" . HtmlEncode($Language->phrase("ExportToCsvText")) . "\" data-caption=\"" . HtmlEncode($Language->phrase("ExportToCsvText")) . "\">" . $Language->phrase("ExportToCsv") . "</a>";
 		} elseif (SameText($type, "email")) {
 			$url = $custom ? ",url:'" . $this->pageUrl() . "export=email&amp;custom=1'" : "";
-			return '<button id="emf_t105_disposalhead" class="ew-export-link ew-email" title="' . $Language->phrase("ExportToEmailText") . '" data-caption="' . $Language->phrase("ExportToEmailText") . '" onclick="ew.emailDialogShow({lnk:\'emf_t105_disposalhead\', hdr:ew.language.phrase(\'ExportToEmailText\'), f:document.ft105_disposalheadlist, sel:false' . $url . '});">' . $Language->phrase("ExportToEmail") . '</button>';
+			return '<button id="emf_t011_reason" class="ew-export-link ew-email" title="' . $Language->phrase("ExportToEmailText") . '" data-caption="' . $Language->phrase("ExportToEmailText") . '" onclick="ew.emailDialogShow({lnk:\'emf_t011_reason\', hdr:ew.language.phrase(\'ExportToEmailText\'), f:document.ft011_reasonlist, sel:false' . $url . '});">' . $Language->phrase("ExportToEmail") . '</button>';
 		} elseif (SameText($type, "print")) {
 			return "<a href=\"" . $this->ExportPrintUrl . "\" class=\"ew-export-link ew-print\" title=\"" . HtmlEncode($Language->phrase("PrinterFriendlyText")) . "\" data-caption=\"" . HtmlEncode($Language->phrase("PrinterFriendlyText")) . "\">" . $Language->phrase("PrinterFriendly") . "</a>";
 		}
@@ -2400,16 +2808,18 @@ class t105_disposalhead_list extends t105_disposalhead
 		$this->SearchOptions = new ListOptions("div");
 		$this->SearchOptions->TagClassName = "ew-search-option";
 
-		// Search button
-		$item = &$this->SearchOptions->add("searchtoggle");
-		$searchToggleClass = ($this->SearchWhere != "") ? " active" : " active";
-		$item->Body = "<a class=\"btn btn-default ew-search-toggle" . $searchToggleClass . "\" href=\"#\" role=\"button\" title=\"" . $Language->phrase("SearchPanel") . "\" data-caption=\"" . $Language->phrase("SearchPanel") . "\" data-toggle=\"button\" data-form=\"ft105_disposalheadlistsrch\" aria-pressed=\"" . ($searchToggleClass == " active" ? "true" : "false") . "\">" . $Language->phrase("SearchLink") . "</a>";
-		$item->Visible = TRUE;
-
 		// Show all button
 		$item = &$this->SearchOptions->add("showall");
 		$item->Body = "<a class=\"btn btn-default ew-show-all\" title=\"" . $Language->phrase("ShowAll") . "\" data-caption=\"" . $Language->phrase("ShowAll") . "\" href=\"" . $this->pageUrl() . "cmd=reset\">" . $Language->phrase("ShowAllBtn") . "</a>";
 		$item->Visible = ($this->SearchWhere != $this->DefaultSearchWhere && $this->SearchWhere != "0=101");
+
+		// Advanced search button
+		$item = &$this->SearchOptions->add("advancedsearch");
+		if (IsMobile())
+			$item->Body = "<a class=\"btn btn-default ew-advanced-search\" title=\"" . $Language->phrase("AdvancedSearch") . "\" data-caption=\"" . $Language->phrase("AdvancedSearch") . "\" href=\"t011_reasonsrch.php\">" . $Language->phrase("AdvancedSearchBtn") . "</a>";
+		else
+			$item->Body = "<a class=\"btn btn-default ew-advanced-search\" title=\"" . $Language->phrase("AdvancedSearch") . "\" data-table=\"t011_reason\" data-caption=\"" . $Language->phrase("AdvancedSearch") . "\" href=\"#\" onclick=\"return ew.modalDialogShow({lnk:this,btn:'SearchBtn',url:'t011_reasonsrch.php'});\">" . $Language->phrase("AdvancedSearchBtn") . "</a>";
+		$item->Visible = TRUE;
 
 		// Button group for search
 		$this->SearchOptions->UseDropDownButton = FALSE;
@@ -2558,20 +2968,6 @@ class t105_disposalhead_list extends t105_disposalhead
 
 			// Set up lookup SQL and connection
 			switch ($fld->FieldVar) {
-				case "x_property_id":
-					break;
-				case "x_RecommendedBy":
-					break;
-				case "x_CE":
-					break;
-				case "x_ITM":
-					break;
-				case "x_Sign1":
-					break;
-				case "x_Sign2":
-					break;
-				case "x_Sign3":
-					break;
 				default:
 					$lookupFilter = "";
 					break;
@@ -2592,20 +2988,6 @@ class t105_disposalhead_list extends t105_disposalhead
 
 					// Format the field values
 					switch ($fld->FieldVar) {
-						case "x_property_id":
-							break;
-						case "x_RecommendedBy":
-							break;
-						case "x_CE":
-							break;
-						case "x_ITM":
-							break;
-						case "x_Sign1":
-							break;
-						case "x_Sign2":
-							break;
-						case "x_Sign3":
-							break;
 					}
 					$ar[strval($row[0])] = $row;
 					$rs->moveNext();

@@ -4,7 +4,7 @@ namespace PHPMaker2020\p_simasset1;
 /**
  * Page class
  */
-class t105_disposalhead_view extends t105_disposalhead
+class t106_disposaldetail_view extends t106_disposaldetail
 {
 
 	// Page ID
@@ -14,10 +14,10 @@ class t105_disposalhead_view extends t105_disposalhead
 	public $ProjectID = "{E1C6E322-15B9-474C-85CF-A99378A9BC2B}";
 
 	// Table name
-	public $TableName = 't105_disposalhead';
+	public $TableName = 't106_disposaldetail';
 
 	// Page object name
-	public $PageObjName = "t105_disposalhead_view";
+	public $PageObjName = "t106_disposaldetail_view";
 
 	// Page URLs
 	public $AddUrl;
@@ -381,10 +381,10 @@ class t105_disposalhead_view extends t105_disposalhead
 		// Parent constuctor
 		parent::__construct();
 
-		// Table object (t105_disposalhead)
-		if (!isset($GLOBALS["t105_disposalhead"]) || get_class($GLOBALS["t105_disposalhead"]) == PROJECT_NAMESPACE . "t105_disposalhead") {
-			$GLOBALS["t105_disposalhead"] = &$this;
-			$GLOBALS["Table"] = &$GLOBALS["t105_disposalhead"];
+		// Table object (t106_disposaldetail)
+		if (!isset($GLOBALS["t106_disposaldetail"]) || get_class($GLOBALS["t106_disposaldetail"]) == PROJECT_NAMESPACE . "t106_disposaldetail") {
+			$GLOBALS["t106_disposaldetail"] = &$this;
+			$GLOBALS["Table"] = &$GLOBALS["t106_disposaldetail"];
 		}
 		$keyUrl = "";
 		if (Get("id") !== NULL) {
@@ -399,6 +399,10 @@ class t105_disposalhead_view extends t105_disposalhead
 		$this->ExportCsvUrl = $this->pageUrl() . "export=csv" . $keyUrl;
 		$this->ExportPdfUrl = $this->pageUrl() . "export=pdf" . $keyUrl;
 
+		// Table object (t105_disposalhead)
+		if (!isset($GLOBALS['t105_disposalhead']))
+			$GLOBALS['t105_disposalhead'] = new t105_disposalhead();
+
 		// Table object (t201_users)
 		if (!isset($GLOBALS['t201_users']))
 			$GLOBALS['t201_users'] = new t201_users();
@@ -409,7 +413,7 @@ class t105_disposalhead_view extends t105_disposalhead
 
 		// Table name (for backward compatibility only)
 		if (!defined(PROJECT_NAMESPACE . "TABLE_NAME"))
-			define(PROJECT_NAMESPACE . "TABLE_NAME", 't105_disposalhead');
+			define(PROJECT_NAMESPACE . "TABLE_NAME", 't106_disposaldetail');
 
 		// Start timer
 		if (!isset($GLOBALS["DebugTimer"]))
@@ -450,14 +454,14 @@ class t105_disposalhead_view extends t105_disposalhead
 		Page_Unloaded();
 
 		// Export
-		global $t105_disposalhead;
+		global $t106_disposaldetail;
 		if ($this->CustomExport && $this->CustomExport == $this->Export && array_key_exists($this->CustomExport, Config("EXPORT_CLASSES"))) {
 				$content = ob_get_contents();
 			if ($ExportFileName == "")
 				$ExportFileName = $this->TableVar;
 			$class = PROJECT_NAMESPACE . Config("EXPORT_CLASSES." . $this->CustomExport);
 			if (class_exists($class)) {
-				$doc = new $class($t105_disposalhead);
+				$doc = new $class($t106_disposaldetail);
 				$doc->Text = @$content;
 				if ($this->isExport("email"))
 					echo $this->exportEmail($doc->Text);
@@ -492,7 +496,7 @@ class t105_disposalhead_view extends t105_disposalhead
 				$pageName = GetPageName($url);
 				if ($pageName != $this->getListUrl()) { // Not List page
 					$row["caption"] = $this->getModalCaption($pageName);
-					if ($pageName == "t105_disposalheadview.php")
+					if ($pageName == "t106_disposaldetailview.php")
 						$row["view"] = "1";
 				} else { // List page should not be shown as modal => error
 					$row["error"] = $this->getFailureMessage();
@@ -733,7 +737,7 @@ class t105_disposalhead_view extends t105_disposalhead
 				$Security->saveLastUrl();
 				$this->setFailureMessage(DeniedMessage()); // Set no permission
 				if ($Security->canList())
-					$this->terminate(GetUrl("t105_disposalheadlist.php"));
+					$this->terminate(GetUrl("t106_disposaldetaillist.php"));
 				else
 					$this->terminate(GetUrl("login.php"));
 				return;
@@ -746,15 +750,11 @@ class t105_disposalhead_view extends t105_disposalhead
 		}
 		$this->CurrentAction = Param("action"); // Set up current action
 		$this->id->setVisibility();
-		$this->property_id->setVisibility();
-		$this->TransactionNo->setVisibility();
-		$this->TransactionDate->setVisibility();
-		$this->RecommendedBy->setVisibility();
-		$this->CE->setVisibility();
-		$this->ITM->setVisibility();
-		$this->Sign1->setVisibility();
-		$this->Sign2->setVisibility();
-		$this->Sign3->setVisibility();
+		$this->disposalhead_id->setVisibility();
+		$this->asset_id->setVisibility();
+		$this->depreciation_id->setVisibility();
+		$this->cond_id->setVisibility();
+		$this->reason_id->setVisibility();
 		$this->hideFieldsForAddEdit();
 
 		// Do not use lookup cache
@@ -776,18 +776,14 @@ class t105_disposalhead_view extends t105_disposalhead
 		$this->createToken();
 
 		// Set up lookup cache
-		$this->setupLookupOptions($this->property_id);
-		$this->setupLookupOptions($this->RecommendedBy);
-		$this->setupLookupOptions($this->CE);
-		$this->setupLookupOptions($this->ITM);
-		$this->setupLookupOptions($this->Sign1);
-		$this->setupLookupOptions($this->Sign2);
-		$this->setupLookupOptions($this->Sign3);
+		$this->setupLookupOptions($this->asset_id);
+		$this->setupLookupOptions($this->cond_id);
+		$this->setupLookupOptions($this->reason_id);
 
 		// Check permission
 		if (!$Security->canView()) {
 			$this->setFailureMessage(DeniedMessage()); // No permission
-			$this->terminate("t105_disposalheadlist.php");
+			$this->terminate("t106_disposaldetaillist.php");
 			return;
 		}
 
@@ -799,6 +795,9 @@ class t105_disposalhead_view extends t105_disposalhead
 		$loadCurrentRecord = FALSE;
 		$returnUrl = "";
 		$matchRecord = FALSE;
+
+		// Set up master/detail parameters
+		$this->setupMasterParms();
 		if ($this->isPageRequest()) { // Validate request
 			if (Get("id") !== NULL) {
 				$this->id->setQueryStringValue(Get("id"));
@@ -826,7 +825,7 @@ class t105_disposalhead_view extends t105_disposalhead
 					if ($this->TotalRecords <= 0) { // No record found
 						if ($this->getSuccessMessage() == "" && $this->getFailureMessage() == "")
 							$this->setFailureMessage($Language->phrase("NoRecord")); // Set no record message
-						$this->terminate("t105_disposalheadlist.php"); // Return to list page
+						$this->terminate("t106_disposaldetaillist.php"); // Return to list page
 					} elseif ($loadCurrentRecord) { // Load current record position
 						$this->setupStartRecord(); // Set up start record position
 
@@ -850,13 +849,13 @@ class t105_disposalhead_view extends t105_disposalhead
 					if (!$matchRecord) {
 						if ($this->getSuccessMessage() == "" && $this->getFailureMessage() == "")
 							$this->setFailureMessage($Language->phrase("NoRecord")); // Set no record message
-						$returnUrl = "t105_disposalheadlist.php"; // No matching record, return to list
+						$returnUrl = "t106_disposaldetaillist.php"; // No matching record, return to list
 					} else {
 						$this->loadRowValues($this->Recordset); // Load row values
 					}
 			}
 		} else {
-			$returnUrl = "t105_disposalheadlist.php"; // Not page request, return to list
+			$returnUrl = "t106_disposaldetaillist.php"; // Not page request, return to list
 		}
 		if ($returnUrl != "") {
 			$this->terminate($returnUrl);
@@ -871,9 +870,6 @@ class t105_disposalhead_view extends t105_disposalhead
 		$this->RowType = ROWTYPE_VIEW;
 		$this->resetAttributes();
 		$this->renderRow();
-
-		// Set up detail parameters
-		$this->setupDetailParms();
 
 		// Normal return
 		if (IsApi()) {
@@ -923,91 +919,8 @@ class t105_disposalhead_view extends t105_disposalhead
 
 		// Delete
 		$item = &$option->add("delete");
-		if ($this->IsModal) // Handle as inline delete
-			$item->Body = "<a onclick=\"return ew.confirmDelete(this);\" class=\"ew-action ew-delete\" title=\"" . HtmlTitle($Language->phrase("ViewPageDeleteLink")) . "\" data-caption=\"" . HtmlTitle($Language->phrase("ViewPageDeleteLink")) . "\" href=\"" . HtmlEncode(UrlAddQuery($this->DeleteUrl, "action=1")) . "\">" . $Language->phrase("ViewPageDeleteLink") . "</a>";
-		else
-			$item->Body = "<a class=\"ew-action ew-delete\" title=\"" . HtmlTitle($Language->phrase("ViewPageDeleteLink")) . "\" data-caption=\"" . HtmlTitle($Language->phrase("ViewPageDeleteLink")) . "\" href=\"" . HtmlEncode($this->DeleteUrl) . "\">" . $Language->phrase("ViewPageDeleteLink") . "</a>";
+		$item->Body = "<a onclick=\"return ew.confirmDelete(this);\" class=\"ew-action ew-delete\" title=\"" . HtmlTitle($Language->phrase("ViewPageDeleteLink")) . "\" data-caption=\"" . HtmlTitle($Language->phrase("ViewPageDeleteLink")) . "\" href=\"" . HtmlEncode($this->DeleteUrl) . "\">" . $Language->phrase("ViewPageDeleteLink") . "</a>";
 		$item->Visible = ($this->DeleteUrl != "" && $Security->canDelete());
-		$option = $options["detail"];
-		$detailTableLink = "";
-		$detailViewTblVar = "";
-		$detailCopyTblVar = "";
-		$detailEditTblVar = "";
-
-		// "detail_t106_disposaldetail"
-		$item = &$option->add("detail_t106_disposaldetail");
-		$body = $Language->phrase("ViewPageDetailLink") . $Language->TablePhrase("t106_disposaldetail", "TblCaption");
-		$body = "<a class=\"btn btn-default ew-row-link ew-detail\" data-action=\"list\" href=\"" . HtmlEncode("t106_disposaldetaillist.php?" . Config("TABLE_SHOW_MASTER") . "=t105_disposalhead&fk_id=" . urlencode(strval($this->id->CurrentValue)) . "") . "\">" . $body . "</a>";
-		$links = "";
-		if (!isset($GLOBALS["t106_disposaldetail_grid"]))
-			$GLOBALS["t106_disposaldetail_grid"] = new t106_disposaldetail_grid();
-		if ($GLOBALS["t106_disposaldetail_grid"]->DetailView && $Security->canView() && $Security->allowView(CurrentProjectID() . 't105_disposalhead')) {
-			$links .= "<li><a class=\"ew-row-link ew-detail-view\" data-action=\"view\" data-caption=\"" . HtmlTitle($Language->phrase("MasterDetailViewLink")) . "\" href=\"" . HtmlEncode($this->getViewUrl(Config("TABLE_SHOW_DETAIL") . "=t106_disposaldetail")) . "\">" . HtmlImageAndText($Language->phrase("MasterDetailViewLink")) . "</a></li>";
-			if ($detailViewTblVar != "")
-				$detailViewTblVar .= ",";
-			$detailViewTblVar .= "t106_disposaldetail";
-		}
-		if ($GLOBALS["t106_disposaldetail_grid"]->DetailEdit && $Security->canEdit() && $Security->allowEdit(CurrentProjectID() . 't105_disposalhead')) {
-			$links .= "<li><a class=\"ew-row-link ew-detail-edit\" data-action=\"edit\" data-caption=\"" . HtmlTitle($Language->phrase("MasterDetailEditLink")) . "\" href=\"" . HtmlEncode($this->getEditUrl(Config("TABLE_SHOW_DETAIL") . "=t106_disposaldetail")) . "\">" . HtmlImageAndText($Language->phrase("MasterDetailEditLink")) . "</a></li>";
-			if ($detailEditTblVar != "")
-				$detailEditTblVar .= ",";
-			$detailEditTblVar .= "t106_disposaldetail";
-		}
-		if ($GLOBALS["t106_disposaldetail_grid"]->DetailAdd && $Security->canAdd() && $Security->allowAdd(CurrentProjectID() . 't105_disposalhead')) {
-			$links .= "<li><a class=\"ew-row-link ew-detail-copy\" data-action=\"add\" data-caption=\"" . HtmlTitle($Language->phrase("MasterDetailCopyLink")) . "\" href=\"" . HtmlEncode($this->getCopyUrl(Config("TABLE_SHOW_DETAIL") . "=t106_disposaldetail")) . "\">" . HtmlImageAndText($Language->phrase("MasterDetailCopyLink")) . "</a></li>";
-			if ($detailCopyTblVar != "")
-				$detailCopyTblVar .= ",";
-			$detailCopyTblVar .= "t106_disposaldetail";
-		}
-		if ($links != "") {
-			$body .= "<button class=\"dropdown-toggle btn btn-default ew-detail\" data-toggle=\"dropdown\"></button>";
-			$body .= "<ul class=\"dropdown-menu\">". $links . "</ul>";
-		}
-		$body = "<div class=\"btn-group btn-group-sm ew-btn-group\">" . $body . "</div>";
-		$item->Body = $body;
-		$item->Visible = $Security->allowList(CurrentProjectID() . 't106_disposaldetail');
-		if ($item->Visible) {
-			if ($detailTableLink != "")
-				$detailTableLink .= ",";
-			$detailTableLink .= "t106_disposaldetail";
-		}
-		if ($this->ShowMultipleDetails)
-			$item->Visible = FALSE;
-
-		// Multiple details
-		if ($this->ShowMultipleDetails) {
-			$body = "<div class=\"btn-group btn-group-sm ew-btn-group\">";
-			$links = "";
-			if ($detailViewTblVar != "") {
-				$links .= "<li><a class=\"ew-row-link ew-detail-view\" data-action=\"view\" data-caption=\"" . HtmlTitle($Language->phrase("MasterDetailViewLink")) . "\" href=\"" . HtmlEncode($this->getViewUrl(Config("TABLE_SHOW_DETAIL") . "=" . $detailViewTblVar)) . "\">" . HtmlImageAndText($Language->phrase("MasterDetailViewLink")) . "</a></li>";
-			}
-			if ($detailEditTblVar != "") {
-				$links .= "<li><a class=\"ew-row-link ew-detail-edit\" data-action=\"edit\" data-caption=\"" . HtmlTitle($Language->phrase("MasterDetailEditLink")) . "\" href=\"" . HtmlEncode($this->getEditUrl(Config("TABLE_SHOW_DETAIL") . "=" . $detailEditTblVar)) . "\">" . HtmlImageAndText($Language->phrase("MasterDetailEditLink")) . "</a></li>";
-			}
-			if ($detailCopyTblVar != "") {
-				$links .= "<li><a class=\"ew-row-link ew-detail-copy\" data-action=\"add\" data-caption=\"" . HtmlTitle($Language->phrase("MasterDetailCopyLink")) . "\" href=\"" . HtmlEncode($this->getCopyUrl(Config("TABLE_SHOW_DETAIL") . "=" . $detailCopyTblVar)) . "\">" . HtmlImageAndText($Language->phrase("MasterDetailCopyLink")) . "</a></li>";
-			}
-			if ($links != "") {
-				$body .= "<button class=\"dropdown-toggle btn btn-default ew-master-detail\" title=\"" . HtmlTitle($Language->phrase("MultipleMasterDetails")) . "\" data-toggle=\"dropdown\">" . $Language->phrase("MultipleMasterDetails") . "</button>";
-				$body .= "<ul class=\"dropdown-menu ew-menu\">". $links . "</ul>";
-			}
-			$body .= "</div>";
-
-			// Multiple details
-			$item = &$option->add("details");
-			$item->Body = $body;
-		}
-
-		// Set up detail default
-		$option = $options["detail"];
-		$options["detail"]->DropDownButtonPhrase = $Language->phrase("ButtonDetails");
-		$ar = explode(",", $detailTableLink);
-		$cnt = count($ar);
-		$option->UseDropDownButton = ($cnt > 1);
-		$option->UseButtonGroup = TRUE;
-		$item = &$option->add($option->GroupOptionName);
-		$item->Body = "";
-		$item->Visible = FALSE;
 
 		// Set up action default
 		$option = $options["action"];
@@ -1084,15 +997,11 @@ class t105_disposalhead_view extends t105_disposalhead
 		if ($this->AuditTrailOnView)
 			$this->writeAuditTrailOnView($row);
 		$this->id->setDbValue($row['id']);
-		$this->property_id->setDbValue($row['property_id']);
-		$this->TransactionNo->setDbValue($row['TransactionNo']);
-		$this->TransactionDate->setDbValue($row['TransactionDate']);
-		$this->RecommendedBy->setDbValue($row['RecommendedBy']);
-		$this->CE->setDbValue($row['CE']);
-		$this->ITM->setDbValue($row['ITM']);
-		$this->Sign1->setDbValue($row['Sign1']);
-		$this->Sign2->setDbValue($row['Sign2']);
-		$this->Sign3->setDbValue($row['Sign3']);
+		$this->disposalhead_id->setDbValue($row['disposalhead_id']);
+		$this->asset_id->setDbValue($row['asset_id']);
+		$this->depreciation_id->setDbValue($row['depreciation_id']);
+		$this->cond_id->setDbValue($row['cond_id']);
+		$this->reason_id->setDbValue($row['reason_id']);
 	}
 
 	// Return a row with default values
@@ -1100,15 +1009,11 @@ class t105_disposalhead_view extends t105_disposalhead
 	{
 		$row = [];
 		$row['id'] = NULL;
-		$row['property_id'] = NULL;
-		$row['TransactionNo'] = NULL;
-		$row['TransactionDate'] = NULL;
-		$row['RecommendedBy'] = NULL;
-		$row['CE'] = NULL;
-		$row['ITM'] = NULL;
-		$row['Sign1'] = NULL;
-		$row['Sign2'] = NULL;
-		$row['Sign3'] = NULL;
+		$row['disposalhead_id'] = NULL;
+		$row['asset_id'] = NULL;
+		$row['depreciation_id'] = NULL;
+		$row['cond_id'] = NULL;
+		$row['reason_id'] = NULL;
 		return $row;
 	}
 
@@ -1130,15 +1035,11 @@ class t105_disposalhead_view extends t105_disposalhead
 
 		// Common render codes for all row types
 		// id
-		// property_id
-		// TransactionNo
-		// TransactionDate
-		// RecommendedBy
-		// CE
-		// ITM
-		// Sign1
-		// Sign2
-		// Sign3
+		// disposalhead_id
+		// asset_id
+		// depreciation_id
+		// cond_id
+		// reason_id
 
 		if ($this->RowType == ROWTYPE_VIEW) { // View row
 
@@ -1146,213 +1047,102 @@ class t105_disposalhead_view extends t105_disposalhead
 			$this->id->ViewValue = $this->id->CurrentValue;
 			$this->id->ViewCustomAttributes = "";
 
-			// property_id
-			$curVal = strval($this->property_id->CurrentValue);
+			// disposalhead_id
+			$this->disposalhead_id->ViewValue = $this->disposalhead_id->CurrentValue;
+			$this->disposalhead_id->ViewValue = FormatNumber($this->disposalhead_id->ViewValue, 0, -2, -2, -2);
+			$this->disposalhead_id->ViewCustomAttributes = "";
+
+			// asset_id
+			$curVal = strval($this->asset_id->CurrentValue);
 			if ($curVal != "") {
-				$this->property_id->ViewValue = $this->property_id->lookupCacheOption($curVal);
-				if ($this->property_id->ViewValue === NULL) { // Lookup from database
+				$this->asset_id->ViewValue = $this->asset_id->lookupCacheOption($curVal);
+				if ($this->asset_id->ViewValue === NULL) { // Lookup from database
 					$filterWrk = "`id`" . SearchString("=", $curVal, DATATYPE_NUMBER, "");
-					$sqlWrk = $this->property_id->Lookup->getSql(FALSE, $filterWrk, '', $this);
+					$sqlWrk = $this->asset_id->Lookup->getSql(FALSE, $filterWrk, '', $this);
 					$rswrk = Conn()->execute($sqlWrk);
 					if ($rswrk && !$rswrk->EOF) { // Lookup values found
 						$arwrk = [];
 						$arwrk[1] = $rswrk->fields('df');
-						$this->property_id->ViewValue = $this->property_id->displayValue($arwrk);
+						$arwrk[2] = $rswrk->fields('df2');
+						$this->asset_id->ViewValue = $this->asset_id->displayValue($arwrk);
 						$rswrk->Close();
 					} else {
-						$this->property_id->ViewValue = $this->property_id->CurrentValue;
+						$this->asset_id->ViewValue = $this->asset_id->CurrentValue;
 					}
 				}
 			} else {
-				$this->property_id->ViewValue = NULL;
+				$this->asset_id->ViewValue = NULL;
 			}
-			$this->property_id->ViewCustomAttributes = "";
+			$this->asset_id->ViewCustomAttributes = "";
 
-			// TransactionNo
-			$this->TransactionNo->ViewValue = $this->TransactionNo->CurrentValue;
-			$this->TransactionNo->ViewCustomAttributes = "";
+			// depreciation_id
+			$this->depreciation_id->ViewValue = $this->depreciation_id->CurrentValue;
+			$this->depreciation_id->ViewValue = FormatNumber($this->depreciation_id->ViewValue, 0, -2, -2, -2);
+			$this->depreciation_id->ViewCustomAttributes = "";
 
-			// TransactionDate
-			$this->TransactionDate->ViewValue = $this->TransactionDate->CurrentValue;
-			$this->TransactionDate->ViewValue = FormatDateTime($this->TransactionDate->ViewValue, 7);
-			$this->TransactionDate->ViewCustomAttributes = "";
-
-			// RecommendedBy
-			$curVal = strval($this->RecommendedBy->CurrentValue);
+			// cond_id
+			$curVal = strval($this->cond_id->CurrentValue);
 			if ($curVal != "") {
-				$this->RecommendedBy->ViewValue = $this->RecommendedBy->lookupCacheOption($curVal);
-				if ($this->RecommendedBy->ViewValue === NULL) { // Lookup from database
+				$this->cond_id->ViewValue = $this->cond_id->lookupCacheOption($curVal);
+				if ($this->cond_id->ViewValue === NULL) { // Lookup from database
 					$filterWrk = "`id`" . SearchString("=", $curVal, DATATYPE_NUMBER, "");
-					$sqlWrk = $this->RecommendedBy->Lookup->getSql(FALSE, $filterWrk, '', $this);
+					$sqlWrk = $this->cond_id->Lookup->getSql(FALSE, $filterWrk, '', $this);
 					$rswrk = Conn()->execute($sqlWrk);
 					if ($rswrk && !$rswrk->EOF) { // Lookup values found
 						$arwrk = [];
 						$arwrk[1] = $rswrk->fields('df');
-						$this->RecommendedBy->ViewValue = $this->RecommendedBy->displayValue($arwrk);
+						$this->cond_id->ViewValue = $this->cond_id->displayValue($arwrk);
 						$rswrk->Close();
 					} else {
-						$this->RecommendedBy->ViewValue = $this->RecommendedBy->CurrentValue;
+						$this->cond_id->ViewValue = $this->cond_id->CurrentValue;
 					}
 				}
 			} else {
-				$this->RecommendedBy->ViewValue = NULL;
+				$this->cond_id->ViewValue = NULL;
 			}
-			$this->RecommendedBy->ViewCustomAttributes = "";
+			$this->cond_id->ViewCustomAttributes = "";
 
-			// CE
-			$curVal = strval($this->CE->CurrentValue);
+			// reason_id
+			$curVal = strval($this->reason_id->CurrentValue);
 			if ($curVal != "") {
-				$this->CE->ViewValue = $this->CE->lookupCacheOption($curVal);
-				if ($this->CE->ViewValue === NULL) { // Lookup from database
+				$this->reason_id->ViewValue = $this->reason_id->lookupCacheOption($curVal);
+				if ($this->reason_id->ViewValue === NULL) { // Lookup from database
 					$filterWrk = "`id`" . SearchString("=", $curVal, DATATYPE_NUMBER, "");
-					$sqlWrk = $this->CE->Lookup->getSql(FALSE, $filterWrk, '', $this);
+					$sqlWrk = $this->reason_id->Lookup->getSql(FALSE, $filterWrk, '', $this);
 					$rswrk = Conn()->execute($sqlWrk);
 					if ($rswrk && !$rswrk->EOF) { // Lookup values found
 						$arwrk = [];
 						$arwrk[1] = $rswrk->fields('df');
-						$this->CE->ViewValue = $this->CE->displayValue($arwrk);
+						$this->reason_id->ViewValue = $this->reason_id->displayValue($arwrk);
 						$rswrk->Close();
 					} else {
-						$this->CE->ViewValue = $this->CE->CurrentValue;
+						$this->reason_id->ViewValue = $this->reason_id->CurrentValue;
 					}
 				}
 			} else {
-				$this->CE->ViewValue = NULL;
+				$this->reason_id->ViewValue = NULL;
 			}
-			$this->CE->ViewCustomAttributes = "";
+			$this->reason_id->ViewCustomAttributes = "";
 
-			// ITM
-			$curVal = strval($this->ITM->CurrentValue);
-			if ($curVal != "") {
-				$this->ITM->ViewValue = $this->ITM->lookupCacheOption($curVal);
-				if ($this->ITM->ViewValue === NULL) { // Lookup from database
-					$filterWrk = "`id`" . SearchString("=", $curVal, DATATYPE_NUMBER, "");
-					$sqlWrk = $this->ITM->Lookup->getSql(FALSE, $filterWrk, '', $this);
-					$rswrk = Conn()->execute($sqlWrk);
-					if ($rswrk && !$rswrk->EOF) { // Lookup values found
-						$arwrk = [];
-						$arwrk[1] = $rswrk->fields('df');
-						$this->ITM->ViewValue = $this->ITM->displayValue($arwrk);
-						$rswrk->Close();
-					} else {
-						$this->ITM->ViewValue = $this->ITM->CurrentValue;
-					}
-				}
-			} else {
-				$this->ITM->ViewValue = NULL;
-			}
-			$this->ITM->ViewCustomAttributes = "";
+			// disposalhead_id
+			$this->disposalhead_id->LinkCustomAttributes = "";
+			$this->disposalhead_id->HrefValue = "";
+			$this->disposalhead_id->TooltipValue = "";
 
-			// Sign1
-			$curVal = strval($this->Sign1->CurrentValue);
-			if ($curVal != "") {
-				$this->Sign1->ViewValue = $this->Sign1->lookupCacheOption($curVal);
-				if ($this->Sign1->ViewValue === NULL) { // Lookup from database
-					$filterWrk = "`id`" . SearchString("=", $curVal, DATATYPE_NUMBER, "");
-					$sqlWrk = $this->Sign1->Lookup->getSql(FALSE, $filterWrk, '', $this);
-					$rswrk = Conn()->execute($sqlWrk);
-					if ($rswrk && !$rswrk->EOF) { // Lookup values found
-						$arwrk = [];
-						$arwrk[1] = $rswrk->fields('df');
-						$this->Sign1->ViewValue = $this->Sign1->displayValue($arwrk);
-						$rswrk->Close();
-					} else {
-						$this->Sign1->ViewValue = $this->Sign1->CurrentValue;
-					}
-				}
-			} else {
-				$this->Sign1->ViewValue = NULL;
-			}
-			$this->Sign1->ViewCustomAttributes = "";
+			// asset_id
+			$this->asset_id->LinkCustomAttributes = "";
+			$this->asset_id->HrefValue = "";
+			$this->asset_id->TooltipValue = "";
 
-			// Sign2
-			$curVal = strval($this->Sign2->CurrentValue);
-			if ($curVal != "") {
-				$this->Sign2->ViewValue = $this->Sign2->lookupCacheOption($curVal);
-				if ($this->Sign2->ViewValue === NULL) { // Lookup from database
-					$filterWrk = "`id`" . SearchString("=", $curVal, DATATYPE_NUMBER, "");
-					$sqlWrk = $this->Sign2->Lookup->getSql(FALSE, $filterWrk, '', $this);
-					$rswrk = Conn()->execute($sqlWrk);
-					if ($rswrk && !$rswrk->EOF) { // Lookup values found
-						$arwrk = [];
-						$arwrk[1] = $rswrk->fields('df');
-						$this->Sign2->ViewValue = $this->Sign2->displayValue($arwrk);
-						$rswrk->Close();
-					} else {
-						$this->Sign2->ViewValue = $this->Sign2->CurrentValue;
-					}
-				}
-			} else {
-				$this->Sign2->ViewValue = NULL;
-			}
-			$this->Sign2->ViewCustomAttributes = "";
+			// cond_id
+			$this->cond_id->LinkCustomAttributes = "";
+			$this->cond_id->HrefValue = "";
+			$this->cond_id->TooltipValue = "";
 
-			// Sign3
-			$curVal = strval($this->Sign3->CurrentValue);
-			if ($curVal != "") {
-				$this->Sign3->ViewValue = $this->Sign3->lookupCacheOption($curVal);
-				if ($this->Sign3->ViewValue === NULL) { // Lookup from database
-					$filterWrk = "`id`" . SearchString("=", $curVal, DATATYPE_NUMBER, "");
-					$sqlWrk = $this->Sign3->Lookup->getSql(FALSE, $filterWrk, '', $this);
-					$rswrk = Conn()->execute($sqlWrk);
-					if ($rswrk && !$rswrk->EOF) { // Lookup values found
-						$arwrk = [];
-						$arwrk[1] = $rswrk->fields('df');
-						$this->Sign3->ViewValue = $this->Sign3->displayValue($arwrk);
-						$rswrk->Close();
-					} else {
-						$this->Sign3->ViewValue = $this->Sign3->CurrentValue;
-					}
-				}
-			} else {
-				$this->Sign3->ViewValue = NULL;
-			}
-			$this->Sign3->ViewCustomAttributes = "";
-
-			// property_id
-			$this->property_id->LinkCustomAttributes = "";
-			$this->property_id->HrefValue = "";
-			$this->property_id->TooltipValue = "";
-
-			// TransactionNo
-			$this->TransactionNo->LinkCustomAttributes = "";
-			$this->TransactionNo->HrefValue = "";
-			$this->TransactionNo->TooltipValue = "";
-
-			// TransactionDate
-			$this->TransactionDate->LinkCustomAttributes = "";
-			$this->TransactionDate->HrefValue = "";
-			$this->TransactionDate->TooltipValue = "";
-
-			// RecommendedBy
-			$this->RecommendedBy->LinkCustomAttributes = "";
-			$this->RecommendedBy->HrefValue = "";
-			$this->RecommendedBy->TooltipValue = "";
-
-			// CE
-			$this->CE->LinkCustomAttributes = "";
-			$this->CE->HrefValue = "";
-			$this->CE->TooltipValue = "";
-
-			// ITM
-			$this->ITM->LinkCustomAttributes = "";
-			$this->ITM->HrefValue = "";
-			$this->ITM->TooltipValue = "";
-
-			// Sign1
-			$this->Sign1->LinkCustomAttributes = "";
-			$this->Sign1->HrefValue = "";
-			$this->Sign1->TooltipValue = "";
-
-			// Sign2
-			$this->Sign2->LinkCustomAttributes = "";
-			$this->Sign2->HrefValue = "";
-			$this->Sign2->TooltipValue = "";
-
-			// Sign3
-			$this->Sign3->LinkCustomAttributes = "";
-			$this->Sign3->HrefValue = "";
-			$this->Sign3->TooltipValue = "";
+			// reason_id
+			$this->reason_id->LinkCustomAttributes = "";
+			$this->reason_id->HrefValue = "";
+			$this->reason_id->TooltipValue = "";
 		}
 
 		// Call Row Rendered event
@@ -1360,34 +1150,71 @@ class t105_disposalhead_view extends t105_disposalhead
 			$this->Row_Rendered();
 	}
 
-	// Set up detail parms based on QueryString
-	protected function setupDetailParms()
+	// Set up master/detail based on QueryString
+	protected function setupMasterParms()
 	{
+		$validMaster = FALSE;
 
 		// Get the keys for master table
-		$detailTblVar = Get(Config("TABLE_SHOW_DETAIL"));
-		if ($detailTblVar !== NULL) {
-			$this->setCurrentDetailTable($detailTblVar);
-		} else {
-			$detailTblVar = $this->getCurrentDetailTable();
-		}
-		if ($detailTblVar != "") {
-			$detailTblVar = explode(",", $detailTblVar);
-			if (in_array("t106_disposaldetail", $detailTblVar)) {
-				if (!isset($GLOBALS["t106_disposaldetail_grid"]))
-					$GLOBALS["t106_disposaldetail_grid"] = new t106_disposaldetail_grid();
-				if ($GLOBALS["t106_disposaldetail_grid"]->DetailView) {
-					$GLOBALS["t106_disposaldetail_grid"]->CurrentMode = "view";
-
-					// Save current master table to detail table
-					$GLOBALS["t106_disposaldetail_grid"]->setCurrentMasterTable($this->TableVar);
-					$GLOBALS["t106_disposaldetail_grid"]->setStartRecordNumber(1);
-					$GLOBALS["t106_disposaldetail_grid"]->disposalhead_id->IsDetailKey = TRUE;
-					$GLOBALS["t106_disposaldetail_grid"]->disposalhead_id->CurrentValue = $this->id->CurrentValue;
-					$GLOBALS["t106_disposaldetail_grid"]->disposalhead_id->setSessionValue($GLOBALS["t106_disposaldetail_grid"]->disposalhead_id->CurrentValue);
+		if (($master = Get(Config("TABLE_SHOW_MASTER"), Get(Config("TABLE_MASTER")))) !== NULL) {
+			$masterTblVar = $master;
+			if ($masterTblVar == "") {
+				$validMaster = TRUE;
+				$this->DbMasterFilter = "";
+				$this->DbDetailFilter = "";
+			}
+			if ($masterTblVar == "t105_disposalhead") {
+				$validMaster = TRUE;
+				if (($parm = Get("fk_id", Get("disposalhead_id"))) !== NULL) {
+					$GLOBALS["t105_disposalhead"]->id->setQueryStringValue($parm);
+					$this->disposalhead_id->setQueryStringValue($GLOBALS["t105_disposalhead"]->id->QueryStringValue);
+					$this->disposalhead_id->setSessionValue($this->disposalhead_id->QueryStringValue);
+					if (!is_numeric($GLOBALS["t105_disposalhead"]->id->QueryStringValue))
+						$validMaster = FALSE;
+				} else {
+					$validMaster = FALSE;
+				}
+			}
+		} elseif (($master = Post(Config("TABLE_SHOW_MASTER"), Post(Config("TABLE_MASTER")))) !== NULL) {
+			$masterTblVar = $master;
+			if ($masterTblVar == "") {
+				$validMaster = TRUE;
+				$this->DbMasterFilter = "";
+				$this->DbDetailFilter = "";
+			}
+			if ($masterTblVar == "t105_disposalhead") {
+				$validMaster = TRUE;
+				if (($parm = Post("fk_id", Post("disposalhead_id"))) !== NULL) {
+					$GLOBALS["t105_disposalhead"]->id->setFormValue($parm);
+					$this->disposalhead_id->setFormValue($GLOBALS["t105_disposalhead"]->id->FormValue);
+					$this->disposalhead_id->setSessionValue($this->disposalhead_id->FormValue);
+					if (!is_numeric($GLOBALS["t105_disposalhead"]->id->FormValue))
+						$validMaster = FALSE;
+				} else {
+					$validMaster = FALSE;
 				}
 			}
 		}
+		if ($validMaster) {
+
+			// Save current master table
+			$this->setCurrentMasterTable($masterTblVar);
+			$this->setSessionWhere($this->getDetailFilter());
+
+			// Reset start record counter (new master key)
+			if (!$this->isAddOrEdit()) {
+				$this->StartRecord = 1;
+				$this->setStartRecordNumber($this->StartRecord);
+			}
+
+			// Clear previous master key from Session
+			if ($masterTblVar != "t105_disposalhead") {
+				if ($this->disposalhead_id->CurrentValue == "")
+					$this->disposalhead_id->setSessionValue("");
+			}
+		}
+		$this->DbMasterFilter = $this->getMasterFilter(); // Get master filter
+		$this->DbDetailFilter = $this->getDetailFilter(); // Get detail filter
 	}
 
 	// Set up Breadcrumb
@@ -1396,7 +1223,7 @@ class t105_disposalhead_view extends t105_disposalhead
 		global $Breadcrumb, $Language;
 		$Breadcrumb = new Breadcrumb();
 		$url = substr(CurrentUrl(), strrpos(CurrentUrl(), "/")+1);
-		$Breadcrumb->add("list", $this->TableVar, $this->addMasterUrl("t105_disposalheadlist.php"), "", $this->TableVar, TRUE);
+		$Breadcrumb->add("list", $this->TableVar, $this->addMasterUrl("t106_disposaldetaillist.php"), "", $this->TableVar, TRUE);
 		$pageId = "view";
 		$Breadcrumb->add("view", $pageId, $url);
 	}
@@ -1415,19 +1242,11 @@ class t105_disposalhead_view extends t105_disposalhead
 
 			// Set up lookup SQL and connection
 			switch ($fld->FieldVar) {
-				case "x_property_id":
+				case "x_asset_id":
 					break;
-				case "x_RecommendedBy":
+				case "x_cond_id":
 					break;
-				case "x_CE":
-					break;
-				case "x_ITM":
-					break;
-				case "x_Sign1":
-					break;
-				case "x_Sign2":
-					break;
-				case "x_Sign3":
+				case "x_reason_id":
 					break;
 				default:
 					$lookupFilter = "";
@@ -1449,19 +1268,11 @@ class t105_disposalhead_view extends t105_disposalhead
 
 					// Format the field values
 					switch ($fld->FieldVar) {
-						case "x_property_id":
+						case "x_asset_id":
 							break;
-						case "x_RecommendedBy":
+						case "x_cond_id":
 							break;
-						case "x_CE":
-							break;
-						case "x_ITM":
-							break;
-						case "x_Sign1":
-							break;
-						case "x_Sign2":
-							break;
-						case "x_Sign3":
+						case "x_reason_id":
 							break;
 					}
 					$ar[strval($row[0])] = $row;

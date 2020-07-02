@@ -2,9 +2,9 @@
 <?php
 
 /**
- * Table class for t105_disposalhead
+ * Table class for t011_reason
  */
-class t105_disposalhead extends DbTable
+class t011_reason extends DbTable
 {
 	protected $SqlFrom = "";
 	protected $SqlSelect = "";
@@ -34,15 +34,7 @@ class t105_disposalhead extends DbTable
 
 	// Fields
 	public $id;
-	public $property_id;
-	public $TransactionNo;
-	public $TransactionDate;
-	public $RecommendedBy;
-	public $CE;
-	public $ITM;
-	public $Sign1;
-	public $Sign2;
-	public $Sign3;
+	public $Status;
 
 	// Constructor
 	public function __construct()
@@ -53,12 +45,12 @@ class t105_disposalhead extends DbTable
 		// Language object
 		if (!isset($Language))
 			$Language = new Language();
-		$this->TableVar = 't105_disposalhead';
-		$this->TableName = 't105_disposalhead';
+		$this->TableVar = 't011_reason';
+		$this->TableName = 't011_reason';
 		$this->TableType = 'TABLE';
 
 		// Update Table
-		$this->UpdateTable = "`t105_disposalhead`";
+		$this->UpdateTable = "`t011_reason`";
 		$this->Dbid = 'DB';
 		$this->ExportAll = TRUE;
 		$this->ExportPageBreakCount = 0; // Page break per every n record (PDF only)
@@ -78,105 +70,19 @@ class t105_disposalhead extends DbTable
 		$this->BasicSearch = new BasicSearch($this->TableVar);
 
 		// id
-		$this->id = new DbField('t105_disposalhead', 't105_disposalhead', 'x_id', 'id', '`id`', '`id`', 3, 11, -1, FALSE, '`id`', FALSE, FALSE, FALSE, 'FORMATTED TEXT', 'NO');
+		$this->id = new DbField('t011_reason', 't011_reason', 'x_id', 'id', '`id`', '`id`', 3, 11, -1, FALSE, '`id`', FALSE, FALSE, FALSE, 'FORMATTED TEXT', 'NO');
 		$this->id->IsAutoIncrement = TRUE; // Autoincrement field
 		$this->id->IsPrimaryKey = TRUE; // Primary key field
-		$this->id->IsForeignKey = TRUE; // Foreign key field
 		$this->id->Sortable = TRUE; // Allow sort
 		$this->id->DefaultErrorMessage = $Language->phrase("IncorrectInteger");
 		$this->fields['id'] = &$this->id;
 
-		// property_id
-		$this->property_id = new DbField('t105_disposalhead', 't105_disposalhead', 'x_property_id', 'property_id', '`property_id`', '`property_id`', 3, 11, -1, FALSE, '`property_id`', FALSE, FALSE, FALSE, 'FORMATTED TEXT', 'SELECT');
-		$this->property_id->Nullable = FALSE; // NOT NULL field
-		$this->property_id->Required = TRUE; // Required field
-		$this->property_id->Sortable = TRUE; // Allow sort
-		$this->property_id->UsePleaseSelect = TRUE; // Use PleaseSelect by default
-		$this->property_id->PleaseSelectText = $Language->phrase("PleaseSelect"); // "PleaseSelect" text
-		$this->property_id->Lookup = new Lookup('property_id', 't001_property', FALSE, 'id', ["Property","","",""], [], [], [], [], [], [], '', '');
-		$this->property_id->DefaultErrorMessage = $Language->phrase("IncorrectInteger");
-		$this->fields['property_id'] = &$this->property_id;
-
-		// TransactionNo
-		$this->TransactionNo = new DbField('t105_disposalhead', 't105_disposalhead', 'x_TransactionNo', 'TransactionNo', '`TransactionNo`', '`TransactionNo`', 200, 25, -1, FALSE, '`TransactionNo`', FALSE, FALSE, FALSE, 'FORMATTED TEXT', 'TEXT');
-		$this->TransactionNo->Nullable = FALSE; // NOT NULL field
-		$this->TransactionNo->Required = TRUE; // Required field
-		$this->TransactionNo->Sortable = TRUE; // Allow sort
-		$this->fields['TransactionNo'] = &$this->TransactionNo;
-
-		// TransactionDate
-		$this->TransactionDate = new DbField('t105_disposalhead', 't105_disposalhead', 'x_TransactionDate', 'TransactionDate', '`TransactionDate`', CastDateFieldForLike("`TransactionDate`", 7, "DB"), 133, 10, 7, FALSE, '`TransactionDate`', FALSE, FALSE, FALSE, 'FORMATTED TEXT', 'TEXT');
-		$this->TransactionDate->Nullable = FALSE; // NOT NULL field
-		$this->TransactionDate->Required = TRUE; // Required field
-		$this->TransactionDate->Sortable = TRUE; // Allow sort
-		$this->TransactionDate->DefaultErrorMessage = str_replace("%s", $GLOBALS["DATE_SEPARATOR"], $Language->phrase("IncorrectDateDMY"));
-		$this->fields['TransactionDate'] = &$this->TransactionDate;
-
-		// RecommendedBy
-		$this->RecommendedBy = new DbField('t105_disposalhead', 't105_disposalhead', 'x_RecommendedBy', 'RecommendedBy', '`RecommendedBy`', '`RecommendedBy`', 3, 11, -1, FALSE, '`RecommendedBy`', FALSE, FALSE, FALSE, 'FORMATTED TEXT', 'SELECT');
-		$this->RecommendedBy->Nullable = FALSE; // NOT NULL field
-		$this->RecommendedBy->Required = TRUE; // Required field
-		$this->RecommendedBy->Sortable = TRUE; // Allow sort
-		$this->RecommendedBy->UsePleaseSelect = TRUE; // Use PleaseSelect by default
-		$this->RecommendedBy->PleaseSelectText = $Language->phrase("PleaseSelect"); // "PleaseSelect" text
-		$this->RecommendedBy->Lookup = new Lookup('RecommendedBy', 't003_signature', FALSE, 'id', ["Signature","","",""], [], [], [], [], [], [], '', '');
-		$this->RecommendedBy->DefaultErrorMessage = $Language->phrase("IncorrectInteger");
-		$this->fields['RecommendedBy'] = &$this->RecommendedBy;
-
-		// CE
-		$this->CE = new DbField('t105_disposalhead', 't105_disposalhead', 'x_CE', 'CE', '`CE`', '`CE`', 3, 11, -1, FALSE, '`CE`', FALSE, FALSE, FALSE, 'FORMATTED TEXT', 'SELECT');
-		$this->CE->Nullable = FALSE; // NOT NULL field
-		$this->CE->Required = TRUE; // Required field
-		$this->CE->Sortable = TRUE; // Allow sort
-		$this->CE->UsePleaseSelect = TRUE; // Use PleaseSelect by default
-		$this->CE->PleaseSelectText = $Language->phrase("PleaseSelect"); // "PleaseSelect" text
-		$this->CE->Lookup = new Lookup('CE', 't003_signature', FALSE, 'id', ["Signature","","",""], [], [], [], [], [], [], '', '');
-		$this->CE->DefaultErrorMessage = $Language->phrase("IncorrectInteger");
-		$this->fields['CE'] = &$this->CE;
-
-		// ITM
-		$this->ITM = new DbField('t105_disposalhead', 't105_disposalhead', 'x_ITM', 'ITM', '`ITM`', '`ITM`', 3, 11, -1, FALSE, '`ITM`', FALSE, FALSE, FALSE, 'FORMATTED TEXT', 'SELECT');
-		$this->ITM->Nullable = FALSE; // NOT NULL field
-		$this->ITM->Required = TRUE; // Required field
-		$this->ITM->Sortable = TRUE; // Allow sort
-		$this->ITM->UsePleaseSelect = TRUE; // Use PleaseSelect by default
-		$this->ITM->PleaseSelectText = $Language->phrase("PleaseSelect"); // "PleaseSelect" text
-		$this->ITM->Lookup = new Lookup('ITM', 't003_signature', FALSE, 'id', ["Signature","","",""], [], [], [], [], [], [], '', '');
-		$this->ITM->DefaultErrorMessage = $Language->phrase("IncorrectInteger");
-		$this->fields['ITM'] = &$this->ITM;
-
-		// Sign1
-		$this->Sign1 = new DbField('t105_disposalhead', 't105_disposalhead', 'x_Sign1', 'Sign1', '`Sign1`', '`Sign1`', 3, 11, -1, FALSE, '`Sign1`', FALSE, FALSE, FALSE, 'FORMATTED TEXT', 'SELECT');
-		$this->Sign1->Nullable = FALSE; // NOT NULL field
-		$this->Sign1->Required = TRUE; // Required field
-		$this->Sign1->Sortable = TRUE; // Allow sort
-		$this->Sign1->UsePleaseSelect = TRUE; // Use PleaseSelect by default
-		$this->Sign1->PleaseSelectText = $Language->phrase("PleaseSelect"); // "PleaseSelect" text
-		$this->Sign1->Lookup = new Lookup('Sign1', 't003_signature', FALSE, 'id', ["Signature","","",""], [], [], [], [], [], [], '', '');
-		$this->Sign1->DefaultErrorMessage = $Language->phrase("IncorrectInteger");
-		$this->fields['Sign1'] = &$this->Sign1;
-
-		// Sign2
-		$this->Sign2 = new DbField('t105_disposalhead', 't105_disposalhead', 'x_Sign2', 'Sign2', '`Sign2`', '`Sign2`', 3, 11, -1, FALSE, '`Sign2`', FALSE, FALSE, FALSE, 'FORMATTED TEXT', 'SELECT');
-		$this->Sign2->Nullable = FALSE; // NOT NULL field
-		$this->Sign2->Required = TRUE; // Required field
-		$this->Sign2->Sortable = TRUE; // Allow sort
-		$this->Sign2->UsePleaseSelect = TRUE; // Use PleaseSelect by default
-		$this->Sign2->PleaseSelectText = $Language->phrase("PleaseSelect"); // "PleaseSelect" text
-		$this->Sign2->Lookup = new Lookup('Sign2', 't003_signature', FALSE, 'id', ["Signature","","",""], [], [], [], [], [], [], '', '');
-		$this->Sign2->DefaultErrorMessage = $Language->phrase("IncorrectInteger");
-		$this->fields['Sign2'] = &$this->Sign2;
-
-		// Sign3
-		$this->Sign3 = new DbField('t105_disposalhead', 't105_disposalhead', 'x_Sign3', 'Sign3', '`Sign3`', '`Sign3`', 3, 11, -1, FALSE, '`Sign3`', FALSE, FALSE, FALSE, 'FORMATTED TEXT', 'SELECT');
-		$this->Sign3->Nullable = FALSE; // NOT NULL field
-		$this->Sign3->Required = TRUE; // Required field
-		$this->Sign3->Sortable = TRUE; // Allow sort
-		$this->Sign3->UsePleaseSelect = TRUE; // Use PleaseSelect by default
-		$this->Sign3->PleaseSelectText = $Language->phrase("PleaseSelect"); // "PleaseSelect" text
-		$this->Sign3->Lookup = new Lookup('Sign3', 't003_signature', FALSE, 'id', ["Signature","","",""], [], [], [], [], [], [], '', '');
-		$this->Sign3->DefaultErrorMessage = $Language->phrase("IncorrectInteger");
-		$this->fields['Sign3'] = &$this->Sign3;
+		// Status
+		$this->Status = new DbField('t011_reason', 't011_reason', 'x_Status', 'Status', '`Status`', '`Status`', 200, 50, -1, FALSE, '`Status`', FALSE, FALSE, FALSE, 'FORMATTED TEXT', 'TEXT');
+		$this->Status->Nullable = FALSE; // NOT NULL field
+		$this->Status->Required = TRUE; // Required field
+		$this->Status->Sortable = TRUE; // Allow sort
+		$this->fields['Status'] = &$this->Status;
 	}
 
 	// Field Visibility
@@ -228,35 +134,10 @@ class t105_disposalhead extends DbTable
 		}
 	}
 
-	// Current detail table name
-	public function getCurrentDetailTable()
-	{
-		return @$_SESSION[PROJECT_NAME . "_" . $this->TableVar . "_" . Config("TABLE_DETAIL_TABLE")];
-	}
-	public function setCurrentDetailTable($v)
-	{
-		$_SESSION[PROJECT_NAME . "_" . $this->TableVar . "_" . Config("TABLE_DETAIL_TABLE")] = $v;
-	}
-
-	// Get detail url
-	public function getDetailUrl()
-	{
-
-		// Detail url
-		$detailUrl = "";
-		if ($this->getCurrentDetailTable() == "t106_disposaldetail") {
-			$detailUrl = $GLOBALS["t106_disposaldetail"]->getListUrl() . "?" . Config("TABLE_SHOW_MASTER") . "=" . $this->TableVar;
-			$detailUrl .= "&fk_id=" . urlencode($this->id->CurrentValue);
-		}
-		if ($detailUrl == "")
-			$detailUrl = "t105_disposalheadlist.php";
-		return $detailUrl;
-	}
-
 	// Table level SQL
 	public function getSqlFrom() // From
 	{
-		return ($this->SqlFrom != "") ? $this->SqlFrom : "`t105_disposalhead`";
+		return ($this->SqlFrom != "") ? $this->SqlFrom : "`t011_reason`";
 	}
 	public function sqlFrom() // For backward compatibility
 	{
@@ -533,37 +414,6 @@ class t105_disposalhead extends DbTable
 	public function update(&$rs, $where = "", $rsold = NULL, $curfilter = TRUE)
 	{
 		$conn = $this->getConnection();
-
-		// Cascade Update detail table 't106_disposaldetail'
-		$cascadeUpdate = FALSE;
-		$rscascade = [];
-		if ($rsold && (isset($rs['id']) && $rsold['id'] != $rs['id'])) { // Update detail field 'disposalhead_id'
-			$cascadeUpdate = TRUE;
-			$rscascade['disposalhead_id'] = $rs['id'];
-		}
-		if ($cascadeUpdate) {
-			if (!isset($GLOBALS["t106_disposaldetail"]))
-				$GLOBALS["t106_disposaldetail"] = new t106_disposaldetail();
-			$rswrk = $GLOBALS["t106_disposaldetail"]->loadRs("`disposalhead_id` = " . QuotedValue($rsold['id'], DATATYPE_NUMBER, 'DB'));
-			while ($rswrk && !$rswrk->EOF) {
-				$rskey = [];
-				$fldname = 'id';
-				$rskey[$fldname] = $rswrk->fields[$fldname];
-				$rsdtlold = &$rswrk->fields;
-				$rsdtlnew = array_merge($rsdtlold, $rscascade);
-
-				// Call Row_Updating event
-				$success = $GLOBALS["t106_disposaldetail"]->Row_Updating($rsdtlold, $rsdtlnew);
-				if ($success)
-					$success = $GLOBALS["t106_disposaldetail"]->update($rscascade, $rskey, $rswrk->fields);
-				if (!$success)
-					return FALSE;
-
-				// Call Row_Updated event
-				$GLOBALS["t106_disposaldetail"]->Row_Updated($rsdtlold, $rsdtlnew);
-				$rswrk->moveNext();
-			}
-		}
 		$success = $conn->execute($this->updateSql($rs, $where, $curfilter));
 		if ($success && $this->AuditTrailOnEdit && $rsold) {
 			$rsaudit = $rs;
@@ -599,32 +449,6 @@ class t105_disposalhead extends DbTable
 	{
 		$success = TRUE;
 		$conn = $this->getConnection();
-
-		// Cascade delete detail table 't106_disposaldetail'
-		if (!isset($GLOBALS["t106_disposaldetail"]))
-			$GLOBALS["t106_disposaldetail"] = new t106_disposaldetail();
-		$rscascade = $GLOBALS["t106_disposaldetail"]->loadRs("`disposalhead_id` = " . QuotedValue($rs['id'], DATATYPE_NUMBER, "DB"));
-		$dtlrows = ($rscascade) ? $rscascade->getRows() : [];
-
-		// Call Row Deleting event
-		foreach ($dtlrows as $dtlrow) {
-			$success = $GLOBALS["t106_disposaldetail"]->Row_Deleting($dtlrow);
-			if (!$success)
-				break;
-		}
-		if ($success) {
-			foreach ($dtlrows as $dtlrow) {
-				$success = $GLOBALS["t106_disposaldetail"]->delete($dtlrow); // Delete
-				if (!$success)
-					break;
-			}
-		}
-
-		// Call Row Deleted event
-		if ($success) {
-			foreach ($dtlrows as $dtlrow)
-				$GLOBALS["t106_disposaldetail"]->Row_Deleted($dtlrow);
-		}
 		if ($success)
 			$success = $conn->execute($this->deleteSql($rs, $where, $curfilter));
 		if ($success && $this->AuditTrailOnDelete)
@@ -639,15 +463,7 @@ class t105_disposalhead extends DbTable
 			return;
 		$row = is_array($rs) ? $rs : $rs->fields;
 		$this->id->DbValue = $row['id'];
-		$this->property_id->DbValue = $row['property_id'];
-		$this->TransactionNo->DbValue = $row['TransactionNo'];
-		$this->TransactionDate->DbValue = $row['TransactionDate'];
-		$this->RecommendedBy->DbValue = $row['RecommendedBy'];
-		$this->CE->DbValue = $row['CE'];
-		$this->ITM->DbValue = $row['ITM'];
-		$this->Sign1->DbValue = $row['Sign1'];
-		$this->Sign2->DbValue = $row['Sign2'];
-		$this->Sign3->DbValue = $row['Sign3'];
+		$this->Status->DbValue = $row['Status'];
 	}
 
 	// Delete uploaded files
@@ -690,7 +506,7 @@ class t105_disposalhead extends DbTable
 		if (@$_SESSION[$name] != "") {
 			return $_SESSION[$name];
 		} else {
-			return "t105_disposalheadlist.php";
+			return "t011_reasonlist.php";
 		}
 	}
 	public function setReturnUrl($v)
@@ -702,11 +518,11 @@ class t105_disposalhead extends DbTable
 	public function getModalCaption($pageName)
 	{
 		global $Language;
-		if ($pageName == "t105_disposalheadview.php")
+		if ($pageName == "t011_reasonview.php")
 			return $Language->phrase("View");
-		elseif ($pageName == "t105_disposalheadedit.php")
+		elseif ($pageName == "t011_reasonedit.php")
 			return $Language->phrase("Edit");
-		elseif ($pageName == "t105_disposalheadadd.php")
+		elseif ($pageName == "t011_reasonadd.php")
 			return $Language->phrase("Add");
 		else
 			return "";
@@ -715,16 +531,16 @@ class t105_disposalhead extends DbTable
 	// List URL
 	public function getListUrl()
 	{
-		return "t105_disposalheadlist.php";
+		return "t011_reasonlist.php";
 	}
 
 	// View URL
 	public function getViewUrl($parm = "")
 	{
 		if ($parm != "")
-			$url = $this->keyUrl("t105_disposalheadview.php", $this->getUrlParm($parm));
+			$url = $this->keyUrl("t011_reasonview.php", $this->getUrlParm($parm));
 		else
-			$url = $this->keyUrl("t105_disposalheadview.php", $this->getUrlParm(Config("TABLE_SHOW_DETAIL") . "="));
+			$url = $this->keyUrl("t011_reasonview.php", $this->getUrlParm(Config("TABLE_SHOW_DETAIL") . "="));
 		return $this->addMasterUrl($url);
 	}
 
@@ -732,19 +548,16 @@ class t105_disposalhead extends DbTable
 	public function getAddUrl($parm = "")
 	{
 		if ($parm != "")
-			$url = "t105_disposalheadadd.php?" . $this->getUrlParm($parm);
+			$url = "t011_reasonadd.php?" . $this->getUrlParm($parm);
 		else
-			$url = "t105_disposalheadadd.php";
+			$url = "t011_reasonadd.php";
 		return $this->addMasterUrl($url);
 	}
 
 	// Edit URL
 	public function getEditUrl($parm = "")
 	{
-		if ($parm != "")
-			$url = $this->keyUrl("t105_disposalheadedit.php", $this->getUrlParm($parm));
-		else
-			$url = $this->keyUrl("t105_disposalheadedit.php", $this->getUrlParm(Config("TABLE_SHOW_DETAIL") . "="));
+		$url = $this->keyUrl("t011_reasonedit.php", $this->getUrlParm($parm));
 		return $this->addMasterUrl($url);
 	}
 
@@ -758,10 +571,7 @@ class t105_disposalhead extends DbTable
 	// Copy URL
 	public function getCopyUrl($parm = "")
 	{
-		if ($parm != "")
-			$url = $this->keyUrl("t105_disposalheadadd.php", $this->getUrlParm($parm));
-		else
-			$url = $this->keyUrl("t105_disposalheadadd.php", $this->getUrlParm(Config("TABLE_SHOW_DETAIL") . "="));
+		$url = $this->keyUrl("t011_reasonadd.php", $this->getUrlParm($parm));
 		return $this->addMasterUrl($url);
 	}
 
@@ -775,7 +585,7 @@ class t105_disposalhead extends DbTable
 	// Delete URL
 	public function getDeleteUrl()
 	{
-		return $this->keyUrl("t105_disposalheaddelete.php", $this->getUrlParm());
+		return $this->keyUrl("t011_reasondelete.php", $this->getUrlParm());
 	}
 
 	// Add master url
@@ -885,15 +695,7 @@ class t105_disposalhead extends DbTable
 	public function loadListRowValues(&$rs)
 	{
 		$this->id->setDbValue($rs->fields('id'));
-		$this->property_id->setDbValue($rs->fields('property_id'));
-		$this->TransactionNo->setDbValue($rs->fields('TransactionNo'));
-		$this->TransactionDate->setDbValue($rs->fields('TransactionDate'));
-		$this->RecommendedBy->setDbValue($rs->fields('RecommendedBy'));
-		$this->CE->setDbValue($rs->fields('CE'));
-		$this->ITM->setDbValue($rs->fields('ITM'));
-		$this->Sign1->setDbValue($rs->fields('Sign1'));
-		$this->Sign2->setDbValue($rs->fields('Sign2'));
-		$this->Sign3->setDbValue($rs->fields('Sign3'));
+		$this->Status->setDbValue($rs->fields('Status'));
 	}
 
 	// Render list row values
@@ -906,232 +708,25 @@ class t105_disposalhead extends DbTable
 
 		// Common render codes
 		// id
-		// property_id
-		// TransactionNo
-		// TransactionDate
-		// RecommendedBy
-		// CE
-		// ITM
-		// Sign1
-		// Sign2
-		// Sign3
+		// Status
 		// id
 
 		$this->id->ViewValue = $this->id->CurrentValue;
 		$this->id->ViewCustomAttributes = "";
 
-		// property_id
-		$curVal = strval($this->property_id->CurrentValue);
-		if ($curVal != "") {
-			$this->property_id->ViewValue = $this->property_id->lookupCacheOption($curVal);
-			if ($this->property_id->ViewValue === NULL) { // Lookup from database
-				$filterWrk = "`id`" . SearchString("=", $curVal, DATATYPE_NUMBER, "");
-				$sqlWrk = $this->property_id->Lookup->getSql(FALSE, $filterWrk, '', $this);
-				$rswrk = Conn()->execute($sqlWrk);
-				if ($rswrk && !$rswrk->EOF) { // Lookup values found
-					$arwrk = [];
-					$arwrk[1] = $rswrk->fields('df');
-					$this->property_id->ViewValue = $this->property_id->displayValue($arwrk);
-					$rswrk->Close();
-				} else {
-					$this->property_id->ViewValue = $this->property_id->CurrentValue;
-				}
-			}
-		} else {
-			$this->property_id->ViewValue = NULL;
-		}
-		$this->property_id->ViewCustomAttributes = "";
-
-		// TransactionNo
-		$this->TransactionNo->ViewValue = $this->TransactionNo->CurrentValue;
-		$this->TransactionNo->ViewCustomAttributes = "";
-
-		// TransactionDate
-		$this->TransactionDate->ViewValue = $this->TransactionDate->CurrentValue;
-		$this->TransactionDate->ViewValue = FormatDateTime($this->TransactionDate->ViewValue, 7);
-		$this->TransactionDate->ViewCustomAttributes = "";
-
-		// RecommendedBy
-		$curVal = strval($this->RecommendedBy->CurrentValue);
-		if ($curVal != "") {
-			$this->RecommendedBy->ViewValue = $this->RecommendedBy->lookupCacheOption($curVal);
-			if ($this->RecommendedBy->ViewValue === NULL) { // Lookup from database
-				$filterWrk = "`id`" . SearchString("=", $curVal, DATATYPE_NUMBER, "");
-				$sqlWrk = $this->RecommendedBy->Lookup->getSql(FALSE, $filterWrk, '', $this);
-				$rswrk = Conn()->execute($sqlWrk);
-				if ($rswrk && !$rswrk->EOF) { // Lookup values found
-					$arwrk = [];
-					$arwrk[1] = $rswrk->fields('df');
-					$this->RecommendedBy->ViewValue = $this->RecommendedBy->displayValue($arwrk);
-					$rswrk->Close();
-				} else {
-					$this->RecommendedBy->ViewValue = $this->RecommendedBy->CurrentValue;
-				}
-			}
-		} else {
-			$this->RecommendedBy->ViewValue = NULL;
-		}
-		$this->RecommendedBy->ViewCustomAttributes = "";
-
-		// CE
-		$curVal = strval($this->CE->CurrentValue);
-		if ($curVal != "") {
-			$this->CE->ViewValue = $this->CE->lookupCacheOption($curVal);
-			if ($this->CE->ViewValue === NULL) { // Lookup from database
-				$filterWrk = "`id`" . SearchString("=", $curVal, DATATYPE_NUMBER, "");
-				$sqlWrk = $this->CE->Lookup->getSql(FALSE, $filterWrk, '', $this);
-				$rswrk = Conn()->execute($sqlWrk);
-				if ($rswrk && !$rswrk->EOF) { // Lookup values found
-					$arwrk = [];
-					$arwrk[1] = $rswrk->fields('df');
-					$this->CE->ViewValue = $this->CE->displayValue($arwrk);
-					$rswrk->Close();
-				} else {
-					$this->CE->ViewValue = $this->CE->CurrentValue;
-				}
-			}
-		} else {
-			$this->CE->ViewValue = NULL;
-		}
-		$this->CE->ViewCustomAttributes = "";
-
-		// ITM
-		$curVal = strval($this->ITM->CurrentValue);
-		if ($curVal != "") {
-			$this->ITM->ViewValue = $this->ITM->lookupCacheOption($curVal);
-			if ($this->ITM->ViewValue === NULL) { // Lookup from database
-				$filterWrk = "`id`" . SearchString("=", $curVal, DATATYPE_NUMBER, "");
-				$sqlWrk = $this->ITM->Lookup->getSql(FALSE, $filterWrk, '', $this);
-				$rswrk = Conn()->execute($sqlWrk);
-				if ($rswrk && !$rswrk->EOF) { // Lookup values found
-					$arwrk = [];
-					$arwrk[1] = $rswrk->fields('df');
-					$this->ITM->ViewValue = $this->ITM->displayValue($arwrk);
-					$rswrk->Close();
-				} else {
-					$this->ITM->ViewValue = $this->ITM->CurrentValue;
-				}
-			}
-		} else {
-			$this->ITM->ViewValue = NULL;
-		}
-		$this->ITM->ViewCustomAttributes = "";
-
-		// Sign1
-		$curVal = strval($this->Sign1->CurrentValue);
-		if ($curVal != "") {
-			$this->Sign1->ViewValue = $this->Sign1->lookupCacheOption($curVal);
-			if ($this->Sign1->ViewValue === NULL) { // Lookup from database
-				$filterWrk = "`id`" . SearchString("=", $curVal, DATATYPE_NUMBER, "");
-				$sqlWrk = $this->Sign1->Lookup->getSql(FALSE, $filterWrk, '', $this);
-				$rswrk = Conn()->execute($sqlWrk);
-				if ($rswrk && !$rswrk->EOF) { // Lookup values found
-					$arwrk = [];
-					$arwrk[1] = $rswrk->fields('df');
-					$this->Sign1->ViewValue = $this->Sign1->displayValue($arwrk);
-					$rswrk->Close();
-				} else {
-					$this->Sign1->ViewValue = $this->Sign1->CurrentValue;
-				}
-			}
-		} else {
-			$this->Sign1->ViewValue = NULL;
-		}
-		$this->Sign1->ViewCustomAttributes = "";
-
-		// Sign2
-		$curVal = strval($this->Sign2->CurrentValue);
-		if ($curVal != "") {
-			$this->Sign2->ViewValue = $this->Sign2->lookupCacheOption($curVal);
-			if ($this->Sign2->ViewValue === NULL) { // Lookup from database
-				$filterWrk = "`id`" . SearchString("=", $curVal, DATATYPE_NUMBER, "");
-				$sqlWrk = $this->Sign2->Lookup->getSql(FALSE, $filterWrk, '', $this);
-				$rswrk = Conn()->execute($sqlWrk);
-				if ($rswrk && !$rswrk->EOF) { // Lookup values found
-					$arwrk = [];
-					$arwrk[1] = $rswrk->fields('df');
-					$this->Sign2->ViewValue = $this->Sign2->displayValue($arwrk);
-					$rswrk->Close();
-				} else {
-					$this->Sign2->ViewValue = $this->Sign2->CurrentValue;
-				}
-			}
-		} else {
-			$this->Sign2->ViewValue = NULL;
-		}
-		$this->Sign2->ViewCustomAttributes = "";
-
-		// Sign3
-		$curVal = strval($this->Sign3->CurrentValue);
-		if ($curVal != "") {
-			$this->Sign3->ViewValue = $this->Sign3->lookupCacheOption($curVal);
-			if ($this->Sign3->ViewValue === NULL) { // Lookup from database
-				$filterWrk = "`id`" . SearchString("=", $curVal, DATATYPE_NUMBER, "");
-				$sqlWrk = $this->Sign3->Lookup->getSql(FALSE, $filterWrk, '', $this);
-				$rswrk = Conn()->execute($sqlWrk);
-				if ($rswrk && !$rswrk->EOF) { // Lookup values found
-					$arwrk = [];
-					$arwrk[1] = $rswrk->fields('df');
-					$this->Sign3->ViewValue = $this->Sign3->displayValue($arwrk);
-					$rswrk->Close();
-				} else {
-					$this->Sign3->ViewValue = $this->Sign3->CurrentValue;
-				}
-			}
-		} else {
-			$this->Sign3->ViewValue = NULL;
-		}
-		$this->Sign3->ViewCustomAttributes = "";
+		// Status
+		$this->Status->ViewValue = $this->Status->CurrentValue;
+		$this->Status->ViewCustomAttributes = "";
 
 		// id
 		$this->id->LinkCustomAttributes = "";
 		$this->id->HrefValue = "";
 		$this->id->TooltipValue = "";
 
-		// property_id
-		$this->property_id->LinkCustomAttributes = "";
-		$this->property_id->HrefValue = "";
-		$this->property_id->TooltipValue = "";
-
-		// TransactionNo
-		$this->TransactionNo->LinkCustomAttributes = "";
-		$this->TransactionNo->HrefValue = "";
-		$this->TransactionNo->TooltipValue = "";
-
-		// TransactionDate
-		$this->TransactionDate->LinkCustomAttributes = "";
-		$this->TransactionDate->HrefValue = "";
-		$this->TransactionDate->TooltipValue = "";
-
-		// RecommendedBy
-		$this->RecommendedBy->LinkCustomAttributes = "";
-		$this->RecommendedBy->HrefValue = "";
-		$this->RecommendedBy->TooltipValue = "";
-
-		// CE
-		$this->CE->LinkCustomAttributes = "";
-		$this->CE->HrefValue = "";
-		$this->CE->TooltipValue = "";
-
-		// ITM
-		$this->ITM->LinkCustomAttributes = "";
-		$this->ITM->HrefValue = "";
-		$this->ITM->TooltipValue = "";
-
-		// Sign1
-		$this->Sign1->LinkCustomAttributes = "";
-		$this->Sign1->HrefValue = "";
-		$this->Sign1->TooltipValue = "";
-
-		// Sign2
-		$this->Sign2->LinkCustomAttributes = "";
-		$this->Sign2->HrefValue = "";
-		$this->Sign2->TooltipValue = "";
-
-		// Sign3
-		$this->Sign3->LinkCustomAttributes = "";
-		$this->Sign3->HrefValue = "";
-		$this->Sign3->TooltipValue = "";
+		// Status
+		$this->Status->LinkCustomAttributes = "";
+		$this->Status->HrefValue = "";
+		$this->Status->TooltipValue = "";
 
 		// Call Row Rendered event
 		$this->Row_Rendered();
@@ -1154,47 +749,13 @@ class t105_disposalhead extends DbTable
 		$this->id->EditValue = $this->id->CurrentValue;
 		$this->id->ViewCustomAttributes = "";
 
-		// property_id
-		$this->property_id->EditAttrs["class"] = "form-control";
-		$this->property_id->EditCustomAttributes = "";
-
-		// TransactionNo
-		$this->TransactionNo->EditAttrs["class"] = "form-control";
-		$this->TransactionNo->EditCustomAttributes = "";
-		if (!$this->TransactionNo->Raw)
-			$this->TransactionNo->CurrentValue = HtmlDecode($this->TransactionNo->CurrentValue);
-		$this->TransactionNo->EditValue = $this->TransactionNo->CurrentValue;
-		$this->TransactionNo->PlaceHolder = RemoveHtml($this->TransactionNo->caption());
-
-		// TransactionDate
-		$this->TransactionDate->EditAttrs["class"] = "form-control";
-		$this->TransactionDate->EditCustomAttributes = "";
-		$this->TransactionDate->EditValue = FormatDateTime($this->TransactionDate->CurrentValue, 7);
-		$this->TransactionDate->PlaceHolder = RemoveHtml($this->TransactionDate->caption());
-
-		// RecommendedBy
-		$this->RecommendedBy->EditAttrs["class"] = "form-control";
-		$this->RecommendedBy->EditCustomAttributes = "";
-
-		// CE
-		$this->CE->EditAttrs["class"] = "form-control";
-		$this->CE->EditCustomAttributes = "";
-
-		// ITM
-		$this->ITM->EditAttrs["class"] = "form-control";
-		$this->ITM->EditCustomAttributes = "";
-
-		// Sign1
-		$this->Sign1->EditAttrs["class"] = "form-control";
-		$this->Sign1->EditCustomAttributes = "";
-
-		// Sign2
-		$this->Sign2->EditAttrs["class"] = "form-control";
-		$this->Sign2->EditCustomAttributes = "";
-
-		// Sign3
-		$this->Sign3->EditAttrs["class"] = "form-control";
-		$this->Sign3->EditCustomAttributes = "";
+		// Status
+		$this->Status->EditAttrs["class"] = "form-control";
+		$this->Status->EditCustomAttributes = "";
+		if (!$this->Status->Raw)
+			$this->Status->CurrentValue = HtmlDecode($this->Status->CurrentValue);
+		$this->Status->EditValue = $this->Status->CurrentValue;
+		$this->Status->PlaceHolder = RemoveHtml($this->Status->caption());
 
 		// Call Row Rendered event
 		$this->Row_Rendered();
@@ -1225,26 +786,10 @@ class t105_disposalhead extends DbTable
 			if ($doc->Horizontal) { // Horizontal format, write header
 				$doc->beginExportRow();
 				if ($exportPageType == "view") {
-					$doc->exportCaption($this->property_id);
-					$doc->exportCaption($this->TransactionNo);
-					$doc->exportCaption($this->TransactionDate);
-					$doc->exportCaption($this->RecommendedBy);
-					$doc->exportCaption($this->CE);
-					$doc->exportCaption($this->ITM);
-					$doc->exportCaption($this->Sign1);
-					$doc->exportCaption($this->Sign2);
-					$doc->exportCaption($this->Sign3);
+					$doc->exportCaption($this->Status);
 				} else {
 					$doc->exportCaption($this->id);
-					$doc->exportCaption($this->property_id);
-					$doc->exportCaption($this->TransactionNo);
-					$doc->exportCaption($this->TransactionDate);
-					$doc->exportCaption($this->RecommendedBy);
-					$doc->exportCaption($this->CE);
-					$doc->exportCaption($this->ITM);
-					$doc->exportCaption($this->Sign1);
-					$doc->exportCaption($this->Sign2);
-					$doc->exportCaption($this->Sign3);
+					$doc->exportCaption($this->Status);
 				}
 				$doc->endExportRow();
 			}
@@ -1276,26 +821,10 @@ class t105_disposalhead extends DbTable
 				if (!$doc->ExportCustom) {
 					$doc->beginExportRow($rowCnt); // Allow CSS styles if enabled
 					if ($exportPageType == "view") {
-						$doc->exportField($this->property_id);
-						$doc->exportField($this->TransactionNo);
-						$doc->exportField($this->TransactionDate);
-						$doc->exportField($this->RecommendedBy);
-						$doc->exportField($this->CE);
-						$doc->exportField($this->ITM);
-						$doc->exportField($this->Sign1);
-						$doc->exportField($this->Sign2);
-						$doc->exportField($this->Sign3);
+						$doc->exportField($this->Status);
 					} else {
 						$doc->exportField($this->id);
-						$doc->exportField($this->property_id);
-						$doc->exportField($this->TransactionNo);
-						$doc->exportField($this->TransactionDate);
-						$doc->exportField($this->RecommendedBy);
-						$doc->exportField($this->CE);
-						$doc->exportField($this->ITM);
-						$doc->exportField($this->Sign1);
-						$doc->exportField($this->Sign2);
-						$doc->exportField($this->Sign3);
+						$doc->exportField($this->Status);
 					}
 					$doc->endExportRow($rowCnt);
 				}
@@ -1322,7 +851,7 @@ class t105_disposalhead extends DbTable
 	// Write Audit Trail start/end for grid update
 	public function writeAuditTrailDummy($typ)
 	{
-		$table = 't105_disposalhead';
+		$table = 't011_reason';
 		$usr = CurrentUserID();
 		WriteAuditTrail("log", DbCurrentDateTime(), ScriptName(), $usr, $typ, $table, "", "", "", "");
 	}
@@ -1333,7 +862,7 @@ class t105_disposalhead extends DbTable
 		global $Language;
 		if (!$this->AuditTrailOnAdd)
 			return;
-		$table = 't105_disposalhead';
+		$table = 't011_reason';
 
 		// Get key value
 		$key = "";
@@ -1370,7 +899,7 @@ class t105_disposalhead extends DbTable
 		global $Language;
 		if (!$this->AuditTrailOnEdit)
 			return;
-		$table = 't105_disposalhead';
+		$table = 't011_reason';
 
 		// Get key value
 		$key = "";
@@ -1420,7 +949,7 @@ class t105_disposalhead extends DbTable
 		global $Language;
 		if (!$this->AuditTrailOnDelete)
 			return;
-		$table = 't105_disposalhead';
+		$table = 't011_reason';
 
 		// Get key value
 		$key = "";

@@ -70,14 +70,14 @@ $t105_disposalhead_delete->showMessage();
 <table class="table ew-table">
 	<thead>
 	<tr class="ew-table-header">
-<?php if ($t105_disposalhead_delete->id->Visible) { // id ?>
-		<th class="<?php echo $t105_disposalhead_delete->id->headerCellClass() ?>"><span id="elh_t105_disposalhead_id" class="t105_disposalhead_id"><?php echo $t105_disposalhead_delete->id->caption() ?></span></th>
-<?php } ?>
 <?php if ($t105_disposalhead_delete->property_id->Visible) { // property_id ?>
 		<th class="<?php echo $t105_disposalhead_delete->property_id->headerCellClass() ?>"><span id="elh_t105_disposalhead_property_id" class="t105_disposalhead_property_id"><?php echo $t105_disposalhead_delete->property_id->caption() ?></span></th>
 <?php } ?>
 <?php if ($t105_disposalhead_delete->TransactionNo->Visible) { // TransactionNo ?>
 		<th class="<?php echo $t105_disposalhead_delete->TransactionNo->headerCellClass() ?>"><span id="elh_t105_disposalhead_TransactionNo" class="t105_disposalhead_TransactionNo"><?php echo $t105_disposalhead_delete->TransactionNo->caption() ?></span></th>
+<?php } ?>
+<?php if ($t105_disposalhead_delete->TransactionDate->Visible) { // TransactionDate ?>
+		<th class="<?php echo $t105_disposalhead_delete->TransactionDate->headerCellClass() ?>"><span id="elh_t105_disposalhead_TransactionDate" class="t105_disposalhead_TransactionDate"><?php echo $t105_disposalhead_delete->TransactionDate->caption() ?></span></th>
 <?php } ?>
 <?php if ($t105_disposalhead_delete->RecommendedBy->Visible) { // RecommendedBy ?>
 		<th class="<?php echo $t105_disposalhead_delete->RecommendedBy->headerCellClass() ?>"><span id="elh_t105_disposalhead_RecommendedBy" class="t105_disposalhead_RecommendedBy"><?php echo $t105_disposalhead_delete->RecommendedBy->caption() ?></span></th>
@@ -118,13 +118,6 @@ while (!$t105_disposalhead_delete->Recordset->EOF) {
 	$t105_disposalhead_delete->renderRow();
 ?>
 	<tr <?php echo $t105_disposalhead->rowAttributes() ?>>
-<?php if ($t105_disposalhead_delete->id->Visible) { // id ?>
-		<td <?php echo $t105_disposalhead_delete->id->cellAttributes() ?>>
-<span id="el<?php echo $t105_disposalhead_delete->RowCount ?>_t105_disposalhead_id" class="t105_disposalhead_id">
-<span<?php echo $t105_disposalhead_delete->id->viewAttributes() ?>><?php echo $t105_disposalhead_delete->id->getViewValue() ?></span>
-</span>
-</td>
-<?php } ?>
 <?php if ($t105_disposalhead_delete->property_id->Visible) { // property_id ?>
 		<td <?php echo $t105_disposalhead_delete->property_id->cellAttributes() ?>>
 <span id="el<?php echo $t105_disposalhead_delete->RowCount ?>_t105_disposalhead_property_id" class="t105_disposalhead_property_id">
@@ -136,6 +129,13 @@ while (!$t105_disposalhead_delete->Recordset->EOF) {
 		<td <?php echo $t105_disposalhead_delete->TransactionNo->cellAttributes() ?>>
 <span id="el<?php echo $t105_disposalhead_delete->RowCount ?>_t105_disposalhead_TransactionNo" class="t105_disposalhead_TransactionNo">
 <span<?php echo $t105_disposalhead_delete->TransactionNo->viewAttributes() ?>><?php echo $t105_disposalhead_delete->TransactionNo->getViewValue() ?></span>
+</span>
+</td>
+<?php } ?>
+<?php if ($t105_disposalhead_delete->TransactionDate->Visible) { // TransactionDate ?>
+		<td <?php echo $t105_disposalhead_delete->TransactionDate->cellAttributes() ?>>
+<span id="el<?php echo $t105_disposalhead_delete->RowCount ?>_t105_disposalhead_TransactionDate" class="t105_disposalhead_TransactionDate">
+<span<?php echo $t105_disposalhead_delete->TransactionDate->viewAttributes() ?>><?php echo $t105_disposalhead_delete->TransactionDate->getViewValue() ?></span>
 </span>
 </td>
 <?php } ?>
