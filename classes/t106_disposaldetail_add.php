@@ -698,6 +698,7 @@ class t106_disposaldetail_add extends t106_disposaldetail
 		$this->disposalhead_id->setVisibility();
 		$this->asset_id->setVisibility();
 		$this->depreciation_id->Visible = FALSE;
+		$this->disposaldate->setVisibility();
 		$this->cond_id->setVisibility();
 		$this->reason_id->setVisibility();
 		$this->hideFieldsForAddEdit();
@@ -854,6 +855,8 @@ class t106_disposaldetail_add extends t106_disposaldetail
 		$this->asset_id->OldValue = $this->asset_id->CurrentValue;
 		$this->depreciation_id->CurrentValue = NULL;
 		$this->depreciation_id->OldValue = $this->depreciation_id->CurrentValue;
+		$this->disposaldate->CurrentValue = NULL;
+		$this->disposaldate->OldValue = $this->disposaldate->CurrentValue;
 		$this->cond_id->CurrentValue = NULL;
 		$this->cond_id->OldValue = $this->cond_id->CurrentValue;
 		$this->reason_id->CurrentValue = NULL;
@@ -885,6 +888,16 @@ class t106_disposaldetail_add extends t106_disposaldetail
 				$this->asset_id->setFormValue($val);
 		}
 
+		// Check field name 'disposaldate' first before field var 'x_disposaldate'
+		$val = $CurrentForm->hasValue("disposaldate") ? $CurrentForm->getValue("disposaldate") : $CurrentForm->getValue("x_disposaldate");
+		if (!$this->disposaldate->IsDetailKey) {
+			if (IsApi() && $val == NULL)
+				$this->disposaldate->Visible = FALSE; // Disable update for API request
+			else
+				$this->disposaldate->setFormValue($val);
+			$this->disposaldate->CurrentValue = UnFormatDateTime($this->disposaldate->CurrentValue, 7);
+		}
+
 		// Check field name 'cond_id' first before field var 'x_cond_id'
 		$val = $CurrentForm->hasValue("cond_id") ? $CurrentForm->getValue("cond_id") : $CurrentForm->getValue("x_cond_id");
 		if (!$this->cond_id->IsDetailKey) {
@@ -913,6 +926,8 @@ class t106_disposaldetail_add extends t106_disposaldetail
 		global $CurrentForm;
 		$this->disposalhead_id->CurrentValue = $this->disposalhead_id->FormValue;
 		$this->asset_id->CurrentValue = $this->asset_id->FormValue;
+		$this->disposaldate->CurrentValue = $this->disposaldate->FormValue;
+		$this->disposaldate->CurrentValue = UnFormatDateTime($this->disposaldate->CurrentValue, 7);
 		$this->cond_id->CurrentValue = $this->cond_id->FormValue;
 		$this->reason_id->CurrentValue = $this->reason_id->FormValue;
 	}
@@ -956,6 +971,7 @@ class t106_disposaldetail_add extends t106_disposaldetail
 		$this->disposalhead_id->setDbValue($row['disposalhead_id']);
 		$this->asset_id->setDbValue($row['asset_id']);
 		$this->depreciation_id->setDbValue($row['depreciation_id']);
+		$this->disposaldate->setDbValue($row['disposaldate']);
 		$this->cond_id->setDbValue($row['cond_id']);
 		$this->reason_id->setDbValue($row['reason_id']);
 	}
@@ -969,6 +985,7 @@ class t106_disposaldetail_add extends t106_disposaldetail
 		$row['disposalhead_id'] = $this->disposalhead_id->CurrentValue;
 		$row['asset_id'] = $this->asset_id->CurrentValue;
 		$row['depreciation_id'] = $this->depreciation_id->CurrentValue;
+		$row['disposaldate'] = $this->disposaldate->CurrentValue;
 		$row['cond_id'] = $this->cond_id->CurrentValue;
 		$row['reason_id'] = $this->reason_id->CurrentValue;
 		return $row;
@@ -1012,6 +1029,7 @@ class t106_disposaldetail_add extends t106_disposaldetail
 		// disposalhead_id
 		// asset_id
 		// depreciation_id
+		// disposaldate
 		// cond_id
 		// reason_id
 
@@ -1053,6 +1071,11 @@ class t106_disposaldetail_add extends t106_disposaldetail
 			$this->depreciation_id->ViewValue = $this->depreciation_id->CurrentValue;
 			$this->depreciation_id->ViewValue = FormatNumber($this->depreciation_id->ViewValue, 0, -2, -2, -2);
 			$this->depreciation_id->ViewCustomAttributes = "";
+
+			// disposaldate
+			$this->disposaldate->ViewValue = $this->disposaldate->CurrentValue;
+			$this->disposaldate->ViewValue = FormatDateTime($this->disposaldate->ViewValue, 7);
+			$this->disposaldate->ViewCustomAttributes = "";
 
 			// cond_id
 			$curVal = strval($this->cond_id->CurrentValue);
@@ -1107,6 +1130,11 @@ class t106_disposaldetail_add extends t106_disposaldetail
 			$this->asset_id->LinkCustomAttributes = "";
 			$this->asset_id->HrefValue = "";
 			$this->asset_id->TooltipValue = "";
+
+			// disposaldate
+			$this->disposaldate->LinkCustomAttributes = "";
+			$this->disposaldate->HrefValue = "";
+			$this->disposaldate->TooltipValue = "";
 
 			// cond_id
 			$this->cond_id->LinkCustomAttributes = "";
@@ -1164,6 +1192,12 @@ class t106_disposaldetail_add extends t106_disposaldetail
 					$rswrk->close();
 				$this->asset_id->EditValue = $arwrk;
 			}
+
+			// disposaldate
+			$this->disposaldate->EditAttrs["class"] = "form-control";
+			$this->disposaldate->EditCustomAttributes = "";
+			$this->disposaldate->EditValue = HtmlEncode(FormatDateTime($this->disposaldate->CurrentValue, 7));
+			$this->disposaldate->PlaceHolder = RemoveHtml($this->disposaldate->caption());
 
 			// cond_id
 			$this->cond_id->EditCustomAttributes = "";
@@ -1239,6 +1273,10 @@ class t106_disposaldetail_add extends t106_disposaldetail
 			$this->asset_id->LinkCustomAttributes = "";
 			$this->asset_id->HrefValue = "";
 
+			// disposaldate
+			$this->disposaldate->LinkCustomAttributes = "";
+			$this->disposaldate->HrefValue = "";
+
 			// cond_id
 			$this->cond_id->LinkCustomAttributes = "";
 			$this->cond_id->HrefValue = "";
@@ -1278,6 +1316,14 @@ class t106_disposaldetail_add extends t106_disposaldetail
 			if (!$this->asset_id->IsDetailKey && $this->asset_id->FormValue != NULL && $this->asset_id->FormValue == "") {
 				AddMessage($FormError, str_replace("%s", $this->asset_id->caption(), $this->asset_id->RequiredErrorMessage));
 			}
+		}
+		if ($this->disposaldate->Required) {
+			if (!$this->disposaldate->IsDetailKey && $this->disposaldate->FormValue != NULL && $this->disposaldate->FormValue == "") {
+				AddMessage($FormError, str_replace("%s", $this->disposaldate->caption(), $this->disposaldate->RequiredErrorMessage));
+			}
+		}
+		if (!CheckEuroDate($this->disposaldate->FormValue)) {
+			AddMessage($FormError, $this->disposaldate->errorMessage());
 		}
 		if ($this->cond_id->Required) {
 			if (!$this->cond_id->IsDetailKey && $this->cond_id->FormValue != NULL && $this->cond_id->FormValue == "") {
@@ -1340,6 +1386,9 @@ class t106_disposaldetail_add extends t106_disposaldetail
 
 		// asset_id
 		$this->asset_id->setDbValueDef($rsnew, $this->asset_id->CurrentValue, 0, FALSE);
+
+		// disposaldate
+		$this->disposaldate->setDbValueDef($rsnew, UnFormatDateTime($this->disposaldate->CurrentValue, 7), CurrentDate(), FALSE);
 
 		// cond_id
 		$this->cond_id->setDbValueDef($rsnew, $this->cond_id->CurrentValue, 0, FALSE);

@@ -839,9 +839,10 @@ class t106_disposaldetail_list extends t106_disposaldetail
 		// Setup export options
 		$this->setupExportOptions();
 		$this->id->Visible = FALSE;
-		$this->disposalhead_id->setVisibility();
+		$this->disposalhead_id->Visible = FALSE;
 		$this->asset_id->setVisibility();
 		$this->depreciation_id->Visible = FALSE;
+		$this->disposaldate->setVisibility();
 		$this->cond_id->setVisibility();
 		$this->reason_id->setVisibility();
 		$this->hideFieldsForAddEdit();
@@ -1591,9 +1592,9 @@ class t106_disposaldetail_list extends t106_disposaldetail
 	public function emptyRow()
 	{
 		global $CurrentForm;
-		if ($CurrentForm->hasValue("x_disposalhead_id") && $CurrentForm->hasValue("o_disposalhead_id") && $this->disposalhead_id->CurrentValue != $this->disposalhead_id->OldValue)
-			return FALSE;
 		if ($CurrentForm->hasValue("x_asset_id") && $CurrentForm->hasValue("o_asset_id") && $this->asset_id->CurrentValue != $this->asset_id->OldValue)
+			return FALSE;
+		if ($CurrentForm->hasValue("x_disposaldate") && $CurrentForm->hasValue("o_disposaldate") && $this->disposaldate->CurrentValue != $this->disposaldate->OldValue)
 			return FALSE;
 		if ($CurrentForm->hasValue("x_cond_id") && $CurrentForm->hasValue("o_cond_id") && $this->cond_id->CurrentValue != $this->cond_id->OldValue)
 			return FALSE;
@@ -1685,6 +1686,7 @@ class t106_disposaldetail_list extends t106_disposaldetail
 		$filterList = Concat($filterList, $this->disposalhead_id->AdvancedSearch->toJson(), ","); // Field disposalhead_id
 		$filterList = Concat($filterList, $this->asset_id->AdvancedSearch->toJson(), ","); // Field asset_id
 		$filterList = Concat($filterList, $this->depreciation_id->AdvancedSearch->toJson(), ","); // Field depreciation_id
+		$filterList = Concat($filterList, $this->disposaldate->AdvancedSearch->toJson(), ","); // Field disposaldate
 		$filterList = Concat($filterList, $this->cond_id->AdvancedSearch->toJson(), ","); // Field cond_id
 		$filterList = Concat($filterList, $this->reason_id->AdvancedSearch->toJson(), ","); // Field reason_id
 
@@ -1753,6 +1755,14 @@ class t106_disposaldetail_list extends t106_disposaldetail
 		$this->depreciation_id->AdvancedSearch->SearchOperator2 = @$filter["w_depreciation_id"];
 		$this->depreciation_id->AdvancedSearch->save();
 
+		// Field disposaldate
+		$this->disposaldate->AdvancedSearch->SearchValue = @$filter["x_disposaldate"];
+		$this->disposaldate->AdvancedSearch->SearchOperator = @$filter["z_disposaldate"];
+		$this->disposaldate->AdvancedSearch->SearchCondition = @$filter["v_disposaldate"];
+		$this->disposaldate->AdvancedSearch->SearchValue2 = @$filter["y_disposaldate"];
+		$this->disposaldate->AdvancedSearch->SearchOperator2 = @$filter["w_disposaldate"];
+		$this->disposaldate->AdvancedSearch->save();
+
 		// Field cond_id
 		$this->cond_id->AdvancedSearch->SearchValue = @$filter["x_cond_id"];
 		$this->cond_id->AdvancedSearch->SearchOperator = @$filter["z_cond_id"];
@@ -1781,6 +1791,7 @@ class t106_disposaldetail_list extends t106_disposaldetail
 		$this->buildSearchSql($where, $this->disposalhead_id, $default, FALSE); // disposalhead_id
 		$this->buildSearchSql($where, $this->asset_id, $default, FALSE); // asset_id
 		$this->buildSearchSql($where, $this->depreciation_id, $default, FALSE); // depreciation_id
+		$this->buildSearchSql($where, $this->disposaldate, $default, FALSE); // disposaldate
 		$this->buildSearchSql($where, $this->cond_id, $default, FALSE); // cond_id
 		$this->buildSearchSql($where, $this->reason_id, $default, FALSE); // reason_id
 
@@ -1793,6 +1804,7 @@ class t106_disposaldetail_list extends t106_disposaldetail
 			$this->disposalhead_id->AdvancedSearch->save(); // disposalhead_id
 			$this->asset_id->AdvancedSearch->save(); // asset_id
 			$this->depreciation_id->AdvancedSearch->save(); // depreciation_id
+			$this->disposaldate->AdvancedSearch->save(); // disposaldate
 			$this->cond_id->AdvancedSearch->save(); // cond_id
 			$this->reason_id->AdvancedSearch->save(); // reason_id
 		}
@@ -1862,6 +1874,8 @@ class t106_disposaldetail_list extends t106_disposaldetail
 			return TRUE;
 		if ($this->depreciation_id->AdvancedSearch->issetSession())
 			return TRUE;
+		if ($this->disposaldate->AdvancedSearch->issetSession())
+			return TRUE;
 		if ($this->cond_id->AdvancedSearch->issetSession())
 			return TRUE;
 		if ($this->reason_id->AdvancedSearch->issetSession())
@@ -1894,6 +1908,7 @@ class t106_disposaldetail_list extends t106_disposaldetail
 		$this->disposalhead_id->AdvancedSearch->unsetSession();
 		$this->asset_id->AdvancedSearch->unsetSession();
 		$this->depreciation_id->AdvancedSearch->unsetSession();
+		$this->disposaldate->AdvancedSearch->unsetSession();
 		$this->cond_id->AdvancedSearch->unsetSession();
 		$this->reason_id->AdvancedSearch->unsetSession();
 	}
@@ -1908,6 +1923,7 @@ class t106_disposaldetail_list extends t106_disposaldetail
 		$this->disposalhead_id->AdvancedSearch->load();
 		$this->asset_id->AdvancedSearch->load();
 		$this->depreciation_id->AdvancedSearch->load();
+		$this->disposaldate->AdvancedSearch->load();
 		$this->cond_id->AdvancedSearch->load();
 		$this->reason_id->AdvancedSearch->load();
 	}
@@ -1923,8 +1939,8 @@ class t106_disposaldetail_list extends t106_disposaldetail
 		if (Get("order") !== NULL) {
 			$this->CurrentOrder = Get("order");
 			$this->CurrentOrderType = Get("ordertype", "");
-			$this->updateSort($this->disposalhead_id, $ctrl); // disposalhead_id
 			$this->updateSort($this->asset_id, $ctrl); // asset_id
+			$this->updateSort($this->disposaldate, $ctrl); // disposaldate
 			$this->updateSort($this->cond_id, $ctrl); // cond_id
 			$this->updateSort($this->reason_id, $ctrl); // reason_id
 			$this->setStartRecordNumber(1); // Reset start position
@@ -1970,8 +1986,8 @@ class t106_disposaldetail_list extends t106_disposaldetail
 			if ($this->Command == "resetsort") {
 				$orderBy = "";
 				$this->setSessionOrderBy($orderBy);
-				$this->disposalhead_id->setSort("");
 				$this->asset_id->setSort("");
+				$this->disposaldate->setSort("");
 				$this->cond_id->setSort("");
 				$this->reason_id->setSort("");
 			}
@@ -2468,6 +2484,8 @@ class t106_disposaldetail_list extends t106_disposaldetail
 		$this->asset_id->OldValue = $this->asset_id->CurrentValue;
 		$this->depreciation_id->CurrentValue = NULL;
 		$this->depreciation_id->OldValue = $this->depreciation_id->CurrentValue;
+		$this->disposaldate->CurrentValue = NULL;
+		$this->disposaldate->OldValue = $this->disposaldate->CurrentValue;
 		$this->cond_id->CurrentValue = NULL;
 		$this->cond_id->OldValue = $this->cond_id->CurrentValue;
 		$this->reason_id->CurrentValue = NULL;
@@ -2509,6 +2527,13 @@ class t106_disposaldetail_list extends t106_disposaldetail
 				$this->Command = "search";
 		}
 
+		// disposaldate
+		if (!$this->isAddOrEdit() && $this->disposaldate->AdvancedSearch->get()) {
+			$got = TRUE;
+			if (($this->disposaldate->AdvancedSearch->SearchValue != "" || $this->disposaldate->AdvancedSearch->SearchValue2 != "") && $this->Command == "")
+				$this->Command = "search";
+		}
+
 		// cond_id
 		if (!$this->isAddOrEdit() && $this->cond_id->AdvancedSearch->get()) {
 			$got = TRUE;
@@ -2532,17 +2557,6 @@ class t106_disposaldetail_list extends t106_disposaldetail
 		// Load from form
 		global $CurrentForm;
 
-		// Check field name 'disposalhead_id' first before field var 'x_disposalhead_id'
-		$val = $CurrentForm->hasValue("disposalhead_id") ? $CurrentForm->getValue("disposalhead_id") : $CurrentForm->getValue("x_disposalhead_id");
-		if (!$this->disposalhead_id->IsDetailKey) {
-			if (IsApi() && $val == NULL)
-				$this->disposalhead_id->Visible = FALSE; // Disable update for API request
-			else
-				$this->disposalhead_id->setFormValue($val);
-		}
-		if ($CurrentForm->hasValue("o_disposalhead_id"))
-			$this->disposalhead_id->setOldValue($CurrentForm->getValue("o_disposalhead_id"));
-
 		// Check field name 'asset_id' first before field var 'x_asset_id'
 		$val = $CurrentForm->hasValue("asset_id") ? $CurrentForm->getValue("asset_id") : $CurrentForm->getValue("x_asset_id");
 		if (!$this->asset_id->IsDetailKey) {
@@ -2553,6 +2567,18 @@ class t106_disposaldetail_list extends t106_disposaldetail
 		}
 		if ($CurrentForm->hasValue("o_asset_id"))
 			$this->asset_id->setOldValue($CurrentForm->getValue("o_asset_id"));
+
+		// Check field name 'disposaldate' first before field var 'x_disposaldate'
+		$val = $CurrentForm->hasValue("disposaldate") ? $CurrentForm->getValue("disposaldate") : $CurrentForm->getValue("x_disposaldate");
+		if (!$this->disposaldate->IsDetailKey) {
+			if (IsApi() && $val == NULL)
+				$this->disposaldate->Visible = FALSE; // Disable update for API request
+			else
+				$this->disposaldate->setFormValue($val);
+			$this->disposaldate->CurrentValue = UnFormatDateTime($this->disposaldate->CurrentValue, 7);
+		}
+		if ($CurrentForm->hasValue("o_disposaldate"))
+			$this->disposaldate->setOldValue($CurrentForm->getValue("o_disposaldate"));
 
 		// Check field name 'cond_id' first before field var 'x_cond_id'
 		$val = $CurrentForm->hasValue("cond_id") ? $CurrentForm->getValue("cond_id") : $CurrentForm->getValue("x_cond_id");
@@ -2588,8 +2614,9 @@ class t106_disposaldetail_list extends t106_disposaldetail
 		global $CurrentForm;
 		if (!$this->isGridAdd() && !$this->isAdd())
 			$this->id->CurrentValue = $this->id->FormValue;
-		$this->disposalhead_id->CurrentValue = $this->disposalhead_id->FormValue;
 		$this->asset_id->CurrentValue = $this->asset_id->FormValue;
+		$this->disposaldate->CurrentValue = $this->disposaldate->FormValue;
+		$this->disposaldate->CurrentValue = UnFormatDateTime($this->disposaldate->CurrentValue, 7);
 		$this->cond_id->CurrentValue = $this->cond_id->FormValue;
 		$this->reason_id->CurrentValue = $this->reason_id->FormValue;
 	}
@@ -2662,6 +2689,7 @@ class t106_disposaldetail_list extends t106_disposaldetail
 		$this->disposalhead_id->setDbValue($row['disposalhead_id']);
 		$this->asset_id->setDbValue($row['asset_id']);
 		$this->depreciation_id->setDbValue($row['depreciation_id']);
+		$this->disposaldate->setDbValue($row['disposaldate']);
 		$this->cond_id->setDbValue($row['cond_id']);
 		$this->reason_id->setDbValue($row['reason_id']);
 	}
@@ -2675,6 +2703,7 @@ class t106_disposaldetail_list extends t106_disposaldetail
 		$row['disposalhead_id'] = $this->disposalhead_id->CurrentValue;
 		$row['asset_id'] = $this->asset_id->CurrentValue;
 		$row['depreciation_id'] = $this->depreciation_id->CurrentValue;
+		$row['disposaldate'] = $this->disposaldate->CurrentValue;
 		$row['cond_id'] = $this->cond_id->CurrentValue;
 		$row['reason_id'] = $this->reason_id->CurrentValue;
 		return $row;
@@ -2724,6 +2753,7 @@ class t106_disposaldetail_list extends t106_disposaldetail
 		// disposalhead_id
 		// asset_id
 		// depreciation_id
+		// disposaldate
 		// cond_id
 		// reason_id
 
@@ -2765,6 +2795,11 @@ class t106_disposaldetail_list extends t106_disposaldetail
 			$this->depreciation_id->ViewValue = $this->depreciation_id->CurrentValue;
 			$this->depreciation_id->ViewValue = FormatNumber($this->depreciation_id->ViewValue, 0, -2, -2, -2);
 			$this->depreciation_id->ViewCustomAttributes = "";
+
+			// disposaldate
+			$this->disposaldate->ViewValue = $this->disposaldate->CurrentValue;
+			$this->disposaldate->ViewValue = FormatDateTime($this->disposaldate->ViewValue, 7);
+			$this->disposaldate->ViewCustomAttributes = "";
 
 			// cond_id
 			$curVal = strval($this->cond_id->CurrentValue);
@@ -2810,15 +2845,15 @@ class t106_disposaldetail_list extends t106_disposaldetail
 			}
 			$this->reason_id->ViewCustomAttributes = "";
 
-			// disposalhead_id
-			$this->disposalhead_id->LinkCustomAttributes = "";
-			$this->disposalhead_id->HrefValue = "";
-			$this->disposalhead_id->TooltipValue = "";
-
 			// asset_id
 			$this->asset_id->LinkCustomAttributes = "";
 			$this->asset_id->HrefValue = "";
 			$this->asset_id->TooltipValue = "";
+
+			// disposaldate
+			$this->disposaldate->LinkCustomAttributes = "";
+			$this->disposaldate->HrefValue = "";
+			$this->disposaldate->TooltipValue = "";
 
 			// cond_id
 			$this->cond_id->LinkCustomAttributes = "";
@@ -2830,20 +2865,6 @@ class t106_disposaldetail_list extends t106_disposaldetail
 			$this->reason_id->HrefValue = "";
 			$this->reason_id->TooltipValue = "";
 		} elseif ($this->RowType == ROWTYPE_ADD) { // Add row
-
-			// disposalhead_id
-			$this->disposalhead_id->EditAttrs["class"] = "form-control";
-			$this->disposalhead_id->EditCustomAttributes = "";
-			if ($this->disposalhead_id->getSessionValue() != "") {
-				$this->disposalhead_id->CurrentValue = $this->disposalhead_id->getSessionValue();
-				$this->disposalhead_id->OldValue = $this->disposalhead_id->CurrentValue;
-				$this->disposalhead_id->ViewValue = $this->disposalhead_id->CurrentValue;
-				$this->disposalhead_id->ViewValue = FormatNumber($this->disposalhead_id->ViewValue, 0, -2, -2, -2);
-				$this->disposalhead_id->ViewCustomAttributes = "";
-			} else {
-				$this->disposalhead_id->EditValue = HtmlEncode($this->disposalhead_id->CurrentValue);
-				$this->disposalhead_id->PlaceHolder = RemoveHtml($this->disposalhead_id->caption());
-			}
 
 			// asset_id
 			$this->asset_id->EditCustomAttributes = "";
@@ -2877,6 +2898,12 @@ class t106_disposaldetail_list extends t106_disposaldetail
 					$rswrk->close();
 				$this->asset_id->EditValue = $arwrk;
 			}
+
+			// disposaldate
+			$this->disposaldate->EditAttrs["class"] = "form-control";
+			$this->disposaldate->EditCustomAttributes = "";
+			$this->disposaldate->EditValue = HtmlEncode(FormatDateTime($this->disposaldate->CurrentValue, 7));
+			$this->disposaldate->PlaceHolder = RemoveHtml($this->disposaldate->caption());
 
 			// cond_id
 			$this->cond_id->EditCustomAttributes = "";
@@ -2943,14 +2970,14 @@ class t106_disposaldetail_list extends t106_disposaldetail
 			}
 
 			// Add refer script
-			// disposalhead_id
-
-			$this->disposalhead_id->LinkCustomAttributes = "";
-			$this->disposalhead_id->HrefValue = "";
-
 			// asset_id
+
 			$this->asset_id->LinkCustomAttributes = "";
 			$this->asset_id->HrefValue = "";
+
+			// disposaldate
+			$this->disposaldate->LinkCustomAttributes = "";
+			$this->disposaldate->HrefValue = "";
 
 			// cond_id
 			$this->cond_id->LinkCustomAttributes = "";
@@ -2960,20 +2987,6 @@ class t106_disposaldetail_list extends t106_disposaldetail
 			$this->reason_id->LinkCustomAttributes = "";
 			$this->reason_id->HrefValue = "";
 		} elseif ($this->RowType == ROWTYPE_EDIT) { // Edit row
-
-			// disposalhead_id
-			$this->disposalhead_id->EditAttrs["class"] = "form-control";
-			$this->disposalhead_id->EditCustomAttributes = "";
-			if ($this->disposalhead_id->getSessionValue() != "") {
-				$this->disposalhead_id->CurrentValue = $this->disposalhead_id->getSessionValue();
-				$this->disposalhead_id->OldValue = $this->disposalhead_id->CurrentValue;
-				$this->disposalhead_id->ViewValue = $this->disposalhead_id->CurrentValue;
-				$this->disposalhead_id->ViewValue = FormatNumber($this->disposalhead_id->ViewValue, 0, -2, -2, -2);
-				$this->disposalhead_id->ViewCustomAttributes = "";
-			} else {
-				$this->disposalhead_id->EditValue = HtmlEncode($this->disposalhead_id->CurrentValue);
-				$this->disposalhead_id->PlaceHolder = RemoveHtml($this->disposalhead_id->caption());
-			}
 
 			// asset_id
 			$this->asset_id->EditCustomAttributes = "";
@@ -3007,6 +3020,12 @@ class t106_disposaldetail_list extends t106_disposaldetail
 					$rswrk->close();
 				$this->asset_id->EditValue = $arwrk;
 			}
+
+			// disposaldate
+			$this->disposaldate->EditAttrs["class"] = "form-control";
+			$this->disposaldate->EditCustomAttributes = "";
+			$this->disposaldate->EditValue = HtmlEncode(FormatDateTime($this->disposaldate->CurrentValue, 7));
+			$this->disposaldate->PlaceHolder = RemoveHtml($this->disposaldate->caption());
 
 			// cond_id
 			$this->cond_id->EditCustomAttributes = "";
@@ -3073,14 +3092,14 @@ class t106_disposaldetail_list extends t106_disposaldetail
 			}
 
 			// Edit refer script
-			// disposalhead_id
-
-			$this->disposalhead_id->LinkCustomAttributes = "";
-			$this->disposalhead_id->HrefValue = "";
-
 			// asset_id
+
 			$this->asset_id->LinkCustomAttributes = "";
 			$this->asset_id->HrefValue = "";
+
+			// disposaldate
+			$this->disposaldate->LinkCustomAttributes = "";
+			$this->disposaldate->HrefValue = "";
 
 			// cond_id
 			$this->cond_id->LinkCustomAttributes = "";
@@ -3133,18 +3152,18 @@ class t106_disposaldetail_list extends t106_disposaldetail
 		// Check if validation required
 		if (!Config("SERVER_VALIDATE"))
 			return ($FormError == "");
-		if ($this->disposalhead_id->Required) {
-			if (!$this->disposalhead_id->IsDetailKey && $this->disposalhead_id->FormValue != NULL && $this->disposalhead_id->FormValue == "") {
-				AddMessage($FormError, str_replace("%s", $this->disposalhead_id->caption(), $this->disposalhead_id->RequiredErrorMessage));
-			}
-		}
-		if (!CheckInteger($this->disposalhead_id->FormValue)) {
-			AddMessage($FormError, $this->disposalhead_id->errorMessage());
-		}
 		if ($this->asset_id->Required) {
 			if (!$this->asset_id->IsDetailKey && $this->asset_id->FormValue != NULL && $this->asset_id->FormValue == "") {
 				AddMessage($FormError, str_replace("%s", $this->asset_id->caption(), $this->asset_id->RequiredErrorMessage));
 			}
+		}
+		if ($this->disposaldate->Required) {
+			if (!$this->disposaldate->IsDetailKey && $this->disposaldate->FormValue != NULL && $this->disposaldate->FormValue == "") {
+				AddMessage($FormError, str_replace("%s", $this->disposaldate->caption(), $this->disposaldate->RequiredErrorMessage));
+			}
+		}
+		if (!CheckEuroDate($this->disposaldate->FormValue)) {
+			AddMessage($FormError, $this->disposaldate->errorMessage());
 		}
 		if ($this->cond_id->Required) {
 			if (!$this->cond_id->IsDetailKey && $this->cond_id->FormValue != NULL && $this->cond_id->FormValue == "") {
@@ -3279,11 +3298,11 @@ class t106_disposaldetail_list extends t106_disposaldetail
 			$this->loadDbValues($rsold);
 			$rsnew = [];
 
-			// disposalhead_id
-			$this->disposalhead_id->setDbValueDef($rsnew, $this->disposalhead_id->CurrentValue, 0, $this->disposalhead_id->ReadOnly);
-
 			// asset_id
 			$this->asset_id->setDbValueDef($rsnew, $this->asset_id->CurrentValue, 0, $this->asset_id->ReadOnly);
+
+			// disposaldate
+			$this->disposaldate->setDbValueDef($rsnew, UnFormatDateTime($this->disposaldate->CurrentValue, 7), CurrentDate(), $this->disposaldate->ReadOnly);
 
 			// cond_id
 			$this->cond_id->setDbValueDef($rsnew, $this->cond_id->CurrentValue, 0, $this->cond_id->ReadOnly);
@@ -3390,8 +3409,8 @@ class t106_disposaldetail_list extends t106_disposaldetail
 		if (!$rs)
 			return "";
 		$hash = "";
-		$hash .= GetFieldHash($rs->fields('disposalhead_id')); // disposalhead_id
 		$hash .= GetFieldHash($rs->fields('asset_id')); // asset_id
+		$hash .= GetFieldHash($rs->fields('disposaldate')); // disposaldate
 		$hash .= GetFieldHash($rs->fields('cond_id')); // cond_id
 		$hash .= GetFieldHash($rs->fields('reason_id')); // reason_id
 		return md5($hash);
@@ -3405,8 +3424,8 @@ class t106_disposaldetail_list extends t106_disposaldetail
 		// Check referential integrity for master table 't106_disposaldetail'
 		$validMasterRecord = TRUE;
 		$masterFilter = $this->sqlMasterFilter_t105_disposalhead();
-		if (strval($this->disposalhead_id->CurrentValue) != "") {
-			$masterFilter = str_replace("@id@", AdjustSql($this->disposalhead_id->CurrentValue, "DB"), $masterFilter);
+		if ($this->disposalhead_id->getSessionValue() != "") {
+			$masterFilter = str_replace("@id@", AdjustSql($this->disposalhead_id->getSessionValue(), "DB"), $masterFilter);
 		} else {
 			$validMasterRecord = FALSE;
 		}
@@ -3430,17 +3449,22 @@ class t106_disposaldetail_list extends t106_disposaldetail
 		}
 		$rsnew = [];
 
-		// disposalhead_id
-		$this->disposalhead_id->setDbValueDef($rsnew, $this->disposalhead_id->CurrentValue, 0, FALSE);
-
 		// asset_id
 		$this->asset_id->setDbValueDef($rsnew, $this->asset_id->CurrentValue, 0, FALSE);
+
+		// disposaldate
+		$this->disposaldate->setDbValueDef($rsnew, UnFormatDateTime($this->disposaldate->CurrentValue, 7), CurrentDate(), FALSE);
 
 		// cond_id
 		$this->cond_id->setDbValueDef($rsnew, $this->cond_id->CurrentValue, 0, FALSE);
 
 		// reason_id
 		$this->reason_id->setDbValueDef($rsnew, $this->reason_id->CurrentValue, 0, FALSE);
+
+		// disposalhead_id
+		if ($this->disposalhead_id->getSessionValue() != "") {
+			$rsnew['disposalhead_id'] = $this->disposalhead_id->getSessionValue();
+		}
 
 		// Call Row Inserting event
 		$rs = ($rsold) ? $rsold->fields : NULL;
@@ -3489,6 +3513,7 @@ class t106_disposaldetail_list extends t106_disposaldetail
 		$this->disposalhead_id->AdvancedSearch->load();
 		$this->asset_id->AdvancedSearch->load();
 		$this->depreciation_id->AdvancedSearch->load();
+		$this->disposaldate->AdvancedSearch->load();
 		$this->cond_id->AdvancedSearch->load();
 		$this->reason_id->AdvancedSearch->load();
 	}

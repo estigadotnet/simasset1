@@ -61,19 +61,19 @@ loadjs.ready("head", function() {
 			var checkrow = (gridinsert) ? !this.emptyRow(infix) : true;
 			if (checkrow) {
 				addcnt++;
-			<?php if ($t106_disposaldetail_list->disposalhead_id->Required) { ?>
-				elm = this.getElements("x" + infix + "_disposalhead_id");
-				if (elm && !ew.isHidden(elm) && !ew.hasValue(elm))
-					return this.onError(elm, "<?php echo JsEncode(str_replace("%s", $t106_disposaldetail_list->disposalhead_id->caption(), $t106_disposaldetail_list->disposalhead_id->RequiredErrorMessage)) ?>");
-			<?php } ?>
-				elm = this.getElements("x" + infix + "_disposalhead_id");
-				if (elm && !ew.checkInteger(elm.value))
-					return this.onError(elm, "<?php echo JsEncode($t106_disposaldetail_list->disposalhead_id->errorMessage()) ?>");
 			<?php if ($t106_disposaldetail_list->asset_id->Required) { ?>
 				elm = this.getElements("x" + infix + "_asset_id");
 				if (elm && !ew.isHidden(elm) && !ew.hasValue(elm))
 					return this.onError(elm, "<?php echo JsEncode(str_replace("%s", $t106_disposaldetail_list->asset_id->caption(), $t106_disposaldetail_list->asset_id->RequiredErrorMessage)) ?>");
 			<?php } ?>
+			<?php if ($t106_disposaldetail_list->disposaldate->Required) { ?>
+				elm = this.getElements("x" + infix + "_disposaldate");
+				if (elm && !ew.isHidden(elm) && !ew.hasValue(elm))
+					return this.onError(elm, "<?php echo JsEncode(str_replace("%s", $t106_disposaldetail_list->disposaldate->caption(), $t106_disposaldetail_list->disposaldate->RequiredErrorMessage)) ?>");
+			<?php } ?>
+				elm = this.getElements("x" + infix + "_disposaldate");
+				if (elm && !ew.checkEuroDate(elm.value))
+					return this.onError(elm, "<?php echo JsEncode($t106_disposaldetail_list->disposaldate->errorMessage()) ?>");
 			<?php if ($t106_disposaldetail_list->cond_id->Required) { ?>
 				elm = this.getElements("x" + infix + "_cond_id");
 				if (elm && !ew.isHidden(elm) && !ew.hasValue(elm))
@@ -100,8 +100,8 @@ loadjs.ready("head", function() {
 	// Check empty row
 	ft106_disposaldetaillist.emptyRow = function(infix) {
 		var fobj = this._form;
-		if (ew.valueChanged(fobj, infix, "disposalhead_id", false)) return false;
 		if (ew.valueChanged(fobj, infix, "asset_id", false)) return false;
+		if (ew.valueChanged(fobj, infix, "disposaldate", false)) return false;
 		if (ew.valueChanged(fobj, infix, "cond_id", false)) return false;
 		if (ew.valueChanged(fobj, infix, "reason_id", false)) return false;
 		return true;
@@ -208,21 +208,21 @@ $t106_disposaldetail_list->renderListOptions();
 // Render list options (header, left)
 $t106_disposaldetail_list->ListOptions->render("header", "left");
 ?>
-<?php if ($t106_disposaldetail_list->disposalhead_id->Visible) { // disposalhead_id ?>
-	<?php if ($t106_disposaldetail_list->SortUrl($t106_disposaldetail_list->disposalhead_id) == "") { ?>
-		<th data-name="disposalhead_id" class="<?php echo $t106_disposaldetail_list->disposalhead_id->headerCellClass() ?>"><div id="elh_t106_disposaldetail_disposalhead_id" class="t106_disposaldetail_disposalhead_id"><div class="ew-table-header-caption"><?php echo $t106_disposaldetail_list->disposalhead_id->caption() ?></div></div></th>
-	<?php } else { ?>
-		<th data-name="disposalhead_id" class="<?php echo $t106_disposaldetail_list->disposalhead_id->headerCellClass() ?>"><div class="ew-pointer" onclick="ew.sort(event, '<?php echo $t106_disposaldetail_list->SortUrl($t106_disposaldetail_list->disposalhead_id) ?>', 2);"><div id="elh_t106_disposaldetail_disposalhead_id" class="t106_disposaldetail_disposalhead_id">
-			<div class="ew-table-header-btn"><span class="ew-table-header-caption"><?php echo $t106_disposaldetail_list->disposalhead_id->caption() ?></span><span class="ew-table-header-sort"><?php if ($t106_disposaldetail_list->disposalhead_id->getSort() == "ASC") { ?><i class="fas fa-sort-up"></i><?php } elseif ($t106_disposaldetail_list->disposalhead_id->getSort() == "DESC") { ?><i class="fas fa-sort-down"></i><?php } ?></span></div>
-		</div></div></th>
-	<?php } ?>
-<?php } ?>
 <?php if ($t106_disposaldetail_list->asset_id->Visible) { // asset_id ?>
 	<?php if ($t106_disposaldetail_list->SortUrl($t106_disposaldetail_list->asset_id) == "") { ?>
 		<th data-name="asset_id" class="<?php echo $t106_disposaldetail_list->asset_id->headerCellClass() ?>"><div id="elh_t106_disposaldetail_asset_id" class="t106_disposaldetail_asset_id"><div class="ew-table-header-caption"><?php echo $t106_disposaldetail_list->asset_id->caption() ?></div></div></th>
 	<?php } else { ?>
 		<th data-name="asset_id" class="<?php echo $t106_disposaldetail_list->asset_id->headerCellClass() ?>"><div class="ew-pointer" onclick="ew.sort(event, '<?php echo $t106_disposaldetail_list->SortUrl($t106_disposaldetail_list->asset_id) ?>', 2);"><div id="elh_t106_disposaldetail_asset_id" class="t106_disposaldetail_asset_id">
 			<div class="ew-table-header-btn"><span class="ew-table-header-caption"><?php echo $t106_disposaldetail_list->asset_id->caption() ?></span><span class="ew-table-header-sort"><?php if ($t106_disposaldetail_list->asset_id->getSort() == "ASC") { ?><i class="fas fa-sort-up"></i><?php } elseif ($t106_disposaldetail_list->asset_id->getSort() == "DESC") { ?><i class="fas fa-sort-down"></i><?php } ?></span></div>
+		</div></div></th>
+	<?php } ?>
+<?php } ?>
+<?php if ($t106_disposaldetail_list->disposaldate->Visible) { // disposaldate ?>
+	<?php if ($t106_disposaldetail_list->SortUrl($t106_disposaldetail_list->disposaldate) == "") { ?>
+		<th data-name="disposaldate" class="<?php echo $t106_disposaldetail_list->disposaldate->headerCellClass() ?>"><div id="elh_t106_disposaldetail_disposaldate" class="t106_disposaldetail_disposaldate"><div class="ew-table-header-caption"><?php echo $t106_disposaldetail_list->disposaldate->caption() ?></div></div></th>
+	<?php } else { ?>
+		<th data-name="disposaldate" class="<?php echo $t106_disposaldetail_list->disposaldate->headerCellClass() ?>"><div class="ew-pointer" onclick="ew.sort(event, '<?php echo $t106_disposaldetail_list->SortUrl($t106_disposaldetail_list->disposaldate) ?>', 2);"><div id="elh_t106_disposaldetail_disposaldate" class="t106_disposaldetail_disposaldate">
+			<div class="ew-table-header-btn"><span class="ew-table-header-caption"><?php echo $t106_disposaldetail_list->disposaldate->caption() ?></span><span class="ew-table-header-sort"><?php if ($t106_disposaldetail_list->disposaldate->getSort() == "ASC") { ?><i class="fas fa-sort-up"></i><?php } elseif ($t106_disposaldetail_list->disposaldate->getSort() == "DESC") { ?><i class="fas fa-sort-down"></i><?php } ?></span></div>
 		</div></div></th>
 	<?php } ?>
 <?php } ?>
@@ -281,21 +281,6 @@ $t106_disposaldetail_list->ListOptions->render("header", "right");
 // Render list options (body, left)
 $t106_disposaldetail_list->ListOptions->render("body", "left", $t106_disposaldetail_list->RowCount);
 ?>
-	<?php if ($t106_disposaldetail_list->disposalhead_id->Visible) { // disposalhead_id ?>
-		<td data-name="disposalhead_id">
-<?php if ($t106_disposaldetail_list->disposalhead_id->getSessionValue() != "") { ?>
-<span id="el<?php echo $t106_disposaldetail_list->RowCount ?>_t106_disposaldetail_disposalhead_id" class="form-group t106_disposaldetail_disposalhead_id">
-<span<?php echo $t106_disposaldetail_list->disposalhead_id->viewAttributes() ?>><input type="text" readonly class="form-control-plaintext" value="<?php echo HtmlEncode(RemoveHtml($t106_disposaldetail_list->disposalhead_id->ViewValue)) ?>"></span>
-</span>
-<input type="hidden" id="x<?php echo $t106_disposaldetail_list->RowIndex ?>_disposalhead_id" name="x<?php echo $t106_disposaldetail_list->RowIndex ?>_disposalhead_id" value="<?php echo HtmlEncode($t106_disposaldetail_list->disposalhead_id->CurrentValue) ?>">
-<?php } else { ?>
-<span id="el<?php echo $t106_disposaldetail_list->RowCount ?>_t106_disposaldetail_disposalhead_id" class="form-group t106_disposaldetail_disposalhead_id">
-<input type="text" data-table="t106_disposaldetail" data-field="x_disposalhead_id" name="x<?php echo $t106_disposaldetail_list->RowIndex ?>_disposalhead_id" id="x<?php echo $t106_disposaldetail_list->RowIndex ?>_disposalhead_id" size="30" maxlength="11" placeholder="<?php echo HtmlEncode($t106_disposaldetail_list->disposalhead_id->getPlaceHolder()) ?>" value="<?php echo $t106_disposaldetail_list->disposalhead_id->EditValue ?>"<?php echo $t106_disposaldetail_list->disposalhead_id->editAttributes() ?>>
-</span>
-<?php } ?>
-<input type="hidden" data-table="t106_disposaldetail" data-field="x_disposalhead_id" name="o<?php echo $t106_disposaldetail_list->RowIndex ?>_disposalhead_id" id="o<?php echo $t106_disposaldetail_list->RowIndex ?>_disposalhead_id" value="<?php echo HtmlEncode($t106_disposaldetail_list->disposalhead_id->OldValue) ?>">
-</td>
-	<?php } ?>
 	<?php if ($t106_disposaldetail_list->asset_id->Visible) { // asset_id ?>
 		<td data-name="asset_id">
 <span id="el<?php echo $t106_disposaldetail_list->RowCount ?>_t106_disposaldetail_asset_id" class="form-group t106_disposaldetail_asset_id">
@@ -309,6 +294,21 @@ $t106_disposaldetail_list->ListOptions->render("body", "left", $t106_disposaldet
 <input type="hidden" data-table="t106_disposaldetail" data-field="x_asset_id" data-multiple="0" data-lookup="1" data-value-separator="<?php echo $t106_disposaldetail_list->asset_id->displayValueSeparatorAttribute() ?>" name="x<?php echo $t106_disposaldetail_list->RowIndex ?>_asset_id" id="x<?php echo $t106_disposaldetail_list->RowIndex ?>_asset_id" value="<?php echo $t106_disposaldetail_list->asset_id->CurrentValue ?>"<?php echo $t106_disposaldetail_list->asset_id->editAttributes() ?>>
 </span>
 <input type="hidden" data-table="t106_disposaldetail" data-field="x_asset_id" name="o<?php echo $t106_disposaldetail_list->RowIndex ?>_asset_id" id="o<?php echo $t106_disposaldetail_list->RowIndex ?>_asset_id" value="<?php echo HtmlEncode($t106_disposaldetail_list->asset_id->OldValue) ?>">
+</td>
+	<?php } ?>
+	<?php if ($t106_disposaldetail_list->disposaldate->Visible) { // disposaldate ?>
+		<td data-name="disposaldate">
+<span id="el<?php echo $t106_disposaldetail_list->RowCount ?>_t106_disposaldetail_disposaldate" class="form-group t106_disposaldetail_disposaldate">
+<input type="text" data-table="t106_disposaldetail" data-field="x_disposaldate" data-format="7" name="x<?php echo $t106_disposaldetail_list->RowIndex ?>_disposaldate" id="x<?php echo $t106_disposaldetail_list->RowIndex ?>_disposaldate" size="10" maxlength="10" placeholder="<?php echo HtmlEncode($t106_disposaldetail_list->disposaldate->getPlaceHolder()) ?>" value="<?php echo $t106_disposaldetail_list->disposaldate->EditValue ?>"<?php echo $t106_disposaldetail_list->disposaldate->editAttributes() ?>>
+<?php if (!$t106_disposaldetail_list->disposaldate->ReadOnly && !$t106_disposaldetail_list->disposaldate->Disabled && !isset($t106_disposaldetail_list->disposaldate->EditAttrs["readonly"]) && !isset($t106_disposaldetail_list->disposaldate->EditAttrs["disabled"])) { ?>
+<script>
+loadjs.ready(["ft106_disposaldetaillist", "datetimepicker"], function() {
+	ew.createDateTimePicker("ft106_disposaldetaillist", "x<?php echo $t106_disposaldetail_list->RowIndex ?>_disposaldate", {"ignoreReadonly":true,"useCurrent":false,"format":7});
+});
+</script>
+<?php } ?>
+</span>
+<input type="hidden" data-table="t106_disposaldetail" data-field="x_disposaldate" name="o<?php echo $t106_disposaldetail_list->RowIndex ?>_disposaldate" id="o<?php echo $t106_disposaldetail_list->RowIndex ?>_disposaldate" value="<?php echo HtmlEncode($t106_disposaldetail_list->disposaldate->OldValue) ?>">
 </td>
 	<?php } ?>
 	<?php if ($t106_disposaldetail_list->cond_id->Visible) { // cond_id ?>
@@ -467,47 +467,6 @@ while ($t106_disposaldetail_list->RecordCount < $t106_disposaldetail_list->StopR
 // Render list options (body, left)
 $t106_disposaldetail_list->ListOptions->render("body", "left", $t106_disposaldetail_list->RowCount);
 ?>
-	<?php if ($t106_disposaldetail_list->disposalhead_id->Visible) { // disposalhead_id ?>
-		<td data-name="disposalhead_id" <?php echo $t106_disposaldetail_list->disposalhead_id->cellAttributes() ?>>
-<?php if ($t106_disposaldetail->RowType == ROWTYPE_ADD) { // Add record ?>
-<?php if ($t106_disposaldetail_list->disposalhead_id->getSessionValue() != "") { ?>
-<span id="el<?php echo $t106_disposaldetail_list->RowCount ?>_t106_disposaldetail_disposalhead_id" class="form-group">
-<span<?php echo $t106_disposaldetail_list->disposalhead_id->viewAttributes() ?>><input type="text" readonly class="form-control-plaintext" value="<?php echo HtmlEncode(RemoveHtml($t106_disposaldetail_list->disposalhead_id->ViewValue)) ?>"></span>
-</span>
-<input type="hidden" id="x<?php echo $t106_disposaldetail_list->RowIndex ?>_disposalhead_id" name="x<?php echo $t106_disposaldetail_list->RowIndex ?>_disposalhead_id" value="<?php echo HtmlEncode($t106_disposaldetail_list->disposalhead_id->CurrentValue) ?>">
-<?php } else { ?>
-<span id="el<?php echo $t106_disposaldetail_list->RowCount ?>_t106_disposaldetail_disposalhead_id" class="form-group">
-<input type="text" data-table="t106_disposaldetail" data-field="x_disposalhead_id" name="x<?php echo $t106_disposaldetail_list->RowIndex ?>_disposalhead_id" id="x<?php echo $t106_disposaldetail_list->RowIndex ?>_disposalhead_id" size="30" maxlength="11" placeholder="<?php echo HtmlEncode($t106_disposaldetail_list->disposalhead_id->getPlaceHolder()) ?>" value="<?php echo $t106_disposaldetail_list->disposalhead_id->EditValue ?>"<?php echo $t106_disposaldetail_list->disposalhead_id->editAttributes() ?>>
-</span>
-<?php } ?>
-<input type="hidden" data-table="t106_disposaldetail" data-field="x_disposalhead_id" name="o<?php echo $t106_disposaldetail_list->RowIndex ?>_disposalhead_id" id="o<?php echo $t106_disposaldetail_list->RowIndex ?>_disposalhead_id" value="<?php echo HtmlEncode($t106_disposaldetail_list->disposalhead_id->OldValue) ?>">
-<?php } ?>
-<?php if ($t106_disposaldetail->RowType == ROWTYPE_EDIT) { // Edit record ?>
-<?php if ($t106_disposaldetail_list->disposalhead_id->getSessionValue() != "") { ?>
-<span id="el<?php echo $t106_disposaldetail_list->RowCount ?>_t106_disposaldetail_disposalhead_id" class="form-group">
-<span<?php echo $t106_disposaldetail_list->disposalhead_id->viewAttributes() ?>><input type="text" readonly class="form-control-plaintext" value="<?php echo HtmlEncode(RemoveHtml($t106_disposaldetail_list->disposalhead_id->ViewValue)) ?>"></span>
-</span>
-<input type="hidden" id="x<?php echo $t106_disposaldetail_list->RowIndex ?>_disposalhead_id" name="x<?php echo $t106_disposaldetail_list->RowIndex ?>_disposalhead_id" value="<?php echo HtmlEncode($t106_disposaldetail_list->disposalhead_id->CurrentValue) ?>">
-<?php } else { ?>
-<span id="el<?php echo $t106_disposaldetail_list->RowCount ?>_t106_disposaldetail_disposalhead_id" class="form-group">
-<input type="text" data-table="t106_disposaldetail" data-field="x_disposalhead_id" name="x<?php echo $t106_disposaldetail_list->RowIndex ?>_disposalhead_id" id="x<?php echo $t106_disposaldetail_list->RowIndex ?>_disposalhead_id" size="30" maxlength="11" placeholder="<?php echo HtmlEncode($t106_disposaldetail_list->disposalhead_id->getPlaceHolder()) ?>" value="<?php echo $t106_disposaldetail_list->disposalhead_id->EditValue ?>"<?php echo $t106_disposaldetail_list->disposalhead_id->editAttributes() ?>>
-</span>
-<?php } ?>
-<?php } ?>
-<?php if ($t106_disposaldetail->RowType == ROWTYPE_VIEW) { // View record ?>
-<span id="el<?php echo $t106_disposaldetail_list->RowCount ?>_t106_disposaldetail_disposalhead_id">
-<span<?php echo $t106_disposaldetail_list->disposalhead_id->viewAttributes() ?>><?php echo $t106_disposaldetail_list->disposalhead_id->getViewValue() ?></span>
-</span>
-<?php } ?>
-</td>
-	<?php } ?>
-<?php if ($t106_disposaldetail->RowType == ROWTYPE_ADD) { // Add record ?>
-<input type="hidden" data-table="t106_disposaldetail" data-field="x_id" name="x<?php echo $t106_disposaldetail_list->RowIndex ?>_id" id="x<?php echo $t106_disposaldetail_list->RowIndex ?>_id" value="<?php echo HtmlEncode($t106_disposaldetail_list->id->CurrentValue) ?>">
-<input type="hidden" data-table="t106_disposaldetail" data-field="x_id" name="o<?php echo $t106_disposaldetail_list->RowIndex ?>_id" id="o<?php echo $t106_disposaldetail_list->RowIndex ?>_id" value="<?php echo HtmlEncode($t106_disposaldetail_list->id->OldValue) ?>">
-<?php } ?>
-<?php if ($t106_disposaldetail->RowType == ROWTYPE_EDIT || $t106_disposaldetail->CurrentMode == "edit") { ?>
-<input type="hidden" data-table="t106_disposaldetail" data-field="x_id" name="x<?php echo $t106_disposaldetail_list->RowIndex ?>_id" id="x<?php echo $t106_disposaldetail_list->RowIndex ?>_id" value="<?php echo HtmlEncode($t106_disposaldetail_list->id->CurrentValue) ?>">
-<?php } ?>
 	<?php if ($t106_disposaldetail_list->asset_id->Visible) { // asset_id ?>
 		<td data-name="asset_id" <?php echo $t106_disposaldetail_list->asset_id->cellAttributes() ?>>
 <?php if ($t106_disposaldetail->RowType == ROWTYPE_ADD) { // Add record ?>
@@ -538,6 +497,47 @@ $t106_disposaldetail_list->ListOptions->render("body", "left", $t106_disposaldet
 <?php if ($t106_disposaldetail->RowType == ROWTYPE_VIEW) { // View record ?>
 <span id="el<?php echo $t106_disposaldetail_list->RowCount ?>_t106_disposaldetail_asset_id">
 <span<?php echo $t106_disposaldetail_list->asset_id->viewAttributes() ?>><?php echo $t106_disposaldetail_list->asset_id->getViewValue() ?></span>
+</span>
+<?php } ?>
+</td>
+	<?php } ?>
+<?php if ($t106_disposaldetail->RowType == ROWTYPE_ADD) { // Add record ?>
+<input type="hidden" data-table="t106_disposaldetail" data-field="x_id" name="x<?php echo $t106_disposaldetail_list->RowIndex ?>_id" id="x<?php echo $t106_disposaldetail_list->RowIndex ?>_id" value="<?php echo HtmlEncode($t106_disposaldetail_list->id->CurrentValue) ?>">
+<input type="hidden" data-table="t106_disposaldetail" data-field="x_id" name="o<?php echo $t106_disposaldetail_list->RowIndex ?>_id" id="o<?php echo $t106_disposaldetail_list->RowIndex ?>_id" value="<?php echo HtmlEncode($t106_disposaldetail_list->id->OldValue) ?>">
+<?php } ?>
+<?php if ($t106_disposaldetail->RowType == ROWTYPE_EDIT || $t106_disposaldetail->CurrentMode == "edit") { ?>
+<input type="hidden" data-table="t106_disposaldetail" data-field="x_id" name="x<?php echo $t106_disposaldetail_list->RowIndex ?>_id" id="x<?php echo $t106_disposaldetail_list->RowIndex ?>_id" value="<?php echo HtmlEncode($t106_disposaldetail_list->id->CurrentValue) ?>">
+<?php } ?>
+	<?php if ($t106_disposaldetail_list->disposaldate->Visible) { // disposaldate ?>
+		<td data-name="disposaldate" <?php echo $t106_disposaldetail_list->disposaldate->cellAttributes() ?>>
+<?php if ($t106_disposaldetail->RowType == ROWTYPE_ADD) { // Add record ?>
+<span id="el<?php echo $t106_disposaldetail_list->RowCount ?>_t106_disposaldetail_disposaldate" class="form-group">
+<input type="text" data-table="t106_disposaldetail" data-field="x_disposaldate" data-format="7" name="x<?php echo $t106_disposaldetail_list->RowIndex ?>_disposaldate" id="x<?php echo $t106_disposaldetail_list->RowIndex ?>_disposaldate" size="10" maxlength="10" placeholder="<?php echo HtmlEncode($t106_disposaldetail_list->disposaldate->getPlaceHolder()) ?>" value="<?php echo $t106_disposaldetail_list->disposaldate->EditValue ?>"<?php echo $t106_disposaldetail_list->disposaldate->editAttributes() ?>>
+<?php if (!$t106_disposaldetail_list->disposaldate->ReadOnly && !$t106_disposaldetail_list->disposaldate->Disabled && !isset($t106_disposaldetail_list->disposaldate->EditAttrs["readonly"]) && !isset($t106_disposaldetail_list->disposaldate->EditAttrs["disabled"])) { ?>
+<script>
+loadjs.ready(["ft106_disposaldetaillist", "datetimepicker"], function() {
+	ew.createDateTimePicker("ft106_disposaldetaillist", "x<?php echo $t106_disposaldetail_list->RowIndex ?>_disposaldate", {"ignoreReadonly":true,"useCurrent":false,"format":7});
+});
+</script>
+<?php } ?>
+</span>
+<input type="hidden" data-table="t106_disposaldetail" data-field="x_disposaldate" name="o<?php echo $t106_disposaldetail_list->RowIndex ?>_disposaldate" id="o<?php echo $t106_disposaldetail_list->RowIndex ?>_disposaldate" value="<?php echo HtmlEncode($t106_disposaldetail_list->disposaldate->OldValue) ?>">
+<?php } ?>
+<?php if ($t106_disposaldetail->RowType == ROWTYPE_EDIT) { // Edit record ?>
+<span id="el<?php echo $t106_disposaldetail_list->RowCount ?>_t106_disposaldetail_disposaldate" class="form-group">
+<input type="text" data-table="t106_disposaldetail" data-field="x_disposaldate" data-format="7" name="x<?php echo $t106_disposaldetail_list->RowIndex ?>_disposaldate" id="x<?php echo $t106_disposaldetail_list->RowIndex ?>_disposaldate" size="10" maxlength="10" placeholder="<?php echo HtmlEncode($t106_disposaldetail_list->disposaldate->getPlaceHolder()) ?>" value="<?php echo $t106_disposaldetail_list->disposaldate->EditValue ?>"<?php echo $t106_disposaldetail_list->disposaldate->editAttributes() ?>>
+<?php if (!$t106_disposaldetail_list->disposaldate->ReadOnly && !$t106_disposaldetail_list->disposaldate->Disabled && !isset($t106_disposaldetail_list->disposaldate->EditAttrs["readonly"]) && !isset($t106_disposaldetail_list->disposaldate->EditAttrs["disabled"])) { ?>
+<script>
+loadjs.ready(["ft106_disposaldetaillist", "datetimepicker"], function() {
+	ew.createDateTimePicker("ft106_disposaldetaillist", "x<?php echo $t106_disposaldetail_list->RowIndex ?>_disposaldate", {"ignoreReadonly":true,"useCurrent":false,"format":7});
+});
+</script>
+<?php } ?>
+</span>
+<?php } ?>
+<?php if ($t106_disposaldetail->RowType == ROWTYPE_VIEW) { // View record ?>
+<span id="el<?php echo $t106_disposaldetail_list->RowCount ?>_t106_disposaldetail_disposaldate">
+<span<?php echo $t106_disposaldetail_list->disposaldate->viewAttributes() ?>><?php echo $t106_disposaldetail_list->disposaldate->getViewValue() ?></span>
 </span>
 <?php } ?>
 </td>
@@ -655,21 +655,6 @@ loadjs.ready(["ft106_disposaldetaillist", "load"], function() {
 // Render list options (body, left)
 $t106_disposaldetail_list->ListOptions->render("body", "left", $t106_disposaldetail_list->RowIndex);
 ?>
-	<?php if ($t106_disposaldetail_list->disposalhead_id->Visible) { // disposalhead_id ?>
-		<td data-name="disposalhead_id">
-<?php if ($t106_disposaldetail_list->disposalhead_id->getSessionValue() != "") { ?>
-<span id="el$rowindex$_t106_disposaldetail_disposalhead_id" class="form-group t106_disposaldetail_disposalhead_id">
-<span<?php echo $t106_disposaldetail_list->disposalhead_id->viewAttributes() ?>><input type="text" readonly class="form-control-plaintext" value="<?php echo HtmlEncode(RemoveHtml($t106_disposaldetail_list->disposalhead_id->ViewValue)) ?>"></span>
-</span>
-<input type="hidden" id="x<?php echo $t106_disposaldetail_list->RowIndex ?>_disposalhead_id" name="x<?php echo $t106_disposaldetail_list->RowIndex ?>_disposalhead_id" value="<?php echo HtmlEncode($t106_disposaldetail_list->disposalhead_id->CurrentValue) ?>">
-<?php } else { ?>
-<span id="el$rowindex$_t106_disposaldetail_disposalhead_id" class="form-group t106_disposaldetail_disposalhead_id">
-<input type="text" data-table="t106_disposaldetail" data-field="x_disposalhead_id" name="x<?php echo $t106_disposaldetail_list->RowIndex ?>_disposalhead_id" id="x<?php echo $t106_disposaldetail_list->RowIndex ?>_disposalhead_id" size="30" maxlength="11" placeholder="<?php echo HtmlEncode($t106_disposaldetail_list->disposalhead_id->getPlaceHolder()) ?>" value="<?php echo $t106_disposaldetail_list->disposalhead_id->EditValue ?>"<?php echo $t106_disposaldetail_list->disposalhead_id->editAttributes() ?>>
-</span>
-<?php } ?>
-<input type="hidden" data-table="t106_disposaldetail" data-field="x_disposalhead_id" name="o<?php echo $t106_disposaldetail_list->RowIndex ?>_disposalhead_id" id="o<?php echo $t106_disposaldetail_list->RowIndex ?>_disposalhead_id" value="<?php echo HtmlEncode($t106_disposaldetail_list->disposalhead_id->OldValue) ?>">
-</td>
-	<?php } ?>
 	<?php if ($t106_disposaldetail_list->asset_id->Visible) { // asset_id ?>
 		<td data-name="asset_id">
 <span id="el$rowindex$_t106_disposaldetail_asset_id" class="form-group t106_disposaldetail_asset_id">
@@ -683,6 +668,21 @@ $t106_disposaldetail_list->ListOptions->render("body", "left", $t106_disposaldet
 <input type="hidden" data-table="t106_disposaldetail" data-field="x_asset_id" data-multiple="0" data-lookup="1" data-value-separator="<?php echo $t106_disposaldetail_list->asset_id->displayValueSeparatorAttribute() ?>" name="x<?php echo $t106_disposaldetail_list->RowIndex ?>_asset_id" id="x<?php echo $t106_disposaldetail_list->RowIndex ?>_asset_id" value="<?php echo $t106_disposaldetail_list->asset_id->CurrentValue ?>"<?php echo $t106_disposaldetail_list->asset_id->editAttributes() ?>>
 </span>
 <input type="hidden" data-table="t106_disposaldetail" data-field="x_asset_id" name="o<?php echo $t106_disposaldetail_list->RowIndex ?>_asset_id" id="o<?php echo $t106_disposaldetail_list->RowIndex ?>_asset_id" value="<?php echo HtmlEncode($t106_disposaldetail_list->asset_id->OldValue) ?>">
+</td>
+	<?php } ?>
+	<?php if ($t106_disposaldetail_list->disposaldate->Visible) { // disposaldate ?>
+		<td data-name="disposaldate">
+<span id="el$rowindex$_t106_disposaldetail_disposaldate" class="form-group t106_disposaldetail_disposaldate">
+<input type="text" data-table="t106_disposaldetail" data-field="x_disposaldate" data-format="7" name="x<?php echo $t106_disposaldetail_list->RowIndex ?>_disposaldate" id="x<?php echo $t106_disposaldetail_list->RowIndex ?>_disposaldate" size="10" maxlength="10" placeholder="<?php echo HtmlEncode($t106_disposaldetail_list->disposaldate->getPlaceHolder()) ?>" value="<?php echo $t106_disposaldetail_list->disposaldate->EditValue ?>"<?php echo $t106_disposaldetail_list->disposaldate->editAttributes() ?>>
+<?php if (!$t106_disposaldetail_list->disposaldate->ReadOnly && !$t106_disposaldetail_list->disposaldate->Disabled && !isset($t106_disposaldetail_list->disposaldate->EditAttrs["readonly"]) && !isset($t106_disposaldetail_list->disposaldate->EditAttrs["disabled"])) { ?>
+<script>
+loadjs.ready(["ft106_disposaldetaillist", "datetimepicker"], function() {
+	ew.createDateTimePicker("ft106_disposaldetaillist", "x<?php echo $t106_disposaldetail_list->RowIndex ?>_disposaldate", {"ignoreReadonly":true,"useCurrent":false,"format":7});
+});
+</script>
+<?php } ?>
+</span>
+<input type="hidden" data-table="t106_disposaldetail" data-field="x_disposaldate" name="o<?php echo $t106_disposaldetail_list->RowIndex ?>_disposaldate" id="o<?php echo $t106_disposaldetail_list->RowIndex ?>_disposaldate" value="<?php echo HtmlEncode($t106_disposaldetail_list->disposaldate->OldValue) ?>">
 </td>
 	<?php } ?>
 	<?php if ($t106_disposaldetail_list->cond_id->Visible) { // cond_id ?>

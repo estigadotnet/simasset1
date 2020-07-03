@@ -65,6 +65,11 @@ loadjs.ready("head", function() {
 				if (elm && !ew.isHidden(elm) && !ew.hasValue(elm))
 					return this.onError(elm, "<?php echo JsEncode(str_replace("%s", $t001_property_addopt->TemplateFile->caption(), $t001_property_addopt->TemplateFile->RequiredErrorMessage)) ?>");
 			<?php } ?>
+			<?php if ($t001_property_addopt->TemplateFile2->Required) { ?>
+				elm = this.getElements("x" + infix + "_TemplateFile2");
+				if (elm && !ew.isHidden(elm) && !ew.hasValue(elm))
+					return this.onError(elm, "<?php echo JsEncode(str_replace("%s", $t001_property_addopt->TemplateFile2->caption(), $t001_property_addopt->TemplateFile2->RequiredErrorMessage)) ?>");
+			<?php } ?>
 
 				// Call Form_CustomValidate event
 				if (!this.Form_CustomValidate(fobj))
@@ -119,6 +124,14 @@ $t001_property_addopt->showMessage();
 		<label class="col-sm-2 col-form-label ew-label" for="x_TemplateFile"><?php echo $t001_property_addopt->TemplateFile->caption() ?><?php echo $t001_property_addopt->TemplateFile->Required ? $Language->phrase("FieldRequiredIndicator") : "" ?></label>
 		<div class="col-sm-10">
 <input type="text" data-table="t001_property" data-field="x_TemplateFile" name="x_TemplateFile" id="x_TemplateFile" size="30" maxlength="100" placeholder="<?php echo HtmlEncode($t001_property_addopt->TemplateFile->getPlaceHolder()) ?>" value="<?php echo $t001_property_addopt->TemplateFile->EditValue ?>"<?php echo $t001_property_addopt->TemplateFile->editAttributes() ?>>
+</div>
+	</div>
+<?php } ?>
+<?php if ($t001_property_addopt->TemplateFile2->Visible) { // TemplateFile2 ?>
+	<div class="form-group row">
+		<label class="col-sm-2 col-form-label ew-label" for="x_TemplateFile2"><?php echo $t001_property_addopt->TemplateFile2->caption() ?><?php echo $t001_property_addopt->TemplateFile2->Required ? $Language->phrase("FieldRequiredIndicator") : "" ?></label>
+		<div class="col-sm-10">
+<input type="text" data-table="t001_property" data-field="x_TemplateFile2" name="x_TemplateFile2" id="x_TemplateFile2" size="30" maxlength="100" placeholder="<?php echo HtmlEncode($t001_property_addopt->TemplateFile2->getPlaceHolder()) ?>" value="<?php echo $t001_property_addopt->TemplateFile2->EditValue ?>"<?php echo $t001_property_addopt->TemplateFile2->editAttributes() ?>>
 </div>
 	</div>
 <?php } ?>

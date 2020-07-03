@@ -934,6 +934,12 @@
     <menu id="51">
       <phrase id="menutext" value="Asset" />
     </menu>
+    <menu id="53">
+      <phrase id="menutext" value="Disposal Form" />
+    </menu>
+    <menu id="54">
+      <phrase id="menutext" value="viewDisposal" />
+    </menu>
     <menu id="18">
       <phrase id="menutext" value="Report" />
     </menu>
@@ -969,6 +975,9 @@
     </table>
     <table id="c101_ho_2">
       <phrase id="tblcaption" value="Cetak Handover Form" />
+    </table>
+    <table id="c105_disposal">
+      <phrase id="tblcaption" value="Cetak Disposal Form" />
     </table>
     <table id="c9">
       <phrase id="tblcaption" value="Dashboard (Trial)" />
@@ -1057,7 +1066,10 @@
         <phrase id="fldcaption" value="Property" />
       </field>
       <field id="templatefile">
-        <phrase id="fldcaption" value="Template File" />
+        <phrase id="fldcaption" value="Template File Handover" />
+      </field>
+      <field id="templatefile2">
+        <phrase id="fldcaption" value="Template File Disposal" />
       </field>
     </table>
     <table id="t002_department">
@@ -1381,6 +1393,9 @@
       </field>
       <field id="depreciation_id">
         <phrase id="fldcaption" value="Depreciation List" />
+      </field>
+      <field id="disposaldate">
+        <phrase id="fldcaption" value="Disposal Date" />
       </field>
       <field id="cond_id">
         <phrase id="fldcaption" value="Condition" />
@@ -1790,6 +1805,102 @@
       </field>
       <field id="bookvalue2">
         <phrase id="fldcaption" value="book Value 2" />
+      </field>
+    </table>
+    <table id="v105_disposal">
+      <phrase id="tblcaption" value="viewDisposal" />
+      <field id="id">
+        <phrase id="fldcaption" value="id" />
+      </field>
+      <field id="property_id">
+        <phrase id="fldcaption" value="property id" />
+      </field>
+      <field id="property">
+        <phrase id="fldcaption" value="property" />
+      </field>
+      <field id="templatefile2">
+        <phrase id="fldcaption" value="templatefile 2" />
+      </field>
+      <field id="transactionno">
+        <phrase id="fldcaption" value="transactionno" />
+      </field>
+      <field id="transactiondate">
+        <phrase id="fldcaption" value="transactiondate" />
+      </field>
+      <field id="recommendedby">
+        <phrase id="fldcaption" value="recommendedby" />
+      </field>
+      <field id="signatureby">
+        <phrase id="fldcaption" value="signatureby" />
+      </field>
+      <field id="positionby">
+        <phrase id="fldcaption" value="positionby" />
+      </field>
+      <field id="ce_id">
+        <phrase id="fldcaption" value="ce id" />
+      </field>
+      <field id="signaturece">
+        <phrase id="fldcaption" value="signaturece" />
+      </field>
+      <field id="itm_id">
+        <phrase id="fldcaption" value="itm id" />
+      </field>
+      <field id="signatureitm">
+        <phrase id="fldcaption" value="signatureitm" />
+      </field>
+      <field id="sign1">
+        <phrase id="fldcaption" value="sign 1" />
+      </field>
+      <field id="jobt1">
+        <phrase id="fldcaption" value="jobt 1" />
+      </field>
+      <field id="sign2">
+        <phrase id="fldcaption" value="sign 2" />
+      </field>
+      <field id="jobt2">
+        <phrase id="fldcaption" value="jobt 2" />
+      </field>
+      <field id="sign3">
+        <phrase id="fldcaption" value="sign 3" />
+      </field>
+      <field id="jobt3">
+        <phrase id="fldcaption" value="jobt 3" />
+      </field>
+      <field id="disposaldetail_id">
+        <phrase id="fldcaption" value="disposaldetail id" />
+      </field>
+      <field id="asset_id">
+        <phrase id="fldcaption" value="asset id" />
+      </field>
+      <field id="code">
+        <phrase id="fldcaption" value="code" />
+      </field>
+      <field id="description">
+        <phrase id="fldcaption" value="description" />
+      </field>
+      <field id="department_id">
+        <phrase id="fldcaption" value="department id" />
+      </field>
+      <field id="asset_dept">
+        <phrase id="fldcaption" value="asset dept" />
+      </field>
+      <field id="procurementdate">
+        <phrase id="fldcaption" value="procurementdate" />
+      </field>
+      <field id="procurementcurrentcost">
+        <phrase id="fldcaption" value="procurementcurrentcost" />
+      </field>
+      <field id="remarks">
+        <phrase id="fldcaption" value="remarks" />
+      </field>
+      <field id="condstatus">
+        <phrase id="fldcaption" value="condstatus" />
+      </field>
+      <field id="reasonstatus">
+        <phrase id="fldcaption" value="reasonstatus" />
+      </field>
+      <field id="disposaldate">
+        <phrase id="fldcaption" value="disposaldate" />
       </field>
     </table>
   </project>

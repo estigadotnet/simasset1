@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1:3307
--- Generation Time: Jul 03, 2020 at 01:11 AM
+-- Generation Time: Jul 03, 2020 at 04:48 AM
 -- Server version: 10.4.8-MariaDB
 -- PHP Version: 7.3.11
 
@@ -31,17 +31,18 @@ SET time_zone = "+00:00";
 CREATE TABLE `t001_property` (
   `id` int(11) NOT NULL,
   `Property` varchar(100) NOT NULL,
-  `TemplateFile` varchar(100) NOT NULL
+  `TemplateFile` varchar(100) NOT NULL,
+  `TemplateFile2` varchar(100) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Dumping data for table `t001_property`
 --
 
-INSERT INTO `t001_property` (`id`, `Property`, `TemplateFile`) VALUES
-(1, 'Aston Bojonegoro City Hotel', 'ASSET HANDOVER ABCH - FORM Revisi'),
-(2, 'Favehotel Sudirman Bojonegoro', 'ASSET HANDOVER FSB - FORM Revisi'),
-(3, 'Rumah Dinas General Manager', 'r');
+INSERT INTO `t001_property` (`id`, `Property`, `TemplateFile`, `TemplateFile2`) VALUES
+(1, 'Aston Bojonegoro City Hotel', 'ASSET HANDOVER ABCH - FORM Revisi', 'ASSET DISPOSAL ABCH FORM - Revisi'),
+(2, 'Favehotel Sudirman Bojonegoro', 'ASSET HANDOVER FSB - FORM Revisi', 'ASSET DISPOSAL FSB FORM - Revisi'),
+(3, 'Rumah Dinas General Manager', 'r', 's');
 
 -- --------------------------------------------------------
 
@@ -128,7 +129,7 @@ CREATE TABLE `t004_asset` (
 --
 
 INSERT INTO `t004_asset` (`id`, `property_id`, `group_id`, `type_id`, `Code`, `Description`, `brand_id`, `signature_id`, `department_id`, `location_id`, `Qty`, `Variance`, `cond_id`, `Remarks`, `ProcurementDate`, `ProcurementCurrentCost`, `PeriodBegin`, `PeriodEnd`) VALUES
-(1, 1, 2, 3, 'AK101113000001', 'IT - Printer Inkjet', 14, 1, 1, 1, 1.00, 0.00, 1, NULL, '2013-10-01', 1500000.00, '2013-10-31', '2017-09-30'),
+(1, 1, 2, 3, 'AK101118000001', 'IT - Printer Inkjet', 14, 1, 1, 1, 1.00, 0.00, 1, NULL, '2018-10-01', 1500000.00, '2018-10-31', '2022-09-30'),
 (2, 1, 2, 4, 'AK102113000002', 'Table GM', 67, 1, 1, 1, 1.00, 0.00, 1, '', '2013-10-01', 0.00, '0000-00-00', '0000-00-00'),
 (3, 1, 2, 4, 'AK102113000003', 'Chair Mgr', 67, 1, 1, 1, 1.00, 0.00, 1, '', '2013-10-01', 0.00, '0000-00-00', '0000-00-00'),
 (4, 1, 2, 4, 'AK102113000004', 'Mobile Pedestal', 210, 1, 1, 1, 1.00, 0.00, 1, '', '2013-10-01', 0.00, '0000-00-00', '0000-00-00'),
@@ -1361,11 +1362,11 @@ CREATE TABLE `t006_assetdepreciation` (
 --
 
 INSERT INTO `t006_assetdepreciation` (`id`, `asset_id`, `ListOfYears`, `NumberOfMonths`, `DepreciationAmount`, `DepreciationYtd`, `NetBookValue`) VALUES
-(6, 1, 2013, 3, 93750.00, 93750.00, 1406250.00),
-(7, 1, 2014, 12, 375000.00, 468750.00, 1031250.00),
-(8, 1, 2015, 12, 375000.00, 843750.00, 656250.00),
-(9, 1, 2016, 12, 375000.00, 1218750.00, 281250.00),
-(10, 1, 2017, 9, 281250.00, 1500000.00, 0.00);
+(11, 1, 2018, 3, 93750.00, 93750.00, 1406250.00),
+(12, 1, 2019, 12, 375000.00, 468750.00, 1031250.00),
+(13, 1, 2020, 12, 375000.00, 843750.00, 656250.00),
+(14, 1, 2021, 12, 375000.00, 1218750.00, 281250.00),
+(15, 1, 2022, 9, 281250.00, 1500000.00, 0.00);
 
 -- --------------------------------------------------------
 
@@ -2043,6 +2044,7 @@ CREATE TABLE `t106_disposaldetail` (
   `disposalhead_id` int(11) NOT NULL,
   `asset_id` int(11) NOT NULL,
   `depreciation_id` int(11) NOT NULL,
+  `disposaldate` date NOT NULL,
   `cond_id` int(11) NOT NULL,
   `reason_id` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
@@ -2051,8 +2053,8 @@ CREATE TABLE `t106_disposaldetail` (
 -- Dumping data for table `t106_disposaldetail`
 --
 
-INSERT INTO `t106_disposaldetail` (`id`, `disposalhead_id`, `asset_id`, `depreciation_id`, `cond_id`, `reason_id`) VALUES
-(1, 1, 1, 0, 1, 1);
+INSERT INTO `t106_disposaldetail` (`id`, `disposalhead_id`, `asset_id`, `depreciation_id`, `disposaldate`, `cond_id`, `reason_id`) VALUES
+(1, 1, 1, 0, '2020-07-03', 1, 1);
 
 -- --------------------------------------------------------
 
@@ -2305,7 +2307,23 @@ INSERT INTO `t204_audittrail` (`id`, `datetime`, `script`, `user`, `action`, `ta
 (82, '2020-07-03 06:11:12', '/simasset1/t105_disposalheadadd.php', '4', 'A', 't106_disposaldetail', 'cond_id', '1', '', '1'),
 (83, '2020-07-03 06:11:12', '/simasset1/t105_disposalheadadd.php', '4', 'A', 't106_disposaldetail', 'reason_id', '1', '', '1'),
 (84, '2020-07-03 06:11:12', '/simasset1/t105_disposalheadadd.php', '4', 'A', 't106_disposaldetail', 'id', '1', '', '1'),
-(85, '2020-07-03 06:11:12', '/simasset1/t105_disposalheadadd.php', '4', '*** Batch insert successful ***', 't106_disposaldetail', '', '', '', '');
+(85, '2020-07-03 06:11:12', '/simasset1/t105_disposalheadadd.php', '4', '*** Batch insert successful ***', 't106_disposaldetail', '', '', '', ''),
+(86, '2020-07-03 07:17:28', '/simasset1/t001_propertylist.php', '4', '*** Batch update begin ***', 't001_property', '', '', '', ''),
+(87, '2020-07-03 07:17:28', '/simasset1/t001_propertylist.php', '4', 'U', 't001_property', 'TemplateFile2', '1', '', 'ASSET DISPOSAL ABCH FORM - Revisi'),
+(88, '2020-07-03 07:17:28', '/simasset1/t001_propertylist.php', '4', 'U', 't001_property', 'TemplateFile2', '2', '', 'ASSET DISPOSAL FSB FORM - Revisi'),
+(89, '2020-07-03 07:17:28', '/simasset1/t001_propertylist.php', '4', 'U', 't001_property', 'TemplateFile2', '3', '', 's'),
+(90, '2020-07-03 07:17:28', '/simasset1/t001_propertylist.php', '4', '*** Batch update successful ***', 't001_property', '', '', '', ''),
+(91, '2020-07-03 08:32:21', '/simasset1/t003_signaturelist.php', '4', '*** Batch update begin ***', 't003_signature', '', '', '', ''),
+(92, '2020-07-03 08:32:21', '/simasset1/t003_signaturelist.php', '4', 'U', 't003_signature', 'JobTitle', '1', 'Finance Controller', 'Finance Controllerx'),
+(93, '2020-07-03 08:32:21', '/simasset1/t003_signaturelist.php', '4', '*** Batch update successful ***', 't003_signature', '', '', '', ''),
+(94, '2020-07-03 08:33:42', '/simasset1/t003_signatureedit.php', '4', 'U', 't003_signature', 'JobTitle', '1', 'Finance Controllerx', 'Finance Controller'),
+(95, '2020-07-03 09:10:20', '/simasset1/t004_assetedit.php', '4', 'U', 't004_asset', 'ProcurementDate', '1', '2013-10-01', '2018-10-01'),
+(96, '2020-07-03 09:10:20', '/simasset1/t004_assetedit.php', '4', 'U', 't004_asset', 'Code', '1', 'AK101113000001', 'AK101118000001'),
+(97, '2020-07-03 09:10:20', '/simasset1/t004_assetedit.php', '4', 'U', 't004_asset', 'PeriodBegin', '1', '2013-10-31', '2018-10-31'),
+(98, '2020-07-03 09:10:20', '/simasset1/t004_assetedit.php', '4', 'U', 't004_asset', 'PeriodEnd', '1', '2017-09-30', '2022-09-30'),
+(99, '2020-07-03 09:41:12', '/simasset1/t105_disposalheadedit.php', '4', '*** Batch update begin ***', 't106_disposaldetail', '', '', '', ''),
+(100, '2020-07-03 09:41:12', '/simasset1/t105_disposalheadedit.php', '4', 'U', 't106_disposaldetail', 'disposaldate', '1', '0000-00-00', '2020-07-03'),
+(101, '2020-07-03 09:41:12', '/simasset1/t105_disposalheadedit.php', '4', '*** Batch update successful ***', 't106_disposaldetail', '', '', '', '');
 
 -- --------------------------------------------------------
 
@@ -2495,7 +2513,7 @@ ALTER TABLE `t005_assetgroup`
 -- AUTO_INCREMENT for table `t006_assetdepreciation`
 --
 ALTER TABLE `t006_assetdepreciation`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
 
 --
 -- AUTO_INCREMENT for table `t007_assettype`
@@ -2573,7 +2591,7 @@ ALTER TABLE `t201_users`
 -- AUTO_INCREMENT for table `t204_audittrail`
 --
 ALTER TABLE `t204_audittrail`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=86;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=102;
 
 --
 -- AUTO_INCREMENT for table `t205_parameter`

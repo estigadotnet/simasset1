@@ -70,11 +70,11 @@ $t106_disposaldetail_delete->showMessage();
 <table class="table ew-table">
 	<thead>
 	<tr class="ew-table-header">
-<?php if ($t106_disposaldetail_delete->disposalhead_id->Visible) { // disposalhead_id ?>
-		<th class="<?php echo $t106_disposaldetail_delete->disposalhead_id->headerCellClass() ?>"><span id="elh_t106_disposaldetail_disposalhead_id" class="t106_disposaldetail_disposalhead_id"><?php echo $t106_disposaldetail_delete->disposalhead_id->caption() ?></span></th>
-<?php } ?>
 <?php if ($t106_disposaldetail_delete->asset_id->Visible) { // asset_id ?>
 		<th class="<?php echo $t106_disposaldetail_delete->asset_id->headerCellClass() ?>"><span id="elh_t106_disposaldetail_asset_id" class="t106_disposaldetail_asset_id"><?php echo $t106_disposaldetail_delete->asset_id->caption() ?></span></th>
+<?php } ?>
+<?php if ($t106_disposaldetail_delete->disposaldate->Visible) { // disposaldate ?>
+		<th class="<?php echo $t106_disposaldetail_delete->disposaldate->headerCellClass() ?>"><span id="elh_t106_disposaldetail_disposaldate" class="t106_disposaldetail_disposaldate"><?php echo $t106_disposaldetail_delete->disposaldate->caption() ?></span></th>
 <?php } ?>
 <?php if ($t106_disposaldetail_delete->cond_id->Visible) { // cond_id ?>
 		<th class="<?php echo $t106_disposaldetail_delete->cond_id->headerCellClass() ?>"><span id="elh_t106_disposaldetail_cond_id" class="t106_disposaldetail_cond_id"><?php echo $t106_disposaldetail_delete->cond_id->caption() ?></span></th>
@@ -103,17 +103,17 @@ while (!$t106_disposaldetail_delete->Recordset->EOF) {
 	$t106_disposaldetail_delete->renderRow();
 ?>
 	<tr <?php echo $t106_disposaldetail->rowAttributes() ?>>
-<?php if ($t106_disposaldetail_delete->disposalhead_id->Visible) { // disposalhead_id ?>
-		<td <?php echo $t106_disposaldetail_delete->disposalhead_id->cellAttributes() ?>>
-<span id="el<?php echo $t106_disposaldetail_delete->RowCount ?>_t106_disposaldetail_disposalhead_id" class="t106_disposaldetail_disposalhead_id">
-<span<?php echo $t106_disposaldetail_delete->disposalhead_id->viewAttributes() ?>><?php echo $t106_disposaldetail_delete->disposalhead_id->getViewValue() ?></span>
-</span>
-</td>
-<?php } ?>
 <?php if ($t106_disposaldetail_delete->asset_id->Visible) { // asset_id ?>
 		<td <?php echo $t106_disposaldetail_delete->asset_id->cellAttributes() ?>>
 <span id="el<?php echo $t106_disposaldetail_delete->RowCount ?>_t106_disposaldetail_asset_id" class="t106_disposaldetail_asset_id">
 <span<?php echo $t106_disposaldetail_delete->asset_id->viewAttributes() ?>><?php echo $t106_disposaldetail_delete->asset_id->getViewValue() ?></span>
+</span>
+</td>
+<?php } ?>
+<?php if ($t106_disposaldetail_delete->disposaldate->Visible) { // disposaldate ?>
+		<td <?php echo $t106_disposaldetail_delete->disposaldate->cellAttributes() ?>>
+<span id="el<?php echo $t106_disposaldetail_delete->RowCount ?>_t106_disposaldetail_disposaldate" class="t106_disposaldetail_disposaldate">
+<span<?php echo $t106_disposaldetail_delete->disposaldate->viewAttributes() ?>><?php echo $t106_disposaldetail_delete->disposaldate->getViewValue() ?></span>
 </span>
 </td>
 <?php } ?>

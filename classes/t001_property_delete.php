@@ -595,6 +595,7 @@ class t001_property_delete extends t001_property
 		$this->id->Visible = FALSE;
 		$this->Property->setVisibility();
 		$this->TemplateFile->setVisibility();
+		$this->TemplateFile2->setVisibility();
 		$this->hideFieldsForAddEdit();
 
 		// Do not use lookup cache
@@ -743,6 +744,7 @@ class t001_property_delete extends t001_property
 		$this->id->setDbValue($row['id']);
 		$this->Property->setDbValue($row['Property']);
 		$this->TemplateFile->setDbValue($row['TemplateFile']);
+		$this->TemplateFile2->setDbValue($row['TemplateFile2']);
 	}
 
 	// Return a row with default values
@@ -752,6 +754,7 @@ class t001_property_delete extends t001_property
 		$row['id'] = NULL;
 		$row['Property'] = NULL;
 		$row['TemplateFile'] = NULL;
+		$row['TemplateFile2'] = NULL;
 		return $row;
 	}
 
@@ -769,6 +772,7 @@ class t001_property_delete extends t001_property
 		// id
 		// Property
 		// TemplateFile
+		// TemplateFile2
 
 		if ($this->RowType == ROWTYPE_VIEW) { // View row
 
@@ -784,6 +788,10 @@ class t001_property_delete extends t001_property
 			$this->TemplateFile->ViewValue = $this->TemplateFile->CurrentValue;
 			$this->TemplateFile->ViewCustomAttributes = "";
 
+			// TemplateFile2
+			$this->TemplateFile2->ViewValue = $this->TemplateFile2->CurrentValue;
+			$this->TemplateFile2->ViewCustomAttributes = "";
+
 			// Property
 			$this->Property->LinkCustomAttributes = "";
 			$this->Property->HrefValue = "";
@@ -793,6 +801,11 @@ class t001_property_delete extends t001_property
 			$this->TemplateFile->LinkCustomAttributes = "";
 			$this->TemplateFile->HrefValue = "";
 			$this->TemplateFile->TooltipValue = "";
+
+			// TemplateFile2
+			$this->TemplateFile2->LinkCustomAttributes = "";
+			$this->TemplateFile2->HrefValue = "";
+			$this->TemplateFile2->TooltipValue = "";
 		}
 
 		// Call Row Rendered event

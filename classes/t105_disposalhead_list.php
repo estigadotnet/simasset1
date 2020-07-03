@@ -2730,7 +2730,12 @@ class t105_disposalhead_list extends t105_disposalhead
 		//$opt->Header = "xxx";
 		//$opt->OnLeft = TRUE; // Link on left
 		//$opt->MoveTo(0); // Move to first column
+		// Cetak Form
 
+		$opt = &$this->ListOptions->Add("cetakForm");
+		$opt->Header = "";
+		$opt->OnLeft = TRUE; // Link on left
+		$opt->MoveTo(0); // Move to first column
 	}
 
 	// ListOptions Rendering event
@@ -2747,7 +2752,16 @@ class t105_disposalhead_list extends t105_disposalhead
 
 		// Example:
 		//$this->ListOptions["new"]->Body = "xxx";
+		// Cetak Form
 
+		$this->ListOptions->Items["cetakForm"]->Body = "
+			<a
+				title=\"Cetak Form\"
+				data-caption=\"Cetak Form\"
+				href=\"c105_disposal.php?id=".$this->id->CurrentValue."\"
+			>
+				Cetak Form
+			</a>"; // definisikan link, style, dan caption tombol //"xxx";
 	}
 
 	// Row Custom Action event

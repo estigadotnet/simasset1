@@ -71,22 +71,22 @@ $t106_disposaldetail_view->showMessage();
 <input type="hidden" name="t" value="t106_disposaldetail">
 <input type="hidden" name="modal" value="<?php echo (int)$t106_disposaldetail_view->IsModal ?>">
 <table class="table table-striped table-sm ew-view-table">
-<?php if ($t106_disposaldetail_view->disposalhead_id->Visible) { // disposalhead_id ?>
-	<tr id="r_disposalhead_id">
-		<td class="<?php echo $t106_disposaldetail_view->TableLeftColumnClass ?>"><span id="elh_t106_disposaldetail_disposalhead_id"><?php echo $t106_disposaldetail_view->disposalhead_id->caption() ?></span></td>
-		<td data-name="disposalhead_id" <?php echo $t106_disposaldetail_view->disposalhead_id->cellAttributes() ?>>
-<span id="el_t106_disposaldetail_disposalhead_id">
-<span<?php echo $t106_disposaldetail_view->disposalhead_id->viewAttributes() ?>><?php echo $t106_disposaldetail_view->disposalhead_id->getViewValue() ?></span>
-</span>
-</td>
-	</tr>
-<?php } ?>
 <?php if ($t106_disposaldetail_view->asset_id->Visible) { // asset_id ?>
 	<tr id="r_asset_id">
 		<td class="<?php echo $t106_disposaldetail_view->TableLeftColumnClass ?>"><span id="elh_t106_disposaldetail_asset_id"><?php echo $t106_disposaldetail_view->asset_id->caption() ?></span></td>
 		<td data-name="asset_id" <?php echo $t106_disposaldetail_view->asset_id->cellAttributes() ?>>
 <span id="el_t106_disposaldetail_asset_id">
 <span<?php echo $t106_disposaldetail_view->asset_id->viewAttributes() ?>><?php echo $t106_disposaldetail_view->asset_id->getViewValue() ?></span>
+</span>
+</td>
+	</tr>
+<?php } ?>
+<?php if ($t106_disposaldetail_view->disposaldate->Visible) { // disposaldate ?>
+	<tr id="r_disposaldate">
+		<td class="<?php echo $t106_disposaldetail_view->TableLeftColumnClass ?>"><span id="elh_t106_disposaldetail_disposaldate"><?php echo $t106_disposaldetail_view->disposaldate->caption() ?></span></td>
+		<td data-name="disposaldate" <?php echo $t106_disposaldetail_view->disposaldate->cellAttributes() ?>>
+<span id="el_t106_disposaldetail_disposaldate">
+<span<?php echo $t106_disposaldetail_view->disposaldate->viewAttributes() ?>><?php echo $t106_disposaldetail_view->disposaldate->getViewValue() ?></span>
 </span>
 </td>
 	</tr>

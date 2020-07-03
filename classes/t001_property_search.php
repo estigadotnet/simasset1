@@ -683,6 +683,7 @@ class t001_property_search extends t001_property
 		$this->id->Visible = FALSE;
 		$this->Property->setVisibility();
 		$this->TemplateFile->setVisibility();
+		$this->TemplateFile2->setVisibility();
 		$this->hideFieldsForAddEdit();
 
 		// Do not use lookup cache
@@ -750,6 +751,7 @@ class t001_property_search extends t001_property
 		$srchUrl = "";
 		$this->buildSearchUrl($srchUrl, $this->Property); // Property
 		$this->buildSearchUrl($srchUrl, $this->TemplateFile); // TemplateFile
+		$this->buildSearchUrl($srchUrl, $this->TemplateFile2); // TemplateFile2
 		if ($srchUrl != "")
 			$srchUrl .= "&";
 		$srchUrl .= "cmd=search";
@@ -826,6 +828,8 @@ class t001_property_search extends t001_property
 			$got = TRUE;
 		if ($this->TemplateFile->AdvancedSearch->post())
 			$got = TRUE;
+		if ($this->TemplateFile2->AdvancedSearch->post())
+			$got = TRUE;
 		return $got;
 	}
 
@@ -843,6 +847,7 @@ class t001_property_search extends t001_property
 		// id
 		// Property
 		// TemplateFile
+		// TemplateFile2
 
 		if ($this->RowType == ROWTYPE_VIEW) { // View row
 
@@ -858,6 +863,10 @@ class t001_property_search extends t001_property
 			$this->TemplateFile->ViewValue = $this->TemplateFile->CurrentValue;
 			$this->TemplateFile->ViewCustomAttributes = "";
 
+			// TemplateFile2
+			$this->TemplateFile2->ViewValue = $this->TemplateFile2->CurrentValue;
+			$this->TemplateFile2->ViewCustomAttributes = "";
+
 			// Property
 			$this->Property->LinkCustomAttributes = "";
 			$this->Property->HrefValue = "";
@@ -867,6 +876,11 @@ class t001_property_search extends t001_property
 			$this->TemplateFile->LinkCustomAttributes = "";
 			$this->TemplateFile->HrefValue = "";
 			$this->TemplateFile->TooltipValue = "";
+
+			// TemplateFile2
+			$this->TemplateFile2->LinkCustomAttributes = "";
+			$this->TemplateFile2->HrefValue = "";
+			$this->TemplateFile2->TooltipValue = "";
 		} elseif ($this->RowType == ROWTYPE_SEARCH) { // Search row
 
 			// Property
@@ -884,6 +898,14 @@ class t001_property_search extends t001_property
 				$this->TemplateFile->AdvancedSearch->SearchValue = HtmlDecode($this->TemplateFile->AdvancedSearch->SearchValue);
 			$this->TemplateFile->EditValue = HtmlEncode($this->TemplateFile->AdvancedSearch->SearchValue);
 			$this->TemplateFile->PlaceHolder = RemoveHtml($this->TemplateFile->caption());
+
+			// TemplateFile2
+			$this->TemplateFile2->EditAttrs["class"] = "form-control";
+			$this->TemplateFile2->EditCustomAttributes = "";
+			if (!$this->TemplateFile2->Raw)
+				$this->TemplateFile2->AdvancedSearch->SearchValue = HtmlDecode($this->TemplateFile2->AdvancedSearch->SearchValue);
+			$this->TemplateFile2->EditValue = HtmlEncode($this->TemplateFile2->AdvancedSearch->SearchValue);
+			$this->TemplateFile2->PlaceHolder = RemoveHtml($this->TemplateFile2->caption());
 		}
 		if ($this->RowType == ROWTYPE_ADD || $this->RowType == ROWTYPE_EDIT || $this->RowType == ROWTYPE_SEARCH) // Add/Edit/Search row
 			$this->setupFieldTitles();
@@ -922,6 +944,7 @@ class t001_property_search extends t001_property
 	{
 		$this->Property->AdvancedSearch->load();
 		$this->TemplateFile->AdvancedSearch->load();
+		$this->TemplateFile2->AdvancedSearch->load();
 	}
 
 	// Set up Breadcrumb

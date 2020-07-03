@@ -688,6 +688,7 @@ class t106_disposaldetail_search extends t106_disposaldetail
 		$this->disposalhead_id->setVisibility();
 		$this->asset_id->setVisibility();
 		$this->depreciation_id->setVisibility();
+		$this->disposaldate->setVisibility();
 		$this->cond_id->setVisibility();
 		$this->reason_id->setVisibility();
 		$this->hideFieldsForAddEdit();
@@ -762,6 +763,7 @@ class t106_disposaldetail_search extends t106_disposaldetail
 		$this->buildSearchUrl($srchUrl, $this->disposalhead_id); // disposalhead_id
 		$this->buildSearchUrl($srchUrl, $this->asset_id); // asset_id
 		$this->buildSearchUrl($srchUrl, $this->depreciation_id); // depreciation_id
+		$this->buildSearchUrl($srchUrl, $this->disposaldate); // disposaldate
 		$this->buildSearchUrl($srchUrl, $this->cond_id); // cond_id
 		$this->buildSearchUrl($srchUrl, $this->reason_id); // reason_id
 		if ($srchUrl != "")
@@ -844,6 +846,8 @@ class t106_disposaldetail_search extends t106_disposaldetail
 			$got = TRUE;
 		if ($this->depreciation_id->AdvancedSearch->post())
 			$got = TRUE;
+		if ($this->disposaldate->AdvancedSearch->post())
+			$got = TRUE;
 		if ($this->cond_id->AdvancedSearch->post())
 			$got = TRUE;
 		if ($this->reason_id->AdvancedSearch->post())
@@ -866,6 +870,7 @@ class t106_disposaldetail_search extends t106_disposaldetail
 		// disposalhead_id
 		// asset_id
 		// depreciation_id
+		// disposaldate
 		// cond_id
 		// reason_id
 
@@ -907,6 +912,11 @@ class t106_disposaldetail_search extends t106_disposaldetail
 			$this->depreciation_id->ViewValue = $this->depreciation_id->CurrentValue;
 			$this->depreciation_id->ViewValue = FormatNumber($this->depreciation_id->ViewValue, 0, -2, -2, -2);
 			$this->depreciation_id->ViewCustomAttributes = "";
+
+			// disposaldate
+			$this->disposaldate->ViewValue = $this->disposaldate->CurrentValue;
+			$this->disposaldate->ViewValue = FormatDateTime($this->disposaldate->ViewValue, 7);
+			$this->disposaldate->ViewCustomAttributes = "";
 
 			// cond_id
 			$curVal = strval($this->cond_id->CurrentValue);
@@ -972,6 +982,11 @@ class t106_disposaldetail_search extends t106_disposaldetail
 			$this->depreciation_id->HrefValue = "";
 			$this->depreciation_id->TooltipValue = "";
 
+			// disposaldate
+			$this->disposaldate->LinkCustomAttributes = "";
+			$this->disposaldate->HrefValue = "";
+			$this->disposaldate->TooltipValue = "";
+
 			// cond_id
 			$this->cond_id->LinkCustomAttributes = "";
 			$this->cond_id->HrefValue = "";
@@ -1033,6 +1048,12 @@ class t106_disposaldetail_search extends t106_disposaldetail
 			$this->depreciation_id->EditCustomAttributes = "";
 			$this->depreciation_id->EditValue = HtmlEncode($this->depreciation_id->AdvancedSearch->SearchValue);
 			$this->depreciation_id->PlaceHolder = RemoveHtml($this->depreciation_id->caption());
+
+			// disposaldate
+			$this->disposaldate->EditAttrs["class"] = "form-control";
+			$this->disposaldate->EditCustomAttributes = "";
+			$this->disposaldate->EditValue = HtmlEncode(FormatDateTime(UnFormatDateTime($this->disposaldate->AdvancedSearch->SearchValue, 7), 7));
+			$this->disposaldate->PlaceHolder = RemoveHtml($this->disposaldate->caption());
 
 			// cond_id
 			$this->cond_id->EditCustomAttributes = "";
@@ -1126,6 +1147,9 @@ class t106_disposaldetail_search extends t106_disposaldetail
 		if (!CheckInteger($this->depreciation_id->AdvancedSearch->SearchValue)) {
 			AddMessage($SearchError, $this->depreciation_id->errorMessage());
 		}
+		if (!CheckEuroDate($this->disposaldate->AdvancedSearch->SearchValue)) {
+			AddMessage($SearchError, $this->disposaldate->errorMessage());
+		}
 
 		// Return validate result
 		$validateSearch = ($SearchError == "");
@@ -1146,6 +1170,7 @@ class t106_disposaldetail_search extends t106_disposaldetail
 		$this->disposalhead_id->AdvancedSearch->load();
 		$this->asset_id->AdvancedSearch->load();
 		$this->depreciation_id->AdvancedSearch->load();
+		$this->disposaldate->AdvancedSearch->load();
 		$this->cond_id->AdvancedSearch->load();
 		$this->reason_id->AdvancedSearch->load();
 	}

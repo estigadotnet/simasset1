@@ -152,7 +152,7 @@ class t105_disposalhead extends DbTable
 		$this->Sign1->Sortable = TRUE; // Allow sort
 		$this->Sign1->UsePleaseSelect = TRUE; // Use PleaseSelect by default
 		$this->Sign1->PleaseSelectText = $Language->phrase("PleaseSelect"); // "PleaseSelect" text
-		$this->Sign1->Lookup = new Lookup('Sign1', 't003_signature', FALSE, 'id', ["Signature","","",""], [], [], [], [], [], [], '', '');
+		$this->Sign1->Lookup = new Lookup('Sign1', 't003_signature', FALSE, 'id', ["JobTitle","","",""], [], [], [], [], [], [], '', '');
 		$this->Sign1->DefaultErrorMessage = $Language->phrase("IncorrectInteger");
 		$this->fields['Sign1'] = &$this->Sign1;
 
@@ -163,7 +163,7 @@ class t105_disposalhead extends DbTable
 		$this->Sign2->Sortable = TRUE; // Allow sort
 		$this->Sign2->UsePleaseSelect = TRUE; // Use PleaseSelect by default
 		$this->Sign2->PleaseSelectText = $Language->phrase("PleaseSelect"); // "PleaseSelect" text
-		$this->Sign2->Lookup = new Lookup('Sign2', 't003_signature', FALSE, 'id', ["Signature","","",""], [], [], [], [], [], [], '', '');
+		$this->Sign2->Lookup = new Lookup('Sign2', 't003_signature', FALSE, 'id', ["JobTitle","","",""], [], [], [], [], [], [], '', '');
 		$this->Sign2->DefaultErrorMessage = $Language->phrase("IncorrectInteger");
 		$this->fields['Sign2'] = &$this->Sign2;
 
@@ -174,7 +174,7 @@ class t105_disposalhead extends DbTable
 		$this->Sign3->Sortable = TRUE; // Allow sort
 		$this->Sign3->UsePleaseSelect = TRUE; // Use PleaseSelect by default
 		$this->Sign3->PleaseSelectText = $Language->phrase("PleaseSelect"); // "PleaseSelect" text
-		$this->Sign3->Lookup = new Lookup('Sign3', 't003_signature', FALSE, 'id', ["Signature","","",""], [], [], [], [], [], [], '', '');
+		$this->Sign3->Lookup = new Lookup('Sign3', 't003_signature', FALSE, 'id', ["JobTitle","","",""], [], [], [], [], [], [], '', '');
 		$this->Sign3->DefaultErrorMessage = $Language->phrase("IncorrectInteger");
 		$this->fields['Sign3'] = &$this->Sign3;
 	}

@@ -36,6 +36,7 @@ class t001_property extends DbTable
 	public $id;
 	public $Property;
 	public $TemplateFile;
+	public $TemplateFile2;
 
 	// Constructor
 	public function __construct()
@@ -91,6 +92,13 @@ class t001_property extends DbTable
 		$this->TemplateFile->Required = TRUE; // Required field
 		$this->TemplateFile->Sortable = TRUE; // Allow sort
 		$this->fields['TemplateFile'] = &$this->TemplateFile;
+
+		// TemplateFile2
+		$this->TemplateFile2 = new DbField('t001_property', 't001_property', 'x_TemplateFile2', 'TemplateFile2', '`TemplateFile2`', '`TemplateFile2`', 200, 100, -1, FALSE, '`TemplateFile2`', FALSE, FALSE, FALSE, 'FORMATTED TEXT', 'TEXT');
+		$this->TemplateFile2->Nullable = FALSE; // NOT NULL field
+		$this->TemplateFile2->Required = TRUE; // Required field
+		$this->TemplateFile2->Sortable = TRUE; // Allow sort
+		$this->fields['TemplateFile2'] = &$this->TemplateFile2;
 	}
 
 	// Field Visibility
@@ -473,6 +481,7 @@ class t001_property extends DbTable
 		$this->id->DbValue = $row['id'];
 		$this->Property->DbValue = $row['Property'];
 		$this->TemplateFile->DbValue = $row['TemplateFile'];
+		$this->TemplateFile2->DbValue = $row['TemplateFile2'];
 	}
 
 	// Delete uploaded files
@@ -706,6 +715,7 @@ class t001_property extends DbTable
 		$this->id->setDbValue($rs->fields('id'));
 		$this->Property->setDbValue($rs->fields('Property'));
 		$this->TemplateFile->setDbValue($rs->fields('TemplateFile'));
+		$this->TemplateFile2->setDbValue($rs->fields('TemplateFile2'));
 	}
 
 	// Render list row values
@@ -720,6 +730,7 @@ class t001_property extends DbTable
 		// id
 		// Property
 		// TemplateFile
+		// TemplateFile2
 		// id
 
 		$this->id->ViewValue = $this->id->CurrentValue;
@@ -732,6 +743,10 @@ class t001_property extends DbTable
 		// TemplateFile
 		$this->TemplateFile->ViewValue = $this->TemplateFile->CurrentValue;
 		$this->TemplateFile->ViewCustomAttributes = "";
+
+		// TemplateFile2
+		$this->TemplateFile2->ViewValue = $this->TemplateFile2->CurrentValue;
+		$this->TemplateFile2->ViewCustomAttributes = "";
 
 		// id
 		$this->id->LinkCustomAttributes = "";
@@ -747,6 +762,11 @@ class t001_property extends DbTable
 		$this->TemplateFile->LinkCustomAttributes = "";
 		$this->TemplateFile->HrefValue = "";
 		$this->TemplateFile->TooltipValue = "";
+
+		// TemplateFile2
+		$this->TemplateFile2->LinkCustomAttributes = "";
+		$this->TemplateFile2->HrefValue = "";
+		$this->TemplateFile2->TooltipValue = "";
 
 		// Call Row Rendered event
 		$this->Row_Rendered();
@@ -785,6 +805,14 @@ class t001_property extends DbTable
 		$this->TemplateFile->EditValue = $this->TemplateFile->CurrentValue;
 		$this->TemplateFile->PlaceHolder = RemoveHtml($this->TemplateFile->caption());
 
+		// TemplateFile2
+		$this->TemplateFile2->EditAttrs["class"] = "form-control";
+		$this->TemplateFile2->EditCustomAttributes = "";
+		if (!$this->TemplateFile2->Raw)
+			$this->TemplateFile2->CurrentValue = HtmlDecode($this->TemplateFile2->CurrentValue);
+		$this->TemplateFile2->EditValue = $this->TemplateFile2->CurrentValue;
+		$this->TemplateFile2->PlaceHolder = RemoveHtml($this->TemplateFile2->caption());
+
 		// Call Row Rendered event
 		$this->Row_Rendered();
 	}
@@ -816,10 +844,12 @@ class t001_property extends DbTable
 				if ($exportPageType == "view") {
 					$doc->exportCaption($this->Property);
 					$doc->exportCaption($this->TemplateFile);
+					$doc->exportCaption($this->TemplateFile2);
 				} else {
 					$doc->exportCaption($this->id);
 					$doc->exportCaption($this->Property);
 					$doc->exportCaption($this->TemplateFile);
+					$doc->exportCaption($this->TemplateFile2);
 				}
 				$doc->endExportRow();
 			}
@@ -853,10 +883,12 @@ class t001_property extends DbTable
 					if ($exportPageType == "view") {
 						$doc->exportField($this->Property);
 						$doc->exportField($this->TemplateFile);
+						$doc->exportField($this->TemplateFile2);
 					} else {
 						$doc->exportField($this->id);
 						$doc->exportField($this->Property);
 						$doc->exportField($this->TemplateFile);
+						$doc->exportField($this->TemplateFile2);
 					}
 					$doc->endExportRow($rowCnt);
 				}

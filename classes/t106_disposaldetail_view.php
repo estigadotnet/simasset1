@@ -753,6 +753,7 @@ class t106_disposaldetail_view extends t106_disposaldetail
 		$this->disposalhead_id->setVisibility();
 		$this->asset_id->setVisibility();
 		$this->depreciation_id->setVisibility();
+		$this->disposaldate->setVisibility();
 		$this->cond_id->setVisibility();
 		$this->reason_id->setVisibility();
 		$this->hideFieldsForAddEdit();
@@ -1000,6 +1001,7 @@ class t106_disposaldetail_view extends t106_disposaldetail
 		$this->disposalhead_id->setDbValue($row['disposalhead_id']);
 		$this->asset_id->setDbValue($row['asset_id']);
 		$this->depreciation_id->setDbValue($row['depreciation_id']);
+		$this->disposaldate->setDbValue($row['disposaldate']);
 		$this->cond_id->setDbValue($row['cond_id']);
 		$this->reason_id->setDbValue($row['reason_id']);
 	}
@@ -1012,6 +1014,7 @@ class t106_disposaldetail_view extends t106_disposaldetail
 		$row['disposalhead_id'] = NULL;
 		$row['asset_id'] = NULL;
 		$row['depreciation_id'] = NULL;
+		$row['disposaldate'] = NULL;
 		$row['cond_id'] = NULL;
 		$row['reason_id'] = NULL;
 		return $row;
@@ -1038,6 +1041,7 @@ class t106_disposaldetail_view extends t106_disposaldetail
 		// disposalhead_id
 		// asset_id
 		// depreciation_id
+		// disposaldate
 		// cond_id
 		// reason_id
 
@@ -1079,6 +1083,11 @@ class t106_disposaldetail_view extends t106_disposaldetail
 			$this->depreciation_id->ViewValue = $this->depreciation_id->CurrentValue;
 			$this->depreciation_id->ViewValue = FormatNumber($this->depreciation_id->ViewValue, 0, -2, -2, -2);
 			$this->depreciation_id->ViewCustomAttributes = "";
+
+			// disposaldate
+			$this->disposaldate->ViewValue = $this->disposaldate->CurrentValue;
+			$this->disposaldate->ViewValue = FormatDateTime($this->disposaldate->ViewValue, 7);
+			$this->disposaldate->ViewCustomAttributes = "";
 
 			// cond_id
 			$curVal = strval($this->cond_id->CurrentValue);
@@ -1124,15 +1133,15 @@ class t106_disposaldetail_view extends t106_disposaldetail
 			}
 			$this->reason_id->ViewCustomAttributes = "";
 
-			// disposalhead_id
-			$this->disposalhead_id->LinkCustomAttributes = "";
-			$this->disposalhead_id->HrefValue = "";
-			$this->disposalhead_id->TooltipValue = "";
-
 			// asset_id
 			$this->asset_id->LinkCustomAttributes = "";
 			$this->asset_id->HrefValue = "";
 			$this->asset_id->TooltipValue = "";
+
+			// disposaldate
+			$this->disposaldate->LinkCustomAttributes = "";
+			$this->disposaldate->HrefValue = "";
+			$this->disposaldate->TooltipValue = "";
 
 			// cond_id
 			$this->cond_id->LinkCustomAttributes = "";

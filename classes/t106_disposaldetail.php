@@ -37,6 +37,7 @@ class t106_disposaldetail extends DbTable
 	public $disposalhead_id;
 	public $asset_id;
 	public $depreciation_id;
+	public $disposaldate;
 	public $cond_id;
 	public $reason_id;
 
@@ -108,6 +109,14 @@ class t106_disposaldetail extends DbTable
 		$this->depreciation_id->Sortable = TRUE; // Allow sort
 		$this->depreciation_id->DefaultErrorMessage = $Language->phrase("IncorrectInteger");
 		$this->fields['depreciation_id'] = &$this->depreciation_id;
+
+		// disposaldate
+		$this->disposaldate = new DbField('t106_disposaldetail', 't106_disposaldetail', 'x_disposaldate', 'disposaldate', '`disposaldate`', CastDateFieldForLike("`disposaldate`", 7, "DB"), 133, 10, 7, FALSE, '`disposaldate`', FALSE, FALSE, FALSE, 'FORMATTED TEXT', 'TEXT');
+		$this->disposaldate->Nullable = FALSE; // NOT NULL field
+		$this->disposaldate->Required = TRUE; // Required field
+		$this->disposaldate->Sortable = TRUE; // Allow sort
+		$this->disposaldate->DefaultErrorMessage = str_replace("%s", $GLOBALS["DATE_SEPARATOR"], $Language->phrase("IncorrectDateDMY"));
+		$this->fields['disposaldate'] = &$this->disposaldate;
 
 		// cond_id
 		$this->cond_id = new DbField('t106_disposaldetail', 't106_disposaldetail', 'x_cond_id', 'cond_id', '`cond_id`', '`cond_id`', 3, 11, -1, FALSE, '`cond_id`', FALSE, FALSE, FALSE, 'FORMATTED TEXT', 'SELECT');
@@ -565,6 +574,7 @@ class t106_disposaldetail extends DbTable
 		$this->disposalhead_id->DbValue = $row['disposalhead_id'];
 		$this->asset_id->DbValue = $row['asset_id'];
 		$this->depreciation_id->DbValue = $row['depreciation_id'];
+		$this->disposaldate->DbValue = $row['disposaldate'];
 		$this->cond_id->DbValue = $row['cond_id'];
 		$this->reason_id->DbValue = $row['reason_id'];
 	}
@@ -805,6 +815,7 @@ class t106_disposaldetail extends DbTable
 		$this->disposalhead_id->setDbValue($rs->fields('disposalhead_id'));
 		$this->asset_id->setDbValue($rs->fields('asset_id'));
 		$this->depreciation_id->setDbValue($rs->fields('depreciation_id'));
+		$this->disposaldate->setDbValue($rs->fields('disposaldate'));
 		$this->cond_id->setDbValue($rs->fields('cond_id'));
 		$this->reason_id->setDbValue($rs->fields('reason_id'));
 	}
@@ -822,6 +833,7 @@ class t106_disposaldetail extends DbTable
 		// disposalhead_id
 		// asset_id
 		// depreciation_id
+		// disposaldate
 		// cond_id
 		// reason_id
 		// id
@@ -861,6 +873,11 @@ class t106_disposaldetail extends DbTable
 		$this->depreciation_id->ViewValue = $this->depreciation_id->CurrentValue;
 		$this->depreciation_id->ViewValue = FormatNumber($this->depreciation_id->ViewValue, 0, -2, -2, -2);
 		$this->depreciation_id->ViewCustomAttributes = "";
+
+		// disposaldate
+		$this->disposaldate->ViewValue = $this->disposaldate->CurrentValue;
+		$this->disposaldate->ViewValue = FormatDateTime($this->disposaldate->ViewValue, 7);
+		$this->disposaldate->ViewCustomAttributes = "";
 
 		// cond_id
 		$curVal = strval($this->cond_id->CurrentValue);
@@ -926,6 +943,11 @@ class t106_disposaldetail extends DbTable
 		$this->depreciation_id->HrefValue = "";
 		$this->depreciation_id->TooltipValue = "";
 
+		// disposaldate
+		$this->disposaldate->LinkCustomAttributes = "";
+		$this->disposaldate->HrefValue = "";
+		$this->disposaldate->TooltipValue = "";
+
 		// cond_id
 		$this->cond_id->LinkCustomAttributes = "";
 		$this->cond_id->HrefValue = "";
@@ -980,6 +1002,12 @@ class t106_disposaldetail extends DbTable
 		$this->depreciation_id->EditValue = $this->depreciation_id->CurrentValue;
 		$this->depreciation_id->PlaceHolder = RemoveHtml($this->depreciation_id->caption());
 
+		// disposaldate
+		$this->disposaldate->EditAttrs["class"] = "form-control";
+		$this->disposaldate->EditCustomAttributes = "";
+		$this->disposaldate->EditValue = FormatDateTime($this->disposaldate->CurrentValue, 7);
+		$this->disposaldate->PlaceHolder = RemoveHtml($this->disposaldate->caption());
+
 		// cond_id
 		$this->cond_id->EditAttrs["class"] = "form-control";
 		$this->cond_id->EditCustomAttributes = "";
@@ -1017,8 +1045,8 @@ class t106_disposaldetail extends DbTable
 			if ($doc->Horizontal) { // Horizontal format, write header
 				$doc->beginExportRow();
 				if ($exportPageType == "view") {
-					$doc->exportCaption($this->disposalhead_id);
 					$doc->exportCaption($this->asset_id);
+					$doc->exportCaption($this->disposaldate);
 					$doc->exportCaption($this->cond_id);
 					$doc->exportCaption($this->reason_id);
 				} else {
@@ -1026,6 +1054,7 @@ class t106_disposaldetail extends DbTable
 					$doc->exportCaption($this->disposalhead_id);
 					$doc->exportCaption($this->asset_id);
 					$doc->exportCaption($this->depreciation_id);
+					$doc->exportCaption($this->disposaldate);
 					$doc->exportCaption($this->cond_id);
 					$doc->exportCaption($this->reason_id);
 				}
@@ -1059,8 +1088,8 @@ class t106_disposaldetail extends DbTable
 				if (!$doc->ExportCustom) {
 					$doc->beginExportRow($rowCnt); // Allow CSS styles if enabled
 					if ($exportPageType == "view") {
-						$doc->exportField($this->disposalhead_id);
 						$doc->exportField($this->asset_id);
+						$doc->exportField($this->disposaldate);
 						$doc->exportField($this->cond_id);
 						$doc->exportField($this->reason_id);
 					} else {
@@ -1068,6 +1097,7 @@ class t106_disposaldetail extends DbTable
 						$doc->exportField($this->disposalhead_id);
 						$doc->exportField($this->asset_id);
 						$doc->exportField($this->depreciation_id);
+						$doc->exportField($this->disposaldate);
 						$doc->exportField($this->cond_id);
 						$doc->exportField($this->reason_id);
 					}

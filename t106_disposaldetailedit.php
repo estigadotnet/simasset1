@@ -56,19 +56,19 @@ loadjs.ready("head", function() {
 		for (var i = startcnt; i <= rowcnt; i++) {
 			var infix = ($k[0]) ? String(i) : "";
 			$fobj.data("rowindex", infix);
-			<?php if ($t106_disposaldetail_edit->disposalhead_id->Required) { ?>
-				elm = this.getElements("x" + infix + "_disposalhead_id");
-				if (elm && !ew.isHidden(elm) && !ew.hasValue(elm))
-					return this.onError(elm, "<?php echo JsEncode(str_replace("%s", $t106_disposaldetail_edit->disposalhead_id->caption(), $t106_disposaldetail_edit->disposalhead_id->RequiredErrorMessage)) ?>");
-			<?php } ?>
-				elm = this.getElements("x" + infix + "_disposalhead_id");
-				if (elm && !ew.checkInteger(elm.value))
-					return this.onError(elm, "<?php echo JsEncode($t106_disposaldetail_edit->disposalhead_id->errorMessage()) ?>");
 			<?php if ($t106_disposaldetail_edit->asset_id->Required) { ?>
 				elm = this.getElements("x" + infix + "_asset_id");
 				if (elm && !ew.isHidden(elm) && !ew.hasValue(elm))
 					return this.onError(elm, "<?php echo JsEncode(str_replace("%s", $t106_disposaldetail_edit->asset_id->caption(), $t106_disposaldetail_edit->asset_id->RequiredErrorMessage)) ?>");
 			<?php } ?>
+			<?php if ($t106_disposaldetail_edit->disposaldate->Required) { ?>
+				elm = this.getElements("x" + infix + "_disposaldate");
+				if (elm && !ew.isHidden(elm) && !ew.hasValue(elm))
+					return this.onError(elm, "<?php echo JsEncode(str_replace("%s", $t106_disposaldetail_edit->disposaldate->caption(), $t106_disposaldetail_edit->disposaldate->RequiredErrorMessage)) ?>");
+			<?php } ?>
+				elm = this.getElements("x" + infix + "_disposaldate");
+				if (elm && !ew.checkEuroDate(elm.value))
+					return this.onError(elm, "<?php echo JsEncode($t106_disposaldetail_edit->disposaldate->errorMessage()) ?>");
 			<?php if ($t106_disposaldetail_edit->cond_id->Required) { ?>
 				elm = this.getElements("x" + infix + "_cond_id");
 				if (elm && !ew.isHidden(elm) && !ew.hasValue(elm))
@@ -140,23 +140,6 @@ $t106_disposaldetail_edit->showMessage();
 <input type="hidden" name="fk_id" value="<?php echo HtmlEncode($t106_disposaldetail_edit->disposalhead_id->getSessionValue()) ?>">
 <?php } ?>
 <div class="ew-edit-div"><!-- page* -->
-<?php if ($t106_disposaldetail_edit->disposalhead_id->Visible) { // disposalhead_id ?>
-	<div id="r_disposalhead_id" class="form-group row">
-		<label id="elh_t106_disposaldetail_disposalhead_id" for="x_disposalhead_id" class="<?php echo $t106_disposaldetail_edit->LeftColumnClass ?>"><?php echo $t106_disposaldetail_edit->disposalhead_id->caption() ?><?php echo $t106_disposaldetail_edit->disposalhead_id->Required ? $Language->phrase("FieldRequiredIndicator") : "" ?></label>
-		<div class="<?php echo $t106_disposaldetail_edit->RightColumnClass ?>"><div <?php echo $t106_disposaldetail_edit->disposalhead_id->cellAttributes() ?>>
-<?php if ($t106_disposaldetail_edit->disposalhead_id->getSessionValue() != "") { ?>
-<span id="el_t106_disposaldetail_disposalhead_id">
-<span<?php echo $t106_disposaldetail_edit->disposalhead_id->viewAttributes() ?>><input type="text" readonly class="form-control-plaintext" value="<?php echo HtmlEncode(RemoveHtml($t106_disposaldetail_edit->disposalhead_id->ViewValue)) ?>"></span>
-</span>
-<input type="hidden" id="x_disposalhead_id" name="x_disposalhead_id" value="<?php echo HtmlEncode($t106_disposaldetail_edit->disposalhead_id->CurrentValue) ?>">
-<?php } else { ?>
-<span id="el_t106_disposaldetail_disposalhead_id">
-<input type="text" data-table="t106_disposaldetail" data-field="x_disposalhead_id" name="x_disposalhead_id" id="x_disposalhead_id" size="30" maxlength="11" placeholder="<?php echo HtmlEncode($t106_disposaldetail_edit->disposalhead_id->getPlaceHolder()) ?>" value="<?php echo $t106_disposaldetail_edit->disposalhead_id->EditValue ?>"<?php echo $t106_disposaldetail_edit->disposalhead_id->editAttributes() ?>>
-</span>
-<?php } ?>
-<?php echo $t106_disposaldetail_edit->disposalhead_id->CustomMsg ?></div></div>
-	</div>
-<?php } ?>
 <?php if ($t106_disposaldetail_edit->asset_id->Visible) { // asset_id ?>
 	<div id="r_asset_id" class="form-group row">
 		<label id="elh_t106_disposaldetail_asset_id" for="x_asset_id" class="<?php echo $t106_disposaldetail_edit->LeftColumnClass ?>"><?php echo $t106_disposaldetail_edit->asset_id->caption() ?><?php echo $t106_disposaldetail_edit->asset_id->Required ? $Language->phrase("FieldRequiredIndicator") : "" ?></label>
@@ -172,6 +155,23 @@ $t106_disposaldetail_edit->showMessage();
 <input type="hidden" data-table="t106_disposaldetail" data-field="x_asset_id" data-multiple="0" data-lookup="1" data-value-separator="<?php echo $t106_disposaldetail_edit->asset_id->displayValueSeparatorAttribute() ?>" name="x_asset_id" id="x_asset_id" value="<?php echo $t106_disposaldetail_edit->asset_id->CurrentValue ?>"<?php echo $t106_disposaldetail_edit->asset_id->editAttributes() ?>>
 </span>
 <?php echo $t106_disposaldetail_edit->asset_id->CustomMsg ?></div></div>
+	</div>
+<?php } ?>
+<?php if ($t106_disposaldetail_edit->disposaldate->Visible) { // disposaldate ?>
+	<div id="r_disposaldate" class="form-group row">
+		<label id="elh_t106_disposaldetail_disposaldate" for="x_disposaldate" class="<?php echo $t106_disposaldetail_edit->LeftColumnClass ?>"><?php echo $t106_disposaldetail_edit->disposaldate->caption() ?><?php echo $t106_disposaldetail_edit->disposaldate->Required ? $Language->phrase("FieldRequiredIndicator") : "" ?></label>
+		<div class="<?php echo $t106_disposaldetail_edit->RightColumnClass ?>"><div <?php echo $t106_disposaldetail_edit->disposaldate->cellAttributes() ?>>
+<span id="el_t106_disposaldetail_disposaldate">
+<input type="text" data-table="t106_disposaldetail" data-field="x_disposaldate" data-format="7" name="x_disposaldate" id="x_disposaldate" size="10" maxlength="10" placeholder="<?php echo HtmlEncode($t106_disposaldetail_edit->disposaldate->getPlaceHolder()) ?>" value="<?php echo $t106_disposaldetail_edit->disposaldate->EditValue ?>"<?php echo $t106_disposaldetail_edit->disposaldate->editAttributes() ?>>
+<?php if (!$t106_disposaldetail_edit->disposaldate->ReadOnly && !$t106_disposaldetail_edit->disposaldate->Disabled && !isset($t106_disposaldetail_edit->disposaldate->EditAttrs["readonly"]) && !isset($t106_disposaldetail_edit->disposaldate->EditAttrs["disabled"])) { ?>
+<script>
+loadjs.ready(["ft106_disposaldetailedit", "datetimepicker"], function() {
+	ew.createDateTimePicker("ft106_disposaldetailedit", "x_disposaldate", {"ignoreReadonly":true,"useCurrent":false,"format":7});
+});
+</script>
+<?php } ?>
+</span>
+<?php echo $t106_disposaldetail_edit->disposaldate->CustomMsg ?></div></div>
 	</div>
 <?php } ?>
 <?php if ($t106_disposaldetail_edit->cond_id->Visible) { // cond_id ?>

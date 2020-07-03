@@ -60,6 +60,9 @@ loadjs.ready("head", function() {
 		elm = this.getElements("x" + infix + "_depreciation_id");
 		if (elm && !ew.checkInteger(elm.value))
 			return this.onError(elm, "<?php echo JsEncode($t106_disposaldetail_search->depreciation_id->errorMessage()) ?>");
+		elm = this.getElements("x" + infix + "_disposaldate");
+		if (elm && !ew.checkEuroDate(elm.value))
+			return this.onError(elm, "<?php echo JsEncode($t106_disposaldetail_search->disposaldate->errorMessage()) ?>");
 
 		// Call Form_CustomValidate event
 		if (!this.Form_CustomValidate(fobj))
@@ -170,6 +173,28 @@ $t106_disposaldetail_search->showMessage();
 		<div class="<?php echo $t106_disposaldetail_search->RightColumnClass ?>"><div <?php echo $t106_disposaldetail_search->depreciation_id->cellAttributes() ?>>
 			<span id="el_t106_disposaldetail_depreciation_id" class="ew-search-field">
 <input type="text" data-table="t106_disposaldetail" data-field="x_depreciation_id" name="x_depreciation_id" id="x_depreciation_id" size="30" maxlength="11" placeholder="<?php echo HtmlEncode($t106_disposaldetail_search->depreciation_id->getPlaceHolder()) ?>" value="<?php echo $t106_disposaldetail_search->depreciation_id->EditValue ?>"<?php echo $t106_disposaldetail_search->depreciation_id->editAttributes() ?>>
+</span>
+		</div></div>
+	</div>
+<?php } ?>
+<?php if ($t106_disposaldetail_search->disposaldate->Visible) { // disposaldate ?>
+	<div id="r_disposaldate" class="form-group row">
+		<label for="x_disposaldate" class="<?php echo $t106_disposaldetail_search->LeftColumnClass ?>"><span id="elh_t106_disposaldetail_disposaldate"><?php echo $t106_disposaldetail_search->disposaldate->caption() ?></span>
+		<span class="ew-search-operator">
+<?php echo $Language->phrase("=") ?>
+<input type="hidden" name="z_disposaldate" id="z_disposaldate" value="=">
+</span>
+		</label>
+		<div class="<?php echo $t106_disposaldetail_search->RightColumnClass ?>"><div <?php echo $t106_disposaldetail_search->disposaldate->cellAttributes() ?>>
+			<span id="el_t106_disposaldetail_disposaldate" class="ew-search-field">
+<input type="text" data-table="t106_disposaldetail" data-field="x_disposaldate" data-format="7" name="x_disposaldate" id="x_disposaldate" size="10" maxlength="10" placeholder="<?php echo HtmlEncode($t106_disposaldetail_search->disposaldate->getPlaceHolder()) ?>" value="<?php echo $t106_disposaldetail_search->disposaldate->EditValue ?>"<?php echo $t106_disposaldetail_search->disposaldate->editAttributes() ?>>
+<?php if (!$t106_disposaldetail_search->disposaldate->ReadOnly && !$t106_disposaldetail_search->disposaldate->Disabled && !isset($t106_disposaldetail_search->disposaldate->EditAttrs["readonly"]) && !isset($t106_disposaldetail_search->disposaldate->EditAttrs["disabled"])) { ?>
+<script>
+loadjs.ready(["ft106_disposaldetailsearch", "datetimepicker"], function() {
+	ew.createDateTimePicker("ft106_disposaldetailsearch", "x_disposaldate", {"ignoreReadonly":true,"useCurrent":false,"format":7});
+});
+</script>
+<?php } ?>
 </span>
 		</div></div>
 	</div>

@@ -76,6 +76,9 @@ $t001_property_delete->showMessage();
 <?php if ($t001_property_delete->TemplateFile->Visible) { // TemplateFile ?>
 		<th class="<?php echo $t001_property_delete->TemplateFile->headerCellClass() ?>"><span id="elh_t001_property_TemplateFile" class="t001_property_TemplateFile"><?php echo $t001_property_delete->TemplateFile->caption() ?></span></th>
 <?php } ?>
+<?php if ($t001_property_delete->TemplateFile2->Visible) { // TemplateFile2 ?>
+		<th class="<?php echo $t001_property_delete->TemplateFile2->headerCellClass() ?>"><span id="elh_t001_property_TemplateFile2" class="t001_property_TemplateFile2"><?php echo $t001_property_delete->TemplateFile2->caption() ?></span></th>
+<?php } ?>
 	</tr>
 	</thead>
 	<tbody>
@@ -108,6 +111,13 @@ while (!$t001_property_delete->Recordset->EOF) {
 		<td <?php echo $t001_property_delete->TemplateFile->cellAttributes() ?>>
 <span id="el<?php echo $t001_property_delete->RowCount ?>_t001_property_TemplateFile" class="t001_property_TemplateFile">
 <span<?php echo $t001_property_delete->TemplateFile->viewAttributes() ?>><?php echo $t001_property_delete->TemplateFile->getViewValue() ?></span>
+</span>
+</td>
+<?php } ?>
+<?php if ($t001_property_delete->TemplateFile2->Visible) { // TemplateFile2 ?>
+		<td <?php echo $t001_property_delete->TemplateFile2->cellAttributes() ?>>
+<span id="el<?php echo $t001_property_delete->RowCount ?>_t001_property_TemplateFile2" class="t001_property_TemplateFile2">
+<span<?php echo $t001_property_delete->TemplateFile2->viewAttributes() ?>><?php echo $t001_property_delete->TemplateFile2->getViewValue() ?></span>
 </span>
 </td>
 <?php } ?>

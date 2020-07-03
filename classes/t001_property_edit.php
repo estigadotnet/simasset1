@@ -689,6 +689,7 @@ class t001_property_edit extends t001_property
 		$this->id->Visible = FALSE;
 		$this->Property->setVisibility();
 		$this->TemplateFile->setVisibility();
+		$this->TemplateFile2->setVisibility();
 		$this->hideFieldsForAddEdit();
 
 		// Do not use lookup cache
@@ -881,6 +882,15 @@ class t001_property_edit extends t001_property
 				$this->TemplateFile->setFormValue($val);
 		}
 
+		// Check field name 'TemplateFile2' first before field var 'x_TemplateFile2'
+		$val = $CurrentForm->hasValue("TemplateFile2") ? $CurrentForm->getValue("TemplateFile2") : $CurrentForm->getValue("x_TemplateFile2");
+		if (!$this->TemplateFile2->IsDetailKey) {
+			if (IsApi() && $val == NULL)
+				$this->TemplateFile2->Visible = FALSE; // Disable update for API request
+			else
+				$this->TemplateFile2->setFormValue($val);
+		}
+
 		// Check field name 'id' first before field var 'x_id'
 		$val = $CurrentForm->hasValue("id") ? $CurrentForm->getValue("id") : $CurrentForm->getValue("x_id");
 		if (!$this->id->IsDetailKey)
@@ -894,6 +904,7 @@ class t001_property_edit extends t001_property
 		$this->id->CurrentValue = $this->id->FormValue;
 		$this->Property->CurrentValue = $this->Property->FormValue;
 		$this->TemplateFile->CurrentValue = $this->TemplateFile->FormValue;
+		$this->TemplateFile2->CurrentValue = $this->TemplateFile2->FormValue;
 	}
 
 	// Load row based on key values
@@ -934,6 +945,7 @@ class t001_property_edit extends t001_property
 		$this->id->setDbValue($row['id']);
 		$this->Property->setDbValue($row['Property']);
 		$this->TemplateFile->setDbValue($row['TemplateFile']);
+		$this->TemplateFile2->setDbValue($row['TemplateFile2']);
 	}
 
 	// Return a row with default values
@@ -943,6 +955,7 @@ class t001_property_edit extends t001_property
 		$row['id'] = NULL;
 		$row['Property'] = NULL;
 		$row['TemplateFile'] = NULL;
+		$row['TemplateFile2'] = NULL;
 		return $row;
 	}
 
@@ -983,6 +996,7 @@ class t001_property_edit extends t001_property
 		// id
 		// Property
 		// TemplateFile
+		// TemplateFile2
 
 		if ($this->RowType == ROWTYPE_VIEW) { // View row
 
@@ -998,6 +1012,10 @@ class t001_property_edit extends t001_property
 			$this->TemplateFile->ViewValue = $this->TemplateFile->CurrentValue;
 			$this->TemplateFile->ViewCustomAttributes = "";
 
+			// TemplateFile2
+			$this->TemplateFile2->ViewValue = $this->TemplateFile2->CurrentValue;
+			$this->TemplateFile2->ViewCustomAttributes = "";
+
 			// Property
 			$this->Property->LinkCustomAttributes = "";
 			$this->Property->HrefValue = "";
@@ -1007,6 +1025,11 @@ class t001_property_edit extends t001_property
 			$this->TemplateFile->LinkCustomAttributes = "";
 			$this->TemplateFile->HrefValue = "";
 			$this->TemplateFile->TooltipValue = "";
+
+			// TemplateFile2
+			$this->TemplateFile2->LinkCustomAttributes = "";
+			$this->TemplateFile2->HrefValue = "";
+			$this->TemplateFile2->TooltipValue = "";
 		} elseif ($this->RowType == ROWTYPE_EDIT) { // Edit row
 
 			// Property
@@ -1025,6 +1048,14 @@ class t001_property_edit extends t001_property
 			$this->TemplateFile->EditValue = HtmlEncode($this->TemplateFile->CurrentValue);
 			$this->TemplateFile->PlaceHolder = RemoveHtml($this->TemplateFile->caption());
 
+			// TemplateFile2
+			$this->TemplateFile2->EditAttrs["class"] = "form-control";
+			$this->TemplateFile2->EditCustomAttributes = "";
+			if (!$this->TemplateFile2->Raw)
+				$this->TemplateFile2->CurrentValue = HtmlDecode($this->TemplateFile2->CurrentValue);
+			$this->TemplateFile2->EditValue = HtmlEncode($this->TemplateFile2->CurrentValue);
+			$this->TemplateFile2->PlaceHolder = RemoveHtml($this->TemplateFile2->caption());
+
 			// Edit refer script
 			// Property
 
@@ -1034,6 +1065,10 @@ class t001_property_edit extends t001_property
 			// TemplateFile
 			$this->TemplateFile->LinkCustomAttributes = "";
 			$this->TemplateFile->HrefValue = "";
+
+			// TemplateFile2
+			$this->TemplateFile2->LinkCustomAttributes = "";
+			$this->TemplateFile2->HrefValue = "";
 		}
 		if ($this->RowType == ROWTYPE_ADD || $this->RowType == ROWTYPE_EDIT || $this->RowType == ROWTYPE_SEARCH) // Add/Edit/Search row
 			$this->setupFieldTitles();
@@ -1062,6 +1097,11 @@ class t001_property_edit extends t001_property
 		if ($this->TemplateFile->Required) {
 			if (!$this->TemplateFile->IsDetailKey && $this->TemplateFile->FormValue != NULL && $this->TemplateFile->FormValue == "") {
 				AddMessage($FormError, str_replace("%s", $this->TemplateFile->caption(), $this->TemplateFile->RequiredErrorMessage));
+			}
+		}
+		if ($this->TemplateFile2->Required) {
+			if (!$this->TemplateFile2->IsDetailKey && $this->TemplateFile2->FormValue != NULL && $this->TemplateFile2->FormValue == "") {
+				AddMessage($FormError, str_replace("%s", $this->TemplateFile2->caption(), $this->TemplateFile2->RequiredErrorMessage));
 			}
 		}
 
@@ -1106,6 +1146,9 @@ class t001_property_edit extends t001_property
 
 			// TemplateFile
 			$this->TemplateFile->setDbValueDef($rsnew, $this->TemplateFile->CurrentValue, "", $this->TemplateFile->ReadOnly);
+
+			// TemplateFile2
+			$this->TemplateFile2->setDbValueDef($rsnew, $this->TemplateFile2->CurrentValue, "", $this->TemplateFile2->ReadOnly);
 
 			// Call Row Updating event
 			$updateRow = $this->Row_Updating($rsold, $rsnew);
