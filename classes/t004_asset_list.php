@@ -3141,6 +3141,17 @@ class t004_asset_list extends t004_asset
 	function Page_Render() {
 
 		//echo "Page Render";
+		//jika user level di atas -1 maka :
+
+		if (CurrentUserLevel() > -1) {
+			$this->group_id->Visible = false;
+			$this->type_id->Visible = false;
+			$this->signature_id->Visible = false;
+			$this->Variance->Visible = false;
+			$this->ProcurementDate->Visible = false;
+			$this->PeriodBegin->Visible = false;
+			$this->PeriodEnd->Visible = false;
+		}
 	}
 
 	// Page Data Rendering event
