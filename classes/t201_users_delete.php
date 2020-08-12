@@ -615,11 +615,11 @@ class t201_users_delete extends t201_users
 		$this->_UserLevel->setVisibility();
 		$this->Username->setVisibility();
 		$this->Activated->setVisibility();
-		$this->Profile->Visible = FALSE;
-		$this->sekolah_id->setVisibility();
-		$this->tahunajaran_id->setVisibility();
-		$this->kelas_id->setVisibility();
-		$this->semester_id->setVisibility();
+		$this->Profile->setVisibility();
+		$this->sekolah_id->Visible = FALSE;
+		$this->tahunajaran_id->Visible = FALSE;
+		$this->kelas_id->Visible = FALSE;
+		$this->semester_id->Visible = FALSE;
 		$this->hideFieldsForAddEdit();
 
 		// Do not use lookup cache
@@ -886,10 +886,17 @@ class t201_users_delete extends t201_users
 		// Activated
 		// Profile
 		// sekolah_id
-		// tahunajaran_id
-		// kelas_id
-		// semester_id
 
+		$this->sekolah_id->CellCssStyle = "white-space: nowrap;";
+
+		// tahunajaran_id
+		$this->tahunajaran_id->CellCssStyle = "white-space: nowrap;";
+
+		// kelas_id
+		$this->kelas_id->CellCssStyle = "white-space: nowrap;";
+
+		// semester_id
+		$this->semester_id->CellCssStyle = "white-space: nowrap;";
 		if ($this->RowType == ROWTYPE_VIEW) { // View row
 
 			// EmployeeID
@@ -1005,25 +1012,9 @@ class t201_users_delete extends t201_users
 			}
 			$this->Activated->ViewCustomAttributes = "";
 
-			// sekolah_id
-			$this->sekolah_id->ViewValue = $this->sekolah_id->CurrentValue;
-			$this->sekolah_id->ViewValue = FormatNumber($this->sekolah_id->ViewValue, 0, -2, -2, -2);
-			$this->sekolah_id->ViewCustomAttributes = "";
-
-			// tahunajaran_id
-			$this->tahunajaran_id->ViewValue = $this->tahunajaran_id->CurrentValue;
-			$this->tahunajaran_id->ViewValue = FormatNumber($this->tahunajaran_id->ViewValue, 0, -2, -2, -2);
-			$this->tahunajaran_id->ViewCustomAttributes = "";
-
-			// kelas_id
-			$this->kelas_id->ViewValue = $this->kelas_id->CurrentValue;
-			$this->kelas_id->ViewValue = FormatNumber($this->kelas_id->ViewValue, 0, -2, -2, -2);
-			$this->kelas_id->ViewCustomAttributes = "";
-
-			// semester_id
-			$this->semester_id->ViewValue = $this->semester_id->CurrentValue;
-			$this->semester_id->ViewValue = FormatNumber($this->semester_id->ViewValue, 0, -2, -2, -2);
-			$this->semester_id->ViewCustomAttributes = "";
+			// Profile
+			$this->Profile->ViewValue = $this->Profile->CurrentValue;
+			$this->Profile->ViewCustomAttributes = "";
 
 			// EmployeeID
 			$this->EmployeeID->LinkCustomAttributes = "";
@@ -1130,25 +1121,10 @@ class t201_users_delete extends t201_users
 			$this->Activated->HrefValue = "";
 			$this->Activated->TooltipValue = "";
 
-			// sekolah_id
-			$this->sekolah_id->LinkCustomAttributes = "";
-			$this->sekolah_id->HrefValue = "";
-			$this->sekolah_id->TooltipValue = "";
-
-			// tahunajaran_id
-			$this->tahunajaran_id->LinkCustomAttributes = "";
-			$this->tahunajaran_id->HrefValue = "";
-			$this->tahunajaran_id->TooltipValue = "";
-
-			// kelas_id
-			$this->kelas_id->LinkCustomAttributes = "";
-			$this->kelas_id->HrefValue = "";
-			$this->kelas_id->TooltipValue = "";
-
-			// semester_id
-			$this->semester_id->LinkCustomAttributes = "";
-			$this->semester_id->HrefValue = "";
-			$this->semester_id->TooltipValue = "";
+			// Profile
+			$this->Profile->LinkCustomAttributes = "";
+			$this->Profile->HrefValue = "";
+			$this->Profile->TooltipValue = "";
 		}
 
 		// Call Row Rendered event

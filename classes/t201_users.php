@@ -230,25 +230,25 @@ class t201_users extends DbTable
 
 		// sekolah_id
 		$this->sekolah_id = new DbField('t201_users', 't201_users', 'x_sekolah_id', 'sekolah_id', '`sekolah_id`', '`sekolah_id`', 3, 11, -1, FALSE, '`sekolah_id`', FALSE, FALSE, FALSE, 'FORMATTED TEXT', 'TEXT');
-		$this->sekolah_id->Sortable = TRUE; // Allow sort
+		$this->sekolah_id->Sortable = FALSE; // Allow sort
 		$this->sekolah_id->DefaultErrorMessage = $Language->phrase("IncorrectInteger");
 		$this->fields['sekolah_id'] = &$this->sekolah_id;
 
 		// tahunajaran_id
 		$this->tahunajaran_id = new DbField('t201_users', 't201_users', 'x_tahunajaran_id', 'tahunajaran_id', '`tahunajaran_id`', '`tahunajaran_id`', 3, 11, -1, FALSE, '`tahunajaran_id`', FALSE, FALSE, FALSE, 'FORMATTED TEXT', 'TEXT');
-		$this->tahunajaran_id->Sortable = TRUE; // Allow sort
+		$this->tahunajaran_id->Sortable = FALSE; // Allow sort
 		$this->tahunajaran_id->DefaultErrorMessage = $Language->phrase("IncorrectInteger");
 		$this->fields['tahunajaran_id'] = &$this->tahunajaran_id;
 
 		// kelas_id
 		$this->kelas_id = new DbField('t201_users', 't201_users', 'x_kelas_id', 'kelas_id', '`kelas_id`', '`kelas_id`', 3, 11, -1, FALSE, '`kelas_id`', FALSE, FALSE, FALSE, 'FORMATTED TEXT', 'TEXT');
-		$this->kelas_id->Sortable = TRUE; // Allow sort
+		$this->kelas_id->Sortable = FALSE; // Allow sort
 		$this->kelas_id->DefaultErrorMessage = $Language->phrase("IncorrectInteger");
 		$this->fields['kelas_id'] = &$this->kelas_id;
 
 		// semester_id
 		$this->semester_id = new DbField('t201_users', 't201_users', 'x_semester_id', 'semester_id', '`semester_id`', '`semester_id`', 3, 11, -1, FALSE, '`semester_id`', FALSE, FALSE, FALSE, 'FORMATTED TEXT', 'TEXT');
-		$this->semester_id->Sortable = TRUE; // Allow sort
+		$this->semester_id->Sortable = FALSE; // Allow sort
 		$this->semester_id->DefaultErrorMessage = $Language->phrase("IncorrectInteger");
 		$this->fields['semester_id'] = &$this->semester_id;
 	}
@@ -962,11 +962,19 @@ class t201_users extends DbTable
 		// Activated
 		// Profile
 		// sekolah_id
-		// tahunajaran_id
-		// kelas_id
-		// semester_id
-		// EmployeeID
 
+		$this->sekolah_id->CellCssStyle = "white-space: nowrap;";
+
+		// tahunajaran_id
+		$this->tahunajaran_id->CellCssStyle = "white-space: nowrap;";
+
+		// kelas_id
+		$this->kelas_id->CellCssStyle = "white-space: nowrap;";
+
+		// semester_id
+		$this->semester_id->CellCssStyle = "white-space: nowrap;";
+
+		// EmployeeID
 		$this->EmployeeID->ViewValue = $this->EmployeeID->CurrentValue;
 		$this->EmployeeID->ViewCustomAttributes = "";
 
@@ -1501,10 +1509,6 @@ class t201_users extends DbTable
 					$doc->exportCaption($this->Username);
 					$doc->exportCaption($this->Activated);
 					$doc->exportCaption($this->Profile);
-					$doc->exportCaption($this->sekolah_id);
-					$doc->exportCaption($this->tahunajaran_id);
-					$doc->exportCaption($this->kelas_id);
-					$doc->exportCaption($this->semester_id);
 				} else {
 					$doc->exportCaption($this->EmployeeID);
 					$doc->exportCaption($this->LastName);
@@ -1527,10 +1531,7 @@ class t201_users extends DbTable
 					$doc->exportCaption($this->_UserLevel);
 					$doc->exportCaption($this->Username);
 					$doc->exportCaption($this->Activated);
-					$doc->exportCaption($this->sekolah_id);
-					$doc->exportCaption($this->tahunajaran_id);
-					$doc->exportCaption($this->kelas_id);
-					$doc->exportCaption($this->semester_id);
+					$doc->exportCaption($this->Profile);
 				}
 				$doc->endExportRow();
 			}
@@ -1585,10 +1586,6 @@ class t201_users extends DbTable
 						$doc->exportField($this->Username);
 						$doc->exportField($this->Activated);
 						$doc->exportField($this->Profile);
-						$doc->exportField($this->sekolah_id);
-						$doc->exportField($this->tahunajaran_id);
-						$doc->exportField($this->kelas_id);
-						$doc->exportField($this->semester_id);
 					} else {
 						$doc->exportField($this->EmployeeID);
 						$doc->exportField($this->LastName);
@@ -1611,10 +1608,7 @@ class t201_users extends DbTable
 						$doc->exportField($this->_UserLevel);
 						$doc->exportField($this->Username);
 						$doc->exportField($this->Activated);
-						$doc->exportField($this->sekolah_id);
-						$doc->exportField($this->tahunajaran_id);
-						$doc->exportField($this->kelas_id);
-						$doc->exportField($this->semester_id);
+						$doc->exportField($this->Profile);
 					}
 					$doc->endExportRow($rowCnt);
 				}

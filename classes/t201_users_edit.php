@@ -710,10 +710,10 @@ class t201_users_edit extends t201_users
 		$this->Username->setVisibility();
 		$this->Activated->setVisibility();
 		$this->Profile->setVisibility();
-		$this->sekolah_id->setVisibility();
-		$this->tahunajaran_id->setVisibility();
-		$this->kelas_id->setVisibility();
-		$this->semester_id->setVisibility();
+		$this->sekolah_id->Visible = FALSE;
+		$this->tahunajaran_id->Visible = FALSE;
+		$this->kelas_id->Visible = FALSE;
+		$this->semester_id->Visible = FALSE;
 		$this->hideFieldsForAddEdit();
 
 		// Do not use lookup cache
@@ -1096,42 +1096,6 @@ class t201_users_edit extends t201_users
 			else
 				$this->Profile->setFormValue($val);
 		}
-
-		// Check field name 'sekolah_id' first before field var 'x_sekolah_id'
-		$val = $CurrentForm->hasValue("sekolah_id") ? $CurrentForm->getValue("sekolah_id") : $CurrentForm->getValue("x_sekolah_id");
-		if (!$this->sekolah_id->IsDetailKey) {
-			if (IsApi() && $val == NULL)
-				$this->sekolah_id->Visible = FALSE; // Disable update for API request
-			else
-				$this->sekolah_id->setFormValue($val);
-		}
-
-		// Check field name 'tahunajaran_id' first before field var 'x_tahunajaran_id'
-		$val = $CurrentForm->hasValue("tahunajaran_id") ? $CurrentForm->getValue("tahunajaran_id") : $CurrentForm->getValue("x_tahunajaran_id");
-		if (!$this->tahunajaran_id->IsDetailKey) {
-			if (IsApi() && $val == NULL)
-				$this->tahunajaran_id->Visible = FALSE; // Disable update for API request
-			else
-				$this->tahunajaran_id->setFormValue($val);
-		}
-
-		// Check field name 'kelas_id' first before field var 'x_kelas_id'
-		$val = $CurrentForm->hasValue("kelas_id") ? $CurrentForm->getValue("kelas_id") : $CurrentForm->getValue("x_kelas_id");
-		if (!$this->kelas_id->IsDetailKey) {
-			if (IsApi() && $val == NULL)
-				$this->kelas_id->Visible = FALSE; // Disable update for API request
-			else
-				$this->kelas_id->setFormValue($val);
-		}
-
-		// Check field name 'semester_id' first before field var 'x_semester_id'
-		$val = $CurrentForm->hasValue("semester_id") ? $CurrentForm->getValue("semester_id") : $CurrentForm->getValue("x_semester_id");
-		if (!$this->semester_id->IsDetailKey) {
-			if (IsApi() && $val == NULL)
-				$this->semester_id->Visible = FALSE; // Disable update for API request
-			else
-				$this->semester_id->setFormValue($val);
-		}
 	}
 
 	// Restore form values
@@ -1163,10 +1127,6 @@ class t201_users_edit extends t201_users
 		$this->Username->CurrentValue = $this->Username->FormValue;
 		$this->Activated->CurrentValue = $this->Activated->FormValue;
 		$this->Profile->CurrentValue = $this->Profile->FormValue;
-		$this->sekolah_id->CurrentValue = $this->sekolah_id->FormValue;
-		$this->tahunajaran_id->CurrentValue = $this->tahunajaran_id->FormValue;
-		$this->kelas_id->CurrentValue = $this->kelas_id->FormValue;
-		$this->semester_id->CurrentValue = $this->semester_id->FormValue;
 	}
 
 	// Load row based on key values
@@ -1461,26 +1421,6 @@ class t201_users_edit extends t201_users
 			$this->Profile->ViewValue = $this->Profile->CurrentValue;
 			$this->Profile->ViewCustomAttributes = "";
 
-			// sekolah_id
-			$this->sekolah_id->ViewValue = $this->sekolah_id->CurrentValue;
-			$this->sekolah_id->ViewValue = FormatNumber($this->sekolah_id->ViewValue, 0, -2, -2, -2);
-			$this->sekolah_id->ViewCustomAttributes = "";
-
-			// tahunajaran_id
-			$this->tahunajaran_id->ViewValue = $this->tahunajaran_id->CurrentValue;
-			$this->tahunajaran_id->ViewValue = FormatNumber($this->tahunajaran_id->ViewValue, 0, -2, -2, -2);
-			$this->tahunajaran_id->ViewCustomAttributes = "";
-
-			// kelas_id
-			$this->kelas_id->ViewValue = $this->kelas_id->CurrentValue;
-			$this->kelas_id->ViewValue = FormatNumber($this->kelas_id->ViewValue, 0, -2, -2, -2);
-			$this->kelas_id->ViewCustomAttributes = "";
-
-			// semester_id
-			$this->semester_id->ViewValue = $this->semester_id->CurrentValue;
-			$this->semester_id->ViewValue = FormatNumber($this->semester_id->ViewValue, 0, -2, -2, -2);
-			$this->semester_id->ViewCustomAttributes = "";
-
 			// EmployeeID
 			$this->EmployeeID->LinkCustomAttributes = "";
 			$this->EmployeeID->HrefValue = "";
@@ -1595,26 +1535,6 @@ class t201_users_edit extends t201_users
 			$this->Profile->LinkCustomAttributes = "";
 			$this->Profile->HrefValue = "";
 			$this->Profile->TooltipValue = "";
-
-			// sekolah_id
-			$this->sekolah_id->LinkCustomAttributes = "";
-			$this->sekolah_id->HrefValue = "";
-			$this->sekolah_id->TooltipValue = "";
-
-			// tahunajaran_id
-			$this->tahunajaran_id->LinkCustomAttributes = "";
-			$this->tahunajaran_id->HrefValue = "";
-			$this->tahunajaran_id->TooltipValue = "";
-
-			// kelas_id
-			$this->kelas_id->LinkCustomAttributes = "";
-			$this->kelas_id->HrefValue = "";
-			$this->kelas_id->TooltipValue = "";
-
-			// semester_id
-			$this->semester_id->LinkCustomAttributes = "";
-			$this->semester_id->HrefValue = "";
-			$this->semester_id->TooltipValue = "";
 		} elseif ($this->RowType == ROWTYPE_EDIT) { // Edit row
 
 			// EmployeeID
@@ -1805,30 +1725,6 @@ class t201_users_edit extends t201_users
 			$this->Profile->EditValue = HtmlEncode($this->Profile->CurrentValue);
 			$this->Profile->PlaceHolder = RemoveHtml($this->Profile->caption());
 
-			// sekolah_id
-			$this->sekolah_id->EditAttrs["class"] = "form-control";
-			$this->sekolah_id->EditCustomAttributes = "";
-			$this->sekolah_id->EditValue = HtmlEncode($this->sekolah_id->CurrentValue);
-			$this->sekolah_id->PlaceHolder = RemoveHtml($this->sekolah_id->caption());
-
-			// tahunajaran_id
-			$this->tahunajaran_id->EditAttrs["class"] = "form-control";
-			$this->tahunajaran_id->EditCustomAttributes = "";
-			$this->tahunajaran_id->EditValue = HtmlEncode($this->tahunajaran_id->CurrentValue);
-			$this->tahunajaran_id->PlaceHolder = RemoveHtml($this->tahunajaran_id->caption());
-
-			// kelas_id
-			$this->kelas_id->EditAttrs["class"] = "form-control";
-			$this->kelas_id->EditCustomAttributes = "";
-			$this->kelas_id->EditValue = HtmlEncode($this->kelas_id->CurrentValue);
-			$this->kelas_id->PlaceHolder = RemoveHtml($this->kelas_id->caption());
-
-			// semester_id
-			$this->semester_id->EditAttrs["class"] = "form-control";
-			$this->semester_id->EditCustomAttributes = "";
-			$this->semester_id->EditValue = HtmlEncode($this->semester_id->CurrentValue);
-			$this->semester_id->PlaceHolder = RemoveHtml($this->semester_id->caption());
-
 			// Edit refer script
 			// EmployeeID
 
@@ -1922,22 +1818,6 @@ class t201_users_edit extends t201_users
 			// Profile
 			$this->Profile->LinkCustomAttributes = "";
 			$this->Profile->HrefValue = "";
-
-			// sekolah_id
-			$this->sekolah_id->LinkCustomAttributes = "";
-			$this->sekolah_id->HrefValue = "";
-
-			// tahunajaran_id
-			$this->tahunajaran_id->LinkCustomAttributes = "";
-			$this->tahunajaran_id->HrefValue = "";
-
-			// kelas_id
-			$this->kelas_id->LinkCustomAttributes = "";
-			$this->kelas_id->HrefValue = "";
-
-			// semester_id
-			$this->semester_id->LinkCustomAttributes = "";
-			$this->semester_id->HrefValue = "";
 		}
 		if ($this->RowType == ROWTYPE_ADD || $this->RowType == ROWTYPE_EDIT || $this->RowType == ROWTYPE_SEARCH) // Add/Edit/Search row
 			$this->setupFieldTitles();
@@ -2082,38 +1962,6 @@ class t201_users_edit extends t201_users
 				AddMessage($FormError, str_replace("%s", $this->Profile->caption(), $this->Profile->RequiredErrorMessage));
 			}
 		}
-		if ($this->sekolah_id->Required) {
-			if (!$this->sekolah_id->IsDetailKey && $this->sekolah_id->FormValue != NULL && $this->sekolah_id->FormValue == "") {
-				AddMessage($FormError, str_replace("%s", $this->sekolah_id->caption(), $this->sekolah_id->RequiredErrorMessage));
-			}
-		}
-		if (!CheckInteger($this->sekolah_id->FormValue)) {
-			AddMessage($FormError, $this->sekolah_id->errorMessage());
-		}
-		if ($this->tahunajaran_id->Required) {
-			if (!$this->tahunajaran_id->IsDetailKey && $this->tahunajaran_id->FormValue != NULL && $this->tahunajaran_id->FormValue == "") {
-				AddMessage($FormError, str_replace("%s", $this->tahunajaran_id->caption(), $this->tahunajaran_id->RequiredErrorMessage));
-			}
-		}
-		if (!CheckInteger($this->tahunajaran_id->FormValue)) {
-			AddMessage($FormError, $this->tahunajaran_id->errorMessage());
-		}
-		if ($this->kelas_id->Required) {
-			if (!$this->kelas_id->IsDetailKey && $this->kelas_id->FormValue != NULL && $this->kelas_id->FormValue == "") {
-				AddMessage($FormError, str_replace("%s", $this->kelas_id->caption(), $this->kelas_id->RequiredErrorMessage));
-			}
-		}
-		if (!CheckInteger($this->kelas_id->FormValue)) {
-			AddMessage($FormError, $this->kelas_id->errorMessage());
-		}
-		if ($this->semester_id->Required) {
-			if (!$this->semester_id->IsDetailKey && $this->semester_id->FormValue != NULL && $this->semester_id->FormValue == "") {
-				AddMessage($FormError, str_replace("%s", $this->semester_id->caption(), $this->semester_id->RequiredErrorMessage));
-			}
-		}
-		if (!CheckInteger($this->semester_id->FormValue)) {
-			AddMessage($FormError, $this->semester_id->errorMessage());
-		}
 
 		// Return validate result
 		$validateForm = ($FormError == "");
@@ -2244,18 +2092,6 @@ class t201_users_edit extends t201_users
 
 			// Profile
 			$this->Profile->setDbValueDef($rsnew, $this->Profile->CurrentValue, NULL, $this->Profile->ReadOnly);
-
-			// sekolah_id
-			$this->sekolah_id->setDbValueDef($rsnew, $this->sekolah_id->CurrentValue, NULL, $this->sekolah_id->ReadOnly);
-
-			// tahunajaran_id
-			$this->tahunajaran_id->setDbValueDef($rsnew, $this->tahunajaran_id->CurrentValue, NULL, $this->tahunajaran_id->ReadOnly);
-
-			// kelas_id
-			$this->kelas_id->setDbValueDef($rsnew, $this->kelas_id->CurrentValue, NULL, $this->kelas_id->ReadOnly);
-
-			// semester_id
-			$this->semester_id->setDbValueDef($rsnew, $this->semester_id->CurrentValue, NULL, $this->semester_id->ReadOnly);
 
 			// Call Row Updating event
 			$updateRow = $this->Row_Updating($rsold, $rsnew);

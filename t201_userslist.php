@@ -330,39 +330,12 @@ $t201_users_list->ListOptions->render("header", "left");
 		</div></div></th>
 	<?php } ?>
 <?php } ?>
-<?php if ($t201_users_list->sekolah_id->Visible) { // sekolah_id ?>
-	<?php if ($t201_users_list->SortUrl($t201_users_list->sekolah_id) == "") { ?>
-		<th data-name="sekolah_id" class="<?php echo $t201_users_list->sekolah_id->headerCellClass() ?>"><div id="elh_t201_users_sekolah_id" class="t201_users_sekolah_id"><div class="ew-table-header-caption"><?php echo $t201_users_list->sekolah_id->caption() ?></div></div></th>
+<?php if ($t201_users_list->Profile->Visible) { // Profile ?>
+	<?php if ($t201_users_list->SortUrl($t201_users_list->Profile) == "") { ?>
+		<th data-name="Profile" class="<?php echo $t201_users_list->Profile->headerCellClass() ?>"><div id="elh_t201_users_Profile" class="t201_users_Profile"><div class="ew-table-header-caption"><?php echo $t201_users_list->Profile->caption() ?></div></div></th>
 	<?php } else { ?>
-		<th data-name="sekolah_id" class="<?php echo $t201_users_list->sekolah_id->headerCellClass() ?>"><div class="ew-pointer" onclick="ew.sort(event, '<?php echo $t201_users_list->SortUrl($t201_users_list->sekolah_id) ?>', 2);"><div id="elh_t201_users_sekolah_id" class="t201_users_sekolah_id">
-			<div class="ew-table-header-btn"><span class="ew-table-header-caption"><?php echo $t201_users_list->sekolah_id->caption() ?></span><span class="ew-table-header-sort"><?php if ($t201_users_list->sekolah_id->getSort() == "ASC") { ?><i class="fas fa-sort-up"></i><?php } elseif ($t201_users_list->sekolah_id->getSort() == "DESC") { ?><i class="fas fa-sort-down"></i><?php } ?></span></div>
-		</div></div></th>
-	<?php } ?>
-<?php } ?>
-<?php if ($t201_users_list->tahunajaran_id->Visible) { // tahunajaran_id ?>
-	<?php if ($t201_users_list->SortUrl($t201_users_list->tahunajaran_id) == "") { ?>
-		<th data-name="tahunajaran_id" class="<?php echo $t201_users_list->tahunajaran_id->headerCellClass() ?>"><div id="elh_t201_users_tahunajaran_id" class="t201_users_tahunajaran_id"><div class="ew-table-header-caption"><?php echo $t201_users_list->tahunajaran_id->caption() ?></div></div></th>
-	<?php } else { ?>
-		<th data-name="tahunajaran_id" class="<?php echo $t201_users_list->tahunajaran_id->headerCellClass() ?>"><div class="ew-pointer" onclick="ew.sort(event, '<?php echo $t201_users_list->SortUrl($t201_users_list->tahunajaran_id) ?>', 2);"><div id="elh_t201_users_tahunajaran_id" class="t201_users_tahunajaran_id">
-			<div class="ew-table-header-btn"><span class="ew-table-header-caption"><?php echo $t201_users_list->tahunajaran_id->caption() ?></span><span class="ew-table-header-sort"><?php if ($t201_users_list->tahunajaran_id->getSort() == "ASC") { ?><i class="fas fa-sort-up"></i><?php } elseif ($t201_users_list->tahunajaran_id->getSort() == "DESC") { ?><i class="fas fa-sort-down"></i><?php } ?></span></div>
-		</div></div></th>
-	<?php } ?>
-<?php } ?>
-<?php if ($t201_users_list->kelas_id->Visible) { // kelas_id ?>
-	<?php if ($t201_users_list->SortUrl($t201_users_list->kelas_id) == "") { ?>
-		<th data-name="kelas_id" class="<?php echo $t201_users_list->kelas_id->headerCellClass() ?>"><div id="elh_t201_users_kelas_id" class="t201_users_kelas_id"><div class="ew-table-header-caption"><?php echo $t201_users_list->kelas_id->caption() ?></div></div></th>
-	<?php } else { ?>
-		<th data-name="kelas_id" class="<?php echo $t201_users_list->kelas_id->headerCellClass() ?>"><div class="ew-pointer" onclick="ew.sort(event, '<?php echo $t201_users_list->SortUrl($t201_users_list->kelas_id) ?>', 2);"><div id="elh_t201_users_kelas_id" class="t201_users_kelas_id">
-			<div class="ew-table-header-btn"><span class="ew-table-header-caption"><?php echo $t201_users_list->kelas_id->caption() ?></span><span class="ew-table-header-sort"><?php if ($t201_users_list->kelas_id->getSort() == "ASC") { ?><i class="fas fa-sort-up"></i><?php } elseif ($t201_users_list->kelas_id->getSort() == "DESC") { ?><i class="fas fa-sort-down"></i><?php } ?></span></div>
-		</div></div></th>
-	<?php } ?>
-<?php } ?>
-<?php if ($t201_users_list->semester_id->Visible) { // semester_id ?>
-	<?php if ($t201_users_list->SortUrl($t201_users_list->semester_id) == "") { ?>
-		<th data-name="semester_id" class="<?php echo $t201_users_list->semester_id->headerCellClass() ?>"><div id="elh_t201_users_semester_id" class="t201_users_semester_id"><div class="ew-table-header-caption"><?php echo $t201_users_list->semester_id->caption() ?></div></div></th>
-	<?php } else { ?>
-		<th data-name="semester_id" class="<?php echo $t201_users_list->semester_id->headerCellClass() ?>"><div class="ew-pointer" onclick="ew.sort(event, '<?php echo $t201_users_list->SortUrl($t201_users_list->semester_id) ?>', 2);"><div id="elh_t201_users_semester_id" class="t201_users_semester_id">
-			<div class="ew-table-header-btn"><span class="ew-table-header-caption"><?php echo $t201_users_list->semester_id->caption() ?></span><span class="ew-table-header-sort"><?php if ($t201_users_list->semester_id->getSort() == "ASC") { ?><i class="fas fa-sort-up"></i><?php } elseif ($t201_users_list->semester_id->getSort() == "DESC") { ?><i class="fas fa-sort-down"></i><?php } ?></span></div>
+		<th data-name="Profile" class="<?php echo $t201_users_list->Profile->headerCellClass() ?>"><div class="ew-pointer" onclick="ew.sort(event, '<?php echo $t201_users_list->SortUrl($t201_users_list->Profile) ?>', 2);"><div id="elh_t201_users_Profile" class="t201_users_Profile">
+			<div class="ew-table-header-btn"><span class="ew-table-header-caption"><?php echo $t201_users_list->Profile->caption() ?><?php echo $Language->phrase("SrchLegend") ?></span><span class="ew-table-header-sort"><?php if ($t201_users_list->Profile->getSort() == "ASC") { ?><i class="fas fa-sort-up"></i><?php } elseif ($t201_users_list->Profile->getSort() == "DESC") { ?><i class="fas fa-sort-down"></i><?php } ?></span></div>
 		</div></div></th>
 	<?php } ?>
 <?php } ?>
@@ -578,31 +551,10 @@ $t201_users_list->ListOptions->render("body", "left", $t201_users_list->RowCount
 </span>
 </td>
 	<?php } ?>
-	<?php if ($t201_users_list->sekolah_id->Visible) { // sekolah_id ?>
-		<td data-name="sekolah_id" <?php echo $t201_users_list->sekolah_id->cellAttributes() ?>>
-<span id="el<?php echo $t201_users_list->RowCount ?>_t201_users_sekolah_id">
-<span<?php echo $t201_users_list->sekolah_id->viewAttributes() ?>><?php echo $t201_users_list->sekolah_id->getViewValue() ?></span>
-</span>
-</td>
-	<?php } ?>
-	<?php if ($t201_users_list->tahunajaran_id->Visible) { // tahunajaran_id ?>
-		<td data-name="tahunajaran_id" <?php echo $t201_users_list->tahunajaran_id->cellAttributes() ?>>
-<span id="el<?php echo $t201_users_list->RowCount ?>_t201_users_tahunajaran_id">
-<span<?php echo $t201_users_list->tahunajaran_id->viewAttributes() ?>><?php echo $t201_users_list->tahunajaran_id->getViewValue() ?></span>
-</span>
-</td>
-	<?php } ?>
-	<?php if ($t201_users_list->kelas_id->Visible) { // kelas_id ?>
-		<td data-name="kelas_id" <?php echo $t201_users_list->kelas_id->cellAttributes() ?>>
-<span id="el<?php echo $t201_users_list->RowCount ?>_t201_users_kelas_id">
-<span<?php echo $t201_users_list->kelas_id->viewAttributes() ?>><?php echo $t201_users_list->kelas_id->getViewValue() ?></span>
-</span>
-</td>
-	<?php } ?>
-	<?php if ($t201_users_list->semester_id->Visible) { // semester_id ?>
-		<td data-name="semester_id" <?php echo $t201_users_list->semester_id->cellAttributes() ?>>
-<span id="el<?php echo $t201_users_list->RowCount ?>_t201_users_semester_id">
-<span<?php echo $t201_users_list->semester_id->viewAttributes() ?>><?php echo $t201_users_list->semester_id->getViewValue() ?></span>
+	<?php if ($t201_users_list->Profile->Visible) { // Profile ?>
+		<td data-name="Profile" <?php echo $t201_users_list->Profile->cellAttributes() ?>>
+<span id="el<?php echo $t201_users_list->RowCount ?>_t201_users_Profile">
+<span<?php echo $t201_users_list->Profile->viewAttributes() ?>><?php echo $t201_users_list->Profile->getViewValue() ?></span>
 </span>
 </td>
 	<?php } ?>

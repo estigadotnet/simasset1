@@ -854,11 +854,11 @@ class t201_users_list extends t201_users
 		$this->_UserLevel->setVisibility();
 		$this->Username->setVisibility();
 		$this->Activated->setVisibility();
-		$this->Profile->Visible = FALSE;
-		$this->sekolah_id->setVisibility();
-		$this->tahunajaran_id->setVisibility();
-		$this->kelas_id->setVisibility();
-		$this->semester_id->setVisibility();
+		$this->Profile->setVisibility();
+		$this->sekolah_id->Visible = FALSE;
+		$this->tahunajaran_id->Visible = FALSE;
+		$this->kelas_id->Visible = FALSE;
+		$this->semester_id->Visible = FALSE;
 		$this->hideFieldsForAddEdit();
 
 		// Global Page Loading event (in userfn*.php)
@@ -1175,10 +1175,6 @@ class t201_users_list extends t201_users
 		$filterList = Concat($filterList, $this->Username->AdvancedSearch->toJson(), ","); // Field Username
 		$filterList = Concat($filterList, $this->Activated->AdvancedSearch->toJson(), ","); // Field Activated
 		$filterList = Concat($filterList, $this->Profile->AdvancedSearch->toJson(), ","); // Field Profile
-		$filterList = Concat($filterList, $this->sekolah_id->AdvancedSearch->toJson(), ","); // Field sekolah_id
-		$filterList = Concat($filterList, $this->tahunajaran_id->AdvancedSearch->toJson(), ","); // Field tahunajaran_id
-		$filterList = Concat($filterList, $this->kelas_id->AdvancedSearch->toJson(), ","); // Field kelas_id
-		$filterList = Concat($filterList, $this->semester_id->AdvancedSearch->toJson(), ","); // Field semester_id
 		if ($this->BasicSearch->Keyword != "") {
 			$wrk = "\"" . Config("TABLE_BASIC_SEARCH") . "\":\"" . JsEncode($this->BasicSearch->Keyword) . "\",\"" . Config("TABLE_BASIC_SEARCH_TYPE") . "\":\"" . JsEncode($this->BasicSearch->Type) . "\"";
 			$filterList = Concat($filterList, $wrk, ",");
@@ -1400,38 +1396,6 @@ class t201_users_list extends t201_users
 		$this->Profile->AdvancedSearch->SearchValue2 = @$filter["y_Profile"];
 		$this->Profile->AdvancedSearch->SearchOperator2 = @$filter["w_Profile"];
 		$this->Profile->AdvancedSearch->save();
-
-		// Field sekolah_id
-		$this->sekolah_id->AdvancedSearch->SearchValue = @$filter["x_sekolah_id"];
-		$this->sekolah_id->AdvancedSearch->SearchOperator = @$filter["z_sekolah_id"];
-		$this->sekolah_id->AdvancedSearch->SearchCondition = @$filter["v_sekolah_id"];
-		$this->sekolah_id->AdvancedSearch->SearchValue2 = @$filter["y_sekolah_id"];
-		$this->sekolah_id->AdvancedSearch->SearchOperator2 = @$filter["w_sekolah_id"];
-		$this->sekolah_id->AdvancedSearch->save();
-
-		// Field tahunajaran_id
-		$this->tahunajaran_id->AdvancedSearch->SearchValue = @$filter["x_tahunajaran_id"];
-		$this->tahunajaran_id->AdvancedSearch->SearchOperator = @$filter["z_tahunajaran_id"];
-		$this->tahunajaran_id->AdvancedSearch->SearchCondition = @$filter["v_tahunajaran_id"];
-		$this->tahunajaran_id->AdvancedSearch->SearchValue2 = @$filter["y_tahunajaran_id"];
-		$this->tahunajaran_id->AdvancedSearch->SearchOperator2 = @$filter["w_tahunajaran_id"];
-		$this->tahunajaran_id->AdvancedSearch->save();
-
-		// Field kelas_id
-		$this->kelas_id->AdvancedSearch->SearchValue = @$filter["x_kelas_id"];
-		$this->kelas_id->AdvancedSearch->SearchOperator = @$filter["z_kelas_id"];
-		$this->kelas_id->AdvancedSearch->SearchCondition = @$filter["v_kelas_id"];
-		$this->kelas_id->AdvancedSearch->SearchValue2 = @$filter["y_kelas_id"];
-		$this->kelas_id->AdvancedSearch->SearchOperator2 = @$filter["w_kelas_id"];
-		$this->kelas_id->AdvancedSearch->save();
-
-		// Field semester_id
-		$this->semester_id->AdvancedSearch->SearchValue = @$filter["x_semester_id"];
-		$this->semester_id->AdvancedSearch->SearchOperator = @$filter["z_semester_id"];
-		$this->semester_id->AdvancedSearch->SearchCondition = @$filter["v_semester_id"];
-		$this->semester_id->AdvancedSearch->SearchValue2 = @$filter["y_semester_id"];
-		$this->semester_id->AdvancedSearch->SearchOperator2 = @$filter["w_semester_id"];
-		$this->semester_id->AdvancedSearch->save();
 		$this->BasicSearch->setKeyword(@$filter[Config("TABLE_BASIC_SEARCH")]);
 		$this->BasicSearch->setType(@$filter[Config("TABLE_BASIC_SEARCH_TYPE")]);
 	}
@@ -1639,10 +1603,7 @@ class t201_users_list extends t201_users
 			$this->updateSort($this->_UserLevel, $ctrl); // UserLevel
 			$this->updateSort($this->Username, $ctrl); // Username
 			$this->updateSort($this->Activated, $ctrl); // Activated
-			$this->updateSort($this->sekolah_id, $ctrl); // sekolah_id
-			$this->updateSort($this->tahunajaran_id, $ctrl); // tahunajaran_id
-			$this->updateSort($this->kelas_id, $ctrl); // kelas_id
-			$this->updateSort($this->semester_id, $ctrl); // semester_id
+			$this->updateSort($this->Profile, $ctrl); // Profile
 			$this->setStartRecordNumber(1); // Reset start position
 		}
 	}
@@ -1699,10 +1660,7 @@ class t201_users_list extends t201_users
 				$this->_UserLevel->setSort("");
 				$this->Username->setSort("");
 				$this->Activated->setSort("");
-				$this->sekolah_id->setSort("");
-				$this->tahunajaran_id->setSort("");
-				$this->kelas_id->setSort("");
-				$this->semester_id->setSort("");
+				$this->Profile->setSort("");
 			}
 
 			// Reset start position
@@ -2236,10 +2194,17 @@ class t201_users_list extends t201_users
 		// Activated
 		// Profile
 		// sekolah_id
-		// tahunajaran_id
-		// kelas_id
-		// semester_id
 
+		$this->sekolah_id->CellCssStyle = "white-space: nowrap;";
+
+		// tahunajaran_id
+		$this->tahunajaran_id->CellCssStyle = "white-space: nowrap;";
+
+		// kelas_id
+		$this->kelas_id->CellCssStyle = "white-space: nowrap;";
+
+		// semester_id
+		$this->semester_id->CellCssStyle = "white-space: nowrap;";
 		if ($this->RowType == ROWTYPE_VIEW) { // View row
 
 			// EmployeeID
@@ -2355,25 +2320,9 @@ class t201_users_list extends t201_users
 			}
 			$this->Activated->ViewCustomAttributes = "";
 
-			// sekolah_id
-			$this->sekolah_id->ViewValue = $this->sekolah_id->CurrentValue;
-			$this->sekolah_id->ViewValue = FormatNumber($this->sekolah_id->ViewValue, 0, -2, -2, -2);
-			$this->sekolah_id->ViewCustomAttributes = "";
-
-			// tahunajaran_id
-			$this->tahunajaran_id->ViewValue = $this->tahunajaran_id->CurrentValue;
-			$this->tahunajaran_id->ViewValue = FormatNumber($this->tahunajaran_id->ViewValue, 0, -2, -2, -2);
-			$this->tahunajaran_id->ViewCustomAttributes = "";
-
-			// kelas_id
-			$this->kelas_id->ViewValue = $this->kelas_id->CurrentValue;
-			$this->kelas_id->ViewValue = FormatNumber($this->kelas_id->ViewValue, 0, -2, -2, -2);
-			$this->kelas_id->ViewCustomAttributes = "";
-
-			// semester_id
-			$this->semester_id->ViewValue = $this->semester_id->CurrentValue;
-			$this->semester_id->ViewValue = FormatNumber($this->semester_id->ViewValue, 0, -2, -2, -2);
-			$this->semester_id->ViewCustomAttributes = "";
+			// Profile
+			$this->Profile->ViewValue = $this->Profile->CurrentValue;
+			$this->Profile->ViewCustomAttributes = "";
 
 			// EmployeeID
 			$this->EmployeeID->LinkCustomAttributes = "";
@@ -2480,25 +2429,10 @@ class t201_users_list extends t201_users
 			$this->Activated->HrefValue = "";
 			$this->Activated->TooltipValue = "";
 
-			// sekolah_id
-			$this->sekolah_id->LinkCustomAttributes = "";
-			$this->sekolah_id->HrefValue = "";
-			$this->sekolah_id->TooltipValue = "";
-
-			// tahunajaran_id
-			$this->tahunajaran_id->LinkCustomAttributes = "";
-			$this->tahunajaran_id->HrefValue = "";
-			$this->tahunajaran_id->TooltipValue = "";
-
-			// kelas_id
-			$this->kelas_id->LinkCustomAttributes = "";
-			$this->kelas_id->HrefValue = "";
-			$this->kelas_id->TooltipValue = "";
-
-			// semester_id
-			$this->semester_id->LinkCustomAttributes = "";
-			$this->semester_id->HrefValue = "";
-			$this->semester_id->TooltipValue = "";
+			// Profile
+			$this->Profile->LinkCustomAttributes = "";
+			$this->Profile->HrefValue = "";
+			$this->Profile->TooltipValue = "";
 		}
 
 		// Call Row Rendered event

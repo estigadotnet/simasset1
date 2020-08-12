@@ -175,38 +175,6 @@ loadjs.ready("head", function() {
 				if (elm && !ew.isHidden(elm) && !ew.hasValue(elm))
 					return this.onError(elm, "<?php echo JsEncode(str_replace("%s", $t201_users_add->Profile->caption(), $t201_users_add->Profile->RequiredErrorMessage)) ?>");
 			<?php } ?>
-			<?php if ($t201_users_add->sekolah_id->Required) { ?>
-				elm = this.getElements("x" + infix + "_sekolah_id");
-				if (elm && !ew.isHidden(elm) && !ew.hasValue(elm))
-					return this.onError(elm, "<?php echo JsEncode(str_replace("%s", $t201_users_add->sekolah_id->caption(), $t201_users_add->sekolah_id->RequiredErrorMessage)) ?>");
-			<?php } ?>
-				elm = this.getElements("x" + infix + "_sekolah_id");
-				if (elm && !ew.checkInteger(elm.value))
-					return this.onError(elm, "<?php echo JsEncode($t201_users_add->sekolah_id->errorMessage()) ?>");
-			<?php if ($t201_users_add->tahunajaran_id->Required) { ?>
-				elm = this.getElements("x" + infix + "_tahunajaran_id");
-				if (elm && !ew.isHidden(elm) && !ew.hasValue(elm))
-					return this.onError(elm, "<?php echo JsEncode(str_replace("%s", $t201_users_add->tahunajaran_id->caption(), $t201_users_add->tahunajaran_id->RequiredErrorMessage)) ?>");
-			<?php } ?>
-				elm = this.getElements("x" + infix + "_tahunajaran_id");
-				if (elm && !ew.checkInteger(elm.value))
-					return this.onError(elm, "<?php echo JsEncode($t201_users_add->tahunajaran_id->errorMessage()) ?>");
-			<?php if ($t201_users_add->kelas_id->Required) { ?>
-				elm = this.getElements("x" + infix + "_kelas_id");
-				if (elm && !ew.isHidden(elm) && !ew.hasValue(elm))
-					return this.onError(elm, "<?php echo JsEncode(str_replace("%s", $t201_users_add->kelas_id->caption(), $t201_users_add->kelas_id->RequiredErrorMessage)) ?>");
-			<?php } ?>
-				elm = this.getElements("x" + infix + "_kelas_id");
-				if (elm && !ew.checkInteger(elm.value))
-					return this.onError(elm, "<?php echo JsEncode($t201_users_add->kelas_id->errorMessage()) ?>");
-			<?php if ($t201_users_add->semester_id->Required) { ?>
-				elm = this.getElements("x" + infix + "_semester_id");
-				if (elm && !ew.isHidden(elm) && !ew.hasValue(elm))
-					return this.onError(elm, "<?php echo JsEncode(str_replace("%s", $t201_users_add->semester_id->caption(), $t201_users_add->semester_id->RequiredErrorMessage)) ?>");
-			<?php } ?>
-				elm = this.getElements("x" + infix + "_semester_id");
-				if (elm && !ew.checkInteger(elm.value))
-					return this.onError(elm, "<?php echo JsEncode($t201_users_add->semester_id->errorMessage()) ?>");
 
 				// Call Form_CustomValidate event
 				if (!this.Form_CustomValidate(fobj))
@@ -496,8 +464,8 @@ loadjs.ready(["ft201_usersadd", "datetimepicker"], function() {
 $selwrk = ConvertToBool($t201_users_add->Activated->CurrentValue) ? " checked" : "";
 ?>
 <div class="custom-control custom-checkbox d-inline-block">
-	<input type="checkbox" class="custom-control-input" data-table="t201_users" data-field="x_Activated" name="x_Activated[]" id="x_Activated[]_666632" value="1"<?php echo $selwrk ?><?php echo $t201_users_add->Activated->editAttributes() ?>>
-	<label class="custom-control-label" for="x_Activated[]_666632"></label>
+	<input type="checkbox" class="custom-control-input" data-table="t201_users" data-field="x_Activated" name="x_Activated[]" id="x_Activated[]_609312" value="1"<?php echo $selwrk ?><?php echo $t201_users_add->Activated->editAttributes() ?>>
+	<label class="custom-control-label" for="x_Activated[]_609312"></label>
 </div>
 </span>
 <?php echo $t201_users_add->Activated->CustomMsg ?></div></div>
@@ -511,46 +479,6 @@ $selwrk = ConvertToBool($t201_users_add->Activated->CurrentValue) ? " checked" :
 <textarea data-table="t201_users" data-field="x_Profile" name="x_Profile" id="x_Profile" cols="35" rows="4" placeholder="<?php echo HtmlEncode($t201_users_add->Profile->getPlaceHolder()) ?>"<?php echo $t201_users_add->Profile->editAttributes() ?>><?php echo $t201_users_add->Profile->EditValue ?></textarea>
 </span>
 <?php echo $t201_users_add->Profile->CustomMsg ?></div></div>
-	</div>
-<?php } ?>
-<?php if ($t201_users_add->sekolah_id->Visible) { // sekolah_id ?>
-	<div id="r_sekolah_id" class="form-group row">
-		<label id="elh_t201_users_sekolah_id" for="x_sekolah_id" class="<?php echo $t201_users_add->LeftColumnClass ?>"><?php echo $t201_users_add->sekolah_id->caption() ?><?php echo $t201_users_add->sekolah_id->Required ? $Language->phrase("FieldRequiredIndicator") : "" ?></label>
-		<div class="<?php echo $t201_users_add->RightColumnClass ?>"><div <?php echo $t201_users_add->sekolah_id->cellAttributes() ?>>
-<span id="el_t201_users_sekolah_id">
-<input type="text" data-table="t201_users" data-field="x_sekolah_id" name="x_sekolah_id" id="x_sekolah_id" size="30" maxlength="11" placeholder="<?php echo HtmlEncode($t201_users_add->sekolah_id->getPlaceHolder()) ?>" value="<?php echo $t201_users_add->sekolah_id->EditValue ?>"<?php echo $t201_users_add->sekolah_id->editAttributes() ?>>
-</span>
-<?php echo $t201_users_add->sekolah_id->CustomMsg ?></div></div>
-	</div>
-<?php } ?>
-<?php if ($t201_users_add->tahunajaran_id->Visible) { // tahunajaran_id ?>
-	<div id="r_tahunajaran_id" class="form-group row">
-		<label id="elh_t201_users_tahunajaran_id" for="x_tahunajaran_id" class="<?php echo $t201_users_add->LeftColumnClass ?>"><?php echo $t201_users_add->tahunajaran_id->caption() ?><?php echo $t201_users_add->tahunajaran_id->Required ? $Language->phrase("FieldRequiredIndicator") : "" ?></label>
-		<div class="<?php echo $t201_users_add->RightColumnClass ?>"><div <?php echo $t201_users_add->tahunajaran_id->cellAttributes() ?>>
-<span id="el_t201_users_tahunajaran_id">
-<input type="text" data-table="t201_users" data-field="x_tahunajaran_id" name="x_tahunajaran_id" id="x_tahunajaran_id" size="30" maxlength="11" placeholder="<?php echo HtmlEncode($t201_users_add->tahunajaran_id->getPlaceHolder()) ?>" value="<?php echo $t201_users_add->tahunajaran_id->EditValue ?>"<?php echo $t201_users_add->tahunajaran_id->editAttributes() ?>>
-</span>
-<?php echo $t201_users_add->tahunajaran_id->CustomMsg ?></div></div>
-	</div>
-<?php } ?>
-<?php if ($t201_users_add->kelas_id->Visible) { // kelas_id ?>
-	<div id="r_kelas_id" class="form-group row">
-		<label id="elh_t201_users_kelas_id" for="x_kelas_id" class="<?php echo $t201_users_add->LeftColumnClass ?>"><?php echo $t201_users_add->kelas_id->caption() ?><?php echo $t201_users_add->kelas_id->Required ? $Language->phrase("FieldRequiredIndicator") : "" ?></label>
-		<div class="<?php echo $t201_users_add->RightColumnClass ?>"><div <?php echo $t201_users_add->kelas_id->cellAttributes() ?>>
-<span id="el_t201_users_kelas_id">
-<input type="text" data-table="t201_users" data-field="x_kelas_id" name="x_kelas_id" id="x_kelas_id" size="30" maxlength="11" placeholder="<?php echo HtmlEncode($t201_users_add->kelas_id->getPlaceHolder()) ?>" value="<?php echo $t201_users_add->kelas_id->EditValue ?>"<?php echo $t201_users_add->kelas_id->editAttributes() ?>>
-</span>
-<?php echo $t201_users_add->kelas_id->CustomMsg ?></div></div>
-	</div>
-<?php } ?>
-<?php if ($t201_users_add->semester_id->Visible) { // semester_id ?>
-	<div id="r_semester_id" class="form-group row">
-		<label id="elh_t201_users_semester_id" for="x_semester_id" class="<?php echo $t201_users_add->LeftColumnClass ?>"><?php echo $t201_users_add->semester_id->caption() ?><?php echo $t201_users_add->semester_id->Required ? $Language->phrase("FieldRequiredIndicator") : "" ?></label>
-		<div class="<?php echo $t201_users_add->RightColumnClass ?>"><div <?php echo $t201_users_add->semester_id->cellAttributes() ?>>
-<span id="el_t201_users_semester_id">
-<input type="text" data-table="t201_users" data-field="x_semester_id" name="x_semester_id" id="x_semester_id" size="30" maxlength="11" placeholder="<?php echo HtmlEncode($t201_users_add->semester_id->getPlaceHolder()) ?>" value="<?php echo $t201_users_add->semester_id->EditValue ?>"<?php echo $t201_users_add->semester_id->editAttributes() ?>>
-</span>
-<?php echo $t201_users_add->semester_id->CustomMsg ?></div></div>
 	</div>
 <?php } ?>
 </div><!-- /page* -->

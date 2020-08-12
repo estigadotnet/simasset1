@@ -1243,26 +1243,6 @@ class t201_users_view extends t201_users
 			$this->Profile->ViewValue = $this->Profile->CurrentValue;
 			$this->Profile->ViewCustomAttributes = "";
 
-			// sekolah_id
-			$this->sekolah_id->ViewValue = $this->sekolah_id->CurrentValue;
-			$this->sekolah_id->ViewValue = FormatNumber($this->sekolah_id->ViewValue, 0, -2, -2, -2);
-			$this->sekolah_id->ViewCustomAttributes = "";
-
-			// tahunajaran_id
-			$this->tahunajaran_id->ViewValue = $this->tahunajaran_id->CurrentValue;
-			$this->tahunajaran_id->ViewValue = FormatNumber($this->tahunajaran_id->ViewValue, 0, -2, -2, -2);
-			$this->tahunajaran_id->ViewCustomAttributes = "";
-
-			// kelas_id
-			$this->kelas_id->ViewValue = $this->kelas_id->CurrentValue;
-			$this->kelas_id->ViewValue = FormatNumber($this->kelas_id->ViewValue, 0, -2, -2, -2);
-			$this->kelas_id->ViewCustomAttributes = "";
-
-			// semester_id
-			$this->semester_id->ViewValue = $this->semester_id->CurrentValue;
-			$this->semester_id->ViewValue = FormatNumber($this->semester_id->ViewValue, 0, -2, -2, -2);
-			$this->semester_id->ViewCustomAttributes = "";
-
 			// EmployeeID
 			$this->EmployeeID->LinkCustomAttributes = "";
 			$this->EmployeeID->HrefValue = "";
@@ -1377,26 +1357,6 @@ class t201_users_view extends t201_users
 			$this->Profile->LinkCustomAttributes = "";
 			$this->Profile->HrefValue = "";
 			$this->Profile->TooltipValue = "";
-
-			// sekolah_id
-			$this->sekolah_id->LinkCustomAttributes = "";
-			$this->sekolah_id->HrefValue = "";
-			$this->sekolah_id->TooltipValue = "";
-
-			// tahunajaran_id
-			$this->tahunajaran_id->LinkCustomAttributes = "";
-			$this->tahunajaran_id->HrefValue = "";
-			$this->tahunajaran_id->TooltipValue = "";
-
-			// kelas_id
-			$this->kelas_id->LinkCustomAttributes = "";
-			$this->kelas_id->HrefValue = "";
-			$this->kelas_id->TooltipValue = "";
-
-			// semester_id
-			$this->semester_id->LinkCustomAttributes = "";
-			$this->semester_id->HrefValue = "";
-			$this->semester_id->TooltipValue = "";
 		}
 
 		// Call Row Rendered event
